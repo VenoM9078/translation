@@ -65,7 +65,7 @@ class InvoiceController extends Controller
         $order = Order::find($order_id);
         $userMail = $user->email;
 
-        $doesInvoiceExist = Invoice::where('user_id', $id)->where('order_id', $order_id);
+        $doesInvoiceExist = Invoice::where('order_id',$order_id)->exists();
 
         if (empty($doesInvoiceExist)) {
             $invoice = Invoice::create($validated);
@@ -75,6 +75,7 @@ class InvoiceController extends Controller
             $user = User::find($id);
             $order = Order::find($order_id);
             Order::where('id', $order_id)->update(['invoiceSent' => 1]);
+            Order::where('id', $order_id)->update(['orderStatus' => 'Payment Pending']);
             $userMail = $user->email;
 
             Mail::to($userMail)->send(new invoiceSent($user, $order, $invoice));

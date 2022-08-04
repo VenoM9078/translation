@@ -49,8 +49,11 @@
                         </div>
                        
                         <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
-                            <button type="submit" class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top">Login</button>
-                            <a href="{{ route('admin.register') }}" class="btn btn-outline-secondary py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top">Register</a>
+                            <button type="submit" class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-2 align-top">Login</button>
+                            <a href="{{ route('admin.register') }}" class="btn btn-outline-secondary xl:mr-2 py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top">Register</a>
+
+                            <a href="{{ route('login') }}" class="btn btn-outline-secondary py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top">User Sign In</a>
+
                         </div>
                     </form>
                     </div>
