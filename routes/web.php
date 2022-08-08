@@ -48,6 +48,14 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('customInvoice/{id}', [InvoiceController::class, 'customInvoice'])->name('invoice.customInvoice');
     Route::get('mailToTranslator/{id}', [AdminController::class, 'mailToTranslator'])->name('mailToTranslator');
     Route::post('sendDocumentsToTranslator', [AdminController::class, 'sendDocumentsToTranslator'])->name('sendDocumentsToTranslator');
+    Route::get('showTranslationRequests', [AdminController::class, 'showTranslationRequests'])->name('showTranslationRequests');
+    Route::get('changeTranslationRequestStatus/{id}', [AdminController::class, 'changeTranslationRequestStatus'])->name('changeTranslationRequestStatus');
+    Route::get('mailToProofReader/{id}', [AdminController::class, 'mailToProofReader'])->name('mailToProofReader');
+    Route::post('sendDocumentsToProofReader', [AdminController::class, 'sendDocumentsToProofReader'])->name('sendDocumentsToProofReader');
+    Route::get('showProofReadRequests', [AdminController::class, 'showProofReadRequests'])->name('showProofReadRequests');
+    Route::get('completedOrders', [AdminController::class, 'viewCompletedOrders'])->name('completedOrders');
+    Route::get('changeProofReadRequestStatus/{id}', [AdminController::class, 'changeProofReadRequestStatus'])->name('changeProofReadRequestStatus');
+
 });
 
 Route::middleware(['web', 'auth'])->group(function () {

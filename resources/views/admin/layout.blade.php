@@ -127,15 +127,32 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('admin.paidOrders') }}" class="side-menu">
+                                <a href="{{ route('completedOrders') }}" class="side-menu">
                                     <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
-                                    <div class="side-menu__title"> Paid Orders </div>
+                                    <div class="side-menu__title"> Completed Orders </div>
                                 </a>
                             </li>
                         
                         </ul>
                     </li>
+
+                    <li>
+                        <a href="{{ route('showTranslationRequests') }}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
+                            <div class="side-menu__title">
+                                Translation Status 
+                            </div>
+                        </a>
+                    </li>
                     
+                    <li>
+                        <a href="{{ route('showProofReadRequests') }}" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
+                            <div class="side-menu__title">
+                                Proofread Status 
+                            </div>
+                        </a>
+                    </li>
                
                     <li class="side-nav__devider my-6"></li>
                   
@@ -161,7 +178,7 @@
                     <!-- BEGIN: Account Menu -->
                     <div class="intro-x dropdown w-8 h-8">
                         <div class="dropdown-toggle w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in" role="button" aria-expanded="false" data-tw-toggle="dropdown">
-                            <img alt="Midone - HTML Admin Template" src="{{url('dist/images/profile-6.jpg')}}">
+                            <img src="{{url('dist/images/profile-6.jpg')}}">
                         </div>
                         <div class="dropdown-menu w-56">
                             <ul class="dropdown-content bg-primary text-white">

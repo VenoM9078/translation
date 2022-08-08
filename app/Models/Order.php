@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Invoice;
 use App\Models\TranslationRequest;
+use App\Models\ProofRequest;
 
 
 
@@ -34,5 +35,9 @@ class Order extends Model
     public function translationRequest()
     {
         return $this->hasOne('App\Models\TranslationRequest', 'order_id', 'id');
+    }
+
+    public function proofReadRequest() {
+        return $this->hasOne('App\Models\ProofRequest', 'order_id','id');
     }
 }
