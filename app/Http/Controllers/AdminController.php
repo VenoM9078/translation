@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\mailOfCompletion;
 use App\Mail\mailToProofReader;
 use App\Mail\orderToTranslator;
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Models\CompletedRequest;
 use App\Models\Order;
 use App\Models\OrderFiles;
 use App\Models\ProofRequest;
@@ -64,6 +66,18 @@ class AdminController extends Controller
         }
 
         return response()->download(public_path('compressed/' . $zipName));
+    }
+
+    public function downloadTranslatedFiles($id)
+    {
+        $order = Order::where('id',$id)->first();
+        $order_id = $order->id;
+
+        $completedRequest = CompletedRequest::where('order_id',$order_id)->first();
+
+        $orderFiles = $completedRequest->completed_file;
+       
+        return response()->download(public_path('translated/' . $orderFiles));
     }
 
     public function destroy($id)
@@ -323,6 +337,88 @@ class AdminController extends Controller
         $orders = Order::where('completed',1)->get();
 
         return view('admin.completedOrders', compact('orders'));
+    }
+
+    public function mailOfCompletion($id) {
+        $order = Order::where('id', $id)->first();
+
+        return view('admin.sendMailOfCompletion', compact('order'));
+    }
+
+    // Mail to User for Completion 🙌
+
+    public function sendDocumentsToUser(Request $request) {
+
+        $validated = $request->validate([
+            'order_id' => 'required|integer',
+            'user_id' => 'required|integer',
+            'translation_id' => 'required|integer',
+            'proofreader_id' => 'required|integer',
+            'email' => 'email|required',
+            'email_title' => 'required',
+            'email_body' => 'required',
+            'files' => 'required',
+            'files.*' => 'mimes:docx,doc,png,jpg,pdf,txt'
+        ]);
+
+        $order_id = $request->input('order_id');
+        $email = $request->input('email');
+    
+
+        $check = CompletedRequest::where([
+            'order_id' => $order_id,
+            'email' => $email
+        ]);
+
+        if ($check->exists()) {
+            $check->delete();
+        }
+        
+        if ($request->hasFile('files')) {
+
+            $files = $request->file('files');
+
+            $fileArr2 = [];
+
+            foreach ($files as $file) {
+
+                $filename = date('YmdHi') . $file->getClientOriginalName();
+
+                $file->move(public_path('documents'), $filename);
+                $fileArr2[] = public_path('documents/' . $filename);
+                
+            }
+
+            $zip2 = new ZipArchive;
+
+            $zipName2 = 'completed_' . $order_id . '.zip';
+
+            if ($zip2->open(public_path('translated/' . $zipName2), ZipArchive::CREATE) === TRUE) {
+
+                $files = $fileArr2; //passing the above array
+    
+                foreach ($files as $key => $value) {
+                    $relativeNameInZipFile = basename($value);
+                    // dd($relativeNameInZipFile);
+                    $zip2->addFile($value, $relativeNameInZipFile);
+                }
+    
+                $zip2->close();
+            }
+        }
+
+        $validated['completed_file'] = $zipName2;
+
+        $completedRequest = CompletedRequest::create($validated);
+
+        $order = Order::where('id',$order_id)->first();
+
+        Order::where('id', $order_id)->update(['orderStatus' => 'Completed']);
+        Order::where('id', $order_id)->update(['completed' => 1]);
+
+
+        Mail::to($email)->send(new mailOfCompletion($order, $zipName2));
+        return redirect()->route('completedOrders');
     }
 
 }

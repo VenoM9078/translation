@@ -86,9 +86,8 @@
                     <a href="{{ route('mailToProofReader',$order->id) }}" class="btn btn-dark mr-1 mb-2"><i data-lucide="mail" class="w-5 h-5 mr-2"></i> Mail to Proofreader </a>
 
                     @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 1 && $order->translationRequest->translation_status == 1 && $order->proofReadRequest->proofread_status == 1)
-                    <div class="progress h-6">
-                        <div class="progress-bar w-4/4" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">100%</div>
-                    </div>
+                    <a href="{{ route('mailOfCompletion',$order->id) }}" class="btn btn-success mr-1 mb-2"><i data-lucide="mail" class="w-5 h-5 mr-2"></i> Send Translation to User </a>
+
                     @endif
 
                   </td>

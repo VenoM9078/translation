@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\Invoice;
 use App\Models\TranslationRequest;
 use App\Models\ProofRequest;
+use App\Models\CompletedRequest;
 
 
 
@@ -39,5 +40,9 @@ class Order extends Model
 
     public function proofReadRequest() {
         return $this->hasOne('App\Models\ProofRequest', 'order_id','id');
+    }
+
+    public function completedRequest() {
+        return $this->hasOne('App\Models\CompletedRequest', 'order_id','id');
     }
 }

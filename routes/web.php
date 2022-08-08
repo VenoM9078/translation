@@ -55,7 +55,9 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('showProofReadRequests', [AdminController::class, 'showProofReadRequests'])->name('showProofReadRequests');
     Route::get('completedOrders', [AdminController::class, 'viewCompletedOrders'])->name('completedOrders');
     Route::get('changeProofReadRequestStatus/{id}', [AdminController::class, 'changeProofReadRequestStatus'])->name('changeProofReadRequestStatus');
-
+    Route::get('mailOfCompletion/{id}', [AdminController::class, 'mailOfCompletion'])->name('mailOfCompletion');
+    Route::post('sendDocumentsToUser', [AdminController::class, 'sendDocumentsToUser'])->name('sendDocumentsToUser');
+    Route::get('downloadTranslatedFiles/{id}', [AdminController::class, 'downloadTranslatedFiles'])->name('downloadTranslatedFiles');
 });
 
 Route::middleware(['web', 'auth'])->group(function () {
