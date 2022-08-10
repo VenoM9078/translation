@@ -29,7 +29,7 @@
                             <br>
                             sign in to your account.
                         </div>
-                        <div class="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400">Manage all your courses in one place</div>
+                        <div class="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400">Manage all your translations in one place!</div>
                     </div>
                 </div>
                 <!-- END: Login Info -->

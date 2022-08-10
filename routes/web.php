@@ -66,6 +66,7 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::get('logout', [UserController::class, 'destroySession'])->name('logout');
     Route::get('viewInvoice/{id}', [UserController::class, 'viewInvoice'])->name('viewInvoice');
     Route::get('thankyou/{id}', [UserController::class, 'updatePaymentStatus'])->name('thankyou');
+    Route::get('downloadTranslatedForUser/{id}', [UserController::class, 'downloadTranslatedForUser'])->name('downloadTranslatedForUser');
 });
 
 

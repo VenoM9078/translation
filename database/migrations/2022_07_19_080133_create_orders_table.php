@@ -24,6 +24,8 @@ return new class extends Migration
             $table->integer('invoiceSent')->defautl(0);
             $table->integer('amount')->default(0);
             $table->string('orderStatus')->default('Invoice Pending');
+            $table->integer('translation_status')->default(0);
+            $table->integer('proofread_status')->defautl(0);
             $table->integer('completed')->defautl(0);
 
 

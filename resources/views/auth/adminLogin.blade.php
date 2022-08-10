@@ -29,7 +29,7 @@
                             <br>
                             sign in to your account.
                         </div>
-                        <div class="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400">Manage all your courses in one place</div>
+                        <div class="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400">Manage all your translations in one place</div>
                     </div>
                 </div>
                 <!-- END: Login Info -->
@@ -39,7 +39,7 @@
                         <h2 class="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-left">
                             Admin Sign In
                         </h2>
-                        <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">A few more clicks to sign in to your account. Manage all your e-commerce accounts in one place</div>
+                        <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">A few more clicks to sign in to your account. Manage all your orders in one place!</div>
                         <form action="{{ route('admin.login') }}" method="POST">
                         @csrf
                         @method('POST')

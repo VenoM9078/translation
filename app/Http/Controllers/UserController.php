@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 use App\Mail\OrderCreated;
+use App\Models\CompletedRequest;
 use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
@@ -133,6 +134,18 @@ class UserController extends Controller
         $order->save();
 
         return view('user.thankyou');
+    }
+
+    public function downloadTranslatedForUser($id)
+    {
+        $order = Order::where('id',$id)->first();
+        $order_id = $order->id;
+
+        $completedRequest = CompletedRequest::where('order_id',$order_id)->first();
+
+        $orderFiles = $completedRequest->completed_file;
+       
+        return response()->download(public_path('translated/' . $orderFiles));
     }
 
 

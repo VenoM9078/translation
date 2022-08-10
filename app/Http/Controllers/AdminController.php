@@ -158,7 +158,7 @@ class AdminController extends Controller
         Order::where('id', $order_id)->update(['orderStatus' => 'Sent to Translator']);
 
         Mail::to($translatorEmail)->send(new orderToTranslator($order, $zipName));
-        return redirect()->route('admin.paidOrders');
+        return redirect()->route('admin.pendingOrders');
 
 
         // $id = $request->input('user_id');
@@ -200,6 +200,13 @@ class AdminController extends Controller
 
     public function changeTranslationRequestStatus($id) {
         $findRequest = TranslationRequest::where('order_id',$id)->first();
+        $findOrder = Order::findOrFail($id);
+
+        if ($findOrder->translation_status == 0) {
+            $findOrder->update(['translation_status' => 1]);
+        } else {
+            $findOrder->update(['translation_status' => 0]);
+        }
 
         if ($findRequest->translation_status == 0) {
             $findRequest->update(['translation_status' => 1]);
@@ -212,6 +219,13 @@ class AdminController extends Controller
 
     public function changeProofReadRequestStatus($id) {
         $ProofRequest = ProofRequest::where('order_id',$id)->first();
+        $findOrder = Order::where('id',$id)->first();
+
+        if ($findOrder->proofread_status == 0) {
+            $findOrder->update(['proofread_status' => 1]);
+        } else {
+            $findOrder->update(['proofread_status' => 0]);
+        }
 
         if ($ProofRequest->proofread_status == 0) {
             $ProofRequest->update(['proofread_status' => 1]);

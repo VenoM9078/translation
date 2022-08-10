@@ -1,23 +1,14 @@
 <!DOCTYPE html>
-<!--
-Template Name: Midone - HTML Admin Dashboard Template
-Author: Left4code
-Website: http://www.left4code.com/
-Contact: muhammadrizki@left4code.com
-Purchase: https://themeforest.net/user/left4code/portfolio
-Renew Support: https://themeforest.net/user/left4code/portfolio
-License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
--->
 <html lang="en" class="light">
     <!-- BEGIN: Head -->
     <head>
         <meta charset="utf-8">
         <link href="{{ url('dist/images/logo.svg') }}" rel="shortcut icon">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Midone admin is super flexible, powerful, clean & modern responsive tailwind admin template with unlimited possibilities.">
-        <meta name="keywords" content="admin template, Midone Admin Template, dashboard template, flat admin template, responsive admin template, web app">
-        <meta name="author" content="LEFT4CODE">
-        <title>Translators - Login</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="author" content="">
+        <title>FlowTranslate - Login</title>
         <!-- BEGIN: CSS Assets-->
         <link rel="stylesheet" href="{{ url('dist/css/app.css') }}" />
         <!-- END: CSS Assets-->
@@ -39,7 +30,7 @@ License: You must have a valid license purchased only from themeforest(the above
                             <br>
                             sign in to your account.
                         </div>
-                        <div class="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400">Manage all your e-commerce accounts in one place</div>
+                        <div class="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400">Manage all your translation orders in one place!</div>
                     </div>
                 </div>
                 <!-- END: Login Info -->
@@ -49,7 +40,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         <h2 class="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-left">
                             User Sign In
                         </h2>
-                        <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">A few more clicks to sign in to your account. Manage all your e-commerce accounts in one place</div>
+                        <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">A few more clicks to sign in to your account. Manage all your translation orders in one place!</div>
                         <form action="{{ route('login') }}" method="POST">
                             @csrf
                             @method('POST')
