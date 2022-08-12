@@ -16,7 +16,21 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'worknumber', 'language1', 'language2', 'casemanager', 'paymentStatus', 'invoiceSent', 'amount', 'orderStatus'];
+    protected $fillable = [
+        'user_id',
+        'worknumber',
+        'language1',
+        'language2',
+        'access_code',
+        'casemanager',
+        'paymentStatus',
+        'invoiceSent',
+        'amount',
+        'orderStatus',
+        'translation_status',
+        'proofread_status',
+        'completed'
+    ];
 
     public function files()
     {

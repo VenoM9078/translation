@@ -104,7 +104,7 @@
 
                     <li>
                         <a href="{{ route('invoice.index') }}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
+                            <div class="side-menu__icon"> <i data-lucide="dollar-sign"></i> </div>
                             <div class="side-menu__title">
                                 Invoices
                             </div>
@@ -113,7 +113,7 @@
 
                     <li>
                         <a href="javascript:;" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
+                            <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
                             <div class="side-menu__title">
                                 Orders 
                                 <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
@@ -137,22 +137,30 @@
                     </li>
 
                     <li>
-                        <a href="{{ route('showTranslationRequests') }}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
+                        <a href="javascript:;" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="mail"></i> </div>
                             <div class="side-menu__title">
-                                Translation Status 
+                                Status 
+                                <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                             </div>
                         </a>
+                        <ul class="">
+                            <li>
+                                <a href="{{ route('showTranslationRequests') }}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                    <div class="side-menu__title"> Translation Status </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('showProofReadRequests') }}" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                    <div class="side-menu__title"> Proofread Status </div>
+                                </a>
+                            </li>
+                        
+                        </ul>
                     </li>
-                    
-                    <li>
-                        <a href="{{ route('showProofReadRequests') }}" class="side-menu">
-                            <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
-                            <div class="side-menu__title">
-                                Proofread Status 
-                            </div>
-                        </a>
-                    </li>
+
                
                     <li class="side-nav__devider my-6"></li>
                   

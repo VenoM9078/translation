@@ -39,6 +39,7 @@
                     <div class="intro-x mt-4">
                         <input type="text" name="language1" class="intro-x login__input form-control py-3 px-4 block" required placeholder="Current Laguage of the Document">
                         <input type="text" name="language2" class="intro-x login__input form-control py-3 px-4 block mt-4" required placeholder="What Language does the Document needs to be Translated into?">
+                        <input type="text" name="access_code" class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="Access Code (for returning customers)">
                         <input type="text" name="casemanager" class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="Case Manager (optional)">
                         <div class="file-upload mt-6">
                             <div class="file-select">

@@ -25,6 +25,7 @@
                       <thead>
                             <tr>
                                 <th class="whitespace-nowrap">Work Number</th>
+                                <th class="whitespace-nowrap">Access Code</th>
                                 <th class="whitespace-nowrap">Current Language</th>
                                 <th class="whitespace-nowrap">Translated Language</th>
                                 <th class="whitespace-nowrap">Payment Status</th>
@@ -38,6 +39,11 @@
                             
                             <tr>
                                 <td class="whitespace-nowrap">{{ $order->worknumber }}</td>
+                                @if ($order->access_code != null)
+                                <td class="whitespace-nowrap">{{ $order->access_code }}</td>
+                                @else
+                                <td class="whitespace-nowrap">N/A</td>
+                                @endif
                                 <td class="whitespace-nowrap">{{ $order->language1 }}</td>
                                 <td class="whitespace-nowrap">{{ $order->language2 }}</td>
                                 @if ($order->paymentStatus == 1)

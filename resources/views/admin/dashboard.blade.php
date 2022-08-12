@@ -14,11 +14,10 @@
                     <div class="flex">
                         <i data-lucide="shopping-cart" class="report-box__icon text-primary"></i> 
                         <div class="ml-auto">
-                            <div class="report-box__indicator bg-success tooltip cursor-pointer" title="33% Higher than last month"> 33% <i data-lucide="chevron-up" class="w-4 h-4 ml-0.5"></i> </div>
                         </div>
                     </div>
-                    <div class="text-3xl font-medium leading-8 mt-6">4.710</div>
-                    <div class="text-base text-slate-500 mt-1">Students</div>
+                    <div class="text-3xl font-medium leading-8 mt-6">{{ count($orders) }}</div>
+                    <div class="text-base text-slate-500 mt-1">Total Orders</div>
                 </div>
             </div>
         </div>
@@ -28,11 +27,10 @@
                     <div class="flex">
                         <i data-lucide="credit-card" class="report-box__icon text-pending"></i> 
                         <div class="ml-auto">
-                            <div class="report-box__indicator bg-danger tooltip cursor-pointer" title="2% Lower than last month"> 2% <i data-lucide="chevron-down" class="w-4 h-4 ml-0.5"></i> </div>
                         </div>
                     </div>
-                    <div class="text-3xl font-medium leading-8 mt-6">3.721</div>
-                    <div class="text-base text-slate-500 mt-1">New Orders</div>
+                    <div class="text-3xl font-medium leading-8 mt-6">{{ $unsent }}</div>
+                    <div class="text-base text-slate-500 mt-1">Waiting for Invoice</div>
                 </div>
             </div>
         </div>
@@ -42,11 +40,10 @@
                     <div class="flex">
                         <i data-lucide="monitor" class="report-box__icon text-warning"></i> 
                         <div class="ml-auto">
-                            <div class="report-box__indicator bg-success tooltip cursor-pointer" title="12% Higher than last month"> 12% <i data-lucide="chevron-up" class="w-4 h-4 ml-0.5"></i> </div>
                         </div>
                     </div>
-                    <div class="text-3xl font-medium leading-8 mt-6">2.149</div>
-                    <div class="text-base text-slate-500 mt-1">Total Products</div>
+                    <div class="text-3xl font-medium leading-8 mt-6">{{ $paymentPending }}</div>
+                    <div class="text-base text-slate-500 mt-1">Pending Payments</div>
                 </div>
             </div>
         </div>
@@ -56,11 +53,10 @@
                     <div class="flex">
                         <i data-lucide="user" class="report-box__icon text-success"></i> 
                         <div class="ml-auto">
-                            <div class="report-box__indicator bg-success tooltip cursor-pointer" title="22% Higher than last month"> 22% <i data-lucide="chevron-up" class="w-4 h-4 ml-0.5"></i> </div>
                         </div>
                     </div>
-                    <div class="text-3xl font-medium leading-8 mt-6">152.040</div>
-                    <div class="text-base text-slate-500 mt-1">Unique Visitor</div>
+                    <div class="text-3xl font-medium leading-8 mt-6">{{ count($users) }}</div>
+                    <div class="text-base text-slate-500 mt-1">Registered Users</div>
                 </div>
             </div>
         </div>

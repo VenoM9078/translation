@@ -47,7 +47,9 @@ class AdminAuthController extends Controller
             $user = auth()->user();
             return redirect()->intended(url('/admin/dashboard'));
         } else {
-            return redirect()->back()->withError('Credentials don\'t match!');
+            return back()->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ]);
         }
     }
 

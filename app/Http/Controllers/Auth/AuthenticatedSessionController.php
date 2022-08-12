@@ -28,11 +28,17 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
-        $request->authenticate();
+        if($request->authenticate()) {
+            $request->session()->regenerate();
 
-        $request->session()->regenerate();
+            return redirect()->route('user.index');
+        } else {
+            return back()->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ]);
+        }
 
-        return redirect()->route('user.index');
+       
     }
 
     /**

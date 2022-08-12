@@ -40,6 +40,9 @@
                         <h2 class="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-left">
                             User Sign In
                         </h2>
+                        @error('email')
+                        <div class="alert alert-danger-soft show flex items-center mb-2 mt-2" role="alert">{{$message}} </div>
+                        @enderror
                         <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">A few more clicks to sign in to your account. Manage all your translation orders in one place!</div>
                         <form action="{{ route('login') }}" method="POST">
                             @csrf

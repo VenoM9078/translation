@@ -46,23 +46,21 @@ class UserController extends Controller
     public function store(Request $request)
     {
 
+        // dd("hi");
         $userID = Auth::id();
 
         $validated = $request->validate([
-
             'user_id' => 'integer',
             'language1' => 'required|max:255',
             'language2' => 'required|max:255',
-            'casemanager' => 'max:255',
-            'paymentStatus' => 'integer',
+            'access_code' => 'string|max:255',
+            'casemanager' => 'string|max:255',
             'files' => 'required',
             'files.*' => 'mimes:docx,doc,png,jpg,pdf,txt'
         ]);
 
         $validated['user_id'] = $userID;
-        $validated['invoiceSent'] = 0;
         $validated['worknumber'] = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ*.-_"), 0, 10);
-
         $order = Order::create($validated);
 
 
@@ -89,7 +87,7 @@ class UserController extends Controller
 
             $email = $user->email;
             Mail::to($email)->send(new OrderCreated($user, $order));
-            Mail::to('wahaj.dkz@gmail.com')->send(new adminOrderCreated($user, $order));
+            Mail::to('info@flowtranslate.com')->send(new adminOrderCreated($user, $order));
 
 
             return redirect()->route('myorders')->with('status', 'Translation Order placed successfully!');

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('language1');
             $table->string('language2');
             $table->string('casemanager');
+            $table->string('access_code');
             $table->integer('paymentStatus')->default(0);
             $table->integer('invoiceSent')->defautl(0);
             $table->integer('amount')->default(0);

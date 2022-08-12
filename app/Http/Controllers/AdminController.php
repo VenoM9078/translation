@@ -22,7 +22,11 @@ class AdminController extends Controller
 {
     public function index()
     {
-        return view('admin.dashboard');
+        $orders = Order::all();
+        $users = User::all();
+        $unsent = count(Order::where(['invoiceSent' => 0])->get());
+        $paymentPending = count(Order::where(['paymentStatus' => 0])->get());
+        return view('admin.dashboard', compact('orders','users', 'unsent', 'paymentPending'));
     }
 
     public function pendingOrders()
