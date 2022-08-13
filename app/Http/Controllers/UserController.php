@@ -15,6 +15,9 @@ use App\Mail\OrderCreated;
 use App\Models\CompletedRequest;
 use Illuminate\Support\Facades\Mail;
 
+use File;
+use ZipArchive;
+
 class UserController extends Controller
 {
     /**
@@ -132,6 +135,61 @@ class UserController extends Controller
         $order->save();
 
         return view('user.thankyou');
+    }
+
+    public function provideProof($id) {
+        $order = Order::findOrFail($id);
+        return view('user.provideProof', compact('order'));
+    }
+
+    public function processProof(Request $request) {
+        $validated = $request->validate([
+            'order_id' => 'required|integer',
+            'files' => 'required',
+            'files.*' => 'mimes:docx,doc,png,jpg,pdf,txt,webp,csv'
+        ]);
+
+        $order_id = $request->input('order_id');
+        
+        if ($request->hasFile('files')) {
+
+            $files = $request->file('files');
+
+            // dd($files);
+
+            $fileArr2 = [];
+
+            foreach ($files as $file) {
+
+                $filename = date('YmdHi') . $file->getClientOriginalName();
+
+                $file->move(public_path('evidence'), $filename);
+                $fileArr2[] = public_path('evidence/' . $filename);
+                
+            }
+
+            $zip2 = new ZipArchive;
+
+            $zipName2 = 'payevidence' . $order_id . '.zip';
+
+            if ($zip2->open(public_path('compressed/' . $zipName2), ZipArchive::CREATE) === TRUE) {
+
+                $files = $fileArr2; //passing the above array
+    
+                foreach ($files as $key => $value) {
+                    $relativeNameInZipFile = basename($value);
+                    // dd($relativeNameInZipFile);
+                    $zip2->addFile($value, $relativeNameInZipFile);
+                }
+    
+                $zip2->close();
+            }
+        }
+
+        $orderUpdate = Order::where('id',$order_id)->update(['is_evidence' => 1, 'filename' => $zipName2]);
+
+        return redirect()->route('myorders');
+
     }
 
     public function downloadTranslatedForUser($id)

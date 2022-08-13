@@ -51,13 +51,13 @@
             <!-- BEGIN: Side Menu -->
             <nav class="side-nav">
                 <a href="" class="intro-x flex items-center pl-5 pt-4">
-                    <img alt="Midone - HTML Admin Template" class="w-6" src="{{url('dist/images/logo.svg')}}">
+                    <img class="w-6" src="{{url('dist/images/logo.svg')}}">
                     <span class="hidden xl:block text-white text-lg ml-3"> FlowTranslate </span> 
                 </a>
                 <div class="side-nav__devider my-6"></div>
                 <ul>
                     <li>
-                        <a href="{{ route('user.index') }}" class="side-menu side-menu--active">
+                        <a href="{{ route('user.index') }}" class="{{ ((Route::getCurrentRoute()->uri == 'user') ? 'side-menu   side-menu--active' : 'side-menu' ) }}">
                             <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
                             <div class="side-menu__title">
                                 Dashboard 
@@ -66,7 +66,7 @@
                     </li>
                   
                     <li>
-                        <a href="{{ route('myorders') }}" class="side-menu">
+                        <a href="{{ route('myorders') }}" class="{{ ((Route::getCurrentRoute()->uri == 'myorders') ? 'side-menu   side-menu--active' : 'side-menu' ) }}">
                             <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
                             <div class="side-menu__title">
                                 My Orders 

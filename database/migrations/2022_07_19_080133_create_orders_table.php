@@ -23,6 +23,9 @@ return new class extends Migration
             $table->string('access_code');
             $table->integer('paymentStatus')->default(0);
             $table->integer('invoiceSent')->defautl(0);
+            $table->integer('is_evidence')->defautl(0);
+            $table->string('filename')->nullable(true);
+            $table->integer('evidence_accepted')->defautl(0);
             $table->integer('amount')->default(0);
             $table->string('orderStatus')->default('Invoice Pending');
             $table->integer('translation_status')->default(0);

@@ -85,6 +85,9 @@
                 <form action="" method="post"></form>
                 <div class="text-center sm:text-left mt-10 sm:mt-0">
                     <div class="text-base text-slate-500 mb-3">Choose Payment Method</div>
+                    <a href="{{ route('provideProof',$invoice->order->id) }}" class="btn btn-primary">Already Paid? Provide Proof</a>
+                    <hr class="side-nav__devider my-6"></hr>
+
                     <div id="paypal-button-container"></div>
                 </div>
                 <div class="text-center sm:text-right sm:ml-auto">

@@ -86,14 +86,14 @@
         <div class="flex mt-[4.7rem] md:mt-0">
             <!-- BEGIN: Side Menu -->
             <nav class="side-nav">
-                <a href="" class="intro-x flex items-center pl-5 pt-4">
-                    <img alt="Midone - HTML Admin Template" class="w-6" src="{{url('dist/images/logo.svg')}}">
+                <a href="{{ route('admin.dashboard') }}" class="intro-x flex items-center pl-5 pt-4">
+                    <img class="w-6" src="{{url('dist/images/logo.svg')}}">
                     <span class="hidden xl:block text-white text-lg ml-3"> Translators </span> 
                 </a>
                 <div class="side-nav__devider my-6"></div>
                 <ul>
                     <li>
-                        <a href="javascript:;.html" class="side-menu side-menu--active">
+                        <a href="{{route('admin.dashboard')}}" class="{{ ((Route::getCurrentRoute()->uri == 'admin/dashboard') ? 'side-menu   side-menu--active' : 'side-menu' ) }}">
                             <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
                             <div class="side-menu__title">
                                 Dashboard 
@@ -103,7 +103,7 @@
 
 
                     <li>
-                        <a href="{{ route('invoice.index') }}" class="side-menu">
+                        <a href="{{ route('invoice.index') }}" class="{{ ((Route::getCurrentRoute()->uri == 'invoice') ? 'side-menu side-menu--active' : 'side-menu' ) }}">
                             <div class="side-menu__icon"> <i data-lucide="dollar-sign"></i> </div>
                             <div class="side-menu__title">
                                 Invoices
@@ -112,7 +112,7 @@
                     </li>
 
                     <li>
-                        <a href="javascript:;" class="side-menu">
+                        <a href="javascript:;" class="{{ ((Route::getCurrentRoute()->uri == 'admin/pending' || (Route::getCurrentRoute()->uri == 'completedOrders')) ? 'side-menu side-menu--active' : 'side-menu' ) }}">
                             <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
                             <div class="side-menu__title">
                                 Orders 
@@ -137,7 +137,7 @@
                     </li>
 
                     <li>
-                        <a href="javascript:;" class="side-menu">
+                        <a href="javascript:;" class="{{ ((Route::getCurrentRoute()->uri == 'showTranslationRequests' || (Route::getCurrentRoute()->uri == 'showProofReadRequests')) ? 'side-menu side-menu--active' : 'side-menu' ) }}">
                             <div class="side-menu__icon"> <i data-lucide="mail"></i> </div>
                             <div class="side-menu__title">
                                 Status 

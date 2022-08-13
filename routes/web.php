@@ -44,6 +44,9 @@ Route::group(['middleware' => ['auth:admin']], function () {
 
     Route::delete('destroy/{id}', [AdminController::class, 'destroy'])->name('destroy');
     Route::get('downloadFiles/{order}', [AdminController::class, 'downloadFiles'])->name('downloadFiles');
+    Route::get('downloadEvidence/{order}', [AdminController::class, 'downloadEvidence'])->name('downloadEvidence');
+    Route::get('approveEvidence/{order}', [AdminController::class, 'approveEvidence'])->name('approveEvidence');
+    Route::get('rejectEvidence/{order}', [AdminController::class, 'rejectEvidence'])->name('rejectEvidence');
     Route::resource('invoice', InvoiceController::class);
     Route::get('customInvoice/{id}', [InvoiceController::class, 'customInvoice'])->name('invoice.customInvoice');
     Route::get('mailToTranslator/{id}', [AdminController::class, 'mailToTranslator'])->name('mailToTranslator');
@@ -65,6 +68,8 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::get('myorders', [UserController::class, 'myorders'])->name('myorders');
     Route::get('logout', [UserController::class, 'destroySession'])->name('logout');
     Route::get('viewInvoice/{id}', [UserController::class, 'viewInvoice'])->name('viewInvoice');
+    Route::get('provideProof/{id}', [UserController::class, 'provideProof'])->name('provideProof');
+    Route::post('processProof', [UserController::class, 'processProof'])->name('processProof');
     Route::get('thankyou/{id}', [UserController::class, 'updatePaymentStatus'])->name('thankyou');
     Route::get('downloadTranslatedForUser/{id}', [UserController::class, 'downloadTranslatedForUser'])->name('downloadTranslatedForUser');
 });

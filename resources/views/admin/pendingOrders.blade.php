@@ -4,6 +4,13 @@
 <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4 mb-4">   
   
 </div>
+
+<div class="intro-y flex items-center h-10 mb-5 mt-2">
+    <h2 class="text-lg font-medium truncate ml-2 mr-5">
+        Pending Orders
+    </h2>
+</div>
+<hr>
 <!-- BEGIN: Data List -->
 <div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
     <table id="myTable" class="table table-striped" style="width:100%">                        
@@ -35,6 +42,10 @@
                     @if($order->invoiceSent == 0)
                     <div class="progress h-6">
                         <div class="progress-bar w-1/4" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                    </div>
+                    @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 0 && $order->is_evidence == 1)
+                    <div class="progress h-6">
+                        <div class="progress-bar w-1/4" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">30%</div>
                     </div>
                     @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 0)
                     <div class="progress h-6">
@@ -75,6 +86,12 @@
                 <td class="whitespace-nowrap">
                     @if($order->invoiceSent == 0)
                     <a href="{{ route('invoice.customInvoice',$order->id) }}" class="btn btn-success mr-1 mb-2"> <i data-lucide="calendar" class="w-5 h-5 mr-2"></i> Send Invoice</a>
+
+                    @elseif($order->invoiceSent == 1 && $order->paymentStatus == 0 && $order->is_evidence == 1)
+                    <a href="{{ route('downloadEvidence',$order->id) }}" class="btn btn-warning mr-1 mb-2"> <i data-lucide="mouse-pointer" class="w-5 h-5 mr-2"></i> Download Proof</a>
+                    <a href="{{ route('approveEvidence',$order->id) }}" class="btn btn-success mr-1 mb-2"> <i data-lucide="thumbs-up" class="w-5 h-5"></i></a>
+                    <a href="{{ route('rejectEvidence',$order->id) }}" class="btn btn-danger mr-1 mb-2"> <i data-lucide="thumbs-down" class="w-5 h-5"></i></a>
+
 
                     @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 0)
                     <button class="btn btn-warning mr-1 mb-2"> Waiting for Payment <i data-loading-icon="three-dots" data-color="1a202c" class="w-4 h-4 ml-2"></i> </button>

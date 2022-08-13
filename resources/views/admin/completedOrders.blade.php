@@ -4,6 +4,12 @@
 <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4 mb-4">   
   
 </div>
+<div class="intro-y flex items-center h-10 mb-5 mt-2">
+    <h2 class="text-lg font-medium truncate ml-2 mr-5">
+        Completed Orders
+    </h2>
+</div>
+<hr>
 <!-- BEGIN: Data List -->
 <div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
     <table id="myTable" class="table table-striped" style="width:100%">                        

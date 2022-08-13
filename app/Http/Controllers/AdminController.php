@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Mail\mailOfCompletion;
 use App\Mail\mailToProofReader;
 use App\Mail\orderToTranslator;
+use App\Mail\paymentApproved;
+use App\Mail\paymentRejected;
 use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Models\CompletedRequest;
@@ -82,6 +84,45 @@ class AdminController extends Controller
         $orderFiles = $completedRequest->completed_file;
        
         return response()->download(public_path('translated/' . $orderFiles));
+    }
+
+    public function downloadEvidence($id)
+    {
+        $order = Order::where('id',$id)->first();
+        $order_id = $order->id;
+        $filename = $order->filename;
+       
+        return response()->download(public_path('evidence/' . $filename));
+    }
+
+    public function approveEvidence($id) {
+
+        $order = Order::where('id', $id)->first();
+        $order->update(['evidence_accepted' => 1]);
+        $order->update(['paymentStatus' => 1]);
+        $order->update(['orderStatus' => 'Translation Pending']);
+
+
+        Mail::to($order->user->email)->send(new paymentApproved());
+
+        return redirect()->route('admin.pending');
+
+    }
+
+
+    public function rejectEvidence($id) {
+
+        $order = Order::where('id', $id)->first();
+        $order->update(['evidence_accepted' => 0]);
+        $order->update(['is_evidence' => 0]);
+        $order->update(['paymentStatus' => 0]);
+        $order->update(['orderStatus' => 'Payment Pending']);
+
+        Mail::to($order->user->email)->send(new paymentRejected());
+
+
+        return redirect()->route('admin.pending');
+
     }
 
     public function destroy($id)

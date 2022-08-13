@@ -6,7 +6,7 @@
 <div class="col-span-12 mt-8">
     <div class="intro-y flex items-center h-10">
         <h2 class="text-lg font-medium truncate mr-5 mb-5">
-            Translation Center
+            My Orders
         </h2>
     </div>
 
@@ -56,10 +56,15 @@
                                     <div class="progress h-6">
                                         <div class="progress-bar w-1/4" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
                                     </div>
+                                    @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 0 && $order->is_evidence == 1)
+                                    <div class="progress h-6">
+                                        <div class="progress-bar w-1/4" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">35%</div>
+                                    </div>
                                     @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 0)
                                     <div class="progress h-6">
                                         <div class="progress-bar w-1/4" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">25%</div>
                                     </div>
+                                   
                                     @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 1 && $order->translation_status == 0)
                                     <div class="progress h-6">
                                         <div class="progress-bar w-2/4 bg-primary" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">50%</div>
@@ -91,6 +96,10 @@
                                     @if($order->invoiceSent == 0)
                                     <button class="btn btn-warning mr-1 mb-2"> Waiting for Invoice <i data-loading-icon="three-dots" data-color="ffffff" class="w-4 h-4 ml-2"></i> </button>
                 
+                                    @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 0 && $order->is_evidence == 1)
+                                    <button class="btn btn-warning mr-1 mb-2"> Processing Payment Proof <i data-loading-icon="three-dots" data-color="ffffff" class="w-4 h-4 ml-2"></i> </button>
+
+
                                     @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 0)
                                     <a href="{{ route('viewInvoice',$order->invoice->id) }}" class="btn btn-warning mr-1 mb-2"> View Invoice </a>
                 
