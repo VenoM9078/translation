@@ -13,7 +13,7 @@
     <title>FlowTranslate - Home</title>
 
     <!--====== Favicon ======-->
-    <link rel="shortcut icon" href="assets/images/logo/favicon.png" type="images/x-icon" />
+    <link rel="shortcut icon" href="{{url('dist/images/logo.svg')}}" type="images/x-icon" />
 
     <!--====== CSS Here ======-->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -67,8 +67,8 @@
                 <div class="row">
                     <div class="col-xl-8 col-lg-12">
                         <div class="navarea navarea__2">
-                            <a href="index.html" class="site-logo">
-                                <img src="assets/images/logo/logo.png" alt="LOGO">
+                            <a  href="{{ route('/') }}"  class="site-logo">
+                                <h3>FlowTranslate</h3>
                             </a>
                             <div class="mainmenu mainmenu__2">
                                 <nav id="mobile-menu">
@@ -277,7 +277,7 @@
         <div class="container-fluid">
             <div class="row no-gutters">
                 <div class="col-xl-8">
-                    <div class="video__bg bg_img" data-background="assets/images/bg/quotebg-1.jp    g" data-overlay="dark"
+                    <div class="video__bg bg_img" data-background="assets/images/bg/quotebg-1.jpg" data-overlay="dark"
                         data-opacity="34">
                     </div>
                 </div>
@@ -320,7 +320,7 @@
                             working process
                             <span><img src="assets/images/shape/heading-shape-4.png" class="ml-5" alt=""></span>
                         </h4>
-                        <h2 class="section-title section-title__2">How it works</h2>
+                        <h2 class="section-title section-title__2">How We Work</h2>
                     </div>
                 </div>
             </div>
@@ -449,48 +449,36 @@
                 <div class="col-xl-4 col-lg-6 col-md-6 mt-40">
                     <div class="team-box">
                         <div class="team-box__thumb">
-                            <img src="assets/images/team/team-1.jpeg" alt="">
+                            <img src="assets/images/icons/team-1.webp" alt="">
                         </div>
                         <div class="team-box__content">
-                            <h4 class="name">Raymond Archer</h4>
-                            <span class="designation">Senior Desinger</span>
-                            <div class="social-links">
-                                <a href="#0"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#0"><i class="fab fa-twitter"></i></a>
-                                <a href="#0"><i class="fab fa-pinterest-p"></i></a>
-                            </div>
+                            <h4 class="name">Andres Pardo</h4>
+                            <span class="designation">Professional Translator</span>
+                           
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-4 col-lg-6 col-md-6 mt-40">
                     <div class="team-box">
                         <div class="team-box__thumb">
-                            <img src="assets/images/team/team-2.jpeg" alt="">
+                            <img style="background-size: cover;background-position: center;height: 312px !important;width: 346px!important;" src="assets/images/icons/team-2.webp" alt="">
                         </div>
                         <div class="team-box__content">
-                            <h4 class="name">Rituana Lohan</h4>
-                            <span class="designation">Project Manager</span>
-                            <div class="social-links">
-                                <a href="#0"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#0"><i class="fab fa-twitter"></i></a>
-                                <a href="#0"><i class="fab fa-pinterest-p"></i></a>
-                            </div>
+                            <h4 class="name">Patricia Urrutia</h4>
+                            <span class="designation">Professional Translator</span>
+                            
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-4 col-lg-6 col-md-6 mt-40">
                     <div class="team-box">
                         <div class="team-box__thumb">
-                            <img src="assets/images/team/team-3.jpeg" alt="">
+                            <img style="background-size: cover;background-position: center;height: 312px !important;width: 346px!important;" src="assets/images/icons/team-3.webp" alt="">
                         </div>
                         <div class="team-box__content">
-                            <h4 class="name">Raymond Archer</h4>
-                            <span class="designation">Senior Desinger</span>
-                            <div class="social-links">
-                                <a href="#0"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#0"><i class="fab fa-twitter"></i></a>
-                                <a href="#0"><i class="fab fa-pinterest-p"></i></a>
-                            </div>
+                            <h4 class="name">Shirley Kuei</h4>
+                            <span class="designation">Professional Translator</span>
+                           
                         </div>
                     </div>
                 </div>
@@ -502,77 +490,18 @@
 
     <!-- footer start -->
     <footer class="footer footer__2 pt-120">
-        <div class="container">
-            <div class="row mt-none-50 justify-content-center">
-                <div class="col-xl-2 col-lg-3 mt-50">
-                    <a href="index.html" class="footer__logo">
-                        <img src="assets/images/logo/logo-white.png" alt="">
-                    </a>
-                </div>
-                <div class="col-xl-2 col-lg-4 mt-50 pl-45 pr-0">
-                    <div class="footer-widget footer-widget__2">
-                        <h4 class="widget-title">Our Service</h4>
-                        <ul>
-                            <li><a href="service-details.html"><i class="fa fa-angle-right"></i> Business Card</a></li>
-                            <li><a href="service-details.html"><i class="fa fa-angle-right"></i> Flyer Printing</a></li>
-                            <li><a href="service-details.html"><i class="fa fa-angle-right"></i> Banner Printing</a>
-                            </li>
-                            <li><a href="service-details.html"><i class="fa fa-angle-right"></i> Mug Printing</a></li>
-                            <li><a href="service-details.html"><i class="fa fa-angle-right"></i> Sticker Printing</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-5 mt-50 pl-70 pr-0">
-                    <div class="footer-widget footer-widget__2">
-                        <h4 class="widget-title">Recent News</h4>
-                        <div class="recent-news mt-none-20">
-                            <div class="recent-news__content mt-20">
-                                <a href="news-details.html" class="recent-news__title">Rutrum felis facilisi lorem com
-                                    modo habitasse
-                                    portam</a>
-                                <a href="news-details.html" class="recent-news__date">Sep 20. 2020</a>
-                            </div>
-                            <div class="recent-news__content mt-20">
-                                <a href="news-details.html" class="recent-news__title">Montes conubia alique vel nisl
-                                    cras maecenas
-                                    enim hac.</a>
-                                <a href="news-details.html" class="recent-news__date">Sep 21. 2020</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 offset-xl-1 col-lg-6 mt-50">
-                    <div class="footer-widget footer-widget__2">
-                        <div class="newslater">
-                            <h4 class="newslater__title">Subscribe to our
-                                Newsletter</h4>
-                            <div class="newslater__form">
-                                <form action="index.html">
-                                    <input type="email" name="email" id="email" placeholder="Enter Email">
-                                    <button type="submit"><i class="far fa-paper-plane"></i></button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
         <div class="footer__bottom footer__bottom--2 mt-115">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 my-auto">
                         <div class="copyright-text">
-                            <p>Copyright &copy; <a href="https://themeforest.net/user/theme_pure">Theme Pure.</a> All
-                                Rights Reserved.</p>
+                            <p>Contact Us at info@flowtranslate.com</p>
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div class="social__links social__links--2">
-                            <a href="#0"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#0"><i class="fab fa-twitter"></i></a>
-                            <a href="#0"><i class="fab fa-pinterest-p"></i></a>
-                            <a href="#0"><i class="fab fa-linkedin-in"></i></a>
+                        <div class="copyright-text" style="text-align: right;">
+                            <p>or Call Us at (650) 229-4621</p>
                         </div>
                     </div>
                 </div>
