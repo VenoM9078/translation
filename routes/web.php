@@ -24,8 +24,8 @@ use Illuminate\Support\Facades\Mail;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('index');
+})->name('/');
 
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
 Route::get('/admin/register', [AdminAuthController::class, 'showRegisterForm'])->name('admin.register');
