@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Session;
 
 use App\Mail\OrderCreated;
 use App\Models\CompletedRequest;
+use App\Models\Feedback;
 use Illuminate\Support\Facades\Mail;
 
 use File;
@@ -261,5 +262,18 @@ class UserController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('login');
+    }
+
+    public function submitFeedback(Request $request) {
+        $validate = $request->validate([
+            'order_id' => 'integer|required',
+            'experience' => 'string|required|max:255',
+            'improvements' => 'string|max:255',
+            'rating' => 'integer|required'
+        ]);
+
+        Feedback::create($validate);
+
+        return redirect()->route('myorders');
     }
 }

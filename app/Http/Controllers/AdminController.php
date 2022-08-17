@@ -10,6 +10,7 @@ use App\Mail\paymentRejected;
 use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Models\CompletedRequest;
+use App\Models\FreeQuote;
 use App\Models\Order;
 use App\Models\OrderFiles;
 use App\Models\ProofRequest;
@@ -478,6 +479,12 @@ class AdminController extends Controller
 
         Mail::to($email)->send(new mailOfCompletion($order, $zipName2));
         return redirect()->route('completedOrders');
+    }
+
+    public function viewQuoteRequests() {
+        $quotes = FreeQuote::all();
+
+        return view('admin.viewQuoteRequests', compact('quotes'));
     }
 
 }

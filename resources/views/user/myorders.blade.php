@@ -111,7 +111,24 @@
                 
                                     @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 1 && $order->translation_status == 1 && $order->proofread_status == 1 && $order->completed == 1)
                                     <a href="{{ route('downloadTranslatedForUser',$order->id) }}" class="btn btn-warning mr-1 mb-2"> <i data-lucide="download" class="w-5 h-5 mr-2"> </i>Download Translated Files </a>
-                
+                                    <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#superlarge-modal-size-preview-{{$order->id}}" class="btn btn-success mr-1 mb-2"><i data-lucide="twitch" class="w-5 h-5"></i></a>
+                                    <div id="superlarge-modal-size-preview-{{ $order->id }}" class="modal" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog modal-xl">
+                                            <div class="modal-content">
+                                                <div class="modal-body p-10"> 
+                                                    <form action="{{ route('submitFeedback') }}" method="post">
+                                                        @csrf
+                                                        @method('POST')
+                                                        <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                                        <input type="text" name="experience" class="intro-x login__input form-control py-3 px-4 block" required placeholder="How was your experience with us?">
+                                                        <input type="text" name="improvements" class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="How can we improve our service?">    
+                                                        <input type="number" name="rating" class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="How would you rate our service? (0 - 10)">    
+                                                        <input type="submit" class="btn btn-primary mt-5" value="Submit Feedback">
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> 
                                     @endif
                 
                                   </td>
@@ -122,6 +139,9 @@
                         </tbody>
                     </table>
                 </div>
+
+
+
                 </div>
             </div>
            

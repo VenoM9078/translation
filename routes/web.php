@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\GuestController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\TranslatorController;
 use App\Http\Controllers\UserController;
@@ -61,6 +62,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('mailOfCompletion/{id}', [AdminController::class, 'mailOfCompletion'])->name('mailOfCompletion');
     Route::post('sendDocumentsToUser', [AdminController::class, 'sendDocumentsToUser'])->name('sendDocumentsToUser');
     Route::get('downloadTranslatedFiles/{id}', [AdminController::class, 'downloadTranslatedFiles'])->name('downloadTranslatedFiles');
+    Route::get('viewQuoteRequests', [AdminController::class, 'viewQuoteRequests'])->name('viewQuoteRequests');
+
 });
 
 Route::middleware(['web', 'auth'])->group(function () {
@@ -72,7 +75,11 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::post('processProof', [UserController::class, 'processProof'])->name('processProof');
     Route::get('thankyou/{id}', [UserController::class, 'updatePaymentStatus'])->name('thankyou');
     Route::get('downloadTranslatedForUser/{id}', [UserController::class, 'downloadTranslatedForUser'])->name('downloadTranslatedForUser');
+    Route::post('submitFeedback', [UserController::class, 'submitFeedback'])->name('submitFeedback');
 });
+
+Route::post('freequote', [GuestController::class, 'freequote'])->name('freequote');
+
 
 
 require __DIR__ . '/auth.php';

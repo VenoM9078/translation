@@ -285,15 +285,17 @@
                     <div class="quote-wrapper">
                         <h2 class="quote-title">Free quote</h2>
                         <div class="quote-form">
-                            <form action="index.html" class="mt-none-15">
+                            <form method="POST" action="{{ route('freequote') }}" class="mt-none-15">
+                                @csrf
+                                @method('POST')
                                 <div class="form-group mt-15">
-                                    <input type="text" name="Name" id="name" placeholder="Your Name">
+                                    <input type="text" name="name" id="name" placeholder="Your Name">
                                 </div>
                                 <div class="form-group mt-15">
-                                    <input type="tel" name="Tel" id="tel" placeholder="Phone Number">
+                                    <input type="email" name="email" id="tel" placeholder="Email">
                                 </div>
                                 <div class="form-group mt-15">
-                                    <textarea name="Message" id="message" placeholder="Write Message"></textarea>
+                                    <input type="text" name="message" id="message" placeholder="Write Message">
                                 </div>
                                 <div class="form-group mt-15">
                                     <button type="submit" class="quote-btn"><span class="icon"><i

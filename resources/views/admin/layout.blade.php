@@ -161,6 +161,17 @@
                         </ul>
                     </li>
 
+                    <li>
+                        <a href="{{ route('viewQuoteRequests') }}" class="{{ ((Route::getCurrentRoute()->uri == 'viewQuoteRequests') ? 'side-menu side-menu--active' : 'side-menu' ) }}">
+                            <div class="side-menu__icon"> <i data-lucide="message-square"></i> </div>
+                            <div class="side-menu__title">
+                                Quote Requests
+                            </div>
+                        </a>
+                    </li>
+
+                    
+
                
                     <li class="side-nav__devider my-6"></li>
                   
