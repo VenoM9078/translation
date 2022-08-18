@@ -62,4 +62,8 @@ class Order extends Model
     public function completedRequest() {
         return $this->hasOne('App\Models\CompletedRequest', 'order_id','id');
     }
+
+    public function feedback() {
+        return $this->hasOne('App\Models\Feedback', 'order_id','id');
+    }
 }

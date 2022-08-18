@@ -10,6 +10,8 @@ use App\Mail\paymentRejected;
 use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Models\CompletedRequest;
+use App\Models\ContactAdmin;
+use App\Models\Feedback;
 use App\Models\FreeQuote;
 use App\Models\Order;
 use App\Models\OrderFiles;
@@ -485,6 +487,18 @@ class AdminController extends Controller
         $quotes = FreeQuote::all();
 
         return view('admin.viewQuoteRequests', compact('quotes'));
+    }
+
+    public function viewFeedback() {
+        $feedbacks = Feedback::all();
+
+        return view('admin.viewFeedback',compact('feedbacks'));
+    }
+
+    public function viewMessages() {
+        $messages = ContactAdmin::all();
+
+        return view('admin.viewMessages',compact('messages'));
     }
 
 }

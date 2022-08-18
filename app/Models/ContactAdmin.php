@@ -5,15 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Feedback extends Model
+class ContactAdmin extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'order_id','experience','improvements','rating'
+        'name','email','message'
     ];
-
-    public function order() {
-        return $this->belongsTo('App\Models\Order','order_id');
-    }
 }

@@ -9,7 +9,9 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\TranslatorController;
 use App\Http\Controllers\UserController;
 use App\Mail\OrderCreated;
+use App\Models\ContactAdmin;
 use App\Models\Invoice;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -27,6 +29,23 @@ use Illuminate\Support\Facades\Mail;
 Route::get('/', function () {
     return view('index');
 })->name('/');
+
+Route::get('contact', function() {
+    return view('contact');
+})->name('contact');
+
+Route::post('sendContactForm', function(Request $request) {
+    $validated = $request->validate([
+        'name' => 'string|max:255',
+        'email' => 'email|max:255',
+        'message' => 'string|max:255'
+    ]);
+
+    ContactAdmin::create($validated);
+
+    return redirect()->route('/');
+
+})->name('sendContactForm');
 
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
 Route::get('/admin/register', [AdminAuthController::class, 'showRegisterForm'])->name('admin.register');
@@ -63,6 +82,9 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::post('sendDocumentsToUser', [AdminController::class, 'sendDocumentsToUser'])->name('sendDocumentsToUser');
     Route::get('downloadTranslatedFiles/{id}', [AdminController::class, 'downloadTranslatedFiles'])->name('downloadTranslatedFiles');
     Route::get('viewQuoteRequests', [AdminController::class, 'viewQuoteRequests'])->name('viewQuoteRequests');
+
+    Route::get('viewFeedback', [AdminController::class, 'viewFeedback'])->name('viewFeedback');
+    Route::get('viewMessages', [AdminController::class, 'viewMessages'])->name('viewMessages');
 
 });
 

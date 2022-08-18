@@ -274,6 +274,6 @@ class UserController extends Controller
 
         Feedback::create($validate);
 
-        return redirect()->route('myorders');
+        return redirect()->route('myorders')->with('message','Thank you for submitting your feedback!');
     }
 }

@@ -170,6 +170,24 @@
                         </a>
                     </li>
 
+                    <li>
+                        <a href="{{ route('viewFeedback') }}" class="{{ ((Route::getCurrentRoute()->uri == 'viewFeedback') ? 'side-menu side-menu--active' : 'side-menu' ) }}">
+                            <div class="side-menu__icon"> <i data-lucide="award"></i> </div>
+                            <div class="side-menu__title">
+                                Feedbacks
+                            </div>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('viewMessages') }}" class="{{ ((Route::getCurrentRoute()->uri == 'viewMessages') ? 'side-menu side-menu--active' : 'side-menu' ) }}">
+                            <div class="side-menu__icon"> <i data-lucide="database"></i> </div>
+                            <div class="side-menu__title">
+                                Messages
+                            </div>
+                        </a>
+                    </li>
+
                     
 
                

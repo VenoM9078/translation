@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!--====== Title ======-->
-    <title>FlowTranslate - Home</title>
+    <title>Flow Translate - Home</title>
 
     <!--====== Favicon ======-->
     <link rel="shortcut icon" href="{{url('dist/images/logo.svg')}}" type="images/x-icon" />
