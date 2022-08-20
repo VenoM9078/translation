@@ -50,7 +50,7 @@
                           </div>                                
                     </div>
                   
-                  <button type="submit" class="btn btn-primary mt-5">Upload File for Translation</button>
+                  <button type="submit" class="btn btn-primary mt-5">Upload Files for Translation</button>
                 </form>
                 </div>
             </div>

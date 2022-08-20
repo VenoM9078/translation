@@ -31,7 +31,15 @@ class AdminController extends Controller
         $users = User::all();
         $unsent = count(Order::where(['invoiceSent' => 0])->get());
         $paymentPending = count(Order::where(['paymentStatus' => 0])->get());
-        return view('admin.dashboard', compact('orders','users', 'unsent', 'paymentPending'));
+
+        $invoices = Order::withSum('invoice','amount')->get();
+
+        $sumAmount = 0;
+        foreach($invoices as $invoice) {
+            $sumAmount += $invoice->invoice_sum_amount;
+        }
+
+        return view('admin.dashboard', compact('orders','users', 'unsent', 'paymentPending', 'sumAmount'));
     }
 
     public function pendingOrders()

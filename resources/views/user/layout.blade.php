@@ -13,6 +13,8 @@
         <title>Dashboard</title>
         <!-- BEGIN: CSS Assets-->
         <link rel="stylesheet" href="{{ url('dist/css/app.css') }}" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css"/>
+
         <!-- END: CSS Assets-->
     </head>
     <!-- END: Head -->
@@ -38,7 +40,7 @@
                    
                     <li>
                         <a href="{{ route('myorders') }}" class="menu">
-                            <div class="menu__icon"> <i data-lucide="home"></i> </div>
+                            <div class="menu__icon"> <i data-lucide="archive"></i> </div>
                             <div class="menu__title"> My Orders</div>
                         </a>
                         
@@ -67,7 +69,7 @@
                   
                     <li>
                         <a href="{{ route('myorders') }}" class="{{ ((Route::getCurrentRoute()->uri == 'myorders') ? 'side-menu   side-menu--active' : 'side-menu' ) }}">
-                            <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
+                            <div class="side-menu__icon"> <i data-lucide="archive"></i> </div>
                             <div class="side-menu__title">
                                 My Orders 
                             </div>
@@ -90,8 +92,8 @@
                     <!-- BEGIN: Breadcrumb -->
                     <nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Translators</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                            <li class="breadcrumb-item"><a href="{{ route('/') }}">FlowTranslate</a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('user.index') }}">User Dashboard</a></li>
                         </ol>
                     </nav>
                     <!-- END: Breadcrumb -->
@@ -100,7 +102,7 @@
                     <!-- BEGIN: Account Menu -->
                     <div class="intro-x dropdown w-8 h-8">
                         <div class="dropdown-toggle w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in" role="button" aria-expanded="false" data-tw-toggle="dropdown">
-                            <img alt="Midone - HTML Admin Template" src="{{url('dist/images/profile-6.jpg')}}">
+                            <img  src="{{url('https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png')}}">
                         </div>
                         <div class="dropdown-menu w-56">
                             <ul class="dropdown-content bg-primary text-white">
@@ -141,6 +143,18 @@
         
         <!-- BEGIN: JS Assets-->
         <script src="{{url('dist/js/app.js')}}"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous" ></script>
+<script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+<script>
+ $(document).ready( function () {
+    $('#myTable').DataTable({
+        info: false,
+        paging: false
+    });
+} );
+</script>
+        
         <!-- END: JS Assets-->
     </body>
 </html>

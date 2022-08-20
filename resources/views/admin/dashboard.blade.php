@@ -29,8 +29,10 @@
                         <div class="ml-auto">
                         </div>
                     </div>
-                    <div class="text-3xl font-medium leading-8 mt-6">{{ $unsent }}</div>
-                    <div class="text-base text-slate-500 mt-1">Waiting for Invoice</div>
+                    
+
+                    <div class="text-3xl font-medium leading-8 mt-6">${{ $sumAmount }}</div>
+                    <div class="text-base text-slate-500 mt-1">Total Revenue</div>
                 </div>
             </div>
         </div>

@@ -55,7 +55,7 @@
                             <button type="submit" class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-2 align-top">Login</button>
                             <a href="{{ route('admin.register') }}" class="btn btn-outline-secondary xl:mr-2 py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top">Register</a>
 
-                            <a href="{{ route('login') }}" class="btn btn-outline-secondary py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top">User Sign In</a>
+                            <a href="{{ route('login') }}" class="btn btn-outline-secondary " style="margin: auto; margin-left: 10px;"><i data-lucide="user"></i></a>
 
                         </div>
                     </form>

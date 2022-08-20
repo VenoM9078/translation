@@ -86,7 +86,7 @@
 
                                         <li><a href="#team">Team</a></li>
                                         
-                                        <li><a href="contact.html">Contact</a></li>
+                                        <li><a href="{{ route('contact') }}">Contact</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -376,59 +376,7 @@
     </section>
     <!-- working-process area end -->
 
-    <!-- testimonial area start -->
-    <div class="testimonial-area testimonial-area__2 pt-130 pb-130 grey-bg">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="testimonial__2 owl-carousel text-center">
-                        <div class="testimonial-item">
-                            <div class="testimonial__2--icon mb-70">
-                                <img src="assets/images/icons/t-quote-2.png" alt="">
-                            </div>
-                            <div class="testimonial__2--content">
-                                <p>Lorem ipsum dolor site amet consectetur adipisice
-                                    usmods tempor incididunt uter labore etere dolore magna aliqua enim ad minim veniam
-                                    quis nostrud exercitation
-                                    ule lamco
-                                    lris nisi ut aliquip ex ea commodo consequ rure dolor reprehende in voluptate</p>
-                            </div>
-                            <div class="testimonial__2--author mt-55">
-                                <div class="thumb">
-                                    <img src="assets/images/other/author-2.png" alt="">
-                                </div>
-                                <div class="content">
-                                    <h4 class="name">Marina D. Lucator</h4>
-                                    <span class="designation">Project Manager</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testimonial-item">
-                            <div class="testimonial__2--icon mb-70">
-                                <img src="assets/images/icons/t-quote-2.png" alt="">
-                            </div>
-                            <div class="testimonial__2--content">
-                                <p>Lorem ipsum dolor site amet consectetur adipisice
-                                    usmods tempor incididunt uter labore etere dolore magna aliqua enim ad minim veniam
-                                    quis nostrud exercitation
-                                    ule lamco
-                                    lris nisi ut aliquip ex ea commodo consequ rure dolor reprehende in voluptate</p>
-                            </div>
-                            <div class="testimonial__2--author mt-55">
-                                <div class="thumb">
-                                    <img src="assets/images/other/author-2.png" alt="">
-                                </div>
-                                <div class="content">
-                                    <h4 class="name">Marina D. Lucator</h4>
-                                    <span class="designation">Project Manager</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <
     <!-- testimonial area end -->
     <!-- brand section end -->
 

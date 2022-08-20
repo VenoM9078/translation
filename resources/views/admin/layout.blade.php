@@ -13,6 +13,8 @@
         <title>Admin Dashboard</title>
         <!-- BEGIN: CSS Assets-->
         <link rel="stylesheet" href="{{ url('dist/css/app.css') }}" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css"/>
+
         <!-- END: CSS Assets-->
     </head>
     <!-- END: Head -->
@@ -21,7 +23,7 @@
         <div class="mobile-menu md:hidden">
             <div class="mobile-menu-bar">
                 <a href="" class="flex mr-auto">
-                    <img alt="Midone - HTML Admin Template" class="w-6" src="{{ url('dist/images/logo.svg') }}">
+                    <img class="w-6" src="{{ url('dist/images/logo.svg') }}">
                 </a>
                 <a href="javascript:;" class="mobile-menu-toggler"> <i data-lucide="bar-chart-2" class="w-8 h-8 text-white transform -rotate-90"></i> </a>
             </div>
@@ -205,8 +207,8 @@
                     <!-- BEGIN: Breadcrumb -->
                     <nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Translators</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                            <li class="breadcrumb-item"><a href="{{ route('/') }}">FlowTranslate</a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                         </ol>
                     </nav>
                     <!-- END: Breadcrumb -->
@@ -215,7 +217,7 @@
                     <!-- BEGIN: Account Menu -->
                     <div class="intro-x dropdown w-8 h-8">
                         <div class="dropdown-toggle w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in" role="button" aria-expanded="false" data-tw-toggle="dropdown">
-                            <img src="{{url('dist/images/profile-6.jpg')}}">
+                            <img src="{{url('https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png')}}">
                         </div>
                         <div class="dropdown-menu w-56">
                             <ul class="dropdown-content bg-primary text-white">
@@ -256,6 +258,17 @@
         
         <!-- BEGIN: JS Assets-->
         <script src="{{url('dist/js/app.js')}}"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous" ></script>
+        <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        
+        <script>
+         $(document).ready( function () {
+            $('#myTable').DataTable({
+                info: false,
+                paging: false
+            });
+        } );
+        </script>
         <!-- END: JS Assets-->
     </body>
 </html>

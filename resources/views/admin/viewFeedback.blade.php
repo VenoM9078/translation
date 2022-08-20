@@ -17,8 +17,12 @@
             <p>{{ $message }}</p>
         </div>
     @endif
-<div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
-    <table id="myTable" class="table table-striped" style="width:100%">                        
+    <div class="intro-y box">
+        <div id="vertical-form" class="p-5">
+            <div class="preview">
+                <div>
+                  <div class="overflow-x-auto">
+                        <table id="myTable" class="table table-striped" style="width:100%">                        
         <thead>
               <tr>
                   <th class="whitespace-nowrap">Order Worknumber</th>
@@ -44,9 +48,9 @@
       </table>
 
 
-    
+    </div>
 </div>
-<!-- END: Data List -->
-<!-- END: Pagination -->
+</div>
+</div>
 </div>
 @endsection

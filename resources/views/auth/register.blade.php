@@ -7,7 +7,7 @@
         <link href="{{  url('dist/images/logo.svg') }}" rel="shortcut icon">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Translators - Register</title>
+        <title>FlowTranslate - Register</title>
         <!-- BEGIN: CSS Assets-->
         <link rel="stylesheet" href="{{  url('dist/css/app.css') }}" />
         <!-- END: CSS Assets-->
