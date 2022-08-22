@@ -68,7 +68,7 @@
                     <div class="col-xl-8 col-lg-12">
                         <div class="navarea navarea__2">
                             <a  href="{{ route('/') }}"  class="site-logo">
-                                <h3>FlowTranslate</h3>
+                                <img style="height: 67px;width: auto;/* position:  relative; *//* top: 14px; */" src="{{ asset('assets/images/logo.png') }}" alt="">
                             </a>
                             <div class="mainmenu mainmenu__2">
                                 <nav id="mobile-menu">
@@ -83,8 +83,6 @@
                                         <li><a href="#quote">Get a Quote</a></li>
 
                                         <li><a href="#howwework">How We Work</a></li>
-
-                                        <li><a href="#team">Team</a></li>
                                         
                                         <li><a href="{{ route('contact') }}">Contact</a></li>
                                     </ul>
@@ -126,7 +124,7 @@
                             <h2>Translation <br>
                                 Made Easier</h2>
                             <p>Your priority is ours</p>
-                            <a href="about.html" class="site-btn site-btn__2"><span class="icon"><i
+                            <a href="#about" class="site-btn site-btn__2"><span class="icon"><i
                                         class="far fa-arrow-right"></i></span> Read More</a>
                         </div>
                         <div class="dot-shape"><img src="assets/images/shape/hero-pattern-2.png" alt=""></div>
@@ -165,7 +163,7 @@
                     <div class="section-header section-header__2 mb-40">
                         <h4 class="sub-heading sub-heading__2 mb-10">About Us <span><img
                                     src="assets/images/shape/heading-shape-4.png" class="ml-10" alt=""></span></h4>
-                        <h2 class="section-title section-title__2 mb-30">Falicitating communication in the global village</h2>
+                        <h2 class="section-title section-title__2 mb-30">Facilitating communication in the global village</h2>
                         <p>At Flow Translations we know the crucial role that information and communication plays in society, business, health, legal matters and leisure, being the basis for making everyday life decisions.  This is why  all our translations are done exclusively by professional native linguists to preserve the integrity of the message including any cultural nuances and never use machine translations.    Our commitment to our customers is to  deliver documents professionally translated that reflect the true meaning and energy of the message, on time and at a reasonable price.  </p>
                     </div>
                     <div class="row mt-none-40">
@@ -234,8 +232,7 @@
                         </div>
                         <div class="feature-item__content feature-item__content--2">
                             <h4 class="feature-item__title feature-item__title--2">Translation</h4>
-                            <p>Dis duis auctor an cum vel enim felis proins parturient pot nostra tiyer an bold interect
-                                pena</p>
+                            <p>We understand the importance of cross-cultural communication and deliver professional translation services.</p>
                         </div>
                     </div>
                 </div>
@@ -247,8 +244,7 @@
                         </div>
                         <div class="feature-item__content feature-item__content--2">
                             <h4 class="feature-item__title feature-item__title--2">Localization</h4>
-                            <p>Dis duis auctor an cum vel enim felis proins parturient pot nostra tiyer an bold interect
-                                pena</p>
+                            <p> To achieve a common understanding across cultures, translation is not enough but local customs and habits need to be considered. </p>
                             
                         </div>
                     </div>
@@ -261,8 +257,8 @@
                         </div>
                         <div class="feature-item__content feature-item__content--2">
                             <h4 class="feature-item__title feature-item__title--2">In-Person Interpretation</h4>
-                            <p>Dis duis auctor an cum vel enim felis proins parturient pot nostra tiyer an bold interect
-                                pena</p>
+                            <p>We can support in-person interpretation services 
+                                for Medical, Education, Business and Legal meetings in the Bay Area, California.</p>
                             
                         </div>
                     </div>
@@ -374,69 +370,7 @@
             </div>
         </div>
     </section>
-    <!-- working-process area end -->
-
-    <
-    <!-- testimonial area end -->
-    <!-- brand section end -->
-
-    <!-- team section start -->
-    <div id="team" class="team-section blue-bg pt-125 pb-125">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-xl-8 text-center">
-                    <div class="section-header mb-65">
-                        <h4 class="sub-heading sub-heading__2 sub-heading__white sub-heading__red  mb-15">
-                            <span><img src="assets/images/shape/heading-shape-3.png" class="mr-5" alt=""></span>
-                            team member
-                            <span><img src="assets/images/shape/heading-shape-4.png" class="ml-5" alt=""></span>
-                        </h4>
-                        <h2 class="section-title section-title__2 section-title__white">Executive Team</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row mt-none-40">
-                <div class="col-xl-4 col-lg-6 col-md-6 mt-40">
-                    <div class="team-box">
-                        <div class="team-box__thumb">
-                            <img src="assets/images/icons/team-1.webp" alt="">
-                        </div>
-                        <div class="team-box__content">
-                            <h4 class="name">Andres Pardo</h4>
-                            <span class="designation">Professional Translator</span>
-                           
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-6 col-md-6 mt-40">
-                    <div class="team-box">
-                        <div class="team-box__thumb">
-                            <img style="background-size: cover;background-position: center;height: 312px !important;width: 346px!important;" src="assets/images/icons/team-2.webp" alt="">
-                        </div>
-                        <div class="team-box__content">
-                            <h4 class="name">Patricia Urrutia</h4>
-                            <span class="designation">Professional Translator</span>
-                            
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-6 col-md-6 mt-40">
-                    <div class="team-box">
-                        <div class="team-box__thumb">
-                            <img style="background-size: cover;background-position: center;height: 312px !important;width: 346px!important;" src="assets/images/icons/team-3.webp" alt="">
-                        </div>
-                        <div class="team-box__content">
-                            <h4 class="name">Shirley Kuei</h4>
-                            <span class="designation">Professional Translator</span>
-                           
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- team section end -->
-    <!-- news section end -->
+  
 
     <!-- footer start -->
     <footer class="footer footer__2 pt-120">

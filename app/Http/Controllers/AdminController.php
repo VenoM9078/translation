@@ -13,6 +13,7 @@ use App\Models\CompletedRequest;
 use App\Models\ContactAdmin;
 use App\Models\Feedback;
 use App\Models\FreeQuote;
+use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\OrderFiles;
 use App\Models\ProofRequest;
@@ -143,6 +144,24 @@ class AdminController extends Controller
         if (!empty($order->files)) {
             OrderFiles::where('order_id', $order->id)->delete();
         }
+
+        if (!empty($order->invoice)) {
+            Invoice::where('order_id', $order->id)->delete();
+        }
+
+        if ($order->translation_status == 1) {
+            TranslationRequest::where('order_id', $order->id)->delete();
+        }
+
+        if ($order->proofread_status == 1) {
+            ProofRequest::where('order_id', $order->id)->delete();
+        }
+
+        if ($order->completed == 1) {
+            CompletedRequest::where('order_id', $order->id)->delete();
+        }
+
+
         $order->delete();
 
         return redirect()->route('admin.dashboard');
