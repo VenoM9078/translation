@@ -51,6 +51,13 @@
                                 <input type="email" name="email" class="intro-x login__input form-control py-3 px-4 block" placeholder="Email">
                                 <input type="password" name="password" class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="Password">
                             </div>
+                            <div class="intro-x flex text-slate-600 dark:text-slate-500 text-xs sm:text-sm mt-4">
+                                <div class="flex items-center mr-auto">
+                                    {{-- <input id="remember-me" type="checkbox" class="form-check-input border mr-2">
+                                    <label class="cursor-pointer select-none" for="remember-me">Remember me</label> --}}
+                                </div>
+                                <a href="{{ route('password.request') }}">Forgot Password?</a> 
+                            </div>
                             <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
                                 <button type="submit" class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top">Login</button>
                                 <a href="{{ route('register') }}" class="btn btn-outline-secondary py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top">Register</a>

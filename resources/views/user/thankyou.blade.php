@@ -6,7 +6,7 @@
 
 <div class="error-page flex flex-col lg:flex-row items-center justify-center h-screen text-center lg:text-left">
     <div class="-intro-x lg:mr-20">
-        <img alt="Midone - HTML Admin Template" class="h-48 lg:h-auto" src="{{ public_path('dist/images/error-illustration.svg') }}">
+        <img class="h-48 lg:h-auto" src="{{ asset('dist/images/illustration.svg') }}">
     </div>
     <div class="mt-10 lg:mt-0">
         <div class="intro-x text-8xl font-medium">Thank You!</div>

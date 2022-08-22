@@ -56,6 +56,6 @@ class mailOfCompletion extends Mailable
     public function build()
     {
         return $this->markdown('emails.mailOfCompletion')
-        ->attach(public_path('compressed/' . $this->zipName2));;
+        ->attach(public_path('translated/' . $this->zipName2));;
     }
 }

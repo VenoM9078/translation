@@ -49,23 +49,35 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-
-        // dd("hi");
         $userID = Auth::id();
 
-        $validated = $request->validate([
-            'user_id' => 'integer',
-            'language1' => 'required|max:255',
-            'language2' => 'required|max:255',
-            'access_code' => 'string|max:255',
-            'casemanager' => 'string|max:255',
-            'files' => 'required',
-            'files.*' => 'mimes:docx,doc,png,jpg,pdf,txt'
-        ]);
+        // // dd($request, $userID);
+        // $validated = $request->validate([
+        //     'language1' => 'required|max:255',
+        //     'language2' => 'required|max:255',
+        //     'access_code' => 'string|max:255',
+        //     'casemanager' => 'string|max:255',
+        //     'files' => 'required',
+        //     'files.*' => 'mimes:docx,doc,png,jpg,pdf,txt'
+        // ]);
 
-        $validated['user_id'] = $userID;
-        $validated['worknumber'] = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ*.-_"), 0, 10);
-        $order = Order::create($validated);
+        
+
+        // $validated['user_id'] = $userID;
+       $worknumber = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ*.-_"), 0, 10);
+
+
+       $data = [
+        'language1' => $request->input('language1'),
+        'language2' => $request->input('language2'),
+        'access_code' => $request->input('access_code'),
+        'casemanager' => $request->input('casemanager'),
+        'user_id' => $userID,
+        'worknumber' => $worknumber
+    ];
+
+    // dd($data);
+        $order = Order::create($data);
 
 
         if ($request->hasFile('files')) {

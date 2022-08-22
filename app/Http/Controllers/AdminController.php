@@ -103,7 +103,7 @@ class AdminController extends Controller
         $order_id = $order->id;
         $filename = $order->filename;
        
-        return response()->download(public_path('evidence/' . $filename));
+        return response()->download(public_path('compressed/' . $filename));
     }
 
     public function approveEvidence($id) {
@@ -214,7 +214,7 @@ class AdminController extends Controller
         Order::where('id', $order_id)->update(['orderStatus' => 'Sent to Translator']);
 
         Mail::to($translatorEmail)->send(new orderToTranslator($order, $zipName));
-        return redirect()->route('admin.pendingOrders');
+        return redirect()->route('admin.pending');
 
 
         // $id = $request->input('user_id');
