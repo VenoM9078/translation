@@ -64,7 +64,10 @@ class UserController extends Controller
         
 
         // $validated['user_id'] = $userID;
-       $worknumber = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ*.-_"), 0, 10);
+       $currDate = date('Ymd');
+       $randomDigits = mt_rand(1111,9999);
+       $worknumber = $currDate . date('md', strtotime($currDate. ' + 10 days')) . $randomDigits; 
+    //    var_dump($worknumber);
 
 
        $data = [

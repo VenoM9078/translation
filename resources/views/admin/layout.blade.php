@@ -19,41 +19,53 @@
     </head>
 
     <style type="text/css">
-        a.gflag {
-            vertical-align: middle;
-            font-size: 15px;
-            padding: 0px;
-            background-repeat: no-repeat;
-            background-image: url(//gtranslate.net/flags/16.png);
-        }
     
-        a.gflag img {
-            border: 0;
-        }
+        
+    a.gflag {
+        vertical-align: middle;
+        font-size: 15px;
+        padding: 0px;
+        background-repeat: no-repeat;
+        background-image: url(//gtranslate.net/flags/16.png);
+    }
+
+    a.gflag img {
+        border: 0;
+    }
+
+    a.gflag:hover {
+        background-image: url(//gtranslate.net/flags/16a.png);
+    }
+
+
+    .goog-te-banner-frame {
+        display: none !important;
+    }
+
+    .goog-te-menu-value:hover {
+        text-decoration: none !important;
+    }
+
+    .goog-logo-link {
+        display: none;
+    }
+
+    .goog-te-combo {
+        color: #000;
+    }
+
     
-        a.gflag:hover {
-            background-image: url(//gtranslate.net/flags/16a.png);
-        }
-    
-        #goog-gt-tt {
-            display: none !important;
-        }
-    
-        .goog-te-banner-frame {
-            display: none !important;
-        }
-    
-        .goog-te-menu-value:hover {
-            text-decoration: none !important;
-        }
-    
+.goog-te-gadget{
+    color: transparent !important;
+}
+
         body {
             top: 0 !important;
         }
-    
-        #google_translate_element2 {
-            display: none !important;
-        }
+
+    /* #google_translate_element2 {
+        display: none !important;
+    } */
     </style>
     <!-- END: Head -->
     <body class="py-5">
@@ -251,16 +263,12 @@
                     </nav>
                     <!-- END: Breadcrumb -->
 
-                    <a href="#" onclick="doGTranslate('en|en');return false;" title="English" class="gflag nturl"
-                    style="margin-right: 10px; display: block !important;height: 20px !important;background-image: url('https://cdn.britannica.com/33/4833-004-828A9A84/Flag-United-States-of-America.jpg');background-size: contain;background-position: center;background-repeat: no-repeat;width: 20px !important;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16"
-                                               alt="English"/></a>
-<a href="#" onclick="doGTranslate('fr|fr');return false;" title="French" class="gflag nturl"
-style="margin-right: 10px;display: block !important;height: 20px !important;background-image: url('https://seeklogo.com/images/F/france-flag-logo-DBC61B59A7-seeklogo.com.png');background-size: contain;background-position: center;background-repeat: no-repeat;width: 20px !important;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16"
-                                                   alt="French"/></a>
-<a href="#" onclick="doGTranslate('es|es');return false;" title="Spanish" class="gflag nturl"
-style="margin-right: 10px;display: block !important;height: 20px !important;background-image: url('https://cdn.britannica.com/36/4336-004-6BD81071/Flag-Spain.jpg');background-size: contain;background-position: center;background-repeat: no-repeat;width: 20px !important;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16"
-                                                   alt="Spanish"/></a>
-                    <div style="display: none;" id="google_translate_element2"></div>
+            
+                    <div style="
+                    position: relative;
+                    top: 8px;
+                    margin: 20px;
+                " id="google_translate_element2"></div>
 
      
                     <!-- BEGIN: Account Menu -->
@@ -322,11 +330,13 @@ style="margin-right: 10px;display: block !important;height: 20px !important;back
 <script type="text/javascript"> 
     function googleTranslateElementInit2() {
         new google.translate.TranslateElement({
-            pageLanguage: 'es',
-            autoDisplay: false
+            includedLanguages: 'en,es,zh-CN,vi',
+            pageLanguage: 'af',
+            autoDisplay: true
         }, 'google_translate_element2');
     }
 </script>
+
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2"></script>
 <script type="text/javascript">
     /* <![CDATA[ */

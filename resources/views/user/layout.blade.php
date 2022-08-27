@@ -10,6 +10,8 @@
         <meta name="description" content="Midone admin is super flexible, powerful, clean & modern responsive tailwind admin template with unlimited possibilities.">
         <meta name="keywords" content="admin template, Midone Admin Template, dashboard template, flat admin template, responsive admin template, web app">
         <meta name="author" content="LEFT4CODE">
+        {{-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *;**script-src 'self' http://onlineerp.solution.quebec 'unsafe-inline' 'unsafe-eval';** "> --}}
+
         <title>Dashboard</title>
         <!-- BEGIN: CSS Assets-->
         <link rel="stylesheet" href="{{ url('dist/css/app.css') }}" />
@@ -19,7 +21,8 @@
     </head>
 
     <style>
-        <style type="text/css">
+
+        
     a.gflag {
         vertical-align: middle;
         font-size: 15px;
@@ -36,9 +39,6 @@
         background-image: url(//gtranslate.net/flags/16a.png);
     }
 
-    #goog-gt-tt {
-        display: none !important;
-    }
 
     .goog-te-banner-frame {
         display: none !important;
@@ -48,15 +48,27 @@
         text-decoration: none !important;
     }
 
-        /* body {
-            top: 0 !important;
-        } */
-
-    #google_translate_element2 {
-        display: none !important;
+    .goog-logo-link {
+        display: none;
     }
+
+    .goog-te-combo {
+        color: #000;
+    }
+
+    
+.goog-te-gadget{
+    color: transparent !important;
+}
+
+        body {
+            top: 0 !important;
+        }
+
+    /* #google_translate_element2 {
+        display: none !important;
+    } */
 </style>
-    </style>
     <!-- END: Head -->
     <body class="py-5">
         <!-- BEGIN: Mobile Menu -->
@@ -140,16 +152,12 @@
                     </nav>
                     <!-- END: Breadcrumb -->
 
-                    <a href="#" onclick="doGTranslate('en|en');return false;" title="English" class="gflag nturl"
-                    style="margin-right: 10px; display: block !important;height: 20px !important;background-image: url('https://cdn.britannica.com/33/4833-004-828A9A84/Flag-United-States-of-America.jpg');background-size: contain;background-position: center;background-repeat: no-repeat;width: 20px !important;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16"
-                                               alt="English"/></a>
-<a href="#" onclick="doGTranslate('fr|fr');return false;" title="French" class="gflag nturl"
-style="margin-right: 10px;display: block !important;height: 20px !important;background-image: url('https://seeklogo.com/images/F/france-flag-logo-DBC61B59A7-seeklogo.com.png');background-size: contain;background-position: center;background-repeat: no-repeat;width: 20px !important;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16"
-                                                   alt="French"/></a>
-<a href="#" onclick="doGTranslate('es|es');return false;" title="Spanish" class="gflag nturl"
-style="margin-right: 10px;display: block !important;height: 20px !important;background-image: url('https://cdn.britannica.com/36/4336-004-6BD81071/Flag-Spain.jpg');background-size: contain;background-position: center;background-repeat: no-repeat;width: 20px !important;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16"
-                                                   alt="Spanish"/></a>
-                    <div id="google_translate_element2"></div>
+                    
+                    <div style="
+                    position: relative;
+                    top: 8px;
+                    margin: 20px;
+                " id="google_translate_element2"></div>
                     <!-- BEGIN: Account Menu -->
                     <div class="intro-x dropdown w-8 h-8">
                         <div class="dropdown-toggle w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in" role="button" aria-expanded="false" data-tw-toggle="dropdown">
@@ -210,8 +218,9 @@ style="margin-right: 10px;display: block !important;height: 20px !important;back
 <script type="text/javascript"> 
     function googleTranslateElementInit2() {
         new google.translate.TranslateElement({
-            pageLanguage: 'es',
-            autoDisplay: false
+            includedLanguages: 'en,es,zh-CN,vi',
+            pageLanguage: 'af',
+            autoDisplay: true
         }, 'google_translate_element2');
     }
 </script>
@@ -237,6 +246,14 @@ style="margin-right: 10px;display: block !important;height: 20px !important;back
     }('6 7(a,b){n{4(2.9){3 c=2.9("o");c.p(b,f,f);a.q(c)}g{3 c=2.r();a.s(\'t\'+b,c)}}u(e){}}6 h(a){4(a.8)a=a.8;4(a==\'\')v;3 b=a.w(\'|\')[1];3 c;3 d=2.x(\'y\');z(3 i=0;i<d.5;i++)4(d[i].A==\'B-C-D\')c=d[i];4(2.j(\'k\')==E||2.j(\'k\').l.5==0||c.5==0||c.l.5==0){F(6(){h(a)},G)}g{c.8=b;7(c,\'m\');7(c,\'m\')}}', 43, 43, '||document|var|if|length|function|GTranslateFireEvent|value|createEvent||||||true|else|doGTranslate||getElementById|google_translate_element2|innerHTML|change|try|HTMLEvents|initEvent|dispatchEvent|createEventObject|fireEvent|on|catch|return|split|getElementsByTagName|select|for|className|goog|te|combo|null|setTimeout|500'.split('|'), 0, {}))
     /* ]]> */
 </script>
+
+<script>
+    
+    
+
+    // async function loadLang() { document.querySelector('.goog-te-combo').value = 'es'; }
+
+    </script>
         
         <!-- END: JS Assets-->
     </body>
