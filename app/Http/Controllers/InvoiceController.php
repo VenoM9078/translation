@@ -53,7 +53,7 @@ class InvoiceController extends Controller
     {
         $validated = $request->validate([
             'description' => 'required|max:255',
-            'docQuantity' => 'required|integer',
+            'docQuantity' => 'required',
             'amount' => 'required|integer',
             'user_id' => 'required|integer',
             'order_id' => 'required|integer'
@@ -103,7 +103,9 @@ class InvoiceController extends Controller
      */
     public function edit($id)
     {
-        //
+        $invoice = Invoice::findOrFail($id);
+
+        return view('admin.editinvoice', compact('invoice'));
     }
 
     /**
@@ -115,7 +117,11 @@ class InvoiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $invoice = Invoice::findOrFail($id);
+
+        $invoice->update($request->all());
+
+        return redirect()->route('invoice.index');
     }
 
     /**
@@ -127,6 +133,10 @@ class InvoiceController extends Controller
     public function destroy($id)
     {
         $invoice = Invoice::findOrFail($id);
+
+        $order = $invoice->order;
+
+        $order->update(['invoiceSent' => 0]);
 
         $invoice->delete();
 

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('user_id');
             $table->string('description');
             $table->integer('amount');
-            $table->integer('docQuantity');
+            $table->string('docQuantity');
             $table->timestamps();
         });
     }

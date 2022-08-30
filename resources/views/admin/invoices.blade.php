@@ -50,7 +50,7 @@
                   {{-- {{ route('translator.destroy', $translator->id) }} --}}
                   <td class="whitespace-nowrap">
                     <div class="flex  items-center">
-                        {{-- <a href="{{ route('downloadFiles',$order->id) }}" class="btn btn-warning mr-1 mb-2"> <i data-lucide="download" class="w-5 h-5"></i> </a> --}}
+                        <a href="{{ route('invoice.edit',$invoice->id) }}" class="btn btn-warning mr-1 mb-2"> <i data-lucide="edit" class="w-5 h-5"></i> </a>
 
                         <form action="{{ route('invoice.destroy', $invoice->id) }}" method="post">
                             @csrf

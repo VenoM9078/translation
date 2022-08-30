@@ -29,6 +29,71 @@
 
 </head>
 
+<style type="text/css">
+    
+        
+    a.gflag {
+        vertical-align: middle;
+        font-size: 15px;
+        padding: 0px;
+        background-repeat: no-repeat;
+        background-image: url(//gtranslate.net/flags/16.png);
+    }
+
+    a.gflag img {
+        border: 0;
+    }
+
+    a.gflag:hover {
+        background-image: url(//gtranslate.net/flags/16a.png);
+    }
+
+
+    .goog-te-banner-frame {
+        display: none !important;
+    }
+
+    .goog-te-menu-value:hover {
+        text-decoration: none !important;
+    }
+
+    .goog-logo-link {
+        display: none !important;
+    }
+
+    
+
+    .goog-te-combo {
+        color: #000;
+    }
+
+    
+.goog-te-gadget{
+    color: transparent !important;
+}
+
+        body {
+            top: 0 !important;
+        }
+
+    /* #google_translate_element2 {
+        display: none !important;
+    } */
+
+
+    .mainmenu ul {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    width: 100vh;
+    flex-wrap: unset;
+}
+
+.header__bottom {
+    padding: 0px 0px !Important;
+}
+    </style>
+
 <body id="header">
     <!--[if lt IE 8]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -70,7 +135,9 @@
                             <a  href="{{ route('/') }}"  class="site-logo">
                                 <img style="height: 67px;width: auto;/* position:  relative; *//* top: 14px; */" src="{{ asset('assets/images/logo.png') }}" alt="">
                             </a>
-                            <div class="mainmenu mainmenu__2">
+                            <div class="mainmenu mainmenu__2" style="padding-bottom: 0 !important;
+                            height: 90px !Important;
+                        ">
                                 <nav id="mobile-menu">
                                     <ul>
                                         <li>
@@ -85,6 +152,13 @@
                                         <li><a href="#howwework">How We Work</a></li>
                                         
                                         <li><a href="{{ route('contact') }}">Contact</a></li>
+
+                                        <li><div style="
+                                            position: relative;
+                                            /* top: 8px; */
+                                            margin-left: 30px;
+                                            margin-top: 23px;
+                                        " id="google_translate_element2"></div></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -414,6 +488,42 @@
     <script src="assets/js/wow.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfpGBFn5yRPvJrvAKoGIdj1O1aO9QisgQ"></script>
     <script src="assets/js/main.js"></script>
+
+    
+<script type="text/javascript"> 
+    function googleTranslateElementInit2() {
+        new google.translate.TranslateElement({
+            includedLanguages: 'en,es,zh-CN,vi',
+            pageLanguage: 'af',
+            autoDisplay: true
+        }, 'google_translate_element2');
+    }
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2"></script>
+<script type="text/javascript">
+    /* <![CDATA[ */
+    eval(function (p, a, c, k, e, r) {
+        e = function (c) {
+            return (c < a ? '' : e(parseInt(c / a))) + ((c = c % a) > 35 ? String.fromCharCode(c + 29) : c.toString(36))
+        };
+        if (!''.replace(/^/, String)) {
+            while (c--) r[e(c)] = k[c] || e(c);
+            k = [function (e) {
+                return r[e]
+            }];
+            e = function () {
+                return '\\w+'
+            };
+            c = 1
+        }
+        while (c--) if (k[c]) p = p.replace(new RegExp('\\b' + e(c) + '\\b', 'g'), k[c]);
+        return p
+    }('6 7(a,b){n{4(2.9){3 c=2.9("o");c.p(b,f,f);a.q(c)}g{3 c=2.r();a.s(\'t\'+b,c)}}u(e){}}6 h(a){4(a.8)a=a.8;4(a==\'\')v;3 b=a.w(\'|\')[1];3 c;3 d=2.x(\'y\');z(3 i=0;i<d.5;i++)4(d[i].A==\'B-C-D\')c=d[i];4(2.j(\'k\')==E||2.j(\'k\').l.5==0||c.5==0||c.l.5==0){F(6(){h(a)},G)}g{c.8=b;7(c,\'m\');7(c,\'m\')}}', 43, 43, '||document|var|if|length|function|GTranslateFireEvent|value|createEvent||||||true|else|doGTranslate||getElementById|google_translate_element2|innerHTML|change|try|HTMLEvents|initEvent|dispatchEvent|createEventObject|fireEvent|on|catch|return|split|getElementsByTagName|select|for|className|goog|te|combo|null|setTimeout|500'.split('|'), 0, {}))
+    /* ]]> */
+</script>
+
+
 </body>
 
 </html>

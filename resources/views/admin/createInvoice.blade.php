@@ -20,7 +20,7 @@
                         <input type="hidden" name="user_id" value="{{ $order->user->id }}">
                         <input type="hidden" name="order_id" value="{{ $order->id }}">
                         <input type="text" name="description" class="intro-x login__input form-control py-3 px-4 block" placeholder="Enter Translation Description">
-                        <input type="number" name="docQuantity" class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="Enter Number of Pages to be Translated">
+                        <input type="text" name="docQuantity" class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="Enter Number of Pages (or Words) to be Translated">
                         <input type="number" name="amount" class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="Enter Amount to be charged (in dollars)">
                         
                         

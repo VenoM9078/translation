@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('worknumber');
             $table->string('language1');
             $table->string('language2');
-            $table->string('casemanager');
-            $table->string('access_code');
+            $table->string('casemanager')->nullable(true);
+            $table->string('access_code')->nullable(true);
             $table->integer('paymentStatus')->default(0);
             $table->integer('invoiceSent')->default(0);
             $table->integer('is_evidence')->default(0);

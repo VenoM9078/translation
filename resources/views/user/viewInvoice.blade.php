@@ -62,7 +62,7 @@
                         <thead>
                             <tr>
                                 <th class="border-b-2 dark:border-darkmode-400 whitespace-nowrap">DESCRIPTION</th>
-                                <th class="border-b-2 dark:border-darkmode-400 text-right whitespace-nowrap">PAGES</th>
+                                <th class="border-b-2 dark:border-darkmode-400 text-right whitespace-nowrap">QTY</th>
                                 <th class="border-b-2 dark:border-darkmode-400 text-right whitespace-nowrap">PRICE</th>
                             </tr>
                         </thead>
