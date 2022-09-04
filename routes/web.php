@@ -94,6 +94,7 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::get('logout', [UserController::class, 'destroySession'])->name('logout');
     Route::get('viewInvoice/{id}', [UserController::class, 'viewInvoice'])->name('viewInvoice');
     Route::get('provideProof/{id}', [UserController::class, 'provideProof'])->name('provideProof');
+    Route::get('payLater/{id}', [UserController::class, 'payLater'])->name('payLater');
     Route::post('processProof', [UserController::class, 'processProof'])->name('processProof');
     Route::get('thankyou/{id}', [UserController::class, 'updatePaymentStatus'])->name('thankyou');
     Route::get('downloadTranslatedForUser/{id}', [UserController::class, 'downloadTranslatedForUser'])->name('downloadTranslatedForUser');

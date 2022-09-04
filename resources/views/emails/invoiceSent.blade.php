@@ -1,7 +1,7 @@
 @component('mail::message')
 # Hello {{ $user->name }}
 
-We have sent you a Payment Invoice for the "{{ $order->language1 }} to {{ $order->language2 }}" translation order. <br>
+You have received a Payment Invoice for the "{{ $order->language1 }} to {{ $order->language2 }}" translation order. <br>
 
 The worknumber of your order is <span style="font-weight: bold;">{{ $order->worknumber }}</span> and amount to be paid is <span style="font-weight: bold;">{{ $invoice->amount }} USD</span>.
 

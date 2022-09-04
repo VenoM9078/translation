@@ -39,6 +39,8 @@
                   <td class="whitespace-nowrap">{{ $order->language2 }}</td>
                   @if ($order->paymentStatus == 1)
                   <td class="whitespace-nowrap"><button class="btn btn-rounded-success w-24 mr-1 mb-2">Paid</button></td>
+                  @elseif ($order->paymentStatus == 2)
+                  <td class="whitespace-nowrap"><button class="btn btn-rounded-warning w-28 mr-1 mb-2">Payment Later</button></td>
                   @else
                   <td class="whitespace-nowrap"><button class="btn btn-rounded-pending w-24 mr-1 mb-2">Pending</button></td>
                   @endif
@@ -54,6 +56,10 @@
                     @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 0)
                     <div class="progress h-6">
                         <div class="progress-bar w-1/4" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">25%</div>
+                    </div>
+                    @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 2)
+                    <div class="progress h-6">
+                        <div class="progress-bar w-2/4" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">50%</div>
                     </div>
                     @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 1 && $order->translation_status == 0)
                     <div class="progress h-6">
@@ -99,6 +105,9 @@
 
                     @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 0)
                     <button class="btn btn-warning mr-1 mb-2"> Waiting for Payment <i data-loading-icon="three-dots" data-color="1a202c" class="w-4 h-4 ml-2"></i> </button>
+
+                    @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 2 && $order->translation_status == 0)
+                    <a href="{{ route('mailToTranslator',$order->id) }}" class="btn btn-pending mr-1 mb-2"> <i data-lucide="mail" class="w-5 h-5 mr-2"></i> Mail to Translator </a>
 
                     @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 1 && $order->translation_status == 0)
                     <a href="{{ route('mailToTranslator',$order->id) }}" class="btn btn-pending mr-1 mb-2"> <i data-lucide="mail" class="w-5 h-5 mr-2"></i> Mail to Translator </a>

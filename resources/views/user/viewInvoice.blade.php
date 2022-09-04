@@ -86,6 +86,8 @@
                 <div class="text-center sm:text-left mt-10 sm:mt-0">
                     <div class="text-base text-slate-500 mb-3">Choose Payment Method</div>
                     <a href="{{ route('provideProof',$invoice->order->id) }}" class="btn btn-primary">Already Paid? Provide Proof</a>
+                    <a href="{{ route('payLater',$invoice->order->id) }}" class="btn btn-pending">Pay Later</a>
+
                     <hr class="side-nav__devider my-6"></hr>
 
                     <div id="paypal-button-container"></div>
@@ -111,7 +113,7 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous" ></script>
 <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-<script src="https://www.paypal.com/sdk/js?client-id=Aa2jPGWCMLpswVVeE7IuImi64-45_hAD-gmbh7UY5KhmIUA2CAkaScbXWYjoTPNJiAzQWj_ya7wZNC6s&components=buttons"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=Aa2jPGWCMLpswVVeE7IuImi64-45_hAD-gmbh7UY5KhmIUA2CAkaScbXWYjoTPNJiAzQWj_ya7wZNC6s&disable-funding=credit&components=buttons"></script>
 
 {{-- <script src="https://www.paypal.com/sdk/js?client-id=AapYCwr7IL6pstdnEZ8a8Ugv_WMX3qBJflHAfrlFwye5D-7oB22i8Nrky2_AwRLLLTayYkhWS21uKygn&components=buttons"></script> --}}
 

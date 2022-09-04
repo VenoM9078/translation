@@ -158,6 +158,13 @@ class UserController extends Controller
         return view('user.provideProof', compact('order'));
     }
 
+    public function payLater($id) {
+        Order::where('id',$id)->update(['paymentStatus' => 2, 'orderStatus' => 'Translation Pending']);
+
+        return view('user.thankyou');
+
+    }
+
     public function processProof(Request $request) {
         $validated = $request->validate([
             'order_id' => 'required|integer',
