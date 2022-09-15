@@ -8,6 +8,7 @@
         <h2 class="text-lg font-medium truncate mr-5 mb-5">
             Viewing Invoice for Worknumber: {{ $invoice->order->worknumber }}
         </h2>
+
     </div>
         
         <!-- BEGIN: Top Bar -->
@@ -86,7 +87,88 @@
                 <div class="text-center sm:text-left mt-10 sm:mt-0">
                     <div class="text-base text-slate-500 mb-3">Choose Payment Method</div>
                     <a href="{{ route('provideProof',$invoice->order->id) }}" class="btn btn-primary">Already Paid? Provide Proof</a>
-                    <a href="{{ route('payLater',$invoice->order->id) }}" class="btn btn-pending">Pay Later</a>
+                    {{-- <div class="text-center">  --}}
+                        <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#header-footer-modal-preview" class="btn btn-pending">Pay Later</a>
+                        <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#header-footer-modal-preview-2" style="background-color: purple;" class="text-white btn">View Bank Details</a>
+
+                     {{-- </div>  --}}
+                    {{-- <a href="{{ route('payLater',$invoice->order->id) }}" class="btn btn-pending">Pay Later</a> --}}
+
+                    <div id="header-footer-modal-preview-2" class="modal" tabindex="-1" aria-hidden="true">
+                        
+                        <div class="modal-dialog">
+                            <form action="{{ route('payLater') }}" method="post">
+                                @csrf
+                                @method('POST')
+                            <div class="modal-content">
+                                <!-- BEGIN: Modal Header -->
+                                <div class="modal-header">
+                                    <h2 class="font-medium text-base mr-auto">Bank Details</h2> 
+                                  
+                                </div> <!-- END: Modal Header -->
+                                <!-- BEGIN: Modal Body -->
+
+                                {{-- Check to: Flow Translations
+Bank of America
+Checking Account No.3251 0717 1449
+Routing Number: 121000358 --}}
+
+                                <div class="modal-body grid grid-cols-12 gap-4 gap-y-3">
+                                    <div class="col-span-12 sm:col-span-12">
+                                        <label for="modal-form-1" class="form-label">Name</label> 
+                                        <input id="modal-form-1" type="text" disabled class="form-control mb-5" value="Flow Translations"> 
+
+                                        <label for="modal-form-1" class="form-label">Bank Name</label> 
+                                        <input id="modal-form-1" type="text" disabled class="form-control mb-5" value="Bank of America"> 
+
+                                        <label for="modal-form-1" class="form-label">Checking Account No.</label> 
+                                        <input id="modal-form-1" type="text" disabled class="form-control mb-5" value="3251 0717 1449">
+
+                                        <label for="modal-form-1" class="form-label">Routing Number</label> 
+                                        <input id="modal-form-1" type="text" disabled class="form-control mb-5" value="121000358"> 
+                                    </div>
+                                    
+                                </div> <!-- END: Modal Body -->
+                                <!-- BEGIN: Modal Footer -->
+                                <div class="modal-footer"> <button type="button" data-tw-dismiss="modal" class="btn btn-outline-secondary w-20 mr-1">Cancel</button> 
+                                {{-- <button type="submit" class="btn btn-primary w-40">Submit Request</button>  --}}
+                            </div> <!-- END: Modal Footer -->
+                            </div>
+                        </form>
+                        </div>
+                    
+                    </div> <!-- END: Modal Content -->
+
+                    <div id="header-footer-modal-preview" class="modal" tabindex="-1" aria-hidden="true">
+                        
+                        <div class="modal-dialog">
+                            <form action="{{ route('payLater') }}" method="post">
+                                @csrf
+                                @method('POST')
+                            <div class="modal-content">
+                                <!-- BEGIN: Modal Header -->
+                                <div class="modal-header">
+                                    <h2 class="font-medium text-base mr-auto">Pay Later</h2> 
+                                  
+                                </div> <!-- END: Modal Header -->
+                                <!-- BEGIN: Modal Body -->
+                                <div class="modal-body grid grid-cols-12 gap-4 gap-y-3">
+                                    <div class="col-span-12 sm:col-span-12">
+                                        <input type="hidden" name="order_id" value="{{ $invoice->order->id }}">
+                                        <label for="modal-form-1" class="form-label">Code</label> 
+                                        <input id="modal-form-1" type="text" name="payLaterCode" required class="form-control" placeholder="Enter Code that helps us recognize you"> 
+                                    </div>
+                                    
+                                </div> <!-- END: Modal Body -->
+                                <!-- BEGIN: Modal Footer -->
+                                <div class="modal-footer"> <button type="button" data-tw-dismiss="modal" class="btn btn-outline-secondary w-20 mr-1">Cancel</button> 
+                                <button type="submit" class="btn btn-primary w-40">Submit Request</button> 
+                            </div> <!-- END: Modal Footer -->
+                            </div>
+                        </form>
+                        </div>
+                    
+                    </div> <!-- END: Modal Content -->
 
                     <hr class="side-nav__devider my-6"></hr>
 

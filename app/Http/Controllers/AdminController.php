@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\LatePaymentApproved;
+use App\Mail\LatePaymentRejected;
 use App\Mail\mailOfCompletion;
 use App\Mail\mailToProofReader;
 use App\Mail\orderToTranslator;
@@ -53,6 +55,30 @@ class AdminController extends Controller
     {
         $orders = Order::where(['paymentStatus' => 1])->get();
         return view('admin.paidOrders', compact('orders'));
+    }
+
+
+    public function manageLatePay(Request $request) {
+        $id = $request->order_id;
+        $choice = $request->choice;
+
+        $order = Order::find($id);
+
+        // dd($order->user);
+
+        if ($choice == 1) {
+            $order->update(['paymentStatus' => 1, 'orderStatus' => 'Translation Pending', 'paymentLaterApproved' => 1]);
+            Mail::to($order->user->email)->send(new LatePaymentApproved());
+
+            return redirect()->back();
+
+        } else if($choice == 0) {
+            $order->update(['paymentStatus' => 0, 'orderStatus' => 'Payment Pending', 'paymentLaterApproved' => 0]);
+
+            Mail::to($order->user->email)->send(new LatePaymentRejected());
+
+            
+        }
     }
 
     public function downloadFiles(Order $order)

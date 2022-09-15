@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('casemanager')->nullable(true);
             $table->string('access_code')->nullable(true);
             $table->integer('paymentStatus')->default(0);
+            $table->integer('paymentLaterApproved')->default(0);
+            $table->string('payLaterCode')->nullable(true);
             $table->integer('invoiceSent')->default(0);
             $table->integer('is_evidence')->default(0);
             $table->string('filename')->nullable(true);

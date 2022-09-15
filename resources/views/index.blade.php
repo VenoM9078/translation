@@ -72,13 +72,10 @@
     color: transparent !important;
 }
 
-        body {
+body {
             top: 0 !important;
         }
-
-    /* #google_translate_element2 {
-        display: none !important;
-    } */
+    
 
 
     .mainmenu ul {

@@ -24,6 +24,8 @@ class Order extends Model
         'access_code',
         'casemanager',
         'paymentStatus',
+        'paymentLaterApproved',
+        'payLaterCode',
         'invoiceSent',
         'is_evidence',
         'filename',

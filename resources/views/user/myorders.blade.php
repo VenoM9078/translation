@@ -49,7 +49,9 @@
                                 <td class="whitespace-nowrap"><button class="btn btn-rounded-success w-24 mr-1 mb-2">Paid</button></td>
                                 @elseif($order->paymentStatus == 2) 
                                 <td class="whitespace-nowrap"><button class="btn btn-rounded-warning w-28 mr-1 mb-2">Payment Later</button></td>
-                            
+                                @elseif($order->paymentStatus == 3)
+                                <td class="whitespace-nowrap"><button class="btn btn-rounded-warning w-32 mr-1 mb-2">Request Pending</button></td>
+
                                 @else
                                 <td class="whitespace-nowrap"><button class="btn btn-rounded-pending w-24 mr-1 mb-2">Pending</button></td>
                                 @endif

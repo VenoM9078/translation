@@ -82,7 +82,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::post('sendDocumentsToUser', [AdminController::class, 'sendDocumentsToUser'])->name('sendDocumentsToUser');
     Route::get('downloadTranslatedFiles/{id}', [AdminController::class, 'downloadTranslatedFiles'])->name('downloadTranslatedFiles');
     Route::get('viewQuoteRequests', [AdminController::class, 'viewQuoteRequests'])->name('viewQuoteRequests');
-
+    Route::post('manageLatePay' ,[AdminController::class, 'manageLatePay'])->name('manageLatePay');
     Route::get('viewFeedback', [AdminController::class, 'viewFeedback'])->name('viewFeedback');
     Route::get('viewMessages', [AdminController::class, 'viewMessages'])->name('viewMessages');
 
@@ -94,9 +94,12 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::get('logout', [UserController::class, 'destroySession'])->name('logout');
     Route::get('viewInvoice/{id}', [UserController::class, 'viewInvoice'])->name('viewInvoice');
     Route::get('provideProof/{id}', [UserController::class, 'provideProof'])->name('provideProof');
-    Route::get('payLater/{id}', [UserController::class, 'payLater'])->name('payLater');
+    Route::post('payLater', [UserController::class, 'payLater'])->name('payLater');
     Route::post('processProof', [UserController::class, 'processProof'])->name('processProof');
     Route::get('thankyou/{id}', [UserController::class, 'updatePaymentStatus'])->name('thankyou');
+    Route::get('payLaterLanding', function() {
+        return view('user.payLaterLanding');
+    })->name('payLaterLanding');
     Route::get('downloadTranslatedForUser/{id}', [UserController::class, 'downloadTranslatedForUser'])->name('downloadTranslatedForUser');
     Route::post('submitFeedback', [UserController::class, 'submitFeedback'])->name('submitFeedback');
 });
