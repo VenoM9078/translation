@@ -67,7 +67,7 @@ class AdminController extends Controller
         // dd($order->user);
 
         if ($choice == 1) {
-            $order->update(['paymentStatus' => 1, 'orderStatus' => 'Translation Pending', 'paymentLaterApproved' => 1]);
+            $order->update(['paymentStatus' => 2, 'orderStatus' => 'Translation Pending', 'paymentLaterApproved' => 1]);
             Mail::to($order->user->email)->send(new LatePaymentApproved());
 
             return redirect()->back();
