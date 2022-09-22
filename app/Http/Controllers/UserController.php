@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Mail\adminOrderCreated;
+use App\Mail\AdminPaymentReceived;
+use App\Mail\CustomerPaymentReceived;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\OrderFiles;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Models\Invoice;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -14,9 +17,11 @@ use Illuminate\Support\Facades\Session;
 use App\Mail\OrderCreated;
 use App\Models\CompletedRequest;
 use App\Models\Feedback;
+use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\Mail;
 
 use File;
+use Illuminate\Http\File as HttpFile;
 use ZipArchive;
 
 class UserController extends Controller
@@ -41,6 +46,30 @@ class UserController extends Controller
         //
     }
 
+
+    public function uploadImage(Request $request) {
+        if($request->hasFile('transFiles')) {
+            $files = $request->file('transFiles');
+
+            // dd($files);
+
+            foreach ($files as $file) {
+
+                $filename = date('YmdHi') . $file->getClientOriginalName();
+                // $folder = uniqid() . '-' . now()->timestamp;
+                // $file->move(public_path('documents'), $filename);
+                $file->move('documents/', $filename);
+                
+                TemporaryFile::create([
+                    'filename' => $filename
+                ]);
+
+                return $filename;
+
+            }
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -49,8 +78,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
+        // dd($request);
         $userID = Auth::id();
-
         // // dd($request, $userID);
         // $validated = $request->validate([
         //     'language1' => 'required|max:255',
@@ -83,18 +113,21 @@ class UserController extends Controller
         $order = Order::create($data);
 
 
-        if ($request->hasFile('files')) {
+        if ($request->transFiles) {
 
-            $files = $request->file('files');
+            $files = $request->transFiles;
+            // dd($files = $request->file('files'));
 
             // dd($files);
 
             foreach ($files as $file) {
 
-                $filename = date('YmdHi') . $file->getClientOriginalName();
+                // $temporaryFile = TemporaryFile::where('folder', $file)->first();
+                $filename = $file;
 
-                $file->move(public_path('documents'), $filename);
-                $fileData['filename'] = $filename;
+
+                // dd($filename);
+                // $moving = File::move(public_path('documents/tmp/' . $filename), public_path('documents'));
                 $completion = OrderFiles::create([
                     'order_id' => $order->id,
                     'user_id' => $userID,
@@ -102,11 +135,12 @@ class UserController extends Controller
                 ]);
             }
 
+            // dd($completion);
             $user = Auth::user();
 
             $email = $user->email;
             Mail::to($email)->send(new OrderCreated($user, $order));
-            Mail::to('info@flowtranslate.com')->send(new adminOrderCreated($user, $order));
+            Mail::to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order));
 
 
             return redirect()->route('myorders')->with('status', 'Translation Order placed successfully!');
@@ -150,6 +184,10 @@ class UserController extends Controller
 
         $order->save();
 
+        $email = $order->user->email;
+        Mail::to($email)->send(new CustomerPaymentReceived($order));
+        Mail::to('webpage@flowtranslate.com')->send(new AdminPaymentReceived($order));
+
         return view('user.thankyou');
     }
 
@@ -170,6 +208,8 @@ class UserController extends Controller
     }
 
     public function processProof(Request $request) {
+
+        // dd($request);
         $validated = $request->validate([
             'order_id' => 'required|integer',
             'files' => 'required',
@@ -195,9 +235,11 @@ class UserController extends Controller
                 
             }
 
+            // dd($fileArr2);
+
             $zip2 = new ZipArchive;
 
-            $zipName2 = 'payevidence' . $order_id . '.zip';
+            $zipName2 = 'payevidence' . date('YmdHi') . $order_id . '.zip';
 
             if ($zip2->open(public_path('compressed/' . $zipName2), ZipArchive::CREATE) === TRUE) {
 

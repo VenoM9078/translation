@@ -92,7 +92,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'info@flowtranslate.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'webpage@flowtranslate.com'),
         'name' => env('MAIL_FROM_NAME', 'Silvia Cabal'),
     ],
 

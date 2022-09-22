@@ -29,9 +29,8 @@
         </div>
     @endif
 
-    <div class="alert alert-primary show flex items-center mb-4 mt-4" role="alert"> Once submitted - your payment proof will be examined by our team. Please be patient in the process! </div>
+    <div class="alert alert-primary show flex items-start mb-4 mt-4" role="alert"> Once submitted - your payment proof will be examined by our team. Please be patient in the process! </div>
 
-    
     <div class="intro-y box">
         <div id="vertical-form" class="p-5">
             <div class="preview">
@@ -50,7 +49,26 @@
                           </div>                                
                     </div>
                   
-                  <button type="submit" class="btn btn-primary mt-5">Upload Evidence</button>
+                    <div class="btn-group mt-5" role="group" aria-label="Basic example" style="margin-top: 3rem;">
+                      <div style="float: left;margin: auto !important;"> 
+                        <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#superlarge-modal-size-preview" class="btn btn-pending">Need to attach multiple files?</a>                      </div> 
+                        
+                        <div id="superlarge-modal-size-preview" class="modal" tabindex="-1" aria-hidden="true">
+                          <div class="modal-dialog">
+                              <div class="modal-content" style="width: 640px !important;">
+                                  <div class="modal-body p-10 text-center"> 
+                                    <iframe style="padding:20px;" width="560" height="315" src="https://www.youtube.com/embed/Kt9mLwSOARc"
+                                     title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                      allowfullscreen></iframe>
+
+                                     
+                                  </div>
+                              </div>
+                          </div>
+                      </div> 
+                      <button type="submit" class="btn btn-primary ml-3">Upload Evidence</button> 
+                    </div>
+                  
                 </form>
                 </div>
             </div>

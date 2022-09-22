@@ -6,10 +6,6 @@ A new translation order with work number <span style="font-weight: bold">{{ $ord
 
  Respond to it ASAP.
 
-@component('mail::button', ['url' => ''])
-Button Text
-@endcomponent
-
 Thanks,<br>
 {{ config('app.name') }}
 @endcomponent

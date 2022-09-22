@@ -100,6 +100,10 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::get('payLaterLanding', function() {
         return view('user.payLaterLanding');
     })->name('payLaterLanding');
+
+
+    Route::post('upload', [UserController::class, 'uploadImage'])->name('upload');
+
     Route::get('downloadTranslatedForUser/{id}', [UserController::class, 'downloadTranslatedForUser'])->name('downloadTranslatedForUser');
     Route::post('submitFeedback', [UserController::class, 'submitFeedback'])->name('submitFeedback');
 });

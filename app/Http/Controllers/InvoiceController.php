@@ -76,6 +76,7 @@ class InvoiceController extends Controller
             $order = Order::find($order_id);
             Order::where('id', $order_id)->update(['invoiceSent' => 1]);
             Order::where('id', $order_id)->update(['orderStatus' => 'Payment Pending']);
+            Order::where('id', $order_id)->update(['amount' => $invoice->amount]);
             $userMail = $user->email;
 
             Mail::to($userMail)->send(new invoiceSent($user, $order, $invoice));
