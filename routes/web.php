@@ -103,6 +103,9 @@ Route::middleware(['web', 'auth'])->group(function () {
 
 
     Route::post('upload', [UserController::class, 'uploadImage'])->name('upload');
+    Route::post('uploadProof', [UserController::class, 'uploadProof'])->name('uploadProof');
+
+    Route::delete('deleteUpload', [UserController::class, 'deleteUpload'])->name('deleteUpload');
 
     Route::get('downloadTranslatedForUser/{id}', [UserController::class, 'downloadTranslatedForUser'])->name('downloadTranslatedForUser');
     Route::post('submitFeedback', [UserController::class, 'submitFeedback'])->name('submitFeedback');

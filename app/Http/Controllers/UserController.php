@@ -70,6 +70,10 @@ class UserController extends Controller
         }
     }
 
+
+    
+
+  
     /**
      * Store a newly created resource in storage.
      *
@@ -207,20 +211,40 @@ class UserController extends Controller
 
     }
 
+
+
+    public function uploadProof(Request $request) {
+        if($request->hasFile('transFiles')) {
+            $files = $request->file('transFiles');
+
+            // dd($files);
+
+            foreach ($files as $file) {
+
+                $filename = date('YmdHi') . $file->getClientOriginalName();
+                // $folder = uniqid() . '-' . now()->timestamp;
+                // $file->move(public_path('documents'), $filename);
+                $file->move('evidence/', $filename);
+                
+                TemporaryFile::create([
+                    'filename' => $filename
+                ]);
+
+                return $filename;
+
+            }
+        }
+    }
+
     public function processProof(Request $request) {
 
         // dd($request);
-        $validated = $request->validate([
-            'order_id' => 'required|integer',
-            'files' => 'required',
-            'files.*' => 'mimes:docx,doc,png,jpg,pdf,txt,webp,csv'
-        ]);
 
         $order_id = $request->input('order_id');
         
-        if ($request->hasFile('files')) {
+        if ($request->transFiles) {
 
-            $files = $request->file('files');
+            $files = $request->transFiles;
 
             // dd($files);
 
@@ -228,9 +252,8 @@ class UserController extends Controller
 
             foreach ($files as $file) {
 
-                $filename = date('YmdHi') . $file->getClientOriginalName();
+                $filename = $file;
 
-                $file->move(public_path('evidence'), $filename);
                 $fileArr2[] = public_path('evidence/' . $filename);
                 
             }
