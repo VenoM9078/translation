@@ -50,11 +50,11 @@
                     <div class="mt-1">{{ $invoice->order->user->email }}</div>
                 </div>
                 <div class="mt-10 lg:mt-0 lg:ml-auto lg:text-right">
-                    <div class="text-base text-slate-500">Created At</div>
-                    {{ $amount = $invoice->amount }}
-                       {{$orderWork = $invoice->order->worknumber }} 
+                    <div class="text-base text-slate-500">Work Number</div>
+                    <?php $amount = $invoice->amount ?>
+                      <div class="text-lg text-primary font-medium mt-2">{{$orderWork = $invoice->order->worknumber }}</div>  
                     
-                    <div class="text-lg text-primary font-medium mt-2">{{ $invoice->created_at }}</div>
+                    <div class="text-lg text-pending font-medium mt-2">Created At: {{ $invoice->created_at }}</div>
                 </div>
             </div>
             <div class="px-5 sm:px-16 py-10 sm:py-20">
@@ -76,6 +76,14 @@
                                 <td class="text-right border-b dark:border-darkmode-400 w-32">{{ $invoice->docQuantity }}</td>
                                 <td class="text-right border-b dark:border-darkmode-400 w-32">${{ $invoice->amount }}</td>
                             </tr>
+                            {{-- <tr>
+                                <td class="border-b dark:border-darkmode-400">
+                                    <div class="font-medium whitespace-nowrap">PayPal Transaction Fee</div>
+                                    <div class="text-slate-500 text-sm mt-0.5 whitespace-nowrap">*Mandatory fee if you are paying through PayPal</div>
+                                </td>
+                                <td class="text-right border-b dark:border-darkmode-400 w-32">-</td>
+                                <td class="text-right border-b dark:border-darkmode-400 w-32">$3.50</td>
+                            </tr> --}}
                         </tbody>
                     </table>
                 </div>
@@ -108,10 +116,10 @@
                                 </div> <!-- END: Modal Header -->
                                 <!-- BEGIN: Modal Body -->
 
-                                {{-- Check to: Flow Translations
-Bank of America
-Checking Account No.3251 0717 1449
-Routing Number: 121000358 --}}
+                                                                            {{-- Check to: Flow Translations
+                                            Bank of America
+                                            Checking Account No.3251 0717 1449
+                                            Routing Number: 121000358 --}}
 
                                 <div class="modal-body grid grid-cols-12 gap-4 gap-y-3">
                                     <div class="col-span-12 sm:col-span-12">
@@ -173,6 +181,12 @@ Routing Number: 121000358 --}}
                     <hr class="side-nav__devider my-6"></hr>
 
                     <div id="paypal-button-container"></div>
+
+                    <hr class="side-nav__devider my-6"></hr>
+
+                    <div class="text-center text-base text-danger mb-3">Paying through PayPal? PayPal Transaction Fee ($3.50)<br> must be paid along with the charged amount in the Invoice.</div>
+
+
                 </div>
                 <div class="text-center sm:text-right sm:ml-auto">
                     <div class="text-base text-slate-500">Total Amount</div>
