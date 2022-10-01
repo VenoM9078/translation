@@ -224,7 +224,7 @@ body {
                     <div class="contact-info">
                         <h4 class="contact-info__title">Email Us</h4>
                         <p>For general inquiries</p>
-                        <a href="mailto:info@flowtranslate.com">info@flowtranslate.com</a>
+                        <a href="mailto:webpage@flowtranslate.com">webpage@flowtranslate.com</a>
                     </div>
                 </div>
                 
@@ -281,7 +281,7 @@ body {
                 <div class="row">
                     <div class="col-lg-6 my-auto">
                         <div class="copyright-text">
-                            <p>Contact Us at info@flowtranslate.com</p>
+                            <p>Contact Us at webpage@flowtranslate.com</p>
                         </div>
                     </div>
                     <div class="col-lg-6">

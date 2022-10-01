@@ -451,7 +451,7 @@ body {
                 <div class="row">
                     <div class="col-lg-6 my-auto">
                         <div class="copyright-text">
-                            <p>Contact Us at info@flowtranslate.com</p>
+                            <p>Contact Us at webpage@flowtranslate.com</p>
                         </div>
                     </div>
                     <div class="col-lg-6">

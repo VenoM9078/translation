@@ -7,7 +7,7 @@ It seems like our team have flagged your Payment Proof with discrepancies..<br>
 
 To resolve this issue, kindly re-submit the payment proof.<br>
 
-OR, contact us at: <a href="mailto:info@flowtranslate.com">info@flowtranslate.com</a>
+OR, contact us at: <a href="mailto:webpage@flowtranslate.com">webpage@flowtranslate.com</a>
 
 @component('mail::button', ['url' => route('myorders')])
 View Dashboard

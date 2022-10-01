@@ -175,11 +175,11 @@ class AdminController extends Controller
             Invoice::where('order_id', $order->id)->delete();
         }
 
-        if ($order->translation_status == 1) {
+        if ($order->translation_status == 1 || $order->translation_sent == 1) {
             TranslationRequest::where('order_id', $order->id)->delete();
         }
 
-        if ($order->proofread_status == 1) {
+        if ($order->proofread_status == 1 || $order->proofread_sent == 1) {
             ProofRequest::where('order_id', $order->id)->delete();
         }
 
@@ -214,8 +214,7 @@ class AdminController extends Controller
     
 
         $check = TranslationRequest::where([
-            'order_id' => $order_id,
-            'translator_email' => $email
+            'order_id' => $order_id
         ]);
 
         if ($check->exists()) {
@@ -256,7 +255,7 @@ class AdminController extends Controller
             $zip->close();
         }
 
-        Order::where('id', $order_id)->update(['orderStatus' => 'Sent to Translator']);
+        Order::where('id', $order_id)->update(['orderStatus' => 'Sent to Translator', 'translation_sent' => 1]);
 
         Mail::to($translatorEmail)->send(new orderToTranslator($order, $zipName));
         return redirect()->route('admin.pending');
@@ -359,8 +358,7 @@ class AdminController extends Controller
     
 
         $check = ProofRequest::where([
-            'order_id' => $order_id,
-            'proofreader_email' => $email
+            'order_id' => $order_id
         ]);
 
         if ($check->exists()) {
@@ -440,7 +438,7 @@ class AdminController extends Controller
             $zip->close();
         }
 
-        Order::where('id', $order_id)->update(['orderStatus' => 'Sent to ProofReader']);
+        Order::where('id', $order_id)->update(['orderStatus' => 'Sent to ProofReader', 'proofread_sent' => 1]);
 
         Mail::to($proofReaderEmail)->send(new mailToProofReader($order, $zipName, $zipName2));
         return redirect()->route('showTranslationRequests');

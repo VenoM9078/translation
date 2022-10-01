@@ -39,7 +39,7 @@
                 <div class="font-semibold text-primary text-3xl">INVOICE</div>
                 <div class="mt-20 lg:mt-0 lg:ml-auto lg:text-right">
                     <div class="text-xl text-primary font-medium">FlowTranslate</div>
-                    <div class="mt-1">info@flowtranslate.com</div>
+                    <div class="mt-1">webpage@flowtranslate.com</div>
                     <div class="mt-1">650-229-4621</div>
                 </div>
             </div>

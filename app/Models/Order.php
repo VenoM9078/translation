@@ -32,7 +32,9 @@ class Order extends Model
         'evidence_accepted',
         'amount',
         'orderStatus',
+        'translation_sent',
         'translation_status',
+        'proofread_sent',
         'proofread_status',
         'completed'
     ];

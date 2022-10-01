@@ -30,7 +30,9 @@ return new class extends Migration
             $table->integer('evidence_accepted')->default(0);
             $table->integer('amount')->default(0);
             $table->string('orderStatus')->default('Invoice Pending');
+            $table->integer('translation_sent')->default(0);
             $table->integer('translation_status')->default(0);
+            $table->integer('proofread_sent')->default(0);
             $table->integer('proofread_status')->default(0);
             $table->integer('completed')->default(0);
 
