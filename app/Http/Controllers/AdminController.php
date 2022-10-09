@@ -35,19 +35,19 @@ class AdminController extends Controller
         $unsent = count(Order::where(['invoiceSent' => 0])->get());
         $paymentPending = count(Order::where(['paymentStatus' => 0])->get());
 
-        $invoices = Order::withSum('invoice','amount')->get();
+        $invoices = Order::withSum('invoice', 'amount')->get();
 
         $sumAmount = 0;
-        foreach($invoices as $invoice) {
+        foreach ($invoices as $invoice) {
             $sumAmount += $invoice->invoice_sum_amount;
         }
 
-        return view('admin.dashboard', compact('orders','users', 'unsent', 'paymentPending', 'sumAmount'));
+        return view('admin.dashboard', compact('orders', 'users', 'unsent', 'paymentPending', 'sumAmount'));
     }
 
     public function pendingOrders()
     {
-        $orders = Order::all();
+        $orders = Order::orderByDesc('created_at')->get();
         return view('admin.pendingOrders', compact('orders'));
     }
 
@@ -58,7 +58,8 @@ class AdminController extends Controller
     }
 
 
-    public function manageLatePay(Request $request) {
+    public function manageLatePay(Request $request)
+    {
         $id = $request->order_id;
         $choice = $request->choice;
 
@@ -71,13 +72,10 @@ class AdminController extends Controller
             Mail::to($order->user->email)->send(new LatePaymentApproved());
 
             return redirect()->back();
-
-        } else if($choice == 0) {
+        } else if ($choice == 0) {
             $order->update(['paymentStatus' => 0, 'orderStatus' => 'Payment Pending', 'paymentLaterApproved' => 0]);
 
             Mail::to($order->user->email)->send(new LatePaymentRejected());
-
-            
         }
     }
 
@@ -114,26 +112,27 @@ class AdminController extends Controller
 
     public function downloadTranslatedFiles($id)
     {
-        $order = Order::where('id',$id)->first();
+        $order = Order::where('id', $id)->first();
         $order_id = $order->id;
 
-        $completedRequest = CompletedRequest::where('order_id',$order_id)->first();
+        $completedRequest = CompletedRequest::where('order_id', $order_id)->first();
 
         $orderFiles = $completedRequest->completed_file;
-       
+
         return response()->download(public_path('translated/' . $orderFiles));
     }
 
     public function downloadEvidence($id)
     {
-        $order = Order::where('id',$id)->first();
+        $order = Order::where('id', $id)->first();
         $order_id = $order->id;
         $filename = $order->filename;
-       
+
         return response()->download(public_path('compressed/' . $filename));
     }
 
-    public function approveEvidence($id) {
+    public function approveEvidence($id)
+    {
 
         $order = Order::where('id', $id)->first();
         $order->update(['evidence_accepted' => 1]);
@@ -144,11 +143,11 @@ class AdminController extends Controller
         Mail::to($order->user->email)->send(new paymentApproved());
 
         return redirect()->route('admin.pending');
-
     }
 
 
-    public function rejectEvidence($id) {
+    public function rejectEvidence($id)
+    {
 
         $order = Order::where('id', $id)->first();
         $order->update(['evidence_accepted' => 0]);
@@ -160,7 +159,6 @@ class AdminController extends Controller
 
 
         return redirect()->route('admin.pending');
-
     }
 
     public function destroy($id)
@@ -195,7 +193,7 @@ class AdminController extends Controller
 
     public function mailToTranslator($id)
     {
-        $order = Order::where('id',$id)->first();
+        $order = Order::where('id', $id)->first();
 
         return view('admin.mailToTranslator', compact('order'));
     }
@@ -211,7 +209,7 @@ class AdminController extends Controller
 
         $order_id = $request->input('order_id');
         $email = $request->input('translator_email');
-    
+
 
         $check = TranslationRequest::where([
             'order_id' => $order_id
@@ -286,20 +284,23 @@ class AdminController extends Controller
         // }
     }
 
-    public function showTranslationRequests() {
-        $translationRequests = TranslationRequest::all();
+    public function showTranslationRequests()
+    {
+        $translationRequests = TranslationRequest::orderByDesc('created_at')->get();
 
         return view('admin.showTransRequests', compact('translationRequests'));
     }
 
-    public function showProofReadRequests() {
-        $proofReadRequests = ProofRequest::all();
+    public function showProofReadRequests()
+    {
+        $proofReadRequests = ProofRequest::orderByDesc('created_at')->get();
 
         return view('admin.showProofRequests', compact('proofReadRequests'));
     }
 
-    public function changeTranslationRequestStatus($id) {
-        $findRequest = TranslationRequest::where('order_id',$id)->first();
+    public function changeTranslationRequestStatus($id)
+    {
+        $findRequest = TranslationRequest::where('order_id', $id)->first();
         $findOrder = Order::findOrFail($id);
 
         if ($findOrder->translation_status == 0) {
@@ -314,12 +315,12 @@ class AdminController extends Controller
             $findRequest->update(['translation_status' => 0]);
         }
         return redirect()->route('showTranslationRequests');
-
     }
 
-    public function changeProofReadRequestStatus($id) {
-        $ProofRequest = ProofRequest::where('order_id',$id)->first();
-        $findOrder = Order::where('id',$id)->first();
+    public function changeProofReadRequestStatus($id)
+    {
+        $ProofRequest = ProofRequest::where('order_id', $id)->first();
+        $findOrder = Order::where('id', $id)->first();
 
         if ($findOrder->proofread_status == 0) {
             $findOrder->update(['proofread_status' => 1]);
@@ -335,15 +336,17 @@ class AdminController extends Controller
         return redirect()->route('showProofReadRequests');
     }
 
-    public function mailToProofReader($id) {
-        $order = Order::where('id',$id)->first();
+    public function mailToProofReader($id)
+    {
+        $order = Order::where('id', $id)->first();
 
         return view('admin.mailToProofReader', compact('order'));
     }
 
 
     // Sending To Proofreader
-    public function sendDocumentsToProofReader(Request $request) {
+    public function sendDocumentsToProofReader(Request $request)
+    {
         $validated = $request->validate([
             'order_id' => 'required|integer',
             'proofreader_email' => 'email|required',
@@ -355,7 +358,7 @@ class AdminController extends Controller
 
         $order_id = $request->input('order_id');
         $email = $request->input('proofreader_email');
-    
+
 
         $check = ProofRequest::where([
             'order_id' => $order_id
@@ -364,7 +367,7 @@ class AdminController extends Controller
         if ($check->exists()) {
             $check->delete();
         }
-        
+
         if ($request->hasFile('files')) {
 
             $files = $request->file('files');
@@ -379,7 +382,6 @@ class AdminController extends Controller
 
                 $file->move(public_path('documents'), $filename);
                 $fileArr2[] = public_path('documents/' . $filename);
-                
             }
 
             $zip2 = new ZipArchive;
@@ -389,13 +391,13 @@ class AdminController extends Controller
             if ($zip2->open(public_path('compressed/' . $zipName2), ZipArchive::CREATE) === TRUE) {
 
                 $files = $fileArr2; //passing the above array
-    
+
                 foreach ($files as $key => $value) {
                     $relativeNameInZipFile = basename($value);
                     // dd($relativeNameInZipFile);
                     $zip2->addFile($value, $relativeNameInZipFile);
                 }
-    
+
                 $zip2->close();
             }
         }
@@ -407,9 +409,9 @@ class AdminController extends Controller
         $proofReaderEmail = $proofReaderRequest->proofreader_email;
         $order_id = $proofReaderRequest->order_id;
 
-        $order = Order::where('id',$order_id)->first();
+        $order = Order::where('id', $order_id)->first();
 
-        
+
 
         $orderFiles = $order->files;
 
@@ -442,17 +444,18 @@ class AdminController extends Controller
 
         Mail::to($proofReaderEmail)->send(new mailToProofReader($order, $zipName, $zipName2));
         return redirect()->route('showTranslationRequests');
-
     }
 
 
-    public function viewCompletedOrders() {
-        $orders = Order::where('completed',1)->get();
+    public function viewCompletedOrders()
+    {
+        $orders = Order::where('completed', 1)->get();
 
         return view('admin.completedOrders', compact('orders'));
     }
 
-    public function mailOfCompletion($id) {
+    public function mailOfCompletion($id)
+    {
         $order = Order::where('id', $id)->first();
 
         return view('admin.sendMailOfCompletion', compact('order'));
@@ -460,7 +463,8 @@ class AdminController extends Controller
 
     // Mail to User for Completion 🙌
 
-    public function sendDocumentsToUser(Request $request) {
+    public function sendDocumentsToUser(Request $request)
+    {
 
         $validated = $request->validate([
             'order_id' => 'required|integer',
@@ -476,7 +480,7 @@ class AdminController extends Controller
 
         $order_id = $request->input('order_id');
         $email = $request->input('email');
-    
+
 
         $check = CompletedRequest::where([
             'order_id' => $order_id,
@@ -486,7 +490,7 @@ class AdminController extends Controller
         if ($check->exists()) {
             $check->delete();
         }
-        
+
         if ($request->hasFile('files')) {
 
             $files = $request->file('files');
@@ -499,7 +503,6 @@ class AdminController extends Controller
 
                 $file->move(public_path('documents'), $filename);
                 $fileArr2[] = public_path('documents/' . $filename);
-                
             }
 
             $zip2 = new ZipArchive;
@@ -509,13 +512,13 @@ class AdminController extends Controller
             if ($zip2->open(public_path('translated/' . $zipName2), ZipArchive::CREATE) === TRUE) {
 
                 $files = $fileArr2; //passing the above array
-    
+
                 foreach ($files as $key => $value) {
                     $relativeNameInZipFile = basename($value);
                     // dd($relativeNameInZipFile);
                     $zip2->addFile($value, $relativeNameInZipFile);
                 }
-    
+
                 $zip2->close();
             }
         }
@@ -524,7 +527,7 @@ class AdminController extends Controller
 
         $completedRequest = CompletedRequest::create($validated);
 
-        $order = Order::where('id',$order_id)->first();
+        $order = Order::where('id', $order_id)->first();
 
         Order::where('id', $order_id)->update(['orderStatus' => 'Completed']);
         Order::where('id', $order_id)->update(['completed' => 1]);
@@ -534,22 +537,24 @@ class AdminController extends Controller
         return redirect()->route('completedOrders');
     }
 
-    public function viewQuoteRequests() {
+    public function viewQuoteRequests()
+    {
         $quotes = FreeQuote::all();
 
         return view('admin.viewQuoteRequests', compact('quotes'));
     }
 
-    public function viewFeedback() {
+    public function viewFeedback()
+    {
         $feedbacks = Feedback::all();
 
-        return view('admin.viewFeedback',compact('feedbacks'));
+        return view('admin.viewFeedback', compact('feedbacks'));
     }
 
-    public function viewMessages() {
+    public function viewMessages()
+    {
         $messages = ContactAdmin::all();
 
-        return view('admin.viewMessages',compact('messages'));
+        return view('admin.viewMessages', compact('messages'));
     }
-
 }

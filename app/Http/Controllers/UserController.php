@@ -47,8 +47,9 @@ class UserController extends Controller
     }
 
 
-    public function uploadImage(Request $request) {
-        if($request->hasFile('transFiles')) {
+    public function uploadImage(Request $request)
+    {
+        if ($request->hasFile('transFiles')) {
             $files = $request->file('transFiles');
 
             // dd($files);
@@ -59,21 +60,20 @@ class UserController extends Controller
                 // $folder = uniqid() . '-' . now()->timestamp;
                 // $file->move(public_path('documents'), $filename);
                 $file->move('documents/', $filename);
-                
+
                 TemporaryFile::create([
                     'filename' => $filename
                 ]);
 
                 return $filename;
-
             }
         }
     }
 
 
-    
 
-  
+
+
     /**
      * Store a newly created resource in storage.
      *
@@ -95,25 +95,25 @@ class UserController extends Controller
         //     'files.*' => 'mimes:docx,doc,png,jpg,pdf,txt'
         // ]);
 
-        
+
 
         // $validated['user_id'] = $userID;
-       $currDate = date('Ymd');
-       $randomDigits = mt_rand(1111,9999);
-       $worknumber = $currDate . date('md', strtotime($currDate. ' + 10 days')) . $randomDigits; 
-    //    var_dump($worknumber);
+        $currDate = date('Ymd');
+        $randomDigits = mt_rand(1111, 9999);
+        $worknumber = $currDate . date('md', strtotime($currDate . ' + 10 days')) . $randomDigits;
+        //    var_dump($worknumber);
 
 
-       $data = [
-        'language1' => $request->input('language1'),
-        'language2' => $request->input('language2'),
-        'access_code' => $request->input('access_code'),
-        'casemanager' => $request->input('casemanager'),
-        'user_id' => $userID,
-        'worknumber' => $worknumber
-    ];
+        $data = [
+            'language1' => $request->input('language1'),
+            'language2' => $request->input('language2'),
+            'access_code' => $request->input('access_code'),
+            'casemanager' => $request->input('casemanager'),
+            'user_id' => $userID,
+            'worknumber' => $worknumber
+        ];
 
-    // dd($data);
+        // dd($data);
         $order = Order::create($data);
 
 
@@ -154,7 +154,7 @@ class UserController extends Controller
     public function myorders()
     {
         $user = Auth::user();
-        $orders = Order::all();
+        $orders = Order::where('user_id', $user->id)->orderByDesc('created_at')->get();
 
         return view('user.myorders', compact('user', 'orders'));
     }
@@ -195,26 +195,28 @@ class UserController extends Controller
         return view('user.thankyou');
     }
 
-    public function provideProof($id) {
+    public function provideProof($id)
+    {
         $order = Order::findOrFail($id);
         return view('user.provideProof', compact('order'));
     }
 
-    public function payLater(Request $request) {
+    public function payLater(Request $request)
+    {
         $id = $request->order_id;
         $code = $request->payLaterCode;
 
         // dd($code, $id);
-        Order::where('id',$id)->update(['paymentStatus' => 3, 'payLaterCode' => $code]);
+        Order::where('id', $id)->update(['paymentStatus' => 3, 'payLaterCode' => $code]);
 
         return view('user.payLaterLanding');
-
     }
 
 
 
-    public function uploadProof(Request $request) {
-        if($request->hasFile('transFiles')) {
+    public function uploadProof(Request $request)
+    {
+        if ($request->hasFile('transFiles')) {
             $files = $request->file('transFiles');
 
             // dd($files);
@@ -225,23 +227,23 @@ class UserController extends Controller
                 // $folder = uniqid() . '-' . now()->timestamp;
                 // $file->move(public_path('documents'), $filename);
                 $file->move('evidence/', $filename);
-                
+
                 TemporaryFile::create([
                     'filename' => $filename
                 ]);
 
                 return $filename;
-
             }
         }
     }
 
-    public function processProof(Request $request) {
+    public function processProof(Request $request)
+    {
 
         // dd($request);
 
         $order_id = $request->input('order_id');
-        
+
         if ($request->transFiles) {
 
             $files = $request->transFiles;
@@ -255,7 +257,6 @@ class UserController extends Controller
                 $filename = $file;
 
                 $fileArr2[] = public_path('evidence/' . $filename);
-                
             }
 
             // dd($fileArr2);
@@ -267,32 +268,31 @@ class UserController extends Controller
             if ($zip2->open(public_path('compressed/' . $zipName2), ZipArchive::CREATE) === TRUE) {
 
                 $files = $fileArr2; //passing the above array
-    
+
                 foreach ($files as $key => $value) {
                     $relativeNameInZipFile = basename($value);
                     // dd($relativeNameInZipFile);
                     $zip2->addFile($value, $relativeNameInZipFile);
                 }
-    
+
                 $zip2->close();
             }
         }
 
-        $orderUpdate = Order::where('id',$order_id)->update(['is_evidence' => 1, 'filename' => $zipName2]);
+        $orderUpdate = Order::where('id', $order_id)->update(['is_evidence' => 1, 'filename' => $zipName2]);
 
         return redirect()->route('myorders');
-
     }
 
     public function downloadTranslatedForUser($id)
     {
-        $order = Order::where('id',$id)->first();
+        $order = Order::where('id', $id)->first();
         $order_id = $order->id;
 
-        $completedRequest = CompletedRequest::where('order_id',$order_id)->first();
+        $completedRequest = CompletedRequest::where('order_id', $order_id)->first();
 
         $orderFiles = $completedRequest->completed_file;
-       
+
         return response()->download(public_path('translated/' . $orderFiles));
     }
 
@@ -355,7 +355,8 @@ class UserController extends Controller
         return redirect()->route('login');
     }
 
-    public function submitFeedback(Request $request) {
+    public function submitFeedback(Request $request)
+    {
         $validate = $request->validate([
             'order_id' => 'integer|required',
             'experience' => 'string|required|max:255',
@@ -365,6 +366,6 @@ class UserController extends Controller
 
         Feedback::create($validate);
 
-        return redirect()->route('myorders')->with('message','Thank you for submitting your feedback!');
+        return redirect()->route('myorders')->with('message', 'Thank you for submitting your feedback!');
     }
 }
