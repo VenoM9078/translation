@@ -185,6 +185,9 @@ class AdminController extends Controller
             CompletedRequest::where('order_id', $order->id)->delete();
         }
 
+        if (!empty($order->feedback)) {
+            Feedback::where('order_id', $order->id)->delete();
+        }
 
         $order->delete();
 
