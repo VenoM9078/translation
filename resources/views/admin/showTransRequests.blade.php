@@ -26,6 +26,10 @@
                     <table id="myTable" class="table table-striped" style="width:100%">
                         <thead>
                             <tr>
+                                <th class="whitespace-nowrap">Client Name</th>
+                                <th class="whitespace-nowrap">Client Email</th>
+                                <th class="whitespace-nowrap">Case Manager</th>
+                                <th class="whitespace-nowrap">Access Code</th>
                                 <th class="whitespace-nowrap">Order Worknumber</th>
                                 <th class="whitespace-nowrap">Translator Email</th>
                                 <th class="whitespace-nowrap">Translation Status</th>
@@ -38,6 +42,19 @@
                             @foreach ($translationRequests as $translationRequest)
 
                             <tr>
+                                <td class="whitespace-nowrap">{{ $translationRequest->order->user->name }}</td>
+                                <td class="whitespace-nowrap">{{ $translationRequest->order->user->email }}</td>
+
+                                @if($translationRequest->order->user->casemanager == '' &&
+                                $translationRequest->order->user->access_code == '')
+                                <td class="whitespace-nowrap">N/A</td>
+                                <td class="whitespace-nowrap">N/A</td>
+                                @else
+                                <td class="whitespace-nowrap">{{ $translationRequest->order->user->casemanager }}</td>
+                                <td class="whitespace-nowrap">{{ $translationRequest->order->user->access_code }}</td>
+                                @endif
+
+
                                 <td class="whitespace-nowrap">{{ $translationRequest->order->worknumber }}</td>
                                 <td class="whitespace-nowrap">{{ $translationRequest->translator_email }}</td>
                                 @if ($translationRequest->translation_status == 1)

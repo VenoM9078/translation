@@ -20,6 +20,11 @@
                     <table id="myTable" class="table table-striped" style="width:100%">
                         <thead>
                             <tr>
+                                <th class="whitespace-nowrap">Name</th>
+                                <th class="whitespace-nowrap">Email</th>
+
+                                <th class="whitespace-nowrap">Case Manager</th>
+                                <th class="whitespace-nowrap">Access Code</th>
                                 <th class="whitespace-nowrap">Work Number</th>
                                 <th class="whitespace-nowrap">Current Language</th>
                                 <th class="whitespace-nowrap">Translated Language</th>
@@ -27,6 +32,7 @@
                                 <th class="whitespace-nowrap">Order Status</th>
                                 <th class="whitespace-nowrap">Actions</th>
                                 <th class="whitespace-nowrap">Next Step</th>
+                                <th class="whitespace-nowrap">Date Received</th>
 
                             </tr>
                         </thead>
@@ -34,18 +40,28 @@
                             @foreach ($orders as $order)
 
                             <tr>
+                                <td class="whitespace-nowrap">{{ $order->user->name }}</td>
+                                <td class="whitespace-nowrap">{{ $order->user->email }}</td>
+
+                                @if($order->user->casemanager == '' && $order->user->access_code == '')
+                                <td class="whitespace-nowrap">N/A</td>
+                                <td class="whitespace-nowrap">N/A</td>
+                                @else
+                                <td class="whitespace-nowrap">{{ $order->user->casemanager }}</td>
+                                <td class="whitespace-nowrap">{{ $order->user->access_code }}</td>
+                                @endif
                                 <td class="whitespace-nowrap">{{ $order->worknumber }}</td>
                                 <td class="whitespace-nowrap">{{ $order->language1 }}</td>
                                 <td class="whitespace-nowrap">{{ $order->language2 }}</td>
                                 @if ($order->paymentStatus == 1)
                                 <td class="whitespace-nowrap"><button
-                                        class="btn btn-rounded-success w-24 mr-1 mb-2">Paid</button></td>
+                                        class="btn btn-rounded-success w-24 mr-1">Paid</button></td>
                                 @elseif ($order->paymentStatus == 2)
-                                <td class="whitespace-nowrap"><button
-                                        class="btn btn-rounded-warning w-28 mr-1 mb-2">Payment Later</button></td>
+                                <td class="whitespace-nowrap"><button class="btn btn-rounded-warning w-28 mr-1">Payment
+                                        Later</button></td>
                                 @else
                                 <td class="whitespace-nowrap"><button
-                                        class="btn btn-rounded-pending w-24 mr-1 mb-2">Pending</button></td>
+                                        class="btn btn-rounded-pending w-24 mr-1">Pending</button></td>
                                 @endif
                                 <td class="whitespace-nowrap">
                                     @if($order->invoiceSent == 0)
@@ -116,28 +132,57 @@
                                 <td class="whitespace-nowrap">
                                     <div class="flex  items-center">
                                         {{-- <a href="javascript:;" data-trigger="click"
-                                            title="{{ $order->orderStatus }}"
-                                            class="tooltip btn btn-primary mr-1 mb-2">Show Progress</a> --}}
+                                            title="{{ $order->orderStatus }}" class="tooltip btn btn-primary mr-1">Show
+                                            Progress</a> --}}
 
-                                        <a href="{{ route('downloadFiles',$order->id) }}"
-                                            class="btn btn-warning mr-1 mb-2"> <i data-lucide="download"
-                                                class="w-5 h-5"></i> </a>
+                                        <a href="{{ route('downloadFiles',$order->id) }}" class="btn btn-warning mr-1">
+                                            <i data-lucide="download" class="w-5 h-5"></i> </a>
 
-                                        <form action="{{ route('destroy', $order->id) }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <div> <button type="submit" class="btn btn-danger mb-2"><i
-                                                        data-lucide="trash" class="w-4 h-4"></i></button> </div>
-                                            <!-- END: Modal Toggle -->
-                                        </form>
+                                        <!-- BEGIN: Modal Toggle -->
+                                        <div class="text-center"> <a href="javascript:;" data-tw-toggle="modal"
+                                                data-tw-target="#delete-modal-preview" class="btn btn-danger">Delete</a>
+                                        </div> <!-- END: Modal Toggle -->
+
+
 
                                     </div>
                                 </td>
 
+
+                                <!-- BEGIN: Modal Content -->
+                                <div id="delete-modal-preview" class="modal" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-body p-0">
+                                                <div class="p-5 text-center"> <i data-lucide="x-circle"
+                                                        class="w-16 h-16 text-danger mx-auto mt-3"></i>
+                                                    <div class="text-3xl mt-5">Are you sure?</div>
+                                                    <div class="text-slate-500 mt-2">Do you really want to delete this
+                                                        order? <br>This process cannot
+                                                        be undone.</div>
+                                                </div>
+                                                <div class="px-5 pb-8 text-center inline-flex items-stretch"
+                                                    style="text-align: center;margin: auto !important;width: 100%;position: relative;justify-content: center;">
+                                                    <button type=" button" data-tw-dismiss="modal"
+                                                        class="btn btn-outline-secondary w-24 mr-1 self-center">
+                                                        Cancel</button>
+                                                    <form action="{{ route('destroy', $order->id) }}" method="post">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="btn btn-danger w-24">Delete</button>
+                                                        <!-- END: Modal Toggle -->
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- END: Modal Content -->
+
                                 <td class="whitespace-nowrap">
                                     @if($order->invoiceSent == 0)
                                     <a href="{{ route('invoice.customInvoice',$order->id) }}"
-                                        class="btn btn-success mr-1 mb-2"> <i data-lucide="calendar"
+                                        class="btn btn-success mr-1"> <i data-lucide="calendar"
                                             class="w-5 h-5 mr-2"></i> Send Invoice</a>
 
                                     @elseif($order->invoiceSent == 1 && $order->paymentStatus == 3)
@@ -145,10 +190,9 @@
                                         data-tw-target="#header-footer-modal-preview" class="btn btn-pending">View Late
                                         Pay Request</a>
                                     {{--
-                                    <a href="{{ route('approveEvidence',$order->id) }}"
-                                        class="btn btn-success mr-1 mb-2"> <i data-lucide="thumbs-up"
-                                            class="w-5 h-5 mr-2"></i>Accept</a>
-                                    <a href="{{ route('rejectEvidence',$order->id) }}" class="btn btn-danger mr-1 mb-2">
+                                    <a href="{{ route('approveEvidence',$order->id) }}" class="btn btn-success mr-1"> <i
+                                            data-lucide="thumbs-up" class="w-5 h-5 mr-2"></i>Accept</a>
+                                    <a href="{{ route('rejectEvidence',$order->id) }}" class="btn btn-danger mr-1">
                                         <i data-lucide="thumbs-down" class="w-5 h-5 mr-2"></i>Reject</a> --}}
 
 
@@ -213,44 +257,40 @@
 
                                     @elseif($order->invoiceSent == 1 && $order->paymentStatus == 0 &&
                                     $order->is_evidence == 1)
-                                    <a href="{{ route('downloadEvidence',$order->id) }}"
-                                        class="btn btn-warning mr-1 mb-2"> <i data-lucide="mouse-pointer"
-                                            class="w-5 h-5 mr-2"></i> Download Proof</a>
-                                    <a href="{{ route('approveEvidence',$order->id) }}"
-                                        class="btn btn-success mr-1 mb-2"> <i data-lucide="thumbs-up"
-                                            class="w-5 h-5"></i></a>
-                                    <a href="{{ route('rejectEvidence',$order->id) }}" class="btn btn-danger mr-1 mb-2">
+                                    <a href="{{ route('downloadEvidence',$order->id) }}" class="btn btn-warning mr-1">
+                                        <i data-lucide="mouse-pointer" class="w-5 h-5 mr-2"></i> Download Proof</a>
+                                    <a href="{{ route('approveEvidence',$order->id) }}" class="btn btn-success mr-1"> <i
+                                            data-lucide="thumbs-up" class="w-5 h-5"></i></a>
+                                    <a href="{{ route('rejectEvidence',$order->id) }}" class="btn btn-danger mr-1">
                                         <i data-lucide="thumbs-down" class="w-5 h-5"></i></a>
 
 
                                     @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 0)
-                                    <button class="btn btn-warning mr-1 mb-2"> Waiting for Payment <i
+                                    <button class="btn btn-warning mr-1"> Waiting for Payment <i
                                             data-loading-icon="three-dots" data-color="1a202c" class="w-4 h-4 ml-2"></i>
                                     </button>
 
                                     @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 2 &&
                                     $order->translation_status == 0)
-                                    <a href="{{ route('mailToTranslator',$order->id) }}"
-                                        class="btn btn-pending mr-1 mb-2"> <i data-lucide="mail"
-                                            class="w-5 h-5 mr-2"></i> Mail to Translator </a>
+                                    <a href="{{ route('mailToTranslator',$order->id) }}" class="btn btn-pending mr-1">
+                                        <i data-lucide="mail" class="w-5 h-5 mr-2"></i> Mail to Translator </a>
 
                                     @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 1 &&
                                     $order->translation_status == 0 && $order->translation_sent == 1)
                                     <div class="btn-group">
 
-                                        <a href="{{ route('showTranslationRequests') }}"
-                                            class="btn btn-pending mr-1 mb-2"> <i data-lucide="mail"
-                                                class="w-5 h-5 mr-2"></i> Track Translation Request </a>
+                                        <a href="{{ route('showTranslationRequests') }}" class="btn btn-pending mr-1 ">
+                                            <i data-lucide="mail" class="w-5 h-5 mr-2"></i> Track Translation Request
+                                        </a>
                                         <a href="{{ route('mailToTranslator',$order->id) }}"
-                                            class="btn btn-pending mr-1 mb-2"> <i data-lucide="mail"
+                                            class="btn btn-pending mr-1 "> <i data-lucide="mail"
                                                 class="w-5 h-5 mr-2"></i> Mail to Translator </a>
 
                                     </div>
                                     @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 1 &&
                                     $order->translation_status == 0)
-                                    <a href="{{ route('mailToTranslator',$order->id) }}"
-                                        class="btn btn-pending mr-1 mb-2"> <i data-lucide="mail"
-                                            class="w-5 h-5 mr-2"></i> Mail to Translator </a>
+                                    <a href="{{ route('mailToTranslator',$order->id) }}" class="btn btn-pending mr-1">
+                                        <i data-lucide="mail" class="w-5 h-5 mr-2"></i> Mail to Translator </a>
 
 
                                     @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 1 &&
@@ -259,19 +299,19 @@
 
                                     <div class="btn-group">
 
-                                        <a href="{{ route('showProofReadRequests') }}" class="btn btn-dark mr-1 mb-2"><i
+                                        <a href="{{ route('showProofReadRequests') }}" class="btn btn-dark mr-1"><i
                                                 data-lucide="mail" class="w-5 h-5 mr-2"></i> Track Proofread Request
                                         </a>
                                         <a href="{{ route('mailToProofReader',$order->id) }}"
-                                            class="btn btn-dark mr-1 mb-2"><i data-lucide="mail"
-                                                class="w-5 h-5 mr-2"></i> Mail to Proofreader </a>
+                                            class="btn btn-dark mr-1"><i data-lucide="mail" class="w-5 h-5 mr-2"></i>
+                                            Mail to Proofreader </a>
 
                                     </div>
 
                                     @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 1 &&
                                     $order->translation_status == 1 && $order->proofread_status == 0)
-                                    <a href="{{ route('mailToProofReader',$order->id) }}"
-                                        class="btn btn-dark mr-1 mb-2"><i data-lucide="mail" class="w-5 h-5 mr-2"></i>
+                                    <a href="{{ route('mailToProofReader',$order->id) }}" class="btn btn-dark mr-1"><i
+                                            data-lucide="mail" class="w-5 h-5 mr-2"></i>
                                         Mail to Proofreader </a>
 
 
@@ -280,14 +320,13 @@
 
                                     @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 1 &&
                                     $order->translation_status == 1 && $order->proofread_status == 1)
-                                    <a href="{{ route('mailOfCompletion',$order->id) }}"
-                                        class="btn btn-success mr-1 mb-2"><i data-lucide="mail"
-                                            class="w-5 h-5 mr-2"></i> Send Translation to User </a>
+                                    <a href="{{ route('mailOfCompletion',$order->id) }}" class="btn btn-success mr-1"><i
+                                            data-lucide="mail" class="w-5 h-5 mr-2"></i> Send Translation to User </a>
 
                                     @endif
 
                                 </td>
-
+                                <td class="whitespace-nowrap">{{ $order->created_at }}</td>
 
                             </tr>
 

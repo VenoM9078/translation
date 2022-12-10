@@ -30,11 +30,11 @@ Route::get('/', function () {
     return view('index');
 })->name('/');
 
-Route::get('contact', function() {
+Route::get('contact', function () {
     return view('contact');
 })->name('contact');
 
-Route::post('sendContactForm', function(Request $request) {
+Route::post('sendContactForm', function (Request $request) {
     $validated = $request->validate([
         'name' => 'string|max:255',
         'email' => 'email|max:255',
@@ -44,7 +44,6 @@ Route::post('sendContactForm', function(Request $request) {
     ContactAdmin::create($validated);
 
     return redirect()->route('/');
-
 })->name('sendContactForm');
 
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
@@ -82,10 +81,11 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::post('sendDocumentsToUser', [AdminController::class, 'sendDocumentsToUser'])->name('sendDocumentsToUser');
     Route::get('downloadTranslatedFiles/{id}', [AdminController::class, 'downloadTranslatedFiles'])->name('downloadTranslatedFiles');
     Route::get('viewQuoteRequests', [AdminController::class, 'viewQuoteRequests'])->name('viewQuoteRequests');
-    Route::post('manageLatePay' ,[AdminController::class, 'manageLatePay'])->name('manageLatePay');
+    Route::post('manageLatePay', [AdminController::class, 'manageLatePay'])->name('manageLatePay');
     Route::get('viewFeedback', [AdminController::class, 'viewFeedback'])->name('viewFeedback');
     Route::get('viewMessages', [AdminController::class, 'viewMessages'])->name('viewMessages');
-
+    Route::post('deleteAllQuotes', [AdminController::class, 'deleteAllQuotes'])->name('deleteAllQuotes');
+    Route::post('deleteAllContacts', [AdminController::class, 'deleteAllContacts'])->name('deleteAllContacts');
 });
 
 Route::middleware(['web', 'auth'])->group(function () {
@@ -97,7 +97,7 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::post('payLater', [UserController::class, 'payLater'])->name('payLater');
     Route::post('processProof', [UserController::class, 'processProof'])->name('processProof');
     Route::get('thankyou/{id}', [UserController::class, 'updatePaymentStatus'])->name('thankyou');
-    Route::get('payLaterLanding', function() {
+    Route::get('payLaterLanding', function () {
         return view('user.payLaterLanding');
     })->name('payLaterLanding');
 
