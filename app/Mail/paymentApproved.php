@@ -16,9 +16,15 @@ class paymentApproved extends Mailable
      *
      * @return void
      */
-    public function __construct()
+
+    public $subject;
+    public $fromEmail;
+    public $fromName;
+    public function __construct($subject, $fromEmail)
     {
-        //
+        $this->subject = $subject;
+        $this->fromEmail = $fromEmail;
+        $this->fromName = env('MAIL_FROM_NAME');
     }
 
     /**
@@ -28,6 +34,7 @@ class paymentApproved extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.paymentApproved');
+        return $this->from($this->fromEmail, $this->fromName)
+            ->subject($this->subject)->markdown('emails.paymentApproved');
     }
 }

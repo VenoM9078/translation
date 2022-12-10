@@ -18,16 +18,23 @@ class invoiceSent extends Mailable
     public $order;
     public $invoice;
 
+    public $subject;
+    public $fromEmail;
+    public $fromName;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $user, Order $order, Invoice $invoice)
+    public function __construct(User $user, Order $order, Invoice $invoice, $subject, $fromEmail)
     {
         $this->user = $user;
         $this->order = $order;
         $this->invoice = $invoice;
+        $this->subject = $subject;
+        $this->fromEmail = $fromEmail;
+        $this->fromName = env('MAIL_FROM_NAME');
     }
 
     /**
@@ -37,6 +44,7 @@ class invoiceSent extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.invoiceSent');
+        return $this->from($this->fromEmail, $this->fromName)
+            ->subject($this->subject)->markdown('emails.invoiceSent');
     }
 }

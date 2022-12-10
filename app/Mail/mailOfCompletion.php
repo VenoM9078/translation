@@ -36,16 +36,21 @@ class mailOfCompletion extends Mailable
 
     public $order;
     public $zipName2;
-
+    public $subject;
+    public $fromEmail;
+    public $fromName;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Order $order, $zipName2)
+    public function __construct(Order $order, $zipName2, $subject, $fromEmail)
     {
         $this->order = $order;
         $this->zipName2 = $zipName2;
+        $this->subject = $subject;
+        $this->fromEmail = $fromEmail;
+        $this->fromName = env('MAIL_FROM_NAME');
     }
 
     /**
@@ -55,7 +60,8 @@ class mailOfCompletion extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.mailOfCompletion')
-        ->attach(public_path('translated/' . $this->zipName2));;
+        return $this->from($this->fromEmail, $this->fromName)
+            ->subject($this->subject)->markdown('emails.mailOfCompletion')
+            ->attach(public_path('translated/' . $this->zipName2));;
     }
 }

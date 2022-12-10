@@ -36,11 +36,33 @@ return [
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+            'host' => env('MAIL_HOST', 'smtp.ionos.com'),
             'port' => env('MAIL_PORT', 587),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
+            'timeout' => null,
+            'local_domain' => env('MAIL_EHLO_DOMAIN'),
+        ],
+
+        'clients' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_HOST', 'smtp.ionos.com'),
+            'port' => env('MAIL_PORT', 587),
+            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+            'username' => "info@flowtranslate.com",
+            'password' => "Flowtranslate2022!",
+            'timeout' => null,
+            'local_domain' => env('MAIL_EHLO_DOMAIN'),
+        ],
+
+        'webpage' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_HOST', 'smtp.ionos.com'),
+            'port' => env('MAIL_PORT', 587),
+            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+            'username' => "webpage@flowtranslate.com",
+            'password' => "Flowtranslate2022!",
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],

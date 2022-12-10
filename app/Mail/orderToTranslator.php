@@ -14,15 +14,22 @@ class orderToTranslator extends Mailable
 
     public $order;
     public $zipName;
+
+    public $subject;
+    public $fromEmail;
+    public $fromName;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Order $order, $zipName)
+    public function __construct(Order $order, $zipName, $subject, $fromEmail)
     {
         $this->order = $order;
         $this->zipName = $zipName;
+        $this->subject = $subject;
+        $this->fromEmail = $fromEmail;
+        $this->fromName = env('MAIL_FROM_NAME');
     }
 
     /**
@@ -34,6 +41,8 @@ class orderToTranslator extends Mailable
 
     public function build()
     {
-        return $this->markdown('emails.orderToTranslator')->attach(public_path('compressed/' . $this->zipName));
+        return $this->from($this->fromEmail, $this->fromName)
+            ->subject($this->subject)->markdown('emails.orderToTranslator')
+            ->attach(public_path('compressed/' . $this->zipName));
     }
 }

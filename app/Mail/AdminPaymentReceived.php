@@ -17,11 +17,18 @@ class AdminPaymentReceived extends Mailable
      *
      * @return void
      */
+
+    public $subject;
+    public $fromEmail;
+    public $fromName;
     public $order;
 
-    public function __construct(Order $order)
+    public function __construct(Order $order, $subject, $fromEmail)
     {
         $this->order = $order;
+        $this->subject = $subject;
+        $this->fromEmail = $fromEmail;
+        $this->fromName = env('MAIL_FROM_NAME');
     }
 
     /**
@@ -31,6 +38,7 @@ class AdminPaymentReceived extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.adminPaymentReceived');
+        return $this->from($this->fromEmail, $this->fromName)
+            ->subject($this->subject)->markdown('emails.adminPaymentReceived');
     }
 }

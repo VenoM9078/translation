@@ -7,21 +7,24 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class LatePaymentApproved extends Mailable
+class GeneralMail extends Mailable
 {
     use Queueable, SerializesModels;
+    public $name;
+    public $message;
+    public $subject;
+    public $fromEmail;
+    public $fromName;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-
-    public $subject;
-    public $fromEmail;
-    public $fromName;
-    public function __construct($subject, $fromEmail)
+    public function __construct($name, $message, $subject, $fromEmail)
     {
+        $this->name = $name;
+        $this->message = $message;
         $this->subject = $subject;
         $this->fromEmail = $fromEmail;
         $this->fromName = env('MAIL_FROM_NAME');
@@ -34,7 +37,9 @@ class LatePaymentApproved extends Mailable
      */
     public function build()
     {
-        return $this->from($this->fromEmail, $this->fromName)
-            ->subject($this->subject)->markdown('emails.latePaymentApproved');
+        return $this->from($this->fromEmail, $this->fromName)->subject($this->subject)->markdown('mail.general-email')->with([
+            'userName' => $this->name,
+            'themessage' => $this->message,
+        ]);;
     }
 }
