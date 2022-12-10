@@ -65,7 +65,7 @@ class InvoiceController extends Controller
         $order = Order::find($order_id);
         $userMail = $user->email;
 
-        $doesInvoiceExist = Invoice::where('order_id',$order_id)->exists();
+        $doesInvoiceExist = Invoice::where('order_id', $order_id)->exists();
 
         if (empty($doesInvoiceExist)) {
             $invoice = Invoice::create($validated);
@@ -79,7 +79,9 @@ class InvoiceController extends Controller
             Order::where('id', $order_id)->update(['amount' => $invoice->amount]);
             $userMail = $user->email;
 
-            Mail::to($userMail)->send(new invoiceSent($user, $order, $invoice));
+            Mail::mailer('clients')->to($userMail)->send(new invoiceSent($user, $order, $invoice, "Flow Translate - New Invoice", "info@flowtranslate.com"));
+
+            // Mail::to($userMail)->send(new invoiceSent($user, $order, $invoice));
             return redirect()->route('invoice.index');
         } else {
             return redirect()->route('invoice.index')->with('message', 'Invoice already exists for this order!');

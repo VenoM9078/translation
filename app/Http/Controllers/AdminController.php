@@ -57,6 +57,30 @@ class AdminController extends Controller
         return view('admin.paidOrders', compact('orders'));
     }
 
+    public function deleteAllQuotes()
+    {
+        $allQuotes = FreeQuote::all();
+
+        if (empty($allQuotes)) {
+            return redirect()->back();
+        } else {
+            FreeQuote::truncate();
+            return redirect()->back();
+        }
+    }
+
+    public function deleteAllContacts()
+    {
+        $contacts = ContactAdmin::all();
+
+        if (empty($contacts)) {
+            return redirect()->back();
+        } else {
+            ContactAdmin::truncate();
+            return redirect()->back();
+        }
+    }
+
 
     public function manageLatePay(Request $request)
     {
@@ -69,13 +93,14 @@ class AdminController extends Controller
 
         if ($choice == 1) {
             $order->update(['paymentStatus' => 2, 'orderStatus' => 'Translation Pending', 'paymentLaterApproved' => 1]);
-            Mail::to($order->user->email)->send(new LatePaymentApproved());
+            // Mail::to($order->user->email)->send(new LatePaymentApproved());
+            Mail::mailer('clients')->to($order->user->email)->send(new LatePaymentApproved("Flow Translate - Late Payment Approved", "info@flowtranslate.com"));
 
             return redirect()->back();
         } else if ($choice == 0) {
             $order->update(['paymentStatus' => 0, 'orderStatus' => 'Payment Pending', 'paymentLaterApproved' => 0]);
 
-            Mail::to($order->user->email)->send(new LatePaymentRejected());
+            Mail::mailer('clients')->to($order->user->email)->send(new LatePaymentRejected("Flow Translate - Late Payment Approved", "info@flowtranslate.com"));
         }
     }
 
@@ -140,7 +165,8 @@ class AdminController extends Controller
         $order->update(['orderStatus' => 'Translation Pending']);
 
 
-        Mail::to($order->user->email)->send(new paymentApproved());
+        // Mail::to($order->user->email)->send(new paymentApproved());
+        Mail::mailer('clients')->to($order->user->email)->send(new paymentApproved("Flow Translate - Payment Approved", "info@flowtranslate.com"));
 
         return redirect()->route('admin.pending');
     }
@@ -155,7 +181,8 @@ class AdminController extends Controller
         $order->update(['paymentStatus' => 0]);
         $order->update(['orderStatus' => 'Payment Pending']);
 
-        Mail::to($order->user->email)->send(new paymentRejected());
+        // Mail::to($order->user->email)->send(new paymentRejected());
+        Mail::mailer('clients')->to($order->user->email)->send(new paymentRejected("Flow Translate - Payment Rejected", "info@flowtranslate.com"));
 
 
         return redirect()->route('admin.pending');
@@ -191,7 +218,7 @@ class AdminController extends Controller
 
         $order->delete();
 
-        return redirect()->route('admin.dashboard');
+        return redirect()->back();
     }
 
     public function mailToTranslator($id)
@@ -212,7 +239,7 @@ class AdminController extends Controller
 
         $order_id = $request->input('order_id');
         $email = $request->input('translator_email');
-
+        $emailTitle = $request->input('email_title');
 
         $check = TranslationRequest::where([
             'order_id' => $order_id
@@ -255,10 +282,11 @@ class AdminController extends Controller
 
             $zip->close();
         }
-
+        // dd($emailTitle);
         Order::where('id', $order_id)->update(['orderStatus' => 'Sent to Translator', 'translation_sent' => 1]);
 
-        Mail::to($translatorEmail)->send(new orderToTranslator($order, $zipName));
+        Mail::mailer('webpage')->to($translatorEmail)->send(new orderToTranslator($order, $zipName, $emailTitle, "webpage@flowtranslate.com"));
+
         return redirect()->route('admin.pending');
 
 
@@ -350,18 +378,17 @@ class AdminController extends Controller
     // Sending To Proofreader
     public function sendDocumentsToProofReader(Request $request)
     {
+        // dd($request);
         $validated = $request->validate([
-            'order_id' => 'required|integer',
-            'proofreader_email' => 'email|required',
-            'email_title' => 'required',
-            'email_body' => 'required',
-            'files' => 'required',
-            'files.*' => 'mimes:docx,doc,png,jpg,pdf,txt'
+            'order_id' => 'integer',
+            'proofreader_email' => 'email',
+            'email_title' => 'string',
+            'email_body' => 'string'
         ]);
 
         $order_id = $request->input('order_id');
         $email = $request->input('proofreader_email');
-
+        $emailTitle = $request->input('email_title');
 
         $check = ProofRequest::where([
             'order_id' => $order_id
@@ -444,8 +471,9 @@ class AdminController extends Controller
         }
 
         Order::where('id', $order_id)->update(['orderStatus' => 'Sent to ProofReader', 'proofread_sent' => 1]);
+        Mail::mailer('webpage')->to($proofReaderEmail)->send(new mailToProofReader($order, $zipName, $zipName2, $emailTitle, "webpage@flowtranslate.com"));
 
-        Mail::to($proofReaderEmail)->send(new mailToProofReader($order, $zipName, $zipName2));
+        // Mail::to($proofReaderEmail)->send(new mailToProofReader($order, $zipName, $zipName2));
         return redirect()->route('showTranslationRequests');
     }
 
@@ -483,7 +511,7 @@ class AdminController extends Controller
 
         $order_id = $request->input('order_id');
         $email = $request->input('email');
-
+        $emailTitle = $request->input('email_title');
 
         $check = CompletedRequest::where([
             'order_id' => $order_id,
@@ -535,8 +563,9 @@ class AdminController extends Controller
         Order::where('id', $order_id)->update(['orderStatus' => 'Completed']);
         Order::where('id', $order_id)->update(['completed' => 1]);
 
+        Mail::mailer('clients')->to($email)->send(new mailOfCompletion($order, $zipName2, $emailTitle, "info@flowtranslate.com"));
 
-        Mail::to($email)->send(new mailOfCompletion($order, $zipName2));
+        // Mail::to($email)->send(new mailOfCompletion($order, $zipName2));
         return redirect()->route('completedOrders');
     }
 

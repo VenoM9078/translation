@@ -100,7 +100,7 @@ class UserController extends Controller
         // $validated['user_id'] = $userID;
         $currDate = date('Ymd');
         $randomDigits = mt_rand(1111, 9999);
-        $worknumber = $currDate . date('md', strtotime($currDate . ' + 10 days')) . $randomDigits;
+        $worknumber = $currDate . date('md', strtotime($currDate . ' + 10 days')) . '_' . $randomDigits;
         //    var_dump($worknumber);
 
 
@@ -143,8 +143,13 @@ class UserController extends Controller
             $user = Auth::user();
 
             $email = $user->email;
-            Mail::to($email)->send(new OrderCreated($user, $order));
-            Mail::to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order));
+
+            Mail::mailer('clients')->to($email)->send(new OrderCreated($user, $order, "Flow Translate - Order Created", "info@flowtranslate.com"));
+            Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order, "Flow Translate - New Order Created", "info@flowtranslate.com"));
+
+
+            // Mail::to($email)->send(new OrderCreated($user, $order));
+            // Mail::to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order));
 
 
             return redirect()->route('myorders')->with('status', 'Translation Order placed successfully!');
@@ -189,8 +194,9 @@ class UserController extends Controller
         $order->save();
 
         $email = $order->user->email;
-        Mail::to($email)->send(new CustomerPaymentReceived($order));
-        Mail::to('webpage@flowtranslate.com')->send(new AdminPaymentReceived($order));
+
+        Mail::mailer('clients')->to($email)->send(new CustomerPaymentReceived($order, "Flow Translate - Payment Received", "info@flowtranslate.com"));
+        Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new AdminPaymentReceived($order, "Flow Translate - Customer Payment Received", "info@flowtranslate.com"));
 
         return view('user.thankyou');
     }
