@@ -84,6 +84,7 @@ class UserController extends Controller
     {
         // dd($request);
         // dd($request);
+        // dd($request);
         $userID = Auth::id();
         // // dd($request, $userID);
         // $validated = $request->validate([
@@ -162,6 +163,14 @@ class UserController extends Controller
         $orders = Order::where('user_id', $user->id)->orderByDesc('created_at')->get();
 
         return view('user.myorders', compact('user', 'orders'));
+    }
+
+    public function allInvoices()
+    {
+        $user = Auth::user();
+        $invoices = $user->invoices;
+
+        return view('user.allinvoices', compact('user', 'invoices'));
     }
 
 

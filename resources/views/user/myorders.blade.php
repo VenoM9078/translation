@@ -141,8 +141,8 @@
                                             class="btn btn-warning mr-1 mb-2"> View Invoice </a>
 
                                         @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 3)
-                                        <button class="btn btn-pending mr-1 mb-2"> Waiting for Late Payment Approval <i
-                                                data-loading-icon="three-dots" data-color="1a202c"
+                                        <button class="btn btn-pending mr-1 mb-2"> Waiting for Deferred Payment Approval
+                                            <i data-loading-icon="three-dots" data-color="1a202c"
                                                 class="w-4 h-4 ml-2"></i> </button>
 
 

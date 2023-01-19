@@ -91,6 +91,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
 Route::middleware(['web', 'auth'])->group(function () {
     Route::resource('user', UserController::class);
     Route::get('myorders', [UserController::class, 'myorders'])->name('myorders');
+    Route::get('allInvoices', [UserController::class, 'allInvoices'])->name('allInvoices');
+
     Route::get('logout', [UserController::class, 'destroySession'])->name('logout');
     Route::get('viewInvoice/{id}', [UserController::class, 'viewInvoice'])->name('viewInvoice');
     Route::get('provideProof/{id}', [UserController::class, 'provideProof'])->name('provideProof');

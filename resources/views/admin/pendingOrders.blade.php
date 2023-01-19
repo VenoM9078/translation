@@ -36,20 +36,18 @@
 
                             </tr>
                         </thead>
+
                         <tbody>
                             @foreach ($orders as $order)
-
+                            {{-- @dd($order) --}}
                             <tr>
                                 <td class="whitespace-nowrap">{{ $order->user->name }}</td>
                                 <td class="whitespace-nowrap">{{ $order->user->email }}</td>
+                                <td class="whitespace-nowrap">{{($order->casemanager != '') ?
+                                    $order->casemanager : 'N/A'}}</td>
+                                <td class="whitespace-nowrap">{{($order->access_code != '') ?
+                                    $order->access_code : 'N/A'}}</td>
 
-                                @if($order->user->casemanager == '' && $order->user->access_code == '')
-                                <td class="whitespace-nowrap">N/A</td>
-                                <td class="whitespace-nowrap">N/A</td>
-                                @else
-                                <td class="whitespace-nowrap">{{ $order->user->casemanager }}</td>
-                                <td class="whitespace-nowrap">{{ $order->user->access_code }}</td>
-                                @endif
                                 <td class="whitespace-nowrap">{{ $order->worknumber }}</td>
                                 <td class="whitespace-nowrap">{{ $order->language1 }}</td>
                                 <td class="whitespace-nowrap">{{ $order->language2 }}</td>

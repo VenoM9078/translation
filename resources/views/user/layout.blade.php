@@ -91,7 +91,7 @@
                 <li>
                     <a href="{{ route('user.index') }}" class="menu menu--active">
                         <div class="menu__icon"> <i data-lucide="home"></i> </div>
-                        <div class="menu__title"> Dashboard</div>
+                        <div class="menu__title"> Create New Order</div>
                     </a>
 
                 </li>
@@ -99,7 +99,7 @@
                 <li>
                     <a href="{{ route('myorders') }}" class="menu">
                         <div class="menu__icon"> <i data-lucide="archive"></i> </div>
-                        <div class="menu__title"> My Orders</div>
+                        <div class="menu__title"> Dashboard </div>
                     </a>
 
                 </li>
@@ -122,7 +122,7 @@
                         class="{{ ((Route::getCurrentRoute()->uri == 'user') ? 'side-menu   side-menu--active' : 'side-menu' ) }}">
                         <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
                         <div class="side-menu__title">
-                            Dashboard
+                            Create New Order
                         </div>
                     </a>
                 </li>
@@ -132,11 +132,21 @@
                         class="{{ ((Route::getCurrentRoute()->uri == 'myorders') ? 'side-menu   side-menu--active' : 'side-menu' ) }}">
                         <div class="side-menu__icon"> <i data-lucide="archive"></i> </div>
                         <div class="side-menu__title">
-                            My Orders
+                            Dashboard
                         </div>
                     </a>
                 </li>
 
+
+                <li>
+                    <a href="{{ route('myorders') }}"
+                        class="{{ ((Route::getCurrentRoute()->uri == 'myorders') ? 'side-menu   side-menu--active' : 'side-menu' ) }}">
+                        <div class="side-menu__icon"> <i data-lucide="archive"></i> </div>
+                        <div class="side-menu__title">
+                            Dashboard
+                        </div>
+                    </a>
+                </li>
 
 
                 <li class="side-nav__devider my-6"></li>
