@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\invoiceSent;
 use App\Mail\LatePaymentApproved;
 use App\Mail\LatePaymentRejected;
 use App\Mail\mailOfCompletion;
@@ -9,6 +10,8 @@ use App\Mail\mailToProofReader;
 use App\Mail\orderToTranslator;
 use App\Mail\paymentApproved;
 use App\Mail\paymentRejected;
+use Barryvdh\DomPDF\Facade as PDF;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Models\CompletedRequest;
@@ -501,7 +504,7 @@ class AdminController extends Controller
             'order_id' => 'required|integer',
             'user_id' => 'required|integer',
             'translation_id' => 'required|integer',
-            'proofreader_id' => 'required|integer',
+            'proofreader_id' => 'integer',
             'email' => 'email|required',
             'email_title' => 'required',
             'email_body' => 'required',
@@ -565,8 +568,41 @@ class AdminController extends Controller
 
         Mail::mailer('clients')->to($email)->send(new mailOfCompletion($order, $zipName2, $emailTitle, "info@flowtranslate.com"));
 
+        //Send Invoice
+
+        $validated = $request->validate([
+            'description' => 'required|max:255',
+            'docQuantity' => 'required',
+            'amount' => 'required|integer',
+            'user_id' => 'required|integer',
+            'order_id' => 'required|integer'
+        ]);
+
+        $id = $request->input('user_id');
+        $order_id = $request->input('order_id');
+        $user = User::find($id);
+        $order = Order::find($order_id);
+        $userMail = $user->email;
+
+        $doesInvoiceExist = Invoice::where('order_id', $order_id)->get();
+
+        Mail::mailer('clients')->to($userMail)->send(new invoiceSent($user, $order, $doesInvoiceExist[0], "Flow Translate - New Invoice", "info@flowtranslate.com"));
         // Mail::to($email)->send(new mailOfCompletion($order, $zipName2));
         return redirect()->route('completedOrders');
+    }
+
+    public function generatePDFInvoice($invoiceID)
+    {
+        $users = User::get();
+        $pdf = app('dompdf.wrapper');
+        $invoice = Invoice::findOrFail($invoiceID);
+        $data = [
+            'data' => $invoice
+        ];
+        // dd($data['data']->description);
+        $pdf = $pdf->loadView('pdf.invoice-pdf', $data);
+        $fileName = "invoice_" . Carbon::now() . ".pdf";
+        return $pdf->download($fileName);
     }
 
     public function viewQuoteRequests()

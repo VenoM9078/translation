@@ -44,6 +44,7 @@ class UserController extends Controller
     public function create()
     {
         //
+
     }
 
 
@@ -155,6 +156,8 @@ class UserController extends Controller
 
             return redirect()->route('myorders')->with('status', 'Translation Order placed successfully!');
         }
+        return redirect()->route('myorders')->with('status', 'Translation Order placed successfully!');
+        // redirect()->back();
     }
 
     public function myorders()

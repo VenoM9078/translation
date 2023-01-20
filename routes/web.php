@@ -51,7 +51,7 @@ Route::get('/admin/register', [AdminAuthController::class, 'showRegisterForm'])-
 Route::post('/admin/register', [AdminAuthController::class, 'store'])->name('admin.register');
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login');
 Route::get('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
-
+// Route::get('/pdf')
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
@@ -86,6 +86,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('viewMessages', [AdminController::class, 'viewMessages'])->name('viewMessages');
     Route::post('deleteAllQuotes', [AdminController::class, 'deleteAllQuotes'])->name('deleteAllQuotes');
     Route::post('deleteAllContacts', [AdminController::class, 'deleteAllContacts'])->name('deleteAllContacts');
+    Route::get('generate-invoice/{id}', [AdminController::class, 'generatePDFInvoice'])->name('generatePDFInvoice');
+
 });
 
 Route::middleware(['web', 'auth'])->group(function () {
@@ -101,7 +103,8 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::get('thankyou/{id}', [UserController::class, 'updatePaymentStatus'])->name('thankyou');
     Route::get('payLaterLanding', function () {
         return view('user.payLaterLanding');
-    })->name('payLaterLanding');
+    }
+    )->name('payLaterLanding');
 
 
     Route::post('upload', [UserController::class, 'uploadImage'])->name('upload');
