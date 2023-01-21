@@ -79,7 +79,7 @@
     <div class="mobile-menu md:hidden">
         <div class="mobile-menu-bar">
             <a href="" class="flex mr-auto">
-                <img alt="Midone - HTML Admin Template" class="w-6" src="{{ url('dist/images/logo.svg') }}">
+                <img class="w-6" src="{{ url('dist/images/logo.svg') }}">
             </a>
             <a href="javascript:;" class="mobile-menu-toggler"> <i data-lucide="bar-chart-2"
                     class="w-8 h-8 text-white transform -rotate-90"></i> </a>
@@ -89,27 +89,39 @@
                     class="w-8 h-8 text-white transform -rotate-90"></i> </a>
             <ul class="scrollable__content py-2">
                 <li>
-                    <a href="{{ route('/') }}" class="menu menu--active">
-                        <div class="menu__icon"> <i data-lucide="home"></i> </div>
-                        <div class="menu__title"> Home</div>
+                    <a href="{{ route('/') }}" class="menu ">
+                        <div class="menu__icon"> <i data-lucide="monitor"></i> </div>
+                        <div class="menu__title"> Main Site</div>
                     </a>
 
                 </li>
+                <div class="side-nav__devider my-6"></div>
+
                 <li>
-                    <a href="{{ route('user.index') }}" class="menu menu--active">
-                        <div class="menu__icon"> <i data-lucide="home"></i> </div>
+                    <a href="{{ route('myorders') }}" class="menu">
+                        <div class="menu__icon"> <i data-lucide="codesandbox"></i> </div>
+                        <div class="menu__title"> Dashboard </div>
+                    </a>
+
+                </li>
+
+                <li>
+                    <a href="{{ route('user.index') }}" class="menu">
+                        <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
                         <div class="menu__title"> Create New Order</div>
                     </a>
 
                 </li>
 
                 <li>
-                    <a href="{{ route('myorders') }}" class="menu">
-                        <div class="menu__icon"> <i data-lucide="archive"></i> </div>
-                        <div class="menu__title"> Dashboard </div>
+                    <a href="{{ route('allInvoices') }}" class="menu">
+                        <div class="menu__icon"> <i data-lucide="help-circle"></i> </div>
+                        <div class="menu__title"> Invoices</div>
                     </a>
 
                 </li>
+
+
             </ul>
         </div>
     </div>
@@ -125,11 +137,21 @@
             <div class="side-nav__devider my-6"></div>
             <ul>
                 <li>
-                    <a href="{{ route('/') }}"
-                        class="side-menu">
-                        <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
+                    <a href="{{ route('/') }}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="monitor"></i> </div>
                         <div class="side-menu__title">
-                            Home
+                            Main Site
+                        </div>
+                    </a>
+                </li>
+                <div class="side-nav__devider my-6"></div>
+
+                <li>
+                    <a href="{{ route('myorders') }}"
+                        class="{{ Route::getCurrentRoute()->uri == 'myorders' ? 'side-menu   side-menu--active' : 'side-menu' }}">
+                        <div class="side-menu__icon"> <i data-lucide="codesandbox"></i> </div>
+                        <div class="side-menu__title">
+                            Dashboard
                         </div>
                     </a>
                 </li>
@@ -137,28 +159,20 @@
                 <li>
                     <a href="{{ route('user.index') }}"
                         class="{{ Route::getCurrentRoute()->uri == 'user' ? 'side-menu   side-menu--active' : 'side-menu' }}">
-                        <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
+                        <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
                         <div class="side-menu__title">
                             Create New Order
                         </div>
                     </a>
                 </li>
 
-                <li>
-                    <a href="{{ route('myorders') }}"
-                        class="{{ Route::getCurrentRoute()->uri == 'myorders' ? 'side-menu   side-menu--active' : 'side-menu' }}">
-                        <div class="side-menu__icon"> <i data-lucide="archive"></i> </div>
-                        <div class="side-menu__title">
-                            Dashboard
-                        </div>
-                    </a>
-                </li>
+
 
 
                 <li>
                     <a href="{{ route('allInvoices') }}"
                         class="{{ Route::getCurrentRoute()->uri == 'allInvoices' ? 'side-menu   side-menu--active' : 'side-menu' }}">
-                        <div class="side-menu__icon"> <i data-lucide="archive"></i> </div>
+                        <div class="side-menu__icon"> <i data-lucide="help-circle"></i> </div>
                         <div class="side-menu__title">
                             Invoices
                         </div>
@@ -193,8 +207,7 @@
                     position: relative;
                     top: 8px;
                     margin: 20px;
-                "
-                    id="google_translate_element2"></div>
+                " id="google_translate_element2"></div>
                 <!-- BEGIN: Account Menu -->
                 <div class="intro-x dropdown w-8 h-8">
                     <div class="dropdown-toggle w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in"
@@ -207,12 +220,12 @@
 
                                 <div class="font-medium">
                                     @auth
-                                        {{ Auth::user()->name }}
+                                    {{ Auth::user()->name }}
                                     @endauth
                                 </div>
                                 <div class="text-xs text-white/70 mt-0.5 dark:text-slate-500">
                                     @auth
-                                        {{ Auth::user()->email }}
+                                    {{ Auth::user()->email }}
                                     @endauth
                                 </div>
                             </li>
@@ -243,8 +256,8 @@
 
     <!-- BEGIN: JS Assets-->
     <script src="{{ url('dist/js/app.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
     <script>
@@ -265,7 +278,8 @@
             }, 'google_translate_element2');
         }
     </script>
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2">
+    <script type="text/javascript"
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2">
     </script>
     <script type="text/javascript">
         /* <![CDATA[ */

@@ -22,6 +22,7 @@ use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\OrderFiles;
 use App\Models\ProofRequest;
+use App\Models\TemporaryFile;
 use App\Models\TranslationRequest;
 use Illuminate\Support\Facades\Mail;
 
@@ -495,11 +496,34 @@ class AdminController extends Controller
         return view('admin.sendMailOfCompletion', compact('order'));
     }
 
+    public function uploadImage(Request $request)
+    {
+        if ($request->hasFile('files')) {
+            $files = $request->file('files');
+
+            // dd($files);
+
+            foreach ($files as $file) {
+
+                $filename = date('YmdHi') . $file->getClientOriginalName();
+                // $folder = uniqid() . '-' . now()->timestamp;
+                // $file->move(public_path('documents'), $filename);
+                $file->move('documents/', $filename);
+
+                TemporaryFile::create([
+                    'filename' => $filename
+                ]);
+
+                return $filename;
+            }
+        }
+    }
+
     // Mail to User for Completion 🙌
 
     public function sendDocumentsToUser(Request $request)
     {
-
+        // dd($request->input('files'));
         $validated = $request->validate([
             'order_id' => 'required|integer',
             'user_id' => 'required|integer',
@@ -507,9 +531,7 @@ class AdminController extends Controller
             'proofreader_id' => 'integer',
             'email' => 'email|required',
             'email_title' => 'required',
-            'email_body' => 'required',
-            'files' => 'required',
-            'files.*' => 'mimes:docx,doc,png,jpg,pdf,txt'
+            'email_body' => 'required'
         ]);
 
         $order_id = $request->input('order_id');
@@ -525,18 +547,41 @@ class AdminController extends Controller
             $check->delete();
         }
 
-        if ($request->hasFile('files')) {
+        $order = Order::where('id', $order_id)->first();
 
-            $files = $request->file('files');
+
+        if ($request->input('files')) {
+
+            $files = $request->input('files');
 
             $fileArr2 = [];
 
             foreach ($files as $file) {
 
-                $filename = date('YmdHi') . $file->getClientOriginalName();
+                $filename = $file;
 
-                $file->move(public_path('documents'), $filename);
+                // $file->move(public_path('documents'), $filename);
                 $fileArr2[] = public_path('documents/' . $filename);
+            }
+
+            if ($order->paymentStatus == 2) {
+                $pdf = app('dompdf.wrapper');
+                $invoice = Invoice::findOrFail($order->invoice->id);
+                // dd($invoice);
+                $data = [
+                    'data' => $invoice
+                ];
+                // dd($data['data']->description);
+                $pdf = $pdf->loadView('pdf.invoice-pdf', $data);
+                // dd($pdf);
+                $randomDigits = mt_rand(1111, 9999);
+                $fileName = "invoice_" . $randomDigits . ".pdf";
+                $path = public_path('documents/' . $fileName);
+                // $pdf->path_to_pdf = $path;
+                $pdf->save($path);
+
+
+                $fileArr2[] = $path;
             }
 
             $zip2 = new ZipArchive;
@@ -546,7 +591,7 @@ class AdminController extends Controller
             if ($zip2->open(public_path('translated/' . $zipName2), ZipArchive::CREATE) === TRUE) {
 
                 $files = $fileArr2; //passing the above array
-
+                // dd($files);
                 foreach ($files as $key => $value) {
                     $relativeNameInZipFile = basename($value);
                     // dd($relativeNameInZipFile);
@@ -561,8 +606,6 @@ class AdminController extends Controller
 
         $completedRequest = CompletedRequest::create($validated);
 
-        $order = Order::where('id', $order_id)->first();
-
         Order::where('id', $order_id)->update(['orderStatus' => 'Completed']);
         Order::where('id', $order_id)->update(['completed' => 1]);
 
@@ -570,23 +613,23 @@ class AdminController extends Controller
 
         //Send Invoice
 
-        $validated = $request->validate([
-            'description' => 'required|max:255',
-            'docQuantity' => 'required',
-            'amount' => 'required|integer',
-            'user_id' => 'required|integer',
-            'order_id' => 'required|integer'
-        ]);
+        // $validated = $request->validate([
+        //     'description' => 'required|max:255',
+        //     'docQuantity' => 'required',
+        //     'amount' => 'required|integer',
+        //     'user_id' => 'required|integer',
+        //     'order_id' => 'required|integer'
+        // ]);
 
-        $id = $request->input('user_id');
-        $order_id = $request->input('order_id');
-        $user = User::find($id);
-        $order = Order::find($order_id);
-        $userMail = $user->email;
+        // $id = $request->input('user_id');
+        // $order_id = $request->input('order_id');
+        // $user = User::find($id);
+        // $order = Order::find($order_id);
+        // $userMail = $user->email;
 
-        $doesInvoiceExist = Invoice::where('order_id', $order_id)->get();
+        // $doesInvoiceExist = Invoice::where('order_id', $order_id)->get();
 
-        Mail::mailer('clients')->to($userMail)->send(new invoiceSent($user, $order, $doesInvoiceExist[0], "Flow Translate - New Invoice", "info@flowtranslate.com"));
+        // Mail::mailer('clients')->to($userMail)->send(new invoiceSent($user, $order, $doesInvoiceExist[0], "Flow Translate - New Invoice", "info@flowtranslate.com"));
         // Mail::to($email)->send(new mailOfCompletion($order, $zipName2));
         return redirect()->route('completedOrders');
     }

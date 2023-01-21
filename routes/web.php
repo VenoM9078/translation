@@ -56,6 +56,9 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+Route::get('generate-invoice/{id}', [AdminController::class, 'generatePDFInvoice'])->name('generatePDFInvoice');
+
+
 Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('admin/pending', [AdminController::class, 'pendingOrders'])->name('admin.pending');
@@ -86,8 +89,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('viewMessages', [AdminController::class, 'viewMessages'])->name('viewMessages');
     Route::post('deleteAllQuotes', [AdminController::class, 'deleteAllQuotes'])->name('deleteAllQuotes');
     Route::post('deleteAllContacts', [AdminController::class, 'deleteAllContacts'])->name('deleteAllContacts');
-    Route::get('generate-invoice/{id}', [AdminController::class, 'generatePDFInvoice'])->name('generatePDFInvoice');
-
+    Route::post('adminUpload', [AdminController::class, 'uploadImage'])->name('adminUpload');
 });
 
 Route::middleware(['web', 'auth'])->group(function () {
@@ -101,13 +103,15 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::post('payLater', [UserController::class, 'payLater'])->name('payLater');
     Route::post('processProof', [UserController::class, 'processProof'])->name('processProof');
     Route::get('thankyou/{id}', [UserController::class, 'updatePaymentStatus'])->name('thankyou');
-    Route::get('payLaterLanding', function () {
-        return view('user.payLaterLanding');
-    }
+    Route::get(
+        'payLaterLanding',
+        function () {
+            return view('user.payLaterLanding');
+        }
     )->name('payLaterLanding');
 
-
     Route::post('upload', [UserController::class, 'uploadImage'])->name('upload');
+
     Route::post('uploadProof', [UserController::class, 'uploadProof'])->name('uploadProof');
 
     Route::delete('deleteUpload', [UserController::class, 'deleteUpload'])->name('deleteUpload');
@@ -115,6 +119,7 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::get('downloadTranslatedForUser/{id}', [UserController::class, 'downloadTranslatedForUser'])->name('downloadTranslatedForUser');
     Route::post('submitFeedback', [UserController::class, 'submitFeedback'])->name('submitFeedback');
 });
+
 
 Route::post('freequote', [GuestController::class, 'freequote'])->name('freequote');
 

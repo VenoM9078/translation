@@ -19,8 +19,8 @@ return new class extends Migration
             $table->integer('user_id');
             $table->string('email');
             $table->string('completed_file');
-            $table->string('translation_id');
-            $table->string('proofreader_id');
+            $table->string('translation_id')->nullable(true);;
+            $table->string('proofreader_id')->nullable(true);
             $table->timestamps();
         });
     }
