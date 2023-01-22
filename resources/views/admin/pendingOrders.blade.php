@@ -30,8 +30,8 @@
                                 <th class="whitespace-nowrap">Translated Language</th>
                                 <th class="whitespace-nowrap">Payment Status</th>
                                 <th class="whitespace-nowrap">Order Status</th>
-                                <th class="whitespace-nowrap">Translation Status</th>
-                                <th class="whitespace-nowrap">Proofread Status</th>
+                                {{-- <th class="whitespace-nowrap">Translation Status</th> --}}
+                                {{-- <th class="whitespace-nowrap">Proofread Status</th> --}}
                                 <th class="whitespace-nowrap">Actions</th>
                                 <th class="whitespace-nowrap">Next Step</th>
                                 <th class="whitespace-nowrap">Date Received</th>
@@ -143,7 +143,7 @@
                                 {{-- {{ route('translator.edit', $translator->id) }} --}}
                                 {{-- {{ route('translator.destroy', $translator->id) }} --}}
 
-                                @if ($order->translation_status == 1)
+                                {{-- @if ($order->translation_status == 1)
                                 <td class="whitespace-nowrap"><button
                                         class="btn btn-rounded-success w-24 mr-1 mb-2">Translated</button></td>
                                 @else($order->translation_status == 0)
@@ -156,7 +156,7 @@
                                 @else
                                 <td class="whitespace-nowrap"><button
                                         class="btn btn-rounded-pending w-24 mr-1 mb-2">Pending</button></td>
-                                @endif
+                                @endif --}}
                                 <td class="whitespace-nowrap">
                                     <div class="flex  items-center">
                                         {{-- <a href="javascript:;" data-trigger="click"

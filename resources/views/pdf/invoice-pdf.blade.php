@@ -31,7 +31,7 @@
     <table width="100%">
         <tr>
             <td valign="top">
-              <h1>Flow Translate</h1>
+                <h1>Flow Translate</h1>
             </td>
             <td align="right">
                 <h3>Order ID:{{ $data->order_id }}</h3>

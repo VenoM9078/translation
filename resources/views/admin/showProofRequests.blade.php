@@ -67,7 +67,7 @@
                                 <td class="whitespace-nowrap"><button
                                         class="btn btn-rounded-pending w-24 mr-1 mb-2">Pending</button></td>
                                 @endif
-                                <td class="whitespace-nowrap">{{ $proofReadRequest->created_at }}</td>
+                                <td class="whitespace-nowrap">{{ $proofReadRequest->created_at->timezone('America/Los_Angeles') }}</td>
 
                                 {{-- {{ route('translator.edit', $translator->id) }} --}}
                                 {{-- {{ route('translator.destroy', $translator->id) }} --}}

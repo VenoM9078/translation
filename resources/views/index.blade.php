@@ -13,7 +13,7 @@
     <title>Flow Translate - Home</title>
 
     <!--====== Favicon ======-->
-    <link rel="shortcut icon" href="{{url('dist/images/logo.svg')}}" type="images/x-icon" />
+    <link rel="shortcut icon" href="{{ url('dist/images/logo.svg') }}" type="images/x-icon" />
 
     <!--====== CSS Here ======-->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -131,7 +131,8 @@
                                 <img style="height: 67px;width: auto;/* position:  relative; *//* top: 14px; */"
                                     src="{{ asset('assets/images/logo.png') }}" alt="">
                             </a>
-                            <div class="mainmenu mainmenu__2" style="padding-bottom: 0 !important;
+                            <div class="mainmenu mainmenu__2"
+                                style="padding-bottom: 0 !important;
                             height: 90px !Important;
                         ">
                                 <nav id="mobile-menu">
@@ -155,7 +156,8 @@
                                             /* top: 8px; */
                                             margin-left: 30px;
                                             margin-top: 23px;
-                                        " id="google_translate_element2"></div>
+                                        "
+                                                id="google_translate_element2"></div>
                                         </li>
                                     </ul>
                                 </nav>
@@ -218,24 +220,28 @@
                 <div class="col-xl-5">
                     <div class="about__bg about__bg--2 mt-75">
                         <div class="big-thumb">
-                            <img height="507" width="470" src="assets/images/about/about-bg-1.jpg" alt="">
+                            <img height="507" width="470" src="assets/images/about/about-bg-1.jpg"
+                                alt="">
                         </div>
                         <div class="mid-thumb position-absulate">
-                            <img height="271" width="222" src="assets/images/about/about-bg-2.jpg" alt="">
+                            <img height="271" width="222" src="assets/images/about/about-bg-2.jpg"
+                                alt="">
                         </div>
                         <div class="small-thumb position-absulate">
-                            <img height="230" width="144" src="assets/images/about/about-bg-3.jpg" alt="">
+                            <img height="230" width="144" src="assets/images/about/about-bg-3.jpg"
+                                alt="">
                         </div>
                         <span class="circle-shape position-absulate"><img src="assets/images/shape/border-shape-2.png"
                                 alt=""></span>
-                        <span class="patternt-shape position-absulate"><img src="assets/images/shape/about-shape-1.png"
-                                alt=""></span>
+                        <span class="patternt-shape position-absulate"><img
+                                src="assets/images/shape/about-shape-1.png" alt=""></span>
                     </div>
                 </div>
                 <div class="col-xl-6">
                     <div class="section-header section-header__2 mb-40">
                         <h4 class="sub-heading sub-heading__2 mb-10">About Us <span><img
-                                    src="assets/images/shape/heading-shape-4.png" class="ml-10" alt=""></span></h4>
+                                    src="assets/images/shape/heading-shape-4.png" class="ml-10"
+                                    alt=""></span></h4>
                         <h2 class="section-title section-title__2 mb-30">Facilitating communication in the global
                             village</h2>
                         <p>At Flow Translations we know the crucial role that information and communication plays in
@@ -298,9 +304,11 @@
                 <div class="col-xl-8 text-center">
                     <div class="section-header mb-70">
                         <h4 class="sub-heading sub-heading__2 mb-15">
-                            <span><img src="assets/images/shape/heading-shape-3.png" class="mr-5" alt=""></span>
+                            <span><img src="assets/images/shape/heading-shape-3.png" class="mr-5"
+                                    alt=""></span>
                             what we offer
-                            <span><img src="assets/images/shape/heading-shape-4.png" class="ml-5" alt=""></span>
+                            <span><img src="assets/images/shape/heading-shape-4.png" class="ml-5"
+                                    alt=""></span>
                         </h4>
                         <h2 class="section-title section-title__2">Our Services</h2>
                     </div>
@@ -314,9 +322,12 @@
                             <img src="assets/images/icons/f-5.png" alt="">
                         </div>
                         <div class="feature-item__content feature-item__content--2">
-                            <h4 class="feature-item__title feature-item__title--2">Translation</h4>
+                            <h4 class="feature-item__title feature-item__title--2">Document Translation</h4>
                             <p>We understand the importance of cross-cultural communication and deliver professional
-                                translation services.</p>
+                                translation services in many languages. The main ones are Spanish, Chinese, Vietnamese,
+                                Korean, Japanese, Tagalog, Russian, Dutch, French, German Farsi, Dari, Tigrinya, and
+                                other languages of lesser diffusion. Each translated document goes through a
+                                proofreading and editing process before considered final.</p>
                         </div>
                     </div>
                 </div>
@@ -327,7 +338,7 @@
                             <img src="assets/images/icons/f-6.png" alt="">
                         </div>
                         <div class="feature-item__content feature-item__content--2">
-                            <h4 class="feature-item__title feature-item__title--2">Localization</h4>
+                            <h4 class="feature-item__title feature-item__title--2">Remote Video Interpreting</h4>
                             <p> To achieve a common understanding across cultures, translation is not enough but local
                                 customs and habits need to be considered. </p>
 
@@ -358,8 +369,8 @@
         <div class="container-fluid">
             <div class="row no-gutters">
                 <div class="col-xl-8">
-                    <div class="video__bg bg_img" data-background="assets/images/bg/quotebg-1.jpg" data-overlay="dark"
-                        data-opacity="34">
+                    <div class="video__bg bg_img" data-background="assets/images/bg/quotebg-1.jpg"
+                        data-overlay="dark" data-opacity="34">
                     </div>
                 </div>
                 <div class="col-xl-4">
@@ -404,9 +415,11 @@
                 <div class="col-xl-8 text-center">
                     <div class="section-header mb-65">
                         <h4 class="sub-heading mb-15">
-                            <span><img src="assets/images/shape/heading-shape-3.png" class="mr-5" alt=""></span>
+                            <span><img src="assets/images/shape/heading-shape-3.png" class="mr-5"
+                                    alt=""></span>
                             working process
-                            <span><img src="assets/images/shape/heading-shape-4.png" class="ml-5" alt=""></span>
+                            <span><img src="assets/images/shape/heading-shape-4.png" class="ml-5"
+                                    alt=""></span>
                         </h4>
                         <h2 class="section-title section-title__2">How We Work</h2>
                     </div>
@@ -414,26 +427,35 @@
             </div>
             <div class="row mt-none-40">
                 <div class="col-xl-3 col-lg-6 col-md-6 mt-40">
-                    <div class="wp-box">
-                        <div class="wp-box__icon wp-box__icon--1 mb-35">
-                            <img src="assets/images/icons/w-p-1.png" alt="">
+                    <a href="{{ route('register') }}">
+                        <div class="wp-box">
+                            <div class="wp-box__icon wp-box__icon--1 mb-35">
+                                <img src="assets/images/icons/w-p-1.png" alt="">
+                            </div>
+                            <div class="wp-box__content">
+                                <h4 class="wp-box__title">
+                                    Registration
+                                </h4>
+                                <p>First step for you is to Sign Up! This gives you a look at our Translation Center.
+                                </p>
+                            </div>
                         </div>
-                        <div class="wp-box__content">
-                            <h4 class="wp-box__title">Registration</h4>
-                            <p>First step for you is to Sign Up! This gives you a look at our Translation Center.</p>
-                        </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-xl-3 col-lg-6 col-md-6 mt-40">
                     <div class="wp-box reverse-col">
-                        <div class="wp-box__content">
-                            <h4 class="wp-box__title">Request Translation</h4>
-                            <p>Have a document you need translated? Fill in the details, attach the document and wait
-                                for the magic to happen!</p>
-                        </div>
-                        <div class="wp-box__icon wp-box__icon--2 mt-35">
-                            <img src="assets/images/icons/w-p-2.png" alt="">
-                        </div>
+                        <a href="{{ url('/user') }}">
+
+                            <div class="wp-box__content">
+                                <h4 class="wp-box__title">Request Translation</h4>
+                                <p>Have a document you need translated? Fill in the details, attach the document and
+                                    wait
+                                    for the magic to happen!</p>
+                            </div>
+                            <div class="wp-box__icon wp-box__icon--2 mt-35">
+                                <img src="assets/images/icons/w-p-2.png" alt="">
+                            </div>
+                        </a>
                     </div>
                 </div>
                 <div class="col-xl-3 col-lg-6 col-md-6 mt-40">
@@ -449,16 +471,18 @@
                     </div>
                 </div>
                 <div class="col-xl-3 col-lg-6 col-md-6 mt-40">
-                    <div class="wp-box reverse-col">
-                        <div class="wp-box__content">
-                            <h4 class="wp-box__title">Deliverance</h4>
-                            <p>You will be able to track the entire process of your translation and once it is
-                                translated and proofread - you can download the translation.</p>
+                    <a href="{{ url('/myorders') }}">
+                        <div class="wp-box reverse-col">
+                            <div class="wp-box__content">
+                                <h4 class="wp-box__title">Deliverance</h4>
+                                <p>You will be able to track the entire process of your translation and once it is
+                                    translated and proofread - you can download the translation.</p>
+                            </div>
+                            <div class="wp-box__icon mt-35">
+                                <img src="assets/images/icons/w-p-4.png" alt="">
+                            </div>
                         </div>
-                        <div class="wp-box__icon mt-35">
-                            <img src="assets/images/icons/w-p-4.png" alt="">
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -511,36 +535,41 @@
 
     <script type="text/javascript">
         function googleTranslateElementInit2() {
-        new google.translate.TranslateElement({
-            includedLanguages: 'en,es,zh-CN,vi',
-            pageLanguage: 'af',
-            autoDisplay: true
-        }, 'google_translate_element2');
-    }
+            new google.translate.TranslateElement({
+                includedLanguages: 'en,es,zh-CN,vi',
+                pageLanguage: 'af',
+                autoDisplay: true
+            }, 'google_translate_element2');
+        }
     </script>
 
-    <script type="text/javascript"
-        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2"></script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2">
+    </script>
     <script type="text/javascript">
         /* <![CDATA[ */
-    eval(function (p, a, c, k, e, r) {
-        e = function (c) {
-            return (c < a ? '' : e(parseInt(c / a))) + ((c = c % a) > 35 ? String.fromCharCode(c + 29) : c.toString(36))
-        };
-        if (!''.replace(/^/, String)) {
-            while (c--) r[e(c)] = k[c] || e(c);
-            k = [function (e) {
-                return r[e]
-            }];
-            e = function () {
-                return '\\w+'
+        eval(function(p, a, c, k, e, r) {
+            e = function(c) {
+                return (c < a ? '' : e(parseInt(c / a))) + ((c = c % a) > 35 ? String.fromCharCode(c + 29) : c
+                    .toString(36))
             };
-            c = 1
-        }
-        while (c--) if (k[c]) p = p.replace(new RegExp('\\b' + e(c) + '\\b', 'g'), k[c]);
-        return p
-    }('6 7(a,b){n{4(2.9){3 c=2.9("o");c.p(b,f,f);a.q(c)}g{3 c=2.r();a.s(\'t\'+b,c)}}u(e){}}6 h(a){4(a.8)a=a.8;4(a==\'\')v;3 b=a.w(\'|\')[1];3 c;3 d=2.x(\'y\');z(3 i=0;i<d.5;i++)4(d[i].A==\'B-C-D\')c=d[i];4(2.j(\'k\')==E||2.j(\'k\').l.5==0||c.5==0||c.l.5==0){F(6(){h(a)},G)}g{c.8=b;7(c,\'m\');7(c,\'m\')}}', 43, 43, '||document|var|if|length|function|GTranslateFireEvent|value|createEvent||||||true|else|doGTranslate||getElementById|google_translate_element2|innerHTML|change|try|HTMLEvents|initEvent|dispatchEvent|createEventObject|fireEvent|on|catch|return|split|getElementsByTagName|select|for|className|goog|te|combo|null|setTimeout|500'.split('|'), 0, {}))
-    /* ]]> */
+            if (!''.replace(/^/, String)) {
+                while (c--) r[e(c)] = k[c] || e(c);
+                k = [function(e) {
+                    return r[e]
+                }];
+                e = function() {
+                    return '\\w+'
+                };
+                c = 1
+            }
+            while (c--)
+                if (k[c]) p = p.replace(new RegExp('\\b' + e(c) + '\\b', 'g'), k[c]);
+            return p
+        }('6 7(a,b){n{4(2.9){3 c=2.9("o");c.p(b,f,f);a.q(c)}g{3 c=2.r();a.s(\'t\'+b,c)}}u(e){}}6 h(a){4(a.8)a=a.8;4(a==\'\')v;3 b=a.w(\'|\')[1];3 c;3 d=2.x(\'y\');z(3 i=0;i<d.5;i++)4(d[i].A==\'B-C-D\')c=d[i];4(2.j(\'k\')==E||2.j(\'k\').l.5==0||c.5==0||c.l.5==0){F(6(){h(a)},G)}g{c.8=b;7(c,\'m\');7(c,\'m\')}}',
+            43, 43,
+            '||document|var|if|length|function|GTranslateFireEvent|value|createEvent||||||true|else|doGTranslate||getElementById|google_translate_element2|innerHTML|change|try|HTMLEvents|initEvent|dispatchEvent|createEventObject|fireEvent|on|catch|return|split|getElementsByTagName|select|for|className|goog|te|combo|null|setTimeout|500'
+            .split('|'), 0, {}))
+        /* ]]> */
     </script>
 
 
