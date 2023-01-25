@@ -103,6 +103,7 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::post('payLater', [UserController::class, 'payLater'])->name('payLater');
     Route::post('processProof', [UserController::class, 'processProof'])->name('processProof');
     Route::get('thankyou/{id}', [UserController::class, 'updatePaymentStatus'])->name('thankyou');
+    Route::get('viewPayment/{id}', [UserController::class, 'viewPayment'])->name('viewPayment');
     Route::get(
         'payLaterLanding',
         function () {

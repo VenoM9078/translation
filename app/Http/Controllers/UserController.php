@@ -105,15 +105,28 @@ class UserController extends Controller
         $worknumber = $currDate . date('md', strtotime($currDate . ' + 10 days')) . '_' . $randomDigits;
         //    var_dump($worknumber);
 
-
-        $data = [
-            'language1' => $request->input('language1'),
-            'language2' => $request->input('language2'),
-            'access_code' => $request->input('access_code'),
-            'casemanager' => $request->input('casemanager'),
-            'user_id' => $userID,
-            'worknumber' => $worknumber
-        ];
+        if ($request->input("isPayNow") == "on") {
+            $data = [
+                'language1' => $request->input('language1'),
+                'language2' => $request->input('language2'),
+                'access_code' => $request->input('access_code'),
+                'casemanager' => $request->input('casemanager'),
+                'user_id' => $userID,
+                'worknumber' => $worknumber,
+                'amount' => 35,
+                'invoiceSent' => 1,
+                'orderStatus' => 'Completed'
+            ];
+        } else {
+            $data = [
+                'language1' => $request->input('language1'),
+                'language2' => $request->input('language2'),
+                'access_code' => $request->input('access_code'),
+                'casemanager' => $request->input('casemanager'),
+                'user_id' => $userID,
+                'worknumber' => $worknumber
+            ];
+        }
 
         // dd($data);
         $order = Order::create($data);
@@ -148,6 +161,21 @@ class UserController extends Controller
 
             Mail::mailer('clients')->to($email)->send(new OrderCreated($user, $order, "Flow Translate - Order Created", "info@flowtranslate.com"));
             Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order, "Flow Translate - New Order Created", "info@flowtranslate.com"));
+            if ($request->input("isPayNow") == "on") {
+                // If 'Pay Now' is checked. Proceed to create invoice.
+                $id = $request->input('user_id');
+
+                $data = [
+                    'description' => "" . $request->input('language1') . ', ' . $request->input('language2') . "",
+                    'docQuantity' => 1,
+                    'amount' => 35,
+                    'user_id' => $user->id,
+                    'order_id' => $order->id
+                ];
+                Invoice::create($data);
+
+                return view('user.paymentInvoice', compact('order'));
+            }
 
 
             // Mail::to($email)->send(new OrderCreated($user, $order));
@@ -156,10 +184,16 @@ class UserController extends Controller
 
             return redirect()->route('myorders')->with('status', 'Translation Order placed successfully!');
         }
-        return redirect()->route('myorders')->with('status', 'Translation Order placed successfully!');
+        return redirect()->back()->with('status', 'Attach Files!');
         // redirect()->back();
     }
 
+    public function viewPayment($orderid)
+    {
+        $order = Order::where('id', $orderid);
+
+        return view('viewPayment', compact('order'));
+    }
     public function myorders()
     {
         $user = Auth::user();
@@ -212,6 +246,8 @@ class UserController extends Controller
 
         return view('user.thankyou');
     }
+
+
 
     public function provideProof($id)
     {

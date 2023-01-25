@@ -1,22 +1,6 @@
 @extends('user.layout')
 
 @section('content')
-    <style>
-        /* .file-upload{display:block;text-align:center;font-family: Helvetica, Arial, sans-serif;font-size: 12px;}
-    .file-upload .file-select{display:block;border: 2px solid #dce4ec;color: #34495e;cursor:pointer;height:40px;line-height:40px;text-align:left;background:#FFFFFF;overflow:hidden;position:relative;}
-    .file-upload .file-select .file-select-button{background:#dce4ec;padding:0 10px;display:inline-block;height:40px;line-height:40px;}
-    .file-upload .file-select .file-select-name{line-height:40px;display:inline-block;padding:0 10px;}
-    .file-upload .file-select:hover{border-color:#34495e;transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-webkit-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;}
-    .file-upload .file-select:hover .file-select-button{background:#34495e;color:#FFFFFF;transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-webkit-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;}
-    .file-upload.active .file-select{border-color:#3fa46a;transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-webkit-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;}
-    .file-upload.active .file-select .file-select-button{background:#3fa46a;color:#FFFFFF;transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-webkit-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;}
-    .file-upload .file-select input[type=file]{z-index:100;cursor:pointer;position:absolute;height:100%;width:100%;top:0;left:0;opacity:0;filter:alpha(opacity=0);}
-    .file-upload .file-select.file-select-disabled{opacity:0.65;}
-    .file-upload .file-select.file-select-disabled:hover{cursor:default;display:block;border: 2px solid #dce4ec;color: #34495e;cursor:pointer;height:40px;line-height:40px;margin-top:5px;text-align:left;background:#FFFFFF;overflow:hidden;position:relative;}
-    .file-upload .file-select.file-select-disabled:hover .file-select-button{background:#dce4ec;color:#666666;padding:0 10px;display:inline-block;height:40px;line-height:40px;}
-    .file-upload .file-select.file-select-disabled:hover .file-select-name{line-height:40px;display:inline-block;padding:0 10px;} */
-    </style>
-
     <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
     <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
     <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
@@ -24,9 +8,6 @@
     <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
     <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js">
     </script>
-
-
-
     <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
 
     <div class="col-span-12 mt-8">
@@ -51,56 +32,46 @@
                             @csrf
                             @method('POST')
                             <div class="intro-x mt-4">
-                                <input type="text" name="language1"
+                                <input type="text" id="language1" name="language1"
                                     class="intro-x login__input form-control py-3 px-4 block" required
-                                    placeholder="Current Language of the Document">
-                                <input type="text" name="language2"
+                                    placeholder="Current Language of the Document" value="">
+                                <input type="text" id="language2" name="language2"
                                     class="intro-x login__input form-control py-3 px-4 block mt-4" required
-                                    placeholder="What Language does the Document needs to be Translated into?">
-                                <input type="text" name="access_code"
+                                    placeholder="What Language does the Document needs to be Translated into?"
+                                    value="">
+                                <input type="text" name="access_code" id="access_code"
                                     class="intro-x login__input form-control py-3 px-4 block mt-4"
-                                    placeholder="Access Code (for returning customers)">
-                                <input type="text" name="casemanager" style="margin-bottom: 20px;"
+                                    placeholder="Access Code (for returning customers)" value="">
+                                <input type="text" name="casemanager" id="casemanager" style="margin-bottom: 20px;"
                                     class="intro-x login__input form-control py-3 px-4 block mt-4"
-                                    placeholder="Case Manager (optional)">
+                                    placeholder="Case Manager (optional)" value="">
                                 <input type="file" id="multipleFiles" class="filepond" name="transFiles[]" multiple
                                     data-max-file-size="10MB" data-max-files="15" />
-                                {{-- <div class="file-upload mt-6">
-                <div class="file-select">
-                  <div class="file-select-button" id="fileName">Choose File</div>
-                  <div class="file-select-name" id="noFile">No file chosen...</div>
-                  <input required type="file" multiple name="files[]" id="chooseFile">
-                </div>
-              </div> --}}
+                                <div class="flex ">
+                                    <div class="form-check form-switch mb-4">
+                                        <input
+                                            class="form-check-input appearance-none w-9 border-md shadow-lg justify-start border p-2 -ml-10 rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-gray-300 focus:outline-none cursor-pointer shadow-sm"
+                                            type="checkbox" role="switch" id="flexSwitchCheckDefault" name="isPayNow">
+                                        <label class="form-check-label inline-block text-black"
+                                            for="flexSwitchCheckDefault">Pay Now</label>
+                                        <br>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <span class="m-1 font-bold">
+                                    By clicking 'Pay Now', you agree to our terms and conditions and authorize the
+                                    charge to your credit card.
+                                </span>
+
                             </div>
-
-
 
                             <div class="btn-group mt-5" role="group" aria-label="Basic example" style="margin-top: 3rem;">
-                                {{-- <div style="float: left;margin: auto !important;"> --}}
-                                {{-- <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#superlarge-modal-size-preview"
-                  class="btn btn-pending">Need to attach multiple files?</a> </div> --}}
 
-                                {{-- <div id="superlarge-modal-size-preview" class="modal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content" style="width: 640px !important;">
-                    <div class="modal-body p-10 text-center">
-                      <iframe style="padding:20px;" width="560" height="315"
-                        src="https://www.youtube.com/embed/Kt9mLwSOARc" title="YouTube video player" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen></iframe>
-
-
-                    </div>
-                  </div>
-                </div>
-              </div> --}}
-                                <button type="submit" class="btn btn-primary ml-3">Upload Files for Translation</button>
+                                <button type="submit" id="uploadBtn" class="btn btn-primary ml-3">Upload Files for
+                                    Translation</button>
                             </div>
 
-
                         </form>
-                        {{-- <a  href="" class="btn btn-primary ml-3">Upload Files for Translation</button> --}}
                     </div>
                 </div>
 
@@ -110,9 +81,17 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
         crossorigin="anonymous"></script>
     <!-- add before </body> -->
-
+    {{-- TODO:CHANGE Client id --}}
+    <script
+        src="https://www.paypal.com/sdk/js?client-id=AapYCwr7IL6pstdnEZ8a8Ugv_WMX3qBJflHAfrlFwye5D-7oB22i8Nrky2_AwRLLLTayYkhWS21uKygn&disable-funding=credit&components=buttons">
+    </script>
 
     <script>
+        if ($("#flexSwitchCheckDefault").is(':checked') == false) {
+            $("#paypal-button-container").hide();
+        } else {
+            $("#paypal-button-container").show();
+        }
         FilePond.registerPlugin(
 
             // encodes the file as base64 data
@@ -141,5 +120,8 @@
                 }
             }
         });
+
+
+        order = 4
     </script>
 @endsection
