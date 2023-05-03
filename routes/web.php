@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContractorAuthController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\AdminAuthController;
@@ -51,6 +52,14 @@ Route::get('/admin/register', [AdminAuthController::class, 'showRegisterForm'])-
 Route::post('/admin/register', [AdminAuthController::class, 'store'])->name('admin.register');
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login');
 Route::get('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+
+//Contracter
+
+Route::get('/contractor/login', [ContractorAuthController::class, 'showLoginForm'])->name('contractor.login');
+Route::get('/contractor/register', [ContractorAuthController::class, 'showRegisterForm'])->name('contractor.register');
+Route::post('/contractor/register', [ContractorAuthController::class, 'store'])->name('contractor.register');
+Route::post('/contractor/login', [ContractorAuthController::class, 'login'])->name('contractor.login');
+
 // Route::get('/pdf')
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -58,6 +67,10 @@ Route::get('/dashboard', function () {
 
 Route::get('generate-invoice/{id}', [AdminController::class, 'generatePDFInvoice'])->name('generatePDFInvoice');
 
+Route::group(['middleware' => ['auth:contractor']], function () {
+    Route::get('contractor/dashboard', [ContractorAuthController::class, 'index'])->name('contractor.dashboard');
+    Route::get('/contractor/logout', [ContractorAuthController::class, 'logout'])->name('contractor.logout');
+});
 
 Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
