@@ -130,7 +130,6 @@
                                     </td>
                                     <td class="whitespace-nowrap">
                                         <div class="flex gap-2">
-
                                             @if($invoice->order->paymentStatus == 0)
                                             <div><a href="{{ route('viewInvoice', $invoice->id) }}"
                                                     class="btn btn-warning">View Invoice</a></div>
