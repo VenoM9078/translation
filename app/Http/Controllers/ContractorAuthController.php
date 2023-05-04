@@ -46,6 +46,24 @@ class ContractorAuthController extends Controller
         return view('contractor.dashboard');
     }
 
+    public function pendingTranslations()
+    {
+        $translations = [];
+        return view('contractor.translations',compact('translations'));
+    }
+
+    public function pendingProofRead()
+    {
+        $proofReadData = [];
+        return view('contractor.proof-read',compact('proofReadData'));
+    }
+
+    public function pendingInterpretations()
+    {
+        $interpretations = [];
+        return view('contractor.interpretations', compact('interpretations'));
+    }
+
     public function login(Request $request)
     {
         $validated = $request->validate([

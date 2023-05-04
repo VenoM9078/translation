@@ -106,21 +106,28 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('user.index') }}" class="menu">
+                    <a href="{{ route('contractor.translations') }}" class="menu">
                         <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
-                        <div class="menu__title"> Create New Order</div>
+                        <div class="menu__title"> Translation</div>
                     </a>
 
                 </li>
 
                 <li>
-                    <a href="{{ route('allInvoices') }}" class="menu">
+                    <a href="{{ route('contractor.proof-read') }}" class="menu">
                         <div class="menu__icon"> <i data-lucide="help-circle"></i> </div>
-                        <div class="menu__title"> Invoices</div>
+                        <div class="menu__title"> Proofread </div>
                     </a>
 
                 </li>
 
+                <li>
+                    <a href="{{ route('contractor.interpretations') }}" class="menu">
+                        <div class="menu__icon"> <i data-lucide="help-circle"></i> </div>
+                        <div class="menu__title"> Interpretation </div>
+                    </a>
+
+                </li>
 
             </ul>
         </div>
@@ -157,24 +164,33 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('user.index') }}"
+                    <a href="{{ route('contractor.translations') }}"
                         class="{{ Route::getCurrentRoute()->uri == 'user' ? 'side-menu   side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
                         <div class="side-menu__title">
-                            Create New Order
+                            Translation
+                        </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('contractor.proof-read') }}"
+                        class="{{ Route::getCurrentRoute()->uri == 'user' ? 'side-menu   side-menu--active' : 'side-menu' }}">
+                        <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                        <div class="side-menu__title">
+                            Proofread
                         </div>
                     </a>
                 </li>
 
 
 
-
                 <li>
-                    <a href="{{ route('allInvoices') }}"
+                    <a href="{{ route('contractor.interpretations') }}"
                         class="{{ Route::getCurrentRoute()->uri == 'allInvoices' ? 'side-menu   side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"> <i data-lucide="help-circle"></i> </div>
                         <div class="side-menu__title">
-                            Invoices
+                            Interpretation
                         </div>
                     </a>
                 </li>
@@ -196,7 +212,8 @@
                 <nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('/') }}">FlowTranslate</a></li>
-                        <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('user.index') }}">User
+                        <li class="breadcrumb-item active" aria-current="page"><a
+                                href="{{ route('user.index') }}">User
                                 Dashboard</a></li>
                     </ol>
                 </nav>
@@ -207,12 +224,14 @@
                     position: relative;
                     top: 8px;
                     margin: 20px;
-                " id="google_translate_element2"></div>
+                "
+                    id="google_translate_element2"></div>
                 <!-- BEGIN: Account Menu -->
                 <div class="intro-x dropdown w-8 h-8">
                     <div class="dropdown-toggle w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in"
                         role="button" aria-expanded="false" data-tw-toggle="dropdown">
-                        <img src="{{ url('https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png') }}">
+                        <img
+                            src="{{ url('https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png') }}">
                     </div>
                     <div class="dropdown-menu w-56">
                         <ul class="dropdown-content bg-primary text-white">
@@ -220,12 +239,12 @@
 
                                 <div class="font-medium">
                                     @auth
-                                    {{ Auth::user()->name }}
+                                        {{ Auth::user()->name }}
                                     @endauth
                                 </div>
                                 <div class="text-xs text-white/70 mt-0.5 dark:text-slate-500">
                                     @auth
-                                    {{ Auth::user()->email }}
+                                        {{ Auth::user()->email }}
                                     @endauth
                                 </div>
                             </li>
@@ -256,8 +275,8 @@
 
     <!-- BEGIN: JS Assets-->
     <script src="{{ url('dist/js/app.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"
-        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
     <script>
@@ -278,8 +297,7 @@
             }, 'google_translate_element2');
         }
     </script>
-    <script type="text/javascript"
-        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2">
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2">
     </script>
     <script type="text/javascript">
         /* <![CDATA[ */

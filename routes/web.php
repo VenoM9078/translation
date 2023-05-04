@@ -70,6 +70,9 @@ Route::get('generate-invoice/{id}', [AdminController::class, 'generatePDFInvoice
 Route::group(['middleware' => ['auth:contractor']], function () {
     Route::get('contractor/dashboard', [ContractorAuthController::class, 'index'])->name('contractor.dashboard');
     Route::get('/contractor/logout', [ContractorAuthController::class, 'logout'])->name('contractor.logout');
+    Route::get('contractor/translations', [ContractorAuthController::class, 'pendingTranslations'])->name('contractor.translations');
+    Route::get('contractor/proof-reads', [ContractorAuthController::class, 'pendingProofRead'])->name('contractor.proof-read');
+    Route::get('contractor/interpretaions', [ContractorAuthController::class, 'pendingInterpretations'])->name('contractor.interpretations');
 });
 
 Route::group(['middleware' => ['auth:admin']], function () {
