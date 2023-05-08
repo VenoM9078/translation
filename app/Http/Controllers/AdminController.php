@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ContractorOrderEnum;
+use App\Mail\EmailContractor;
 use App\Mail\invoiceSent;
 use App\Mail\LatePaymentApproved;
 use App\Mail\LatePaymentRejected;
@@ -10,6 +12,8 @@ use App\Mail\mailToProofReader;
 use App\Mail\orderToTranslator;
 use App\Mail\paymentApproved;
 use App\Mail\paymentRejected;
+use App\Models\Contractor;
+use App\Models\ContractorOrder;
 use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -47,6 +51,31 @@ class AdminController extends Controller
         }
 
         return view('admin.dashboard', compact('orders', 'users', 'unsent', 'paymentPending', 'sumAmount'));
+    }
+
+    public function viewAssignContractor($orderID)
+    {
+        $order = Order::find($orderID);
+        $contractors = Contractor::all();
+        return view('admin.assign-translator', compact('order', 'contractors'));
+    }
+
+    public function assignContractor(Request $request)
+    {
+        // dd($request->input('description'));
+        // dd($request->input('amount'));
+        $contractorOrder = ContractorOrder::create([
+            'order_id' => $request->order_id,
+            'contractor_id' => $request->contractor_id,
+            'is_accepted' => ContractorOrderEnum::PENDING,
+            'description' => $request->description,
+            'amount' => $request->amount
+        ]);
+        $contractorOrder->save();
+        // $data = $request->all();
+        // $contractor = Contractor::where('id', $data['contractor_id'])->firstOrFail();
+        // Mail::to($contractor->email)->send(new EmailContractor($data));
+        return redirect()->route('admin.dashboard');
     }
 
     public function pendingOrders()

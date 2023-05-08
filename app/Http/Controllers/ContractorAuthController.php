@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ContractorOrderEnum;
 use App\Models\Contractor;
+use App\Models\ContractorOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -48,14 +50,33 @@ class ContractorAuthController extends Controller
 
     public function pendingTranslations()
     {
-        $translations = [];
-        return view('contractor.translations',compact('translations'));
+        // $translations = [];
+        $translations = ContractorOrder::where('contractor_id', auth()->guard('contractor')->user()->id)->get();
+        return view('contractor.translations', compact('translations'));
+    }
+
+
+    public function acceptTranslation(Request $request)
+    {
+        //update the contractor order is_accepted to 1
+        $contractorOrder = ContractorOrder::find($request->contractor_order_id);
+        $contractorOrder->is_accepted = ContractorOrderEnum::ACCEPTED;
+        $contractorOrder->save();
+        return redirect()->route('contractor.translations');
+    }
+
+    public function declineTranslation(Request $request)
+    {
+        $contractorOrder = ContractorOrder::find($request->contractor_order_id);
+        $contractorOrder->is_accepted = ContractorOrderEnum::DECLINED;
+        $contractorOrder->save();
+        return redirect()->route('contractor.translations');
     }
 
     public function pendingProofRead()
     {
         $proofReadData = [];
-        return view('contractor.proof-read',compact('proofReadData'));
+        return view('contractor.proof-read', compact('proofReadData'));
     }
 
     public function pendingInterpretations()

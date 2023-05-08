@@ -23,7 +23,6 @@
                                 <thead>
                                     <tr>
                                         <th class="whitespace-nowrap">Description</th>
-                                        <th class="whitespace-nowrap">Quantity (Words / Pages)</th>
                                         <th class="whitespace-nowrap">Amount</th>
                                         <th>Created At</th>
                                         <th class="whitespace-nowrap">Status</th>
@@ -32,25 +31,25 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($translations as $translation)
+                                    @foreach ($translations as $key =>$translation)
                                         <tr>
                                             <td class="whitespace-nowrap">{{ $translation->description }}</td>
-
-                                            <td class="whitespace-nowrap">{{ $translation->docQuantity }}</td>
                                             <td class="whitespace-nowrap">${{ $translation->amount }}</td>
 
                                             <td class="whitespace-nowrap">
                                                 {{ $translation->created_at->timezone('America/Los_Angeles') }}</td>
                                             <td class="whitespace-nowrap">
-                                                <div>
-
-                                                </div>
+                                                {{ $translation->is_accepted == 1 ? 'Accepted' : 'Pending' }}
                                             </td>
                                             <td class="whitespace-nowrap">
                                                 <div class="flex gap-2">
-                                                    @if ($translation->order->paymentStatus == 0)
-                                                        <div><a href="{{ route('viewInvoice', $translation->id) }}"
-                                                                class="btn btn-warning">View Invoice</a></div>
+                                                    @if ($translation->is_accepted == 0)
+                                                        {{-- create a modal popup --}}
+                                                        <!-- Trigger button for modal -->
+                                                        <button
+                                                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                                            id="modal-open-{{$key}}">Details</button>
+
                                                     @endif
                                                 </div>
                                             </td>

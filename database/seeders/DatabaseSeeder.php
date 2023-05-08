@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Hash;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,9 +17,11 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        //insert a new admin without using factory class
+        \App\Models\Admin::create([
+            'name' => 'Test Admin',
+            'email' => 'test@example.com',
+            'password' => Hash::make('password'),
+        ]);
     }
 }

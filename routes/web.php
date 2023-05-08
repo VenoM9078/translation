@@ -106,6 +106,9 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::post('deleteAllQuotes', [AdminController::class, 'deleteAllQuotes'])->name('deleteAllQuotes');
     Route::post('deleteAllContacts', [AdminController::class, 'deleteAllContacts'])->name('deleteAllContacts');
     Route::post('adminUpload', [AdminController::class, 'uploadImage'])->name('adminUpload');
+
+    Route::get('/assign-contractor/{orderID}', [AdminController::class, 'viewAssignContractor'])->name('view-assign-contractor');
+    Route::post('/assign-contractor', [AdminController::class, 'assignContractor'])->name('assign-contractor');
 });
 
 Route::middleware(['web', 'auth'])->group(function () {

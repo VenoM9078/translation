@@ -70,4 +70,8 @@ class Order extends Model
     public function feedback() {
         return $this->hasOne('App\Models\Feedback', 'order_id','id');
     }
+
+    public function contractorOrder() {
+        return $this->hasOne('App\Models\ContractorOrder', 'order_id','id');
+    }
 }
