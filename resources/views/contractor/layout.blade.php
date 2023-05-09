@@ -106,7 +106,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('contractor.translations') }}" class="menu">
+                    <a href="{{ route('contractor.translations.pending') }}" class="menu">
                         <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
                         <div class="menu__title"> Translation</div>
                     </a>
@@ -164,13 +164,29 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('contractor.translations') }}"
-                        class="{{ Route::getCurrentRoute()->uri == 'user' ? 'side-menu   side-menu--active' : 'side-menu' }}">
-                        <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                    <a href="javascript:;"
+                        class="{{ Route::getCurrentRoute()->uri == 'contractor/translations/pending' || Route::getCurrentRoute()->uri == 'contractor/translations/completed' ? 'side-menu side-menu--active' : 'side-menu' }}">
+                        <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
                         <div class="side-menu__title">
-                            Translation
+                            Translations
+                            <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                         </div>
                     </a>
+                    <ul class="">
+                        <li>
+                            <a href="{{ route('contractor.translations.pending') }}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="side-menu__title"> Pending Translations </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('contractor.translations.completed') }}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="side-menu__title"> Accepted Translations </div>
+                            </a>
+                        </li>
+
+                    </ul>
                 </li>
 
                 <li>

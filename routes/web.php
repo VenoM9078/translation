@@ -70,9 +70,19 @@ Route::get('generate-invoice/{id}', [AdminController::class, 'generatePDFInvoice
 Route::group(['middleware' => ['auth:contractor']], function () {
     Route::get('contractor/dashboard', [ContractorAuthController::class, 'index'])->name('contractor.dashboard');
     Route::get('/contractor/logout', [ContractorAuthController::class, 'logout'])->name('contractor.logout');
-    Route::get('contractor/translations', [ContractorAuthController::class, 'pendingTranslations'])->name('contractor.translations');
+    //pending translations
+    Route::get('contractor/translations/pending', [ContractorAuthController::class, 'pendingTranslations'])->name('contractor.translations.pending');
+    //completed translations
+    Route::get('contractor/translations/completed', [ContractorAuthController::class, 'completedTranslations'])->name('contractor.translations.completed');
+
     Route::get('contractor/proof-reads', [ContractorAuthController::class, 'pendingProofRead'])->name('contractor.proof-read');
     Route::get('contractor/interpretaions', [ContractorAuthController::class, 'pendingInterpretations'])->name('contractor.interpretations');
+
+    Route::get('/contractor/accept/{order}', [ContractorAuthController::class, 'acceptTranslation'])->name('contractor.accept');
+    Route::get('/contractor/decline/{order}', [ContractorAuthController::class, 'declineTranslation'])->name('contractor.decline');
+    //Download order
+    Route::get('/contractor/downloadFiles/{order}', [ContractorAuthController::class, 'downloadFiles'])->name('contractor.downloadFiles');
+   
 });
 
 Route::group(['middleware' => ['auth:admin']], function () {

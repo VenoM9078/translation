@@ -73,8 +73,8 @@ class AdminController extends Controller
         ]);
         $contractorOrder->save();
         // $data = $request->all();
-        // $contractor = Contractor::where('id', $data['contractor_id'])->firstOrFail();
-        // Mail::to($contractor->email)->send(new EmailContractor($data));
+        $contractor = Contractor::where('id', $contractorOrder['contractor_id'])->firstOrFail();
+        Mail::to($contractor->email)->send(new EmailContractor($contractorOrder));
         return redirect()->route('admin.dashboard');
     }
 

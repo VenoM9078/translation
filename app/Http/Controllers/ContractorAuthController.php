@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ContractorOrderEnum;
+use App\Mail\ContractorNotifyAdmin;
+use App\Models\Admin;
 use App\Models\Contractor;
 use App\Models\ContractorOrder;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Mail;
+use ZipArchive;
 
 class ContractorAuthController extends Controller
 {
@@ -51,26 +56,83 @@ class ContractorAuthController extends Controller
     public function pendingTranslations()
     {
         // $translations = [];
-        $translations = ContractorOrder::where('contractor_id', auth()->guard('contractor')->user()->id)->get();
-        return view('contractor.translations', compact('translations'));
+        $translations = ContractorOrder::where('contractor_id', auth()->guard('contractor')->user()->id)
+            ->where('is_accepted', ContractorOrderEnum::PENDING)
+            ->get();
+        return view('contractor.pending-translations', compact('translations'));
     }
 
+    //completedTranslations create method
+    public function completedTranslations()
+    {
+        $translations = ContractorOrder::where('contractor_id', auth()->guard('contractor')->user()->id)
+            ->where('is_accepted', ContractorOrderEnum::ACCEPTED)
+            ->get();
+        return view('contractor.completed-translations', compact('translations'));
+    }
 
-    public function acceptTranslation(Request $request)
+    public function acceptTranslation($contractor_order_id)
     {
         //update the contractor order is_accepted to 1
-        $contractorOrder = ContractorOrder::find($request->contractor_order_id);
+        $contractorOrder = ContractorOrder::find($contractor_order_id);
+        // dd($contractorOrder);
         $contractorOrder->is_accepted = ContractorOrderEnum::ACCEPTED;
         $contractorOrder->save();
-        return redirect()->route('contractor.translations');
+
+        $contractorName = Auth::guard('contractor')->user()->name;
+        $admins = Admin::all(['email']);
+
+        foreach ($admins as $admin) {
+            Mail::to($admin->email)->send(new ContractorNotifyAdmin($contractorName, $contractorOrder, true));
+        }
+        return redirect()->route('contractor.translations.completed');
     }
 
-    public function declineTranslation(Request $request)
+    public function declineTranslation($contractor_order_id)
     {
-        $contractorOrder = ContractorOrder::find($request->contractor_order_id);
+        $contractorOrder = ContractorOrder::find($contractor_order_id);
         $contractorOrder->is_accepted = ContractorOrderEnum::DECLINED;
         $contractorOrder->save();
-        return redirect()->route('contractor.translations');
+        //only select emails of admins from the query
+        $contractorName = Auth::guard('contractor')->user()->name;
+        $admins = Admin::all(['email']);
+
+        foreach ($admins as $admin) {
+            Mail::to($admin->email)->send(new ContractorNotifyAdmin($contractorName, $contractorOrder, false));
+        }
+
+        return redirect()->route('contractor.dashboard');
+    }
+
+    public function downloadFiles(Order $order)
+    {
+        $orderFiles = $order->files;
+        $fileArr = [];
+
+        foreach ($orderFiles as $orderFile) {
+            if (file_exists(public_path('documents/' . $orderFile->filename))) {
+                $fileArr[] = public_path('documents/' . $orderFile->filename);
+            }
+        }
+
+        $zip = new ZipArchive;
+
+        $zipName = date('YmdHi') . $order->id . '.zip';
+        // dd($zip->open(public_path($zipName), ZipArchive::CREATE) === TRUE);
+        if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
+
+            $files = $fileArr; //passing the above array
+
+            foreach ($files as $key => $value) {
+                $relativeNameInZipFile = basename($value);
+                // dd($relativeNameInZipFile);
+                $zip->addFile($value, $relativeNameInZipFile);
+            }
+
+            $zip->close();
+        }
+
+        return response()->download(public_path('compressed/' . $zipName));
     }
 
     public function pendingProofRead()

@@ -29,7 +29,8 @@ class EmailContractor extends Mailable
      */
     public function build()
     {
-        return $this->from($this->data)
+        // dd($this->data);
+        return $this->from(env('MAIL_FROM_ADDRESS'))
             ->subject("Order Offer")->markdown('emails.emailContractor');
     }
 }
