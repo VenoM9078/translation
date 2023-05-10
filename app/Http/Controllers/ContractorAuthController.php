@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Enums\ContractorOrderEnum;
 use App\Mail\ContractorNotifyAdmin;
+use App\Mail\NotifyAdminTranslationSubmissionContractor;
 use App\Models\Admin;
 use App\Models\Contractor;
 use App\Models\ContractorOrder;
 use App\Models\Order;
+use App\Models\TemporaryFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Mail;
@@ -102,6 +104,55 @@ class ContractorAuthController extends Controller
         }
 
         return redirect()->route('contractor.dashboard');
+    }
+
+    public function uploadTranslationFile(Request $request)
+    {
+        if ($request->hasFile('translationFile')) {
+            $file = $request->file('translationFile');
+            $filePath = 'translations_by_contractors/';
+
+            // dd($file);
+
+            $filename = date('YmdHi') . $file->getClientOriginalName();
+            // $folder = uniqid() . '-' . now()->timestamp;
+            // $file->move(public_path('documents'), $filename);
+            //if the path does not exist, create it
+
+            if (!file_exists(public_path($filePath))) {
+                mkdir(public_path($filePath), 0777, true);
+                $file->move($filePath, $filename);
+            } else {
+                $file->move($filePath, $filename);
+            }
+
+            TemporaryFile::create([
+                'filename' => $filename
+            ]);
+
+            session(['uploaded_translation_file' => $filename]);
+
+
+            return $filename;
+
+        }
+    }
+
+    public function submitTranslationFile(Request $request)
+    {
+        $uploadedFilePath = session('uploaded_translation_file', '');
+
+        $contractorOrder = ContractorOrder::find($request['contractor_order_id']);
+        $contractorOrder->file_name = $uploadedFilePath;
+        $contractorOrder->save();
+        $request->session()->forget('uploaded_translation_file');
+
+        $contractorName = Auth::guard('contractor')->user()->name;
+        $admins = Admin::all(['email']);
+        foreach ($admins as $admin) {
+            Mail::to($admin->email)->send(new NotifyAdminTranslationSubmissionContractor($contractorName, $contractorOrder));
+        }
+        return redirect()->route('contractor.translations.completed');
     }
 
     public function downloadFiles(Order $order)

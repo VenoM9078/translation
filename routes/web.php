@@ -82,7 +82,13 @@ Route::group(['middleware' => ['auth:contractor']], function () {
     Route::get('/contractor/decline/{order}', [ContractorAuthController::class, 'declineTranslation'])->name('contractor.decline');
     //Download order
     Route::get('/contractor/downloadFiles/{order}', [ContractorAuthController::class, 'downloadFiles'])->name('contractor.downloadFiles');
-   
+
+    //Submit for approval
+    Route::post('/upload-translation', [ContractorAuthController::class, 'submitTranslationFile'])->name('contractor.upload-translation');
+
+    //Filepond Upload 
+    Route::post('/translationUpload',[ContractorAuthController::class, 'uploadTranslationFile'])->name('contractor.translationUploadFilePond');
+
 });
 
 Route::group(['middleware' => ['auth:admin']], function () {
@@ -119,6 +125,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
 
     Route::get('/assign-contractor/{orderID}', [AdminController::class, 'viewAssignContractor'])->name('view-assign-contractor');
     Route::post('/assign-contractor', [AdminController::class, 'assignContractor'])->name('assign-contractor');
+
 });
 
 Route::middleware(['web', 'auth'])->group(function () {

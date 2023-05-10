@@ -30,6 +30,8 @@
                                     <th class="whitespace-nowrap">Translated Language</th>
                                     <th class="whitespace-nowrap">Payment Status</th>
                                     <th class="whitespace-nowrap">Order Status</th>
+                                    <th class="whitespace-nowrap">Contractor Assigned</th>
+                                    <th class="whitespace-nowrap">Translation File</th>
                                     {{-- <th class="whitespace-nowrap">Translation Status</th> --}}
                                     {{-- <th class="whitespace-nowrap">Proofread Status</th> --}}
                                     <th class="whitespace-nowrap">Actions</th>
@@ -138,6 +140,18 @@
                                             @endif
 
                                         </td>
+                                        {{-- @isset($order->contractorOrder) --}}
+                                        @if (isset($order->contractorOrder) && $order->contractorOrder->contractor->name != '')
+                                            <td>{{ $order->contractorOrder->contractor->name }}</td>
+                                        @else
+                                            <td>N/A</td>
+                                        @endif
+                                        @if (isset($order->contractorOrder) && $order->contractorOrder->file_name != '')
+                                            <td>Download</td>
+                                        @else
+                                            <td>N/A</td>
+                                        @endif
+                                        {{-- @endisset --}}
                                         {{-- {{ route('translator.edit', $translator->id) }} --}}
                                         {{-- {{ route('translator.destroy', $translator->id) }} --}}
 

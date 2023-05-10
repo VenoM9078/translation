@@ -1,6 +1,14 @@
 @extends('contractor.layout')
 
 @section('content')
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js">
+    </script>
+    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
     <div class="col-span-12 mt-8">
         <div class="intro-y flex items-center h-10">
             <h2 class="text-lg font-medium truncate mr-5 mb-5">
@@ -46,9 +54,59 @@
                                                         <a href="{{ route('contractor.downloadFiles', $translation->order_id) }}"
                                                             class="btn btn-warning mr-1 mb-2"> <i data-lucide="download"
                                                                 class="w-5 h-5"></i> </a>
+                                                        <!-- BEGIN: Modal Toggle -->
+                                                        <div class="text-center"> <a href="javascript:;"
+                                                                data-tw-toggle="modal"
+                                                                data-tw-target="#upload-modal-preview-{{ $key }}"
+                                                                class="btn btn-primary">
+                                                                <i data-lucide="upload" class="w-5 h-5"
+                                                                    title="Upload for Submission"></i>
+                                                            </a>
+                                                        </div> <!-- END: Modal Toggle -->
                                                     @endif
                                                 </div>
                                             </td>
+                                            <!-- BEGIN: Modal Content -->
+                                            <div id="upload-modal-preview-{{ $key }}" class="modal" tabindex="-1"
+                                                aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body p-0">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <div class="p-5 text-center"> <i data-lucide="info"
+                                                                            class="w-16 h-8 text-danger mx-auto mt-3"></i>
+                                                                        <div class="text-3xl mt-5">Upload Translation</div>
+                                                                    </div>
+                                                                    <div class=" text-center "
+                                                                        style="text-align: center;margin: auto !important;width: 100%;position: relative;justify-content: center;">
+                                                                        <form
+                                                                            action="{{ route('contractor.upload-translation') }}"
+                                                                            method="post"
+                                                                            enctype="multipart/form-data"
+                                                                            accept-charset="utf-8"
+                                                                            >
+                                                                            @csrf
+                                                                            @method('POST')
+                                                                            <input type="hidden" name="contractor_order_id" value="{{$translation->id}}">
+                                                                            <div class="col-span-12 p-2 sm:col-span-12">
+                                                                                <input type="file" id="translationFile"
+                                                                                    class="filepond mt-5"
+                                                                                    name="translationFile"
+                                                                                    data-max-file-size="10MB"
+                                                                                     />
+                                                                                <button type="submit"
+                                                                                    class="btn btn-success w-24">Submit</button>
+                                                                            </div>
+                                                                            <!-- END: Modal Toggle -->
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- END: Modal Content -->
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -60,12 +118,33 @@
         </div>
     </div>
     <script>
-        let button = document.querySelector('#uniqueModal');
+        FilePond.registerPlugin(
 
-        button.addEventListener('click', function() {
-            let value = button.value;
+            // encodes the file as base64 data
+            FilePondPluginFileEncode,
 
-            console.log(value);
-        })
+            // validates the size of the file
+            FilePondPluginFileValidateSize,
+
+            // corrects mobile image orientation
+            FilePondPluginImageExifOrientation,
+
+            // previews dropped images
+            FilePondPluginImagePreview
+        );
+
+        // Select the file input and use create() to turn it into a pond
+        FilePond.create(
+            document.querySelector('#translationFile')
+        );
+
+        FilePond.setOptions({
+            server: {
+                url: '/translationUpload',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            }
+        });
     </script>
 @endsection
