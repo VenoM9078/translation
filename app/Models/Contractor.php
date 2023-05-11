@@ -14,4 +14,9 @@ class Contractor extends Authenticatable
         'email',
         'password'
     ];
+
+    public function contractorOrders()
+    {
+        return $this->hasMany('App\Models\ContractorOrder', 'contractor_id');
+    }
 }

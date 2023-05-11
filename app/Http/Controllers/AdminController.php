@@ -81,9 +81,13 @@ class AdminController extends Controller
 
     public function pendingOrders()
     {
-        $orders = Order::orderByDesc('created_at')->get();
+        $orders = Order::with(['contractorOrder.contractor'])
+            ->orderByDesc('created_at')
+            ->get();
+        // dd($orders);
         return view('admin.pendingOrders', compact('orders'));
     }
+
 
     public function paidOrders()
     {
@@ -138,6 +142,26 @@ class AdminController extends Controller
         }
     }
 
+    public function downloadTranslation(ContractorOrder $id, $filePath)
+    {
+        $file = "";
+        // $file = public_path() . '/uploads/' . $filePath;
+        if (file_exists(public_path($filePath))) {
+            $file = public_path($filePath);
+        }
+        $zip = new ZipArchive;
+
+        $zipName = date('YmdHi') . $id . '.zip';
+
+        if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
+            $relativeNameInZipFile = basename($file);
+            $zip->addFile($file, $relativeNameInZipFile);
+
+            $zip->close();
+
+        }
+        return response()->download($file);
+    }
     public function downloadFiles(Order $order)
     {
         $orderFiles = $order->files;
