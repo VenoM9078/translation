@@ -19,6 +19,8 @@ class Interpretation extends Model
         'location',
         'session_topics',
         'wantQuote',
+        'quote_price',
+        'quote_description',
         'invoiceSent',
         'paymentStatus',
         'interpreter_id',

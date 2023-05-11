@@ -12,6 +12,7 @@ use App\Mail\mailToProofReader;
 use App\Mail\orderToTranslator;
 use App\Mail\paymentApproved;
 use App\Mail\paymentRejected;
+use App\Mail\QuoteSent;
 use App\Models\Contractor;
 use App\Models\ContractorOrder;
 use Barryvdh\DomPDF\Facade as PDF;
@@ -60,6 +61,30 @@ class AdminController extends Controller
         $contractors = Contractor::all();
         return view('admin.assign-translator', compact('order', 'contractors'));
     }
+
+    public function showSubmitQuote($id)
+    {
+        $interpretation = Interpretation::findOrFail($id);
+
+        return view('admin.submitQuote', compact('interpretation'));
+    }
+
+    public function submitQuote(Request $request)
+    {
+
+        $interpretation = Interpretation::find($request->interpretation_id);
+        $interpretation->quote_price = $request->quote_price;
+        $interpretation->quote_description = $request->quote_description;
+        $interpretation->wantQuote = 2;
+        $interpretation->save();
+
+        // Send the email to the user
+        Mail::to($interpretation->user->email)->send(new QuoteSent($interpretation));
+
+        return redirect()->route('admin.ongoingInterpretations')->with('message', 'Quote has been sent successfully');
+    }
+
+
 
     public function assignContractor(Request $request)
     {
@@ -158,7 +183,6 @@ class AdminController extends Controller
             $zip->addFile($file, $relativeNameInZipFile);
 
             $zip->close();
-
         }
         return response()->download($file);
     }

@@ -25,9 +25,11 @@ return new class extends Migration
             $table->string('location');
             $table->text('session_topics');
             $table->boolean('wantQuote')->default(0);
+            $table->double('quote_price')->nullable(true);
+            $table->string('quote_description')->nullable(true);
             $table->boolean('invoiceSent')->default(0);
             $table->boolean('paymentStatus')->default(0);
-            $table->integer('interpreter_id')->nullable();
+            $table->integer('interpreter_id')->nullable(true);
             $table->boolean('interpreter_completed')->default(0);
             $table->timestamps();
         });

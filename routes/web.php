@@ -97,6 +97,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
 
 
     Route::get('admin/ongoing-interpretations', [AdminController::class, 'ongoingInterpretations'])->name('admin.ongoingInterpretations');
+    Route::get('/admin/submitQuote/{id}', [AdminController::class, 'showSubmitQuote'])->name('admin.showSubmitQuote');
+    Route::post('admin/submitQuote', [AdminController::class, 'submitQuote'])->name('admin.submitQuote');
 
 
     Route::delete('destroy/{id}', [AdminController::class, 'destroy'])->name('destroy');
@@ -137,6 +139,7 @@ Route::middleware(['web', 'auth'])->group(function () {
 
     Route::get('order-new-interpretation', [UserController::class, 'newInterpretation'])->name('newInterpretation');
     Route::post('order-new-interpretation', [UserController::class, 'storeNewInterpretation'])->name('storeNewInterpretation');
+    Route::get('view-quote-invoice/{id}', [UserController::class, 'viewQuoteInvoice'])->name('viewQuoteInvoice');
 
 
     Route::get('logout', [UserController::class, 'destroySession'])->name('logout');
@@ -145,6 +148,8 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::post('payLater', [UserController::class, 'payLater'])->name('payLater');
     Route::post('processProof', [UserController::class, 'processProof'])->name('processProof');
     Route::get('thankyou/{id}', [UserController::class, 'updatePaymentStatus'])->name('thankyou');
+    Route::get('view-quote-invoice/thank-you/{id}', [UserController::class, 'updateQuotePaymentStatus'])->name('quoteThankYou');
+
     Route::get('viewPayment/{id}', [UserController::class, 'viewPayment'])->name('viewPayment');
     Route::get(
         'payLaterLanding',

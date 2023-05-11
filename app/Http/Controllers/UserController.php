@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AdminInterpretationPaymentReceived;
 use App\Mail\AdminNewInterpretation;
 use App\Mail\adminOrderCreated;
 use App\Mail\AdminPaymentReceived;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 use App\Mail\OrderCreated;
+use App\Mail\UserInterpretationPaymentReceived;
 use App\Mail\UserNewInterpretation;
 use App\Models\CompletedRequest;
 use App\Models\Feedback;
@@ -210,6 +212,12 @@ class UserController extends Controller
         return view('user.myorders', compact('user', 'orders', 'interpretations'));
     }
 
+    public function viewQuoteInvoice($interpretationID)
+    {
+        $interpretation = Interpretation::find($interpretationID);
+        return view('user.viewQuoteInvoice', compact('interpretation'));
+    }
+
     public function allInvoices()
     {
         $user = Auth::user();
@@ -256,6 +264,26 @@ class UserController extends Controller
     }
 
 
+    public function updateQuotePaymentStatus($id)
+    {
+        $interpretation_id = $id;
+
+        $interpretation = Interpretation::findOrFail($interpretation_id);
+
+        $interpretation->paymentStatus = 1;
+        $interpretation->wantQuote = 3;
+        $interpretation->invoiceSent = 1;
+
+
+        $interpretation->save();
+
+        $email = $interpretation->user->email;
+
+        Mail::mailer('clients')->to($email)->send(new UserInterpretationPaymentReceived($interpretation, "Flow Translate - Payment Received", "info@flowtranslate.com"));
+        Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new AdminInterpretationPaymentReceived($interpretation, "Flow Translate - Customer Payment Received", "info@flowtranslate.com"));
+
+        return view('user.quoteThankYou');
+    }
 
     public function provideProof($id)
     {

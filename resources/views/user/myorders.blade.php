@@ -276,17 +276,17 @@
                                         @elseif ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 1 &&
                                         $interpretation->paymentStatus == 0)
                                         Waiting for Payment
-                                        @elseif ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 1 &&
+                                        @elseif ($interpretation->wantQuote == 3 && $interpretation->invoiceSent == 1 &&
                                         $interpretation->paymentStatus == 1
                                         && $interpretation->interpreter_id === NULL &&
                                         $interpretation->interpreter_completed == 0)
                                         Payment Confirmed
-                                        @elseif ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 1 &&
+                                        @elseif ($interpretation->wantQuote == 3 && $interpretation->invoiceSent == 1 &&
                                         $interpretation->paymentStatus == 1
                                         && $interpretation->interpreter_id !== NULL &&
                                         $interpretation->interpreter_completed == 0)
                                         Interpreter Confirmed
-                                        @elseif ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 1 &&
+                                        @elseif ($interpretation->wantQuote == 3 && $interpretation->invoiceSent == 1 &&
                                         $interpretation->paymentStatus == 1
                                         && $interpretation->interpreter_id !== NULL &&
                                         $interpretation->interpreter_completed == 1)
@@ -312,34 +312,52 @@
                                     <td class="whitespace-nowrap">
                                         @if ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 0 &&
                                         $interpretation->paymentStatus == 0)
-                                        <button class="btn btn-warning mr-1 mb-2">Waiting for Invoice</button>
+                                        <button class="btn btn-warning mr-1 mb-2">Waiting for Invoice <i
+                                                data-loading-icon="three-dots" data-color="1a202c"
+                                                class="w-4 h-4 ml-2"></i></button>
                                         @elseif ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 1 &&
                                         $interpretation->paymentStatus ==
                                         0)
                                         <button class="btn btn-warning mr-1 mb-2">View Invoice</button>
-                                        @elseif ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 1 &&
+                                        @elseif ($interpretation->wantQuote == 2 && $interpretation->invoiceSent == 1 &&
                                         $interpretation->paymentStatus == 0
                                         && $interpretation->interpreter_id === NULL &&
                                         $interpretation->interpreter_completed == 0)
-                                        <button class="btn btn-warning mr-1 mb-2">Waiting for Payment</button>
-                                        @elseif ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 1 &&
+                                        <button class="btn btn-success mr-1 mb-2">Waiting for Payment <i
+                                                data-loading-icon="three-dots" data-color="1a202c"
+                                                class="w-4 h-4 ml-2"></i></button>
+                                        @elseif ($interpretation->wantQuote == 3 && $interpretation->invoiceSent == 1 &&
+                                        $interpretation->paymentStatus == 1
+                                        && $interpretation->interpreter_id == NULL &&
+                                        $interpretation->interpreter_completed == 0)
+                                        <button class="btn btn-success mr-1 mb-2">Waiting for Interpreter <i
+                                                data-loading-icon="three-dots" data-color="1a202c"
+                                                class="w-4 h-4 ml-2"></i></button>
+                                        @elseif ($interpretation->wantQuote == 3 && $interpretation->invoiceSent == 1 &&
                                         $interpretation->paymentStatus == 1
                                         && $interpretation->interpreter_id !== NULL &&
                                         $interpretation->interpreter_completed == 0)
-                                        <button class="btn btn-warning mr-1 mb-2">Waiting for Interpretation</button>
+                                        <button class="btn btn-success mr-1 mb-2">Waiting for Interpretation <i
+                                                data-loading-icon="three-dots" data-color="1a202c"
+                                                class="w-4 h-4 ml-2"></i></button>
                                         @elseif ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 1 &&
                                         $interpretation->paymentStatus == 1
                                         && $interpretation->interpreter_id !== NULL &&
                                         $interpretation->interpreter_completed == 1)
                                         <button class="btn btn-warning mr-1 mb-2">Submit Feedback</button>
                                         @elseif ($interpretation->wantQuote == 1)
-                                        <button class="btn btn-warning mr-1 mb-2">Waiting for Quote</button>
+                                        <button class="btn btn-warning mr-1 mb-2">Waiting for Quote <i
+                                                data-loading-icon="three-dots" data-color="1a202c"
+                                                class="w-4 h-4 ml-2"></i></button>
                                         @elseif ($interpretation->wantQuote == 2)
-                                        <button class="btn btn-warning mr-1 mb-2">Pay</button>
+                                        <a href="{{ route('viewQuoteInvoice', $interpretation->id) }}"
+                                            class="btn btn-warning mr-1 mb-2">View Quote & Pay</a>
                                         @elseif ($interpretation->wantQuote == 3 && $interpretation->paymentStatus == 1
                                         && $interpretation->interpreter_id
                                         !== NULL && $interpretation->interpreter_completed == 0)
-                                        <button class="btn btn-warning mr-1 mb-2">Waiting for Interpretation</button>
+                                        <button class="btn btn-success mr-1 mb-2">Waiting for Interpretation <i
+                                                data-loading-icon="three-dots" data-color="1a202c"
+                                                class="w-4 h-4 ml-2"></i></button>
                                         @elseif ($interpretation->wantQuote == 3 && $interpretation->paymentStatus == 1
                                         && $interpretation->interpreter_id
                                         !== NULL && $interpretation->interpreter_completed == 1)
