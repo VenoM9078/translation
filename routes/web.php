@@ -82,13 +82,16 @@ Route::group(['middleware' => ['auth:contractor']], function () {
     Route::get('/contractor/decline/{order}', [ContractorAuthController::class, 'declineTranslation'])->name('contractor.decline');
     //Download order
     Route::get('/contractor/downloadFiles/{order}', [ContractorAuthController::class, 'downloadFiles'])->name('contractor.downloadFiles');
-   
 });
 
 Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('admin/pending', [AdminController::class, 'pendingOrders'])->name('admin.pending');
     Route::get('admin/paidOrders', [AdminController::class, 'paidOrders'])->name('admin.paidOrders');
+
+
+    Route::get('admin/ongoing-interpretations', [AdminController::class, 'ongoingInterpretations'])->name('admin.ongoingInterpretations');
+
 
     Route::delete('destroy/{id}', [AdminController::class, 'destroy'])->name('destroy');
     Route::get('downloadFiles/{order}', [AdminController::class, 'downloadFiles'])->name('downloadFiles');
@@ -125,6 +128,10 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::resource('user', UserController::class);
     Route::get('myorders', [UserController::class, 'myorders'])->name('myorders');
     Route::get('allInvoices', [UserController::class, 'allInvoices'])->name('allInvoices');
+
+    Route::get('order-new-interpretation', [UserController::class, 'newInterpretation'])->name('newInterpretation');
+    Route::post('order-new-interpretation', [UserController::class, 'storeNewInterpretation'])->name('storeNewInterpretation');
+
 
     Route::get('logout', [UserController::class, 'destroySession'])->name('logout');
     Route::get('viewInvoice/{id}', [UserController::class, 'viewInvoice'])->name('viewInvoice');

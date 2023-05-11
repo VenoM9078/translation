@@ -174,7 +174,7 @@
                         class="{{ ((Route::getCurrentRoute()->uri == 'admin/pending' || (Route::getCurrentRoute()->uri == 'completedOrders')) ? 'side-menu side-menu--active' : 'side-menu' ) }}">
                         <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
                         <div class="side-menu__title">
-                            Orders
+                            Translation Orders
                             <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                         </div>
                     </a>
@@ -189,6 +189,32 @@
                             <a href="{{ route('completedOrders') }}" class="side-menu">
                                 <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
                                 <div class="side-menu__title"> Completed Orders </div>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript:;"
+                        class="{{ ((Route::getCurrentRoute()->uri == 'admin/pending' || (Route::getCurrentRoute()->uri == 'completedOrders')) ? 'side-menu side-menu--active' : 'side-menu' ) }}">
+                        <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                        <div class="side-menu__title">
+                            Interpretations
+                            <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="{{ route('admin.ongoingInterpretations') }}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="side-menu__title"> On-Going Requests </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('completedOrders') }}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="side-menu__title"> Completed Interpretations </div>
                             </a>
                         </li>
 

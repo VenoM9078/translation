@@ -108,7 +108,15 @@
                 <li>
                     <a href="{{ route('user.index') }}" class="menu">
                         <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
-                        <div class="menu__title"> Create New Order</div>
+                        <div class="menu__title"> Order Translation</div>
+                    </a>
+
+                </li>
+
+                <li>
+                    <a href="{{ route('user.index') }}" class="menu">
+                        <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
+                        <div class="menu__title"> Order Interpretation</div>
                     </a>
 
                 </li>
@@ -161,12 +169,20 @@
                         class="{{ Route::getCurrentRoute()->uri == 'user' ? 'side-menu   side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
                         <div class="side-menu__title">
-                            Create New Order
+                            Order Translation
                         </div>
                     </a>
                 </li>
 
-
+                <li>
+                    <a href="{{ route('newInterpretation') }}"
+                        class="{{ Route::getCurrentRoute()->uri == 'user' ? 'side-menu   side-menu--active' : 'side-menu' }}">
+                        <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                        <div class="side-menu__title">
+                            Order Interpretation
+                        </div>
+                    </a>
+                </li>
 
 
                 <li>

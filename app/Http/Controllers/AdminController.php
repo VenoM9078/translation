@@ -22,6 +22,7 @@ use App\Models\CompletedRequest;
 use App\Models\ContactAdmin;
 use App\Models\Feedback;
 use App\Models\FreeQuote;
+use App\Models\Interpretation;
 use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\OrderFiles;
@@ -696,5 +697,11 @@ class AdminController extends Controller
         $messages = ContactAdmin::all();
 
         return view('admin.viewMessages', compact('messages'));
+    }
+
+    public function ongoingInterpretations()
+    {
+        $interpretations = Interpretation::orderByDesc('created_at')->get();
+        return view('admin.ongoingInterpretations', compact('interpretations'));
     }
 }

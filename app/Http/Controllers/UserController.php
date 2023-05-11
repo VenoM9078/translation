@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AdminNewInterpretation;
 use App\Mail\adminOrderCreated;
 use App\Mail\AdminPaymentReceived;
 use App\Mail\CustomerPaymentReceived;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Interpretation;
 use App\Models\Order;
 use App\Models\OrderFiles;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -15,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 use App\Mail\OrderCreated;
+use App\Mail\UserNewInterpretation;
 use App\Models\CompletedRequest;
 use App\Models\Feedback;
 use App\Models\TemporaryFile;
@@ -36,6 +39,10 @@ class UserController extends Controller
         return view('user.dashboard');
     }
 
+    public function newInterpretation()
+    {
+        return view('user.newInterpretation');
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -198,8 +205,9 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $orders = Order::where('user_id', $user->id)->orderByDesc('created_at')->get();
+        $interpretations = Interpretation::where('user_id', $user->id)->orderByDesc('created_at')->get();
 
-        return view('user.myorders', compact('user', 'orders'));
+        return view('user.myorders', compact('user', 'orders', 'interpretations'));
     }
 
     public function allInvoices()
@@ -421,5 +429,32 @@ class UserController extends Controller
         Feedback::create($validate);
 
         return redirect()->route('myorders')->with('message', 'Thank you for submitting your feedback!');
+    }
+
+
+    public function storeNewInterpretation(Request $request)
+    {
+        $currDate = date('Ymd');
+        $randomDigits = mt_rand(1111, 9999);
+        $worknumber = $currDate . date('md', strtotime($currDate . ' + 10 days')) . '_' . $randomDigits;
+
+        $interpretation = new Interpretation();
+        $interpretation->worknumber = $worknumber;
+        $interpretation->user_id = auth()->id(); // Add the authenticated user's ID
+        $interpretation->language = $request->language;
+        $interpretation->interpretationDate = $request->interpretationDate;
+        $interpretation->start_time = $request->start_time;
+        $interpretation->end_time = $request->end_time;
+        $interpretation->session_format = $request->session_format;
+        $interpretation->location = $request->location;
+        $interpretation->session_topics = $request->session_topics;
+        $interpretation->wantQuote = $request->has('wantQuote') ? true : false;
+        $interpretation->save();
+
+        Mail::to('webpage@flowtranslate.com')->send(new AdminNewInterpretation(auth()->user(), $interpretation, "Flow Translate - New Interpretation Request", "info@flowtranslate.com"));
+        Mail::to(auth()->user()->email)->send(new UserNewInterpretation(auth()->user(), $interpretation, "Flow Translate - Your Interpretation Request", "info@flowtranslate.com"));
+
+        return redirect()->route('newInterpretation')
+            ->with('message', 'Interpretation request submitted successfully.');
     }
 }
