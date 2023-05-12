@@ -64,6 +64,13 @@ class AdminController extends Controller
         return view('admin.assign-translator', compact('order', 'contractors'));
     }
 
+    public function viewAssignInterpreter($interpreterID)
+    {
+        $interpretation = Interpretation::find($interpreterID);
+        $contractors = Contractor::all();
+        return view('admin.assign-interpreter', compact('interpretation', 'contractors'));
+    }
+
     public function showSubmitQuote($id)
     {
         $interpretation = Interpretation::findOrFail($id);

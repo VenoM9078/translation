@@ -178,8 +178,11 @@
                                         @elseif ($interpretation->wantQuote == 3 && $interpretation->paymentStatus == 1
                                         && $interpretation->interpreter_id
                                         === NULL && $interpretation->interpreter_completed == 0)
-                                        <button class="btn btn-warning mr-1 mb-2">Assign Interpreter</button>
-                                        @elseif ($interpretation->wantQuote == 3 && $interpretation->paymentStatus == 1
+                                        <a href="{{ route('view-assign-interpreter', $interpretation->id) }}"
+                                            class="btn btn-pending mr-1">
+                                            <i data-lucide="mail" class="w-5 h-5 mr-2"></i>Assign To Translator
+                                        </a> @elseif ($interpretation->wantQuote == 3 && $interpretation->paymentStatus
+                                        == 1
                                         && $interpretation->interpreter_id
                                         !== NULL && $interpretation->interpreter_completed == 0)
                                         <button class="btn btn-warning mr-1 mb-2">Assign Interpreter</button>

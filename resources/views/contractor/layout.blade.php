@@ -98,7 +98,7 @@
                 <div class="side-nav__devider my-6"></div>
 
                 <li>
-                    <a href="{{ route('myorders') }}" class="menu">
+                    <a href="{{ route('contractor.dashboard') }}" class="menu">
                         <div class="menu__icon"> <i data-lucide="codesandbox"></i> </div>
                         <div class="menu__title"> Dashboard </div>
                     </a>
@@ -154,7 +154,7 @@
                 <div class="side-nav__devider my-6"></div>
 
                 <li>
-                    <a href="{{ route('myorders') }}"
+                    <a href="{{ route('contractor.dashboard') }}"
                         class="{{ Route::getCurrentRoute()->uri == 'myorders' ? 'side-menu   side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"> <i data-lucide="codesandbox"></i> </div>
                         <div class="side-menu__title">
@@ -199,16 +199,30 @@
                     </a>
                 </li>
 
-
-
                 <li>
-                    <a href="{{ route('contractor.interpretations') }}"
-                        class="{{ Route::getCurrentRoute()->uri == 'allInvoices' ? 'side-menu   side-menu--active' : 'side-menu' }}">
-                        <div class="side-menu__icon"> <i data-lucide="help-circle"></i> </div>
+                    <a href="javascript:;"
+                        class="{{ Route::getCurrentRoute()->uri == 'contractor/interpretations/ongoing' || Route::getCurrentRoute()->uri == 'contractor/interpretations/requests' ? 'side-menu side-menu--active' : 'side-menu' }}">
+                        <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
                         <div class="side-menu__title">
-                            Interpretation
+                            Interpretations
+                            <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                         </div>
                     </a>
+                    <ul class="">
+                        <li>
+                            <a href="{{ route('contractor.interpretations') }}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="side-menu__title"> On-Going Interpretations </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('contractor.translations.completed') }}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="side-menu__title"> Interpretation Requests </div>
+                            </a>
+                        </li>
+
+                    </ul>
                 </li>
 
 
@@ -228,26 +242,23 @@
                 <nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('/') }}">FlowTranslate</a></li>
-                        <li class="breadcrumb-item active" aria-current="page"><a
-                                href="{{ route('user.index') }}">User
+                        <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('user.index') }}">User
                                 Dashboard</a></li>
                     </ol>
                 </nav>
                 <!-- END: Breadcrumb -->
 
 
-                <div style="
+                {{-- <div style="
                     position: relative;
                     top: 8px;
                     margin: 20px;
-                "
-                    id="google_translate_element2"></div>
+                " id="google_translate_element2"></div> --}}
                 <!-- BEGIN: Account Menu -->
                 <div class="intro-x dropdown w-8 h-8">
                     <div class="dropdown-toggle w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in"
                         role="button" aria-expanded="false" data-tw-toggle="dropdown">
-                        <img
-                            src="{{ url('https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png') }}">
+                        <img src="{{ url('https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png') }}">
                     </div>
                     <div class="dropdown-menu w-56">
                         <ul class="dropdown-content bg-primary text-white">
@@ -255,12 +266,12 @@
 
                                 <div class="font-medium">
                                     @auth
-                                        {{ Auth::user()->name }}
+                                    {{ Auth::user()->name }}
                                     @endauth
                                 </div>
                                 <div class="text-xs text-white/70 mt-0.5 dark:text-slate-500">
                                     @auth
-                                        {{ Auth::user()->email }}
+                                    {{ Auth::user()->email }}
                                     @endauth
                                 </div>
                             </li>
@@ -291,8 +302,8 @@
 
     <!-- BEGIN: JS Assets-->
     <script src="{{ url('dist/js/app.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
     <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
@@ -305,7 +316,7 @@
             });
         });
     </script>
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         function googleTranslateElementInit2() {
             new google.translate.TranslateElement({
                 includedLanguages: 'en,es,zh-CN,vi',
@@ -314,7 +325,8 @@
             }, 'google_translate_element2');
         }
     </script>
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2">
+    <script type="text/javascript"
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2">
     </script>
     <script type="text/javascript">
         /* <![CDATA[ */
@@ -341,7 +353,7 @@
             '||document|var|if|length|function|GTranslateFireEvent|value|createEvent||||||true|else|doGTranslate||getElementById|google_translate_element2|innerHTML|change|try|HTMLEvents|initEvent|dispatchEvent|createEventObject|fireEvent|on|catch|return|split|getElementsByTagName|select|for|className|goog|te|combo|null|setTimeout|500'
             .split('|'), 0, {}))
         /* ]]> */
-    </script>
+    </script> --}}
 
     <script>
         // async function loadLang() { document.querySelector('.goog-te-combo').value = 'es'; }
@@ -349,13 +361,12 @@
 
     <!-- END: JS Assets-->
 </body>
-    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
-    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
-        rel="stylesheet" />
-    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js">
-    </script>
+<link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
+<link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
+<script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+<script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js"></script>
+<script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+<script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js">
+</script>
 
 </html>
