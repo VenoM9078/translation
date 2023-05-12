@@ -74,4 +74,7 @@ class Order extends Model
     public function contractorOrder() {
         return $this->hasOne('App\Models\ContractorOrder', 'order_id','id');
     }
+    public function proofReaderOrder() {
+        return $this->hasOne('App\Models\ProofReaderOrders', 'order_id', 'id');
+    }
 }

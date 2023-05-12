@@ -22,11 +22,14 @@
                             <table id="myTable" class="table table-striped hover" style="width:100%">
                                 <thead>
                                     <tr>
+                                        <th class="whitespace-nowrap">ID</th>
                                         <th class="whitespace-nowrap">Description</th>
-                                        <th class="whitespace-nowrap">Quantity (Words / Pages)</th>
+                                        <th class="whitespace-nowrap">Order By</th>
+                                        <th class="whitespace-nowrap">User Email</th>
+                                        <th class="whitespace-nowrap">Language #1</th>
+                                        <th class="whitespace-nowrap">Language #2</th>
                                         <th class="whitespace-nowrap">Amount</th>
                                         <th>Created At</th>
-                                        <th class="whitespace-nowrap">Status</th>
                                         <th class="whitespace-nowrap">Possible Action</th>
 
                                     </tr>
@@ -34,24 +37,28 @@
                                 <tbody>
                                     @foreach ($proofReadData as $translation)
                                         <tr>
+                                            <td class="whitespace-nowrap">{{ $translation->id }}</td>
                                             <td class="whitespace-nowrap">{{ $translation->description }}</td>
-
-                                            <td class="whitespace-nowrap">{{ $translation->docQuantity }}</td>
-                                            <td class="whitespace-nowrap">${{ $translation->amount }}</td>
-
+                                            <td class="whitespace-nowrap">{{ $translation->order->user->name }}</td>
+                                            <td class="whitespace-nowrap">{{ $translation->order->user->email }}</td>
+                                            <td class="whitespace-nowrap">{{ $translation->order->language1 }}</td>
+                                            <td class="whitespace-nowrap">{{ $translation->order->language2 }}</td>
+                                            <td class="whitespace-nowrap">{{ $translation->contractor->contractorOrders[0]->amount }}</td>
                                             <td class="whitespace-nowrap">
                                                 {{ $translation->created_at->timezone('America/Los_Angeles') }}</td>
-                                            <td class="whitespace-nowrap">
-                                                <div>
-
-                                                </div>
-                                            </td>
+                                         
                                             <td class="whitespace-nowrap">
                                                 <div class="flex gap-2">
-                                                    @if ($translation->order->paymentStatus == 0)
-                                                        <div><a href="{{ route('viewInvoice', $translation->id) }}"
-                                                                class="btn btn-warning">View Invoice</a></div>
-                                                    @endif
+                                                    <div>
+                                                        <a href="{{ route('contractor.downloadFiles', $translation->order->id ) }}"
+                                                            class="btn btn-warning">Download Original Document
+                                                        </a>
+                                                    </div>
+                                                    <div>
+                                                        <a href="{{ route('download-translation-file', $translation->contractor->contractorOrders[0]->id) }}"
+                                                            class="btn btn-success">Download Translated Document
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>

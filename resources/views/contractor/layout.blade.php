@@ -176,13 +176,13 @@
                         <li>
                             <a href="{{ route('contractor.translations.pending') }}" class="side-menu">
                                 <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
-                                <div class="side-menu__title"> Pending Translations </div>
+                                <div class="side-menu__title"> Translation Requests </div>
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('contractor.translations.completed') }}" class="side-menu">
                                 <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
-                                <div class="side-menu__title"> Accepted Translations </div>
+                                <div class="side-menu__title"> On-Going Translations </div>
                             </a>
                         </li>
 

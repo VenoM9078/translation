@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ContractorOrderEnum;
+use App\Enums\TranslationStatusEnum;
 use App\Mail\EmailContractor;
 use App\Mail\invoiceSent;
 use App\Mail\LatePaymentApproved;
@@ -15,6 +16,7 @@ use App\Mail\paymentRejected;
 use App\Mail\QuoteSent;
 use App\Models\Contractor;
 use App\Models\ContractorOrder;
+use App\Models\ProofReaderOrders;
 use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -113,6 +115,27 @@ class AdminController extends Controller
         return view('admin.pendingOrders', compact('orders'));
     }
 
+    public function viewAssignProofReader($orderID){
+        $order = Order::find($orderID);
+        $contractors = Contractor::all();
+        return view('admin.assign-proof-reader', compact('order', 'contractors'));
+    }
+
+    public function assignProofReader(Request $request){
+        $proofReaderOrder = ProofReaderOrders::create([
+            'order_id' => $request->order_id,
+            'contractor_id' => $request->contractor_id,
+            'is_accepted' => ContractorOrderEnum::PENDING,
+            'description' => $request->description,
+            'translation_status' => TranslationStatusEnum::PENDING,
+        ]);
+        $order = Order::find($request->order_id);
+        $proofReaderOrder->save();
+        $contractor = Contractor::where('id', $proofReaderOrder['contractor_id'])->firstOrFail();
+
+        Mail::to($contractor->email)->send(new mailToProofReader($order,$proofReaderOrder,'New Request! | Proof Read ',"webpage@flowtranslate.com"));
+        return redirect()->route('admin.pending');
+    }
 
     public function paidOrders()
     {

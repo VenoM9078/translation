@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ContractorOrderEnum;
+use App\Enums\TranslationStatusEnum;
 use App\Mail\ContractorNotifyAdmin;
 use App\Mail\NotifyAdminTranslationSubmissionContractor;
 use App\Models\Admin;
 use App\Models\Contractor;
 use App\Models\ContractorOrder;
 use App\Models\Order;
+use App\Models\ProofReaderOrders;
 use App\Models\TemporaryFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -155,6 +157,38 @@ class ContractorAuthController extends Controller
         return redirect()->route('contractor.translations.completed');
     }
 
+
+    public function downloadOriginalFiles(Order $order)
+    {
+        $orderFiles = $order->files;
+        $fileArr = [];
+
+        foreach ($orderFiles as $orderFile) {
+            if (file_exists(public_path('documents/' . $orderFile->filename))) {
+                $fileArr[] = public_path('documents/' . $orderFile->filename);
+            }
+        }
+
+        $zip = new ZipArchive;
+
+        $zipName = date('YmdHi') . $order->id . '.zip';
+        // dd($zip->open(public_path($zipName), ZipArchive::CREATE) === TRUE);
+        if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
+
+            $files = $fileArr; //passing the above array
+
+            foreach ($files as $key => $value) {
+                $relativeNameInZipFile = basename($value);
+                // dd($relativeNameInZipFile);
+                $zip->addFile($value, $relativeNameInZipFile);
+            }
+
+            $zip->close();
+        }
+
+        return response()->download(public_path('compressed/' . $zipName));
+    }
+
     public function downloadFiles(Order $order)
     {
         $orderFiles = $order->files;
@@ -188,7 +222,19 @@ class ContractorAuthController extends Controller
 
     public function pendingProofRead()
     {
-        $proofReadData = [];
+        $proofReadData = ProofReaderOrders::with([
+            'contractor',
+            'order',
+            'contractorOrder'
+        ])
+            ->where('contractor_id', auth()->guard('contractor')->user()->id)
+            ->where('is_accepted', 0) // assuming 0 represents "pending"
+            ->where('translation_status', TranslationStatusEnum::PENDING)
+            ->whereHas('contractorOrder', function ($query) {
+                $query->where('is_accepted', ContractorOrderEnum::ACCEPTED);
+            })
+            ->get();
+        // dd($proofReadData);
         return view('contractor.proof-read', compact('proofReadData'));
     }
 

@@ -19,4 +19,8 @@ class Contractor extends Authenticatable
     {
         return $this->hasMany('App\Models\ContractorOrder', 'contractor_id');
     }
+
+    public function proofReadOrders(){
+        return $this->hasMany('App\Models\ProofReaderOrders', 'contractor_id');
+    }
 }

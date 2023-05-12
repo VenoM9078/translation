@@ -389,11 +389,15 @@
                                                         class="btn btn-dark mr-1"><i data-lucide="mail"
                                                             class="w-5 h-5 mr-2"></i> Track Proofread Request
                                                     </a>
-                                                    <a href="{{ route('mailToProofReader', $order->id) }}"
+                                                    {{-- <a href="{{ route('mailToProofReader', $order->id) }}"
                                                         class="btn btn-dark mr-1"><i data-lucide="mail"
                                                             class="w-5 h-5 mr-2"></i>
-                                                        Mail to Proofreader </a>
-
+                                                        Mail to Proofreader </a> --}}
+                                                    <a href="{{route('view-assign-proofreader',$order->id)}}" title="Assign Proof Reader" class="btn btn-dark mr-1">
+                                                        <i data-lucide="book-copy"
+                                                            class="w-5 h-5 mr-2"></i>
+                                                        Assign Proof Reader
+                                                    </a>
                                                 </div>
                                             @elseif (
                                                 $order->invoiceSent == 1 &&

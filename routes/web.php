@@ -132,6 +132,10 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::post('/assign-contractor', [AdminController::class, 'assignContractor'])->name('assign-contractor');
 
     Route::get('/download-translation-file/{orderID}', [AdminController::class, 'downloadTranslationFile'])->name('download-translation-file');
+
+    //PRoof reader assignment
+    Route::get('/view-assign-proofreader/{orderId}',[AdminController::class,'viewAssignProofReader'])->name('view-assign-proofreader');
+    Route::post('/assign-proofreader',[AdminController::class,'assignProofReader'])->name('assign-proofreader');
 });
 
 Route::middleware(['web', 'auth'])->group(function () {
