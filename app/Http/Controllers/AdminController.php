@@ -167,19 +167,22 @@ class AdminController extends Controller
         }
     }
 
-    public function downloadTranslation(ContractorOrder $id, $filePath)
+    public function downloadTranslationFile($id)
     {
+        //select only file_name;
+        $filePath = '/translations_by_contractors/' . ContractorOrder::where(['order_id' => $id])->firstOrFail()->file_name;
         $file = "";
         // $file = public_path() . '/uploads/' . $filePath;
-        if (file_exists(public_path($filePath))) {
+        // dd($filePath, file_exists($filePath));
+        if (public_path() . file_exists($filePath)) {
             $file = public_path($filePath);
         }
         $zip = new ZipArchive;
-
         $zipName = date('YmdHi') . $id . '.zip';
 
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
             $relativeNameInZipFile = basename($file);
+            // dd($file, $relativeNameInZipFile);
             $zip->addFile($file, $relativeNameInZipFile);
 
             $zip->close();

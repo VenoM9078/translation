@@ -147,7 +147,11 @@
                                             <td>N/A</td>
                                         @endif
                                         @if (isset($order->contractorOrder) && $order->contractorOrder->file_name != '')
-                                            <td>Download</td>
+                                            <td>
+                                                <a class="btn" title="Download Translation" href="{{route('download-translation-file',$order->id)}}">
+                                                    Download
+                                                </a>
+                                            </td>
                                         @else
                                             <td>N/A</td>
                                         @endif

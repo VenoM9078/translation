@@ -130,6 +130,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
 
     Route::get('/assign-contractor/{orderID}', [AdminController::class, 'viewAssignContractor'])->name('view-assign-contractor');
     Route::post('/assign-contractor', [AdminController::class, 'assignContractor'])->name('assign-contractor');
+
+    Route::get('/download-translation-file/{orderID}', [AdminController::class, 'downloadTranslationFile'])->name('download-translation-file');
 });
 
 Route::middleware(['web', 'auth'])->group(function () {

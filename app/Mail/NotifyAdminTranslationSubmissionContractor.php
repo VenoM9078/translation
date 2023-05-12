@@ -17,11 +17,11 @@ class NotifyAdminTranslationSubmissionContractor extends Mailable
      * @return void
      */
     public $contractorName;
-    public $contractOrder;
+    public $contractorOrder;
     public function __construct($contractorName, $contractorOrder)
     {
         $this->contractorName = $contractorName;
-        $this->contractOrder = $contractorOrder;
+        $this->contractorOrder = $contractorOrder;
     }
 
     /**
