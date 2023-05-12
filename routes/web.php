@@ -131,16 +131,13 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/assign-contractor/{orderID}', [AdminController::class, 'viewAssignContractor'])->name('view-assign-contractor');
     Route::post('/assign-contractor', [AdminController::class, 'assignContractor'])->name('assign-contractor');
 
-<<<<<<< Updated upstream
     Route::get('/download-translation-file/{orderID}', [AdminController::class, 'downloadTranslationFile'])->name('download-translation-file');
 
     //PRoof reader assignment
-    Route::get('/view-assign-proofreader/{orderId}',[AdminController::class,'viewAssignProofReader'])->name('view-assign-proofreader');
-    Route::post('/assign-proofreader',[AdminController::class,'assignProofReader'])->name('assign-proofreader');
-=======
+    Route::get('/view-assign-proofreader/{orderId}', [AdminController::class, 'viewAssignProofReader'])->name('view-assign-proofreader');
+    Route::post('/assign-proofreader', [AdminController::class, 'assignProofReader'])->name('assign-proofreader');
     Route::get('/assign-interpreter/{interpreterID}', [AdminController::class, 'viewAssignInterpreter'])->name('view-assign-interpreter');
     Route::post('/assign-interpreter', [AdminController::class, 'assignInterpreter'])->name('assign-interpreter');
->>>>>>> Stashed changes
 });
 
 Route::middleware(['web', 'auth'])->group(function () {
