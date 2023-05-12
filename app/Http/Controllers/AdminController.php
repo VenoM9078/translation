@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ContractorOrderEnum;
 use App\Enums\TranslationStatusEnum;
 use App\Mail\EmailContractor;
+use App\Mail\InformContractorOfRequest;
 use App\Mail\invoiceSent;
 use App\Mail\LatePaymentApproved;
 use App\Mail\LatePaymentRejected;
@@ -23,6 +24,7 @@ use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Models\CompletedRequest;
 use App\Models\ContactAdmin;
+use App\Models\ContractorInterpretation;
 use App\Models\Feedback;
 use App\Models\FreeQuote;
 use App\Models\Interpretation;
@@ -68,7 +70,27 @@ class AdminController extends Controller
     {
         $interpretation = Interpretation::find($interpreterID);
         $contractors = Contractor::all();
+        // dd($interpretation);
         return view('admin.assign-interpreter', compact('interpretation', 'contractors'));
+    }
+
+    public function assignInterpreter(Request $request)
+    {
+
+        $contractorInterpretation = new ContractorInterpretation();
+        $contractorInterpretation->contractor_id = $request->contractor_id;
+        $contractorInterpretation->interpretation_id = $request->interpretation_id;
+        $contractorInterpretation->is_accepted = false;
+        $contractorInterpretation->description = $request->description;
+        $contractorInterpretation->amount = $request->amount;
+
+        $contractorInterpretation->save();
+
+        $contractor = $contractorInterpretation->contractor;
+
+        Mail::to($contractor->email)->send(new InformContractorOfRequest($contractorInterpretation));
+
+        return redirect()->route('admin.dashboard')->with('success', 'Interpretation assigned successfully!');
     }
 
     public function showSubmitQuote($id)
@@ -122,13 +144,15 @@ class AdminController extends Controller
         return view('admin.pendingOrders', compact('orders'));
     }
 
-    public function viewAssignProofReader($orderID){
+    public function viewAssignProofReader($orderID)
+    {
         $order = Order::find($orderID);
         $contractors = Contractor::all();
         return view('admin.assign-proof-reader', compact('order', 'contractors'));
     }
 
-    public function assignProofReader(Request $request){
+    public function assignProofReader(Request $request)
+    {
         $proofReaderOrder = ProofReaderOrders::create([
             'order_id' => $request->order_id,
             'contractor_id' => $request->contractor_id,
@@ -140,7 +164,7 @@ class AdminController extends Controller
         $proofReaderOrder->save();
         $contractor = Contractor::where('id', $proofReaderOrder['contractor_id'])->firstOrFail();
 
-        Mail::to($contractor->email)->send(new mailToProofReader($order,$proofReaderOrder,'New Request! | Proof Read ',"webpage@flowtranslate.com"));
+        Mail::to($contractor->email)->send(new mailToProofReader($order, $proofReaderOrder, 'New Request! | Proof Read ', "webpage@flowtranslate.com"));
         return redirect()->route('admin.pending');
     }
 

@@ -216,7 +216,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('contractor.translations.completed') }}" class="side-menu">
+                            <a href="{{ route('contractor.interpretationRequests') }}" class="side-menu">
                                 <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
                                 <div class="side-menu__title"> Interpretation Requests </div>
                             </a>

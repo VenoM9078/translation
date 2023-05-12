@@ -180,7 +180,7 @@
                                         === NULL && $interpretation->interpreter_completed == 0)
                                         <a href="{{ route('view-assign-interpreter', $interpretation->id) }}"
                                             class="btn btn-pending mr-1">
-                                            <i data-lucide="mail" class="w-5 h-5 mr-2"></i>Assign To Translator
+                                            <i data-lucide="mail" class="w-5 h-5 mr-2"></i>Assign To Interpreter
                                         </a> @elseif ($interpretation->wantQuote == 3 && $interpretation->paymentStatus
                                         == 1
                                         && $interpretation->interpreter_id

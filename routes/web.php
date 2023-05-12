@@ -77,6 +77,7 @@ Route::group(['middleware' => ['auth:contractor']], function () {
 
     Route::get('contractor/proof-reads', [ContractorAuthController::class, 'pendingProofRead'])->name('contractor.proof-read');
     Route::get('contractor/interpretaions', [ContractorAuthController::class, 'pendingInterpretations'])->name('contractor.interpretations');
+    Route::get('contractor/interpretaions/requests', [ContractorAuthController::class, 'interpretationRequests'])->name('contractor.interpretationRequests');
 
     Route::get('/contractor/accept/{order}', [ContractorAuthController::class, 'acceptTranslation'])->name('contractor.accept');
     Route::get('/contractor/decline/{order}', [ContractorAuthController::class, 'declineTranslation'])->name('contractor.decline');

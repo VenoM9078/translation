@@ -8,6 +8,7 @@ use App\Mail\ContractorNotifyAdmin;
 use App\Mail\NotifyAdminTranslationSubmissionContractor;
 use App\Models\Admin;
 use App\Models\Contractor;
+use App\Models\ContractorInterpretation;
 use App\Models\ContractorOrder;
 use App\Models\Order;
 use App\Models\ProofReaderOrders;
@@ -28,6 +29,18 @@ class ContractorAuthController extends Controller
     public function showLoginForm()
     {
         return view('auth.contractor.login');
+    }
+
+    public function interpretationRequests()
+    {
+        $contractorId = Auth::id();
+
+        $interpretationRequests = ContractorInterpretation::where([
+            ['contractor_id', '=', $contractorId],
+            ['is_accepted', '=', 0]
+        ])->get();
+
+        return view('contractor.interpretationRequests', ['interpretationRequests' => $interpretationRequests]);
     }
 
     public function store(Request $request)
@@ -136,7 +149,6 @@ class ContractorAuthController extends Controller
 
 
             return $filename;
-
         }
     }
 
