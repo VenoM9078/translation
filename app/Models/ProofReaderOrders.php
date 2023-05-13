@@ -12,7 +12,8 @@ class ProofReaderOrders extends Model
         'order_id',
         'contractor_id',
         'is_accepted',
-        'description',
+        'rate',
+        'total_payment',
         'status'
     ];
 

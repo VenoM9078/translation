@@ -17,6 +17,10 @@ return new class extends Migration {
             $table->string('order_id');
             $table->string('contractor_id');
             $table->string('is_accepted');
+            $table->integer('rate')->nullable();
+            $table->integer('total_payment')->nullable();
+            $table->integer('total_words')->nullable();
+            $table->string('is_accepted');
             $table->string('file_name')->nullable();
             $table->timestamps();
         });

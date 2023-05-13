@@ -67,6 +67,24 @@ class AdminController extends Controller
         return view('admin.assign-translator', compact('order', 'contractors'));
     }
 
+    public function viewEditOrder($orderID) {
+        $order = Order::find($orderID);
+        return view('admin.edit-order', compact('order'));
+    }
+
+    public function editOrder(Request $request) {
+        $order = Order::find($request->input('order_id'));
+        $order->worknumber = $request->input('worknumber');
+        $order->language1 = $request->input('language1');
+        $order->language2 = $request->input('language2');
+        $order->casemanager = $request->input('casemanager');
+        $order->amount = $request->input('amount');
+        $order->orderStatus = $request->input('orderStatus');
+        $order->save();
+
+        return redirect()->route('admin.dashboard');
+    }
+
     public function updateContractor(Request $request)
     {
         $id = $request->input('contractor_id');
@@ -235,8 +253,9 @@ class AdminController extends Controller
             'order_id' => $request->order_id,
             'contractor_id' => $request->contractor_id,
             'is_accepted' => ContractorOrderEnum::PENDING,
-            'description' => $request->description,
-            'amount' => $request->amount
+            'total_words' => $request->total_words,
+            'total_payment' => $request->total_payment,
+            'rate' => $request->rate
         ]);
         $contractorOrder->save();
         // $data = $request->all();
@@ -263,12 +282,15 @@ class AdminController extends Controller
 
     public function assignProofReader(Request $request)
     {
+        $contractor_order_id = ContractorOrder::where('order_id', $request->order_id)->where('is_accepted',1)->first();
         $proofReaderOrder = ProofReaderOrders::create([
             'order_id' => $request->order_id,
             'contractor_id' => $request->contractor_id,
             'is_accepted' => ContractorOrderEnum::PENDING,
-            'description' => $request->description,
+            'rate'=>$request->rate,
+            'total_payment' => $request->total_payment,
             'translation_status' => TranslationStatusEnum::PENDING,
+            'contractor_order_id' => $contractor_order_id->id
         ]);
         $order = Order::find($request->order_id);
         $proofReaderOrder->save();

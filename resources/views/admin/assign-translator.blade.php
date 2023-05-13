@@ -18,24 +18,36 @@
                         <div>
                             <div class="intro-x mt-4">
                                 <input type="hidden" name="order_id" value="{{ $order->id }}">
-                                <textarea type="text" name="description" required class="intro-x login__input form-control py-3 px-4 block"
-                                    placeholder="Enter Translation Description" value=""></textarea>
-                                <input type="number" required name="amount"
-                                    class="intro-x login__input form-control py-3 px-4 block mt-4"
-                                    placeholder="Enter Amount to be charged (in dollars)" value="">
-                                <select name="contractor_id" required
-                                    class="intro-x login__input form-control py-3 px-4 block mt-4">
-                                    <option value="-1" selected disabled>Select Contractor</option>
-                                    @foreach ($contractors as $contractor)
-                                        <option value="{{ $contractor->id }}">{{ $contractor->name }}
-                                            ({{ $contractor->email }})
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <label for="amount">Enter total words</label>
+                                <input type="number" required name="total_words"
+                                    class="intro-x login__input form-control px-4 block"
+                                    placeholder="Enter Total Words" value="">
+                                <br>
+                                <label for="amount" class="mt-2">Enter Total Payment</label>
+                                <input type="number" required name="total_payment"
+                                    class="intro-x login__input form-control px-4 block"
+                                    placeholder="Enter Total Payment" value="">
+                                <br>
+                                <label for="amount" class="mt-2">Enter Rate</label>
+                                <input type="number" required name="rate"
+                                    class="intro-x login__input form-control px-4 block mt-1"
+                                    placeholder="Enter Rate" value="">
+                                <br>
+                                <div class="mt-1">
+                                    <label for="amount" class="mt-2">Select Translators</label>
+                                    <select data-placeholder="Select A Contractor" required name="contractor_id"
+                                        class="tom-select w-full">
+                                        <option value="-1" selected disabled>Select Contractor</option>
+                                        @foreach ($contractors as $contractor)
+                                            <option value="{{ $contractor->id }}">{{ $contractor->name }}
+                                                (${{ $contractor->translation_rate }} / hour)
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
+                            <input type="submit" class="btn btn-primary mt-5" value="Send Email">
                         </div>
-                        <input type="submit" class="btn btn-primary mt-5" value="Send Email">
-                    </div>
                 </form>
 
             </div>

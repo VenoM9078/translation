@@ -89,6 +89,9 @@ Route::group(['middleware' => ['auth:contractor']], function () {
 
     //Filepond Upload 
     Route::post('/translationUpload', [ContractorAuthController::class, 'uploadTranslationFile'])->name('contractor.translationUploadFilePond');
+
+    //Download translated data
+    Route::get('/contractor/download-translation-file/{orderID}', [ContractorAuthController::class, 'downloadTranslationFile'])->name('contractor.download-translation-file');
 });
 
 Route::group(['middleware' => ['auth:admin']], function () {
@@ -145,6 +148,9 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::post('/assign-proofreader', [AdminController::class, 'assignProofReader'])->name('assign-proofreader');
     Route::get('/assign-interpreter/{interpreterID}', [AdminController::class, 'viewAssignInterpreter'])->name('view-assign-interpreter');
     Route::post('/assign-interpreter', [AdminController::class, 'assignInterpreter'])->name('assign-interpreter');
+
+    Route::get('/edit-order/{orderID}', [AdminController::class, 'viewEditOrder'])->name('view-edit-order');
+    Route::post('/edit-order/save', [AdminController::class, 'editOrder'])->name('admin.edit-order');
 });
 
 Route::middleware(['web', 'auth'])->group(function () {

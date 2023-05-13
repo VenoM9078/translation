@@ -14,8 +14,9 @@ class ContractorOrder extends Model
         'order_id',
         'contractor_id',
         'is_accepted',
-        'description',
-        'amount'
+        'rate',
+        'total_payment',
+        'total_words',
     ];
 
     public function contractor()

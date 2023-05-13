@@ -164,6 +164,27 @@ class ContractorAuthController extends Controller
         return redirect()->route('contractor.translations.completed');
     }
 
+    public function downloadTranslationFile($id)
+    {
+        //select only file_name;
+        $filePath = '/translations_by_contractors/' . ContractorOrder::where(['order_id' => $id])->firstOrFail()->file_name;
+        $file = "";
+
+        if (public_path() . file_exists($filePath)) {
+            $file = public_path($filePath);
+        }
+        $zip = new ZipArchive;
+        $zipName = date('YmdHi') . $id . '.zip';
+
+        if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
+            $relativeNameInZipFile = basename($file);
+            // dd($file, $relativeNameInZipFile);
+            $zip->addFile($file, $relativeNameInZipFile);
+
+            $zip->close();
+        }
+        return response()->download($file);
+    }
     public function declineTranslation($contractor_order_id)
     {
         $contractorOrder = ContractorOrder::find($contractor_order_id);
@@ -219,6 +240,11 @@ class ContractorAuthController extends Controller
         $contractorOrder->file_name = $uploadedFilePath;
         $contractorOrder->save();
         $request->session()->forget('uploaded_translation_file');
+
+        //fetch order with the order_id, then update the orders table column translationStatus to 1
+        $order = Order::find($contractorOrder->order_id);
+        $order->translation_status = 1;
+        $order->save();
 
         $contractorName = Auth::guard('contractor')->user()->name;
         $admins = Admin::all(['email']);

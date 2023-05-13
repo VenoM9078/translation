@@ -55,7 +55,7 @@
                                                         </a>
                                                     </div>
                                                     <div>
-                                                        <a href="{{ route('download-translation-file', $translation->contractor->contractorOrders[0]->id) }}"
+                                                        <a href="{{ route('contractor.download-translation-file', $translation->contractor->contractorOrders[0]->id) }}"
                                                             class="btn btn-success">Download Translated Document
                                                         </a>
                                                     </div>
