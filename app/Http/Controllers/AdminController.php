@@ -25,6 +25,7 @@ use App\Models\Admin;
 use App\Models\CompletedRequest;
 use App\Models\ContactAdmin;
 use App\Models\ContractorInterpretation;
+use App\Models\ContractorLanguage;
 use App\Models\Feedback;
 use App\Models\FreeQuote;
 use App\Models\Interpretation;
@@ -65,6 +66,115 @@ class AdminController extends Controller
         $contractors = Contractor::all();
         return view('admin.assign-translator', compact('order', 'contractors'));
     }
+
+    public function updateContractor(Request $request)
+    {
+        $id = $request->input('contractor_id');
+        $contractor = Contractor::findOrFail($id);
+
+        // Update basic fields
+        $contractor->name = $request->input('name');
+        $contractor->phonenumber = $request->input('phonenumber');
+        $contractor->address = $request->input('address');
+        $contractor->email = $request->input('email');
+
+        $contractor->interpretation_rate = $request->input('interpretation_rate');
+        $contractor->translation_rate = $request->input('translation_rate');
+        $contractor->proofreader_rate = $request->input('proofreader_rate');
+
+        // Update password if provided
+        $password = $request->input('password');
+        if (!empty($password)) {
+            $contractor->password = bcrypt($password);
+        }
+
+        // Save the contractor
+        $contractor->save();
+
+        // Delete previous translator languages
+        $contractor->languages()->where('is_translator', 1)->delete();
+
+        // Insert new translator languages
+        $translatorLanguages = $request->input('translator_languages', []);
+        foreach ($translatorLanguages as $language) {
+            $contractor->languages()->create([
+                'language' => $language,
+                'is_translator' => 1,
+            ]);
+        }
+
+        // Delete previous interpreter languages
+        $contractor->languages()->where('is_interpreter', 1)->delete();
+
+        // Insert new interpreter languages
+        $interpreterLanguages = $request->input('interpreter_languages', []);
+        foreach ($interpreterLanguages as $language) {
+            $contractor->languages()->create([
+                'language' => $language,
+                'is_interpreter' => 1,
+            ]);
+        }
+
+        // Delete previous proofreader languages
+        $contractor->languages()->where('is_proofreader', 1)->delete();
+
+        // Insert new proofreader languages
+        $proofreaderLanguages = $request->input('proofreader_languages', []);
+        foreach ($proofreaderLanguages as $language) {
+            $contractor->languages()->create([
+                'language' => $language,
+                'is_proofreader' => 1,
+            ]);
+        }
+
+        // Redirect or return a response
+        return redirect()->back()->with('success', 'Contractor updated successfully.');
+    }
+
+
+    public function deleteContractor($id)
+    {
+        // Find the contractor by its ID
+        $contractor = Contractor::find($id);
+
+        // If contractor exists
+        if ($contractor) {
+            // Delete the contractor
+            $contractor->delete();
+
+            // Redirect to the previous page with success message
+            return back()->with('success', 'Contractor deleted successfully.');
+        }
+
+        // If contractor does not exist, redirect back with an error message
+        return back()->with('error', 'Contractor not found.');
+    }
+
+    public function editContractor($id)
+    {
+        // Find the contractor by its ID
+        $contractor = Contractor::find($id);
+        $languages = ContractorLanguage::where('contractor_id', $id)->distinct()->get();
+
+        // dd($languages);
+
+        // If contractor exists
+        if ($contractor) {
+            // Return the edit contractor view with the contractor
+            return view('admin.editContractor', compact('contractor', 'languages'));
+        }
+
+        // If contractor does not exist, redirect back with an error message
+        return back()->with('error', 'Contractor not found.');
+    }
+
+    public function viewContractors()
+    {
+        $contractors = Contractor::with('languages')->get();
+
+        return view('admin.viewContractors', compact('contractors'));
+    }
+
 
     public function viewAssignInterpreter($interpreterID)
     {

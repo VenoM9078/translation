@@ -258,6 +258,16 @@
                 </li>
 
                 <li>
+                    <a href="{{ route('admin.viewContractors') }}"
+                        class="{{ ((Route::getCurrentRoute()->uri == 'view-contractors') ? 'side-menu side-menu--active' : 'side-menu' ) }}">
+                        <div class="side-menu__icon"> <i data-lucide="message-square"></i> </div>
+                        <div class="side-menu__title">
+                            Contractors
+                        </div>
+                    </a>
+                </li>
+
+                <li>
                     <a href="{{ route('viewFeedback') }}"
                         class="{{ ((Route::getCurrentRoute()->uri == 'viewFeedback') ? 'side-menu side-menu--active' : 'side-menu' ) }}">
                         <div class="side-menu__icon"> <i data-lucide="award"></i> </div>

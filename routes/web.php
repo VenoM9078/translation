@@ -96,10 +96,16 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('admin/pending', [AdminController::class, 'pendingOrders'])->name('admin.pending');
     Route::get('admin/paidOrders', [AdminController::class, 'paidOrders'])->name('admin.paidOrders');
 
+    Route::get('/admin/contractors/{id}/delete', [AdminController::class, 'deleteContractor'])->name('admin.deleteContractor');
+    Route::get('/admin/contractors/{id}/edit', [AdminController::class, 'editContractor'])->name('admin.editContractor');
+    Route::post('/admin/contractors/edit', [AdminController::class, 'updateContractor'])->name('admin.updateContractor');
+
 
     Route::get('admin/ongoing-interpretations', [AdminController::class, 'ongoingInterpretations'])->name('admin.ongoingInterpretations');
     Route::get('/admin/submitQuote/{id}', [AdminController::class, 'showSubmitQuote'])->name('admin.showSubmitQuote');
     Route::post('admin/submitQuote', [AdminController::class, 'submitQuote'])->name('admin.submitQuote');
+
+    Route::get('admin/view-contractors', [AdminController::class, 'viewContractors'])->name('admin.viewContractors');
 
 
     Route::delete('destroy/{id}', [AdminController::class, 'destroy'])->name('destroy');

@@ -12,7 +12,13 @@ class Contractor extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password'
+        'password',
+        'phonenumber',
+        'address',
+        'SSN',
+        'interpretation_rate',
+        'translation_rate',
+        'proofreader_rate'
     ];
 
     public function contractorOrders()
@@ -20,7 +26,13 @@ class Contractor extends Authenticatable
         return $this->hasMany('App\Models\ContractorOrder', 'contractor_id');
     }
 
-    public function proofReadOrders(){
+    public function proofReadOrders()
+    {
         return $this->hasMany('App\Models\ProofReaderOrders', 'contractor_id');
+    }
+
+    public function languages()
+    {
+        return $this->hasMany(ContractorLanguage::class);
     }
 }

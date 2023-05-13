@@ -1,81 +1,50 @@
-<!DOCTYPE html>
+@extends('admin.layout')
 
-<html lang="en" class="light">
-<!-- BEGIN: Head -->
-
-<head>
-    <meta charset="utf-8">
-    <link href="{{ url('dist/images/logo.svg') }}" rel="shortcut icon">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Contractor Register</title>
-    <!-- BEGIN: CSS Assets-->
-    <link rel="stylesheet" href="{{ url('dist/css/app.css') }}" />
-    <!-- END: CSS Assets-->
-</head>
-<!-- END: Head -->
-
-<body class="login">
-    <div class="container sm:px-10">
-        <div class="block xl:grid grid-cols-2 gap-4">
-            <!-- BEGIN: Register Info -->
-            <div class="hidden xl:flex flex-col min-h-screen">
-                <a href="" class="-intro-x flex items-center pt-5">
-                    <img class="w-6" src="{{ url('dist/images/logo.svg') }}">
-                    <span class="text-white text-lg ml-3"> FlowTranslate </span>
-                </a>
-                <div class="my-auto">
-                    <img alt="Midone - HTML Admin Template" class="-intro-x w-1/2 -mt-16"
-                        src="{{ url('dist/images/illustration.svg') }}">
-                    <div class="-intro-x text-white font-medium text-4xl leading-tight mt-10">
-                        A few more clicks to
-                        <br>
-                        sign up to your account.
+@section('content')
+<div class="intro-y col-span-12 mt-4">
+    <div class="intro-y box">
+        <div class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
+            <h2 class="font-medium text-base mr-auto">
+                Editing Contractor
+            </h2>
+        </div>
+        <div id="vertical-form" class="p-5">
+            <form action="{{route('admin.updateContractor')}}" method="post">
+                @csrf
+                @method('POST')
+                <div class="preview">
+                    <input type="hidden" name="contractor_id" value="{{ $contractor->id }}">
+                    <div class="mb-3">
+                        <label>Name</label>
+                        <input type="text" name="name" required
+                            class="intro-x login__input form-control py-3 px-4 block mt-1" placeholder="Enter Name"
+                            value="{{ $contractor->name }}">
                     </div>
-                    <div class="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400">Manage all your
-                        customers in one place</div>
-                </div>
-            </div>
-            <!-- END: Register Info -->
-            <!-- BEGIN: Register Form -->
-            <div class="flex py-5 xl:py-0 my-10 xl:my-0">
-                <div
-                    class="my-auto mx-auto xl:ml-20 bg-white dark:bg-darkmode-600 xl:bg-transparent px-5 sm:px-8 py-8 xl:p-0 rounded-md shadow-md xl:shadow-none w-full sm:w-3/4 lg:w-2/4 xl:w-auto">
-                    <h2 class="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-left">
-                        Contractor Sign Up
-                    </h2>
-                    <div class="intro-x mt-2 text-slate-400 dark:text-slate-400 xl:hidden text-center">A few more clicks
-                        to sign in to your account. Manage all your e-commerce accounts in one place</div>
-                    <form action="{{ route('contractor.register') }}" method="post">
-                        @csrf
-                        @method('POST')
-                        <div class="intro-x mt-8">
-                            <input type="text" name="name" class="intro-x login__input form-control py-3 px-4 block"
-                                placeholder="Name">
-                            <input type="email" name="email"
-                                class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="Email">
-                            <div><input type="password" name="password"
-                                    class="intro-x login__input form-control py-3 px-4 block mt-4"
-                                    placeholder="Password">
-                                <input type="password" name="password2"
-                                    class="intro-x login__input form-control py-3 px-4 block mt-4"
-                                    placeholder="Confirm Password">
-                            </div>
-
-
-                        </div>
-
-                        <div class="intro-x mt-4">
-                            <input type="text" name="address" class="intro-x login__input form-control py-3 px-4 block"
-                                placeholder="Address">
-                            <input type="text" name="phonenumber"
-                                class="intro-x login__input form-control py-3 px-4 block mt-4"
-                                placeholder="Phone Number">
-                            <input type="text" name="SSN" class="intro-x login__input form-control py-3 px-4 block mt-4"
-                                placeholder="Tax Payer ID i.e SSN / EIN">
-
-                        </div>
-
+                    <div class="mb-3">
+                        <label>Phone Number</label>
+                        <input type="text" name="phonenumber"
+                            class="intro-x login__input form-control py-3 px-4 block mt-1"
+                            placeholder="Enter Phone Number" value="{{ $contractor->phonenumber }}">
+                    </div>
+                    <div class="mb-3">
+                        <label>Address</label>
+                        <input type="text" name="address" class="intro-x login__input form-control py-3 px-4 block mt-1"
+                            placeholder="Enter Address" value="{{ $contractor->address }}">
+                    </div>
+                    <div class="mb-3">
+                        <label>Email</label>
+                        <input type="email" name="email" required
+                            class="intro-x login__input form-control py-3 px-4 block mt-1" placeholder="Enter Email"
+                            value="{{ $contractor->email }}">
+                    </div>
+                    <div class="mb-3">
+                        <label>Password</label>
+                        <input type="password" name="password"
+                            class="intro-x login__input form-control py-3 px-4 block mt-1"
+                            placeholder="Enter Password (Don't fill it if you don't want to change the password)"
+                            value="">
+                    </div>
+                    <div class="mt-3">
                         <div class="container mt-8">
                             <ul class="nav nav-boxed-tabs" role="tablist">
                                 <li id="translator-tab" class="nav-item flex-1" role="presentation">
@@ -102,6 +71,12 @@
                                         <select name="translator_languages[]" aria-placeholder="Choose your Languages"
                                             data-placeholder="Select your favorite languages" class="tom-select w-full"
                                             multiple>
+                                            @foreach ($languages as $language)
+                                            @if ($language->is_translator == 1)
+                                            <option value="{{ $language->language }}" selected>{{ $language->language }}
+                                            </option>
+                                            @endif
+                                            @endforeach
                                             <option value="Afrikaans">Afrikaans</option>
                                             <option value="Albanian">Albanian</option>
                                             <option value="Amharic">Amharic</option>
@@ -204,9 +179,9 @@
                                     </div>
                                     <div class="mt-3">
                                         <label for="">Choose Translation Rate (per Word)</label>
-                                        <input type="number" name="translator_rate"
+                                        <input type="number" name="translation_rate"
                                             class="intro-x login__input form-control py-3 px-4 block mt-4"
-                                            placeholder="Per Word Rate">
+                                            placeholder="Per Word Rate" value="{{$contractor->translation_rate}}">
                                     </div>
 
                                 </div>
@@ -217,6 +192,12 @@
                                         <select name="interpreter_languages[]" aria-placeholder="Choose your Languages"
                                             data-placeholder="Select your favorite languages" class="tom-select w-full"
                                             multiple>
+                                            @foreach ($languages as $language)
+                                            @if ($language->is_interpreter == 1)
+                                            <option value="{{ $language->language }}" selected>{{ $language->language }}
+                                            </option>
+                                            @endif
+                                            @endforeach
                                             <option value="Afrikaans">Afrikaans</option>
                                             <option value="Albanian">Albanian</option>
                                             <option value="Amharic">Amharic</option>
@@ -319,9 +300,9 @@
                                     </div>
                                     <div class="mt-3">
                                         <label for="">Choose Interpretation Rate (per Hour)</label>
-                                        <input type="number" name="interpreter_rate"
+                                        <input type="number" name="interpretation_rate"
                                             class="intro-x login__input form-control py-3 px-4 block mt-4"
-                                            placeholder="Per Hour Rate">
+                                            placeholder="Per Hour Rate" value="{{$contractor->interpretation_rate}}">
                                     </div>
                                 </div>
                                 <div id="proofreader" class="tab-pane leading-relaxed" role="tabpanel"
@@ -331,6 +312,12 @@
                                         <select name="proofreader_languages[]" aria-placeholder="Choose your Languages"
                                             data-placeholder="Select your favorite languages" class="tom-select w-full"
                                             multiple>
+                                            @foreach ($languages as $language)
+                                            @if ($language->is_proofreader == 1)
+                                            <option value="{{ $language->language }}" selected>{{ $language->language }}
+                                            </option>
+                                            @endif
+                                            @endforeach
                                             <option value="Afrikaans">Afrikaans</option>
                                             <option value="Albanian">Albanian</option>
                                             <option value="Amharic">Amharic</option>
@@ -435,35 +422,18 @@
                                         <label for="">Choose Proofreading Rate</label>
                                         <input type="number" name="proofreader_rate"
                                             class="intro-x login__input form-control py-3 px-4 block mt-4"
-                                            placeholder="Rate">
+                                            placeholder="Rate" value="{{$contractor->proofreader_rate}}">
                                     </div>
                                 </div>
                             </div>
 
                         </div>
 
-                        <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
-                            <button type="submit"
-                                class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top">Register</button>
-                            <a href="{{ route('contractor.login') }}"
-                                class="btn btn-outline-secondary py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top">Sign
-                                in</a>
-
-                            <a href="{{ route('login') }}" class="btn btn-outline-secondary "
-                                style="margin: auto; margin-left: 10px;"><i data-lucide="user"></i></a>
-
-                        </div>
-                    </form>
+                    </div>
+                    <input type="submit" class="btn btn-primary mt-5" value="Update Contractor">
                 </div>
-            </div>
+            </form>
         </div>
-        <!-- END: Register Form -->
     </div>
-
-
-    <!-- BEGIN: JS Assets-->
-    <script src="{{ url('dist/js/app.js') }}"></script>
-    <!-- END: JS Assets-->
-</body>
-
-</html>
+</div>
+@endsection

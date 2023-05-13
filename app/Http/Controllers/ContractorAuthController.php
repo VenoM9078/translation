@@ -43,27 +43,86 @@ class ContractorAuthController extends Controller
         return view('contractor.interpretationRequests', ['interpretationRequests' => $interpretationRequests]);
     }
 
+    // public function store(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'email' => 'required|email',
+    //         'password' => 'required|string|min:6',
+    //     ]);
+    //     if ($request->password !== $request->password2) {
+    //         return back()->withErrors([
+    //             'password' => 'Passwords do not match'
+    //         ]);
+    //     }
+
+    //     $validated['password'] = bcrypt($validated['password']);
+
+    //     $contractor = Contractor::create($validated);
+
+    //     Auth::guard('contractor')->login($contractor);
+
+    //     return redirect()->route('contractor.dashboard');
+    // }
+
     public function store(Request $request)
     {
+
+        // dd($request->input('translator_languages'));
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email',
             'password' => 'required|string|min:6',
+            'password2' => 'required|string|min:6|same:password',
+
         ]);
-        if ($request->password !== $request->password2) {
-            return back()->withErrors([
-                'password' => 'Passwords do not match'
-            ]);
-        }
 
         $validated['password'] = bcrypt($validated['password']);
 
-        $contractor = Contractor::create($validated);
+        $contractor = Contractor::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')),
+            'address' => $request->input('address'),
+            'phonenumber' => $request->input('phonenumber'),
+            'SSN' => $request->input('SSN'),
+            'translation_rate' => $request->input('translator_rate'),
+            'interpretation_rate' => $request->input('interpreter_rate'),
+            'proofreader_rate' => $request->input('proofreader_rate'),
+        ]);
+
+        if ($request->input('translator_languages')) {
+            foreach ($request->input('translator_languages') as $language) {
+                $contractor->languages()->create([
+                    'language' => $language,
+                    'is_translator' => 1,
+                ]);
+            }
+        }
+
+        if ($request->input('interpreter_languages')) {
+            foreach ($request->input('interpreter_languages') as $language) {
+                $contractor->languages()->create([
+                    'language' => $language,
+                    'is_interpreter' => 1,
+                ]);
+            }
+        }
+
+        if ($request->input('proofreader_languages')) {
+            foreach ($request->input('proofreader_languages') as $language) {
+                $contractor->languages()->create([
+                    'language' => $language,
+                    'is_proofreader' => 1,
+                ]);
+            }
+        }
 
         Auth::guard('contractor')->login($contractor);
 
         return redirect()->route('contractor.dashboard');
     }
+
 
     public function index()
     {
