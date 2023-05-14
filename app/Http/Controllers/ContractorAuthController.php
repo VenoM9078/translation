@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ContractorOrderEnum;
 use App\Enums\TranslationStatusEnum;
 use App\Mail\ContractorNotifyAdmin;
+use App\Mail\NotifyAdminOfContractorAction;
 use App\Mail\NotifyAdminTranslationSubmissionContractor;
 use App\Models\Admin;
 use App\Models\Contractor;
@@ -64,6 +65,38 @@ class ContractorAuthController extends Controller
 
     //     return redirect()->route('contractor.dashboard');
     // }
+
+    public function acceptInterpretationRequest($id)
+    {
+        $contractorInterpretation = ContractorInterpretation::findOrFail($id);
+        $contractorInterpretation->is_accepted = 1;
+        $contractorInterpretation->save();
+
+        // Get the associated contractor
+        $contractor = $contractorInterpretation->contractor;
+
+        // Send email to admin
+        Mail::to('webpage@flowtranslate.com')->send(new NotifyAdminOfContractorAction($contractor, 'accepted', $contractorInterpretation->interpretation));
+
+        return redirect()->back()->with('message', 'You have successfully accepted the interpretation request.');
+    }
+
+    public function denyInterpretationRequest($id)
+    {
+        $contractorInterpretation = ContractorInterpretation::findOrFail($id);
+
+        // Get the associated contractor before deleting the request
+        $contractor = $contractorInterpretation->contractor;
+        $interpretation = $contractorInterpretation->interpretation;
+
+        $contractorInterpretation->delete();
+
+        // Send email to admin
+        Mail::to('webpage@flowtranslate.com')->send(new NotifyAdminOfContractorAction($contractor, 'denied', $interpretation));
+
+        return redirect()->back()->with('message', 'You have successfully denied the interpretation request.');
+    }
+
 
     public function store(Request $request)
     {

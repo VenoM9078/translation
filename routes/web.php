@@ -87,6 +87,10 @@ Route::group(['middleware' => ['auth:contractor']], function () {
     //Submit for approval
     Route::post('/upload-translation', [ContractorAuthController::class, 'submitTranslationFile'])->name('contractor.upload-translation');
 
+    Route::get('/accept-request/{id}', [ContractorAuthController::class, 'acceptInterpretationRequest'])->name('accept.request');
+    Route::get('/deny-request/{id}', [ContractorAuthController::class, 'denyInterpretationRequest'])->name('deny.request');
+
+
     //Filepond Upload 
     Route::post('/translationUpload', [ContractorAuthController::class, 'uploadTranslationFile'])->name('contractor.translationUploadFilePond');
 
@@ -102,6 +106,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/admin/contractors/{id}/delete', [AdminController::class, 'deleteContractor'])->name('admin.deleteContractor');
     Route::get('/admin/contractors/{id}/edit', [AdminController::class, 'editContractor'])->name('admin.editContractor');
     Route::post('/admin/contractors/edit', [AdminController::class, 'updateContractor'])->name('admin.updateContractor');
+
+    Route::post('get-contractor-rate', [AdminController::class, 'getContractorRate'])->name('get.contractor.rate');
 
 
     Route::get('admin/ongoing-interpretations', [AdminController::class, 'ongoingInterpretations'])->name('admin.ongoingInterpretations');

@@ -17,11 +17,11 @@ class ContractorInterpretation extends Model
         'is_accepted',
         'dateDecided',
         'description',
-        'amount',
+        'estimated_payment', // new field
+        'per_hour_rate', // new field
         'start_time_decided',
         'end_time_decided'
     ];
-
     public function contractor()
     {
         return $this->belongsTo('App\Models\Contractor', 'contractor_id');

@@ -17,10 +17,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('contractor_id');
             $table->unsignedBigInteger('interpretation_id');
-            $table->boolean('is_accepted')->default(false);
+            $table->boolean('is_accepted')->default(0);
             $table->date('dateDecided')->nullable();
             $table->text('description')->nullable();
-            $table->float('amount')->default(0);
+            $table->float('estimated_payment')->default(0); // new field
+            $table->float('per_hour_rate')->default(0); // new field
             $table->time('start_time_decided')->nullable();
             $table->time('end_time_decided')->nullable();
             $table->timestamps();

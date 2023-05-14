@@ -29,7 +29,8 @@
                                     <th>Start Time</th>
                                     <th>End Time</th>
                                     <th class="whitespace-nowrap">Session Format</th>
-                                    <th class="whitespace-nowrap">Fee</th>
+                                    <th class="whitespace-nowrap">Per Hour Rate</th>
+                                    <th class="whitespace-nowrap">Estimated Payment</th>
                                     <th class="whitespace-nowrap">Possible Action</th>
                                 </tr>
                             </thead>
@@ -45,7 +46,8 @@
                                     <td class="whitespace-nowrap">{{ $request->interpretation->end_time }}</td>
                                     <td class="whitespace-nowrap">{{ $request->interpretation->session_format }}
                                     </td>
-                                    <td class="whitespace-nowrap">${{ $request->amount }}</td>
+                                    <td class="whitespace-nowrap">${{ $request->per_hour_rate }}</td>
+                                    <td class="whitespace-nowrap">${{ $request->estimated_payment }}</td>
                                     <td class="whitespace-nowrap">
                                         <div class="flex gap-2">
                                             @if (!$request->is_accepted)
@@ -85,7 +87,7 @@
                                                     </div>
                                                     <div class="px-5 pb-8 text-center inline-flex items-stretch"
                                                         style="text-align: center;margin: auto !important;width: 100%;position: relative;justify-content: center;">
-                                                        <a href=""
+                                                        <a href="{{route('accept.request', $request->interpretation->id)}}"
                                                             class="btn btn-success text-white w-24 mr-1 self-center">
                                                             I'm Sure</a>
                                                         <button type="button" data-tw-dismiss="modal"
@@ -111,7 +113,8 @@
                                                     </div>
                                                     <div class="px-5 pb-8 text-center inline-flex items-stretch"
                                                         style="text-align: center;margin: auto !important;width: 100%;position: relative;justify-content: center;">
-                                                        <a href="" class="btn btn-danger w-24 mr-1 self-center">
+                                                        <a href="{{route('deny.request', $request->interpretation->id)}}"
+                                                            class="btn btn-danger w-24 mr-1 self-center">
                                                             I'm Sure</a>
                                                         <button type="button" data-tw-dismiss="modal"
                                                             class="btn btn-outline-secondary w-24 mr-1">Cancel</button>

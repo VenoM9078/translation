@@ -67,12 +67,14 @@ class AdminController extends Controller
         return view('admin.assign-translator', compact('order', 'contractors'));
     }
 
-    public function viewEditOrder($orderID) {
+    public function viewEditOrder($orderID)
+    {
         $order = Order::find($orderID);
         return view('admin.edit-order', compact('order'));
     }
 
-    public function editOrder(Request $request) {
+    public function editOrder(Request $request)
+    {
         $order = Order::find($request->input('order_id'));
         $order->worknumber = $request->input('worknumber');
         $order->language1 = $request->input('language1');
@@ -204,13 +206,22 @@ class AdminController extends Controller
 
     public function assignInterpreter(Request $request)
     {
+        // First check if a record already exists for the given interpretation and contractor
+        $existingAssignment = ContractorInterpretation::where('interpretation_id', $request->interpretation_id)
+            ->first();
+
+        // If it exists, delete it
+        if ($existingAssignment) {
+            $existingAssignment->delete();
+        }
 
         $contractorInterpretation = new ContractorInterpretation();
         $contractorInterpretation->contractor_id = $request->contractor_id;
         $contractorInterpretation->interpretation_id = $request->interpretation_id;
-        $contractorInterpretation->is_accepted = false;
+        $contractorInterpretation->is_accepted = 0;
         $contractorInterpretation->description = $request->description;
-        $contractorInterpretation->amount = $request->amount;
+        $contractorInterpretation->per_hour_rate = $request->per_hour_rate;
+        $contractorInterpretation->estimated_payment = $request->estimated_payment;
 
         $contractorInterpretation->save();
 
@@ -219,6 +230,12 @@ class AdminController extends Controller
         Mail::to($contractor->email)->send(new InformContractorOfRequest($contractorInterpretation));
 
         return redirect()->route('admin.dashboard')->with('success', 'Interpretation assigned successfully!');
+    }
+
+    public function getContractorRate(Request $request)
+    {
+        $contractor = Contractor::find($request->id);
+        return response()->json(['interpretation_rate' => $contractor->interpretation_rate]);
     }
 
     public function showSubmitQuote($id)
@@ -282,12 +299,12 @@ class AdminController extends Controller
 
     public function assignProofReader(Request $request)
     {
-        $contractor_order_id = ContractorOrder::where('order_id', $request->order_id)->where('is_accepted',1)->first();
+        $contractor_order_id = ContractorOrder::where('order_id', $request->order_id)->where('is_accepted', 1)->first();
         $proofReaderOrder = ProofReaderOrders::create([
             'order_id' => $request->order_id,
             'contractor_id' => $request->contractor_id,
             'is_accepted' => ContractorOrderEnum::PENDING,
-            'rate'=>$request->rate,
+            'rate' => $request->rate,
             'total_payment' => $request->total_payment,
             'translation_status' => TranslationStatusEnum::PENDING,
             'contractor_order_id' => $contractor_order_id->id
