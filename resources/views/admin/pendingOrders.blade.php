@@ -380,6 +380,10 @@
                                                     class="btn btn-pending mr-1">
                                                     <i data-lucide="mail" class="w-5 h-5 mr-2"></i> Mail to Translator
                                                 </a>
+                                                <a href="{{ route('view-assign-contractor', ['orderID' => $order->id]) }}"
+                                                    class="btn btn-pending mr-1">
+                                                    <i data-lucide="mail" class="w-5 h-5 mr-2"></i>Assign To Translator
+                                                </a>
                                             @elseif (
                                                 $order->invoiceSent == 1 &&
                                                     $order->paymentStatus == 1 &&

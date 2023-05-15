@@ -70,7 +70,8 @@ class AdminController extends Controller
     public function viewEditOrder($orderID)
     {
         $order = Order::find($orderID);
-        return view('admin.edit-order', compact('order'));
+        $contractors = Contractor::all();
+        return view('admin.edit-order', compact('order','contractors'));
     }
 
     public function editOrder(Request $request)
@@ -238,6 +239,16 @@ class AdminController extends Controller
         return response()->json(['interpretation_rate' => $contractor->interpretation_rate]);
     }
 
+    public function getTranslatorRate(Request $request)
+    {
+        if(isset($request->id) && $request->id != null){
+            $contractor = Contractor::find($request->id);
+            return response()->json(['translation_rate' => $contractor->translation_rate]);
+        } else {
+            return response()->json(['translation_rate' => 0]);
+        }
+    }
+
     public function showSubmitQuote($id)
     {
         $interpretation = Interpretation::findOrFail($id);
@@ -266,6 +277,7 @@ class AdminController extends Controller
     {
         // dd($request->input('description'));
         // dd($request->input('amount'));
+        // dd($request->all());
         $contractorOrder = ContractorOrder::create([
             'order_id' => $request->order_id,
             'contractor_id' => $request->contractor_id,
