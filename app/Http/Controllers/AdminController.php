@@ -312,6 +312,7 @@ class AdminController extends Controller
     public function assignProofReader(Request $request)
     {
         $contractor_order_id = ContractorOrder::where('order_id', $request->order_id)->where('is_accepted', 1)->first();
+        // dd($contractor_order_id);
         $proofReaderOrder = ProofReaderOrders::create([
             'order_id' => $request->order_id,
             'contractor_id' => $request->contractor_id,
@@ -322,6 +323,7 @@ class AdminController extends Controller
             'contractor_order_id' => $contractor_order_id->id
         ]);
         $order = Order::find($request->order_id);
+        $order->proofread_status = 1; //change status to 1 *asigned
         $proofReaderOrder->save();
         $contractor = Contractor::where('id', $proofReaderOrder['contractor_id'])->firstOrFail();
 

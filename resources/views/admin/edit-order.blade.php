@@ -55,12 +55,24 @@
                                 <br>
 
                                 <label for="contractor_name">Contractor Name</label>
-                                <input type="text" name="contractor_name"
-                                    @isset($order->proofReaderOrder) disabled @endisset id="contractor_name"
-                                    style="margin-bottom: 20px;"
-                                    class="intro-x login__input form-control py-3 px-4 block mt-4"
-                                    placeholder="Contractor Name"
-                                    value="{{ isset($order->contractorOrder->contractor->name) ? $order->contractorOrder->contractor->name : 'N/A' }}">
+                                @if ($order->translationStatus == 1 && $order->contractorOrder->is_accepted == 1)
+                                    <input type="text" name="contractor_name" disabled id="contractor_name"
+                                        style="margin-bottom: 20px;"
+                                        class="intro-x login__input form-control py-3 px-4 block mt-4"
+                                        placeholder="Contractor Name"
+                                        value="{{ isset($order->contractorOrder->contractor->name) ? $order->contractorOrder->contractor->name : 'N/A' }}">
+                                    <a href="{{ route('view-assign-proofreader', $order->id) }}"
+                                        class="mb-2 btn btn-primary">Re-Assign ProofReader</a>
+                                    <hr class="my-2 py-2">
+                                @else
+                                    <input type="text" name="contractor_name" disabled id="contractor_name"
+                                        style="margin-bottom: 20px;"
+                                        class="intro-x login__input form-control py-3 px-4 block mt-4"
+                                        placeholder="Contractor Name"
+                                        value="{{ isset($order->contractorOrder->contractor->name) ? $order->contractorOrder->contractor->name : 'N/A' }}">
+                                    <a href="{{ route('view-assign-contractor', $order->id) }}"
+                                        class="mb-2 btn btn-primary">Re-Assign Contractor</a>
+                                @endif
                                 <hr class="my-2 py-2">
 
                             </div>

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->time('start_time_decided')->nullable();
             $table->time('end_time_decided')->nullable();
             $table->timestamps();
-
+            $table->string('feedback')->nullable();
             $table->foreign('contractor_id')->references('id')->on('contractors')->onDelete('cascade');
             $table->foreign('interpretation_id')->references('id')->on('interpretations')->onDelete('cascade');
         });

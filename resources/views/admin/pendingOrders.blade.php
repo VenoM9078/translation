@@ -411,14 +411,19 @@
                                                     $order->paymentStatus == 1 &&
                                                     $order->translation_status == 1 &&
                                                     $order->proofread_status == 0)
-                                                <a href="{{ route('mailToProofReader', $order->id) }}"
+                                                {{-- <a href="{{ route('mailToProofReader', $order->id) }}"
                                                     class="btn btn-dark mr-1"><i data-lucide="mail"
                                                         class="w-5 h-5 mr-2"></i>
                                                     Mail to Proofreader </a>
                                                 <a href="{{ route('mailOfCompletion', $order->id) }}"
                                                     class="btn btn-success mr-1"><i data-lucide="mail"
                                                         class="w-5 h-5 mr-2"></i>
-                                                    Send Translation to User </a>
+                                                    Send Translation to User </a> --}}
+                                                       <a href="{{ route('view-assign-proofreader', $order->id) }}"
+                                                        title="Assign Proof Reader" class="btn btn-dark mr-1">
+                                                        <i data-lucide="book-copy" class="w-5 h-5 mr-2"></i>
+                                                        Assign Proof Reader
+                                                    </a>
                                             @elseif (
                                                 $order->invoiceSent == 1 &&
                                                     $order->paymentStatus == 2 &&

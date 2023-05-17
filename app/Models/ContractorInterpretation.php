@@ -20,7 +20,8 @@ class ContractorInterpretation extends Model
         'estimated_payment', // new field
         'per_hour_rate', // new field
         'start_time_decided',
-        'end_time_decided'
+        'end_time_decided',
+        'feedback'
     ];
     public function contractor()
     {

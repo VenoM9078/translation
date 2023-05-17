@@ -31,4 +31,10 @@ class Interpretation extends Model
     {
         return $this->belongsTo('App\Models\User', 'user_id');
     }
+    // public function order(){
+
+    // }
+    public function contractor(){
+        return $this->belongsTo('App\Models\Contractor', 'contractor_id');
+    }
 }

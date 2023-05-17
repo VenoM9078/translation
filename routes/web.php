@@ -92,10 +92,13 @@ Route::group(['middleware' => ['auth:contractor']], function () {
 
 
     //Filepond Upload 
-    Route::post('/translationUpload', [ContractorAuthController::class, 'uploadTranslationFile'])->name('contractor.translationUploadFilePond');
+    Route::post('/contractor/translationUpload', [ContractorAuthController::class, 'uploadTranslationFile'])->name('contractor.translationUploadFilePond');
 
     //Download translated data
     Route::get('/contractor/download-translation-file/{orderID}', [ContractorAuthController::class, 'downloadTranslationFile'])->name('contractor.download-translation-file');
+
+    Route::get('/contractor/view-report/{id}', [ContractorAuthController::class, 'viewReport'])->name('contractor.viewReport');
+    Route::post('/contractor/report-submission', [ContractorAuthController::class, 'reportSubmission'])->name('contractor.report-submission');
 });
 
 Route::group(['middleware' => ['auth:admin']], function () {
