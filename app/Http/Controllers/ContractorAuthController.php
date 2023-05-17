@@ -11,6 +11,7 @@ use App\Models\Admin;
 use App\Models\Contractor;
 use App\Models\ContractorInterpretation;
 use App\Models\ContractorOrder;
+use App\Models\Interpretation;
 use App\Models\Order;
 use App\Models\ProofReaderOrders;
 use App\Models\TemporaryFile;
@@ -30,6 +31,13 @@ class ContractorAuthController extends Controller
     public function showLoginForm()
     {
         return view('auth.contractor.login');
+    }
+
+    public function reportToAdmin($id)
+    {
+        $interpretation = Interpretation::findOrFail($id);
+
+        return view('contractor.reportToAdmin', compact('interpretation'));
     }
 
     public function interpretationRequests()
@@ -68,14 +76,21 @@ class ContractorAuthController extends Controller
 
     public function acceptInterpretationRequest($id)
     {
+
         $contractorInterpretation = ContractorInterpretation::findOrFail($id);
         $contractorInterpretation->is_accepted = 1;
-        $contractorInterpretation->save();
 
-        // Get the associated contractor
+        $interpretation_id = $contractorInterpretation->interpretation_id;
+
+        $contractorInterpretation->save();
+        $interpretation = Interpretation::findOrFail($interpretation_id);
+
         $contractor = $contractorInterpretation->contractor;
 
-        // Send email to admin
+        $interpretation->interpreter_id = $contractor->id;
+
+        $interpretation->save();
+
         Mail::to('webpage@flowtranslate.com')->send(new NotifyAdminOfContractorAction($contractor, 'accepted', $contractorInterpretation->interpretation));
 
         return redirect()->back()->with('message', 'You have successfully accepted the interpretation request.');
@@ -370,7 +385,11 @@ class ContractorAuthController extends Controller
 
     public function pendingInterpretations()
     {
-        $interpretations = [];
+        $interpretations =
+            ContractorInterpretation::where([
+                ['contractor_id', '=', Auth::user()->id],
+                ['is_accepted', '=', 1]
+            ])->get();
         return view('contractor.interpretations', compact('interpretations'));
     }
 

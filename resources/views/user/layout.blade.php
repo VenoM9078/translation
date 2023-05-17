@@ -219,11 +219,11 @@
                 <!-- END: Breadcrumb -->
 
 
-                <div style="
+                {{-- <div style="
                     position: relative;
                     top: 8px;
                     margin: 20px;
-                " id="google_translate_element2"></div>
+                " id="google_translate_element2"></div> --}}
                 <!-- BEGIN: Account Menu -->
                 <div class="intro-x dropdown w-8 h-8">
                     <div class="dropdown-toggle w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in"
@@ -285,7 +285,7 @@
             });
         });
     </script>
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         function googleTranslateElementInit2() {
             new google.translate.TranslateElement({
                 includedLanguages: 'en,es,zh-CN,vi',
@@ -322,7 +322,7 @@
             '||document|var|if|length|function|GTranslateFireEvent|value|createEvent||||||true|else|doGTranslate||getElementById|google_translate_element2|innerHTML|change|try|HTMLEvents|initEvent|dispatchEvent|createEventObject|fireEvent|on|catch|return|split|getElementsByTagName|select|for|className|goog|te|combo|null|setTimeout|500'
             .split('|'), 0, {}))
         /* ]]> */
-    </script>
+    </script> --}}
 
     <script>
         // async function loadLang() { document.querySelector('.goog-te-combo').value = 'es'; }

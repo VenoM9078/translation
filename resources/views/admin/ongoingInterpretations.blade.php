@@ -27,6 +27,8 @@
                                     <th class="whitespace-nowrap text-center">End Time</th>
                                     <th class="whitespace-nowrap text-center">Session Format</th>
                                     <th class="whitespace-nowrap text-center">Interpreter Assigned</th>
+                                    <th class="whitespace-nowrap text-center">I.Rate</th>
+                                    <th class="whitespace-nowrap text-center">E.Payment</th>
                                     <th class="whitespace-nowrap text-center">Created At</th>
                                     <th class="whitespace-nowrap w-40">Status</th>
                                     <th class="whitespace-nowrap text-center">Possible Action</th>
@@ -47,6 +49,22 @@
                                         N/A
                                         @else
                                         {{ $interpretation->interpreter->name }}
+                                        @endif
+                                    </td>
+                                    <td class="whitespace-nowrap">
+                                        @if ($interpretation->interpreter_id === NULL ||
+                                        $interpretation->contractorInterpretation->per_hour_rate == NULL)
+                                        N/A
+                                        @else
+                                        ${{ $interpretation->contractorInterpretation->per_hour_rate}}
+                                        @endif
+                                    </td>
+                                    <td class="whitespace-nowrap">
+                                        @if ($interpretation->interpreter_id === NULL ||
+                                        $interpretation->contractorInterpretation->estimated_payment == NULL)
+                                        N/A
+                                        @else
+                                        ${{ $interpretation->contractorInterpretation->estimated_payment}}
                                         @endif
                                     </td>
                                     <td class="whitespace-nowrap">{{

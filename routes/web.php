@@ -68,6 +68,9 @@ Route::get('/dashboard', function () {
 Route::get('generate-invoice/{id}', [AdminController::class, 'generatePDFInvoice'])->name('generatePDFInvoice');
 
 Route::group(['middleware' => ['auth:contractor']], function () {
+    Route::get('contractor/report/{id}', [ContractorAuthController::class, 'reportToAdmin'])->name('reportToAdmin');
+
+
     Route::get('contractor/dashboard', [ContractorAuthController::class, 'index'])->name('contractor.dashboard');
     Route::get('/contractor/logout', [ContractorAuthController::class, 'logout'])->name('contractor.logout');
     //pending translations

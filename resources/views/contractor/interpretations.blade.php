@@ -22,37 +22,39 @@
                         <table id="myTable" class="table table-striped hover" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th class="whitespace-nowrap">Description</th>
-                                    <th class="whitespace-nowrap">Quantity (Words / Pages)</th>
-                                    <th class="whitespace-nowrap">Amount</th>
-                                    <th>Created At</th>
-                                    <th class="whitespace-nowrap">Status</th>
-                                    <th class="whitespace-nowrap">Possible Action</th>
-
+                                    <th class="whitespace-nowrap">Worknumber</th>
+                                    <th class="whitespace-nowrap">Topic</th>
+                                    <th class="whitespace-nowrap">Language</th>
+                                    <th class="whitespace-nowrap">Interpretation Date</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th class="whitespace-nowrap">Session Format</th>
+                                    <th class="whitespace-nowrap">Address/Link</th>
+                                    <th class="whitespace-nowrap">Per Hour Rate</th>
+                                    <th class="whitespace-nowrap">Estimated Payment</th>
+                                    <th class="whitespace-nowrap">Possible Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($interpretations as $interpretation)
                                 <tr>
-                                    <td class="whitespace-nowrap">{{ $interpretation->description }}</td>
-
-                                    <td class="whitespace-nowrap">{{ $interpretation->docQuantity }}</td>
-                                    <td class="whitespace-nowrap">${{ $interpretation->amount }}</td>
-
-                                    <td class="whitespace-nowrap">
-                                        {{ $interpretation->created_at->timezone('America/Los_Angeles') }}</td>
-                                    <td class="whitespace-nowrap">
-                                        <div>
-
-                                        </div>
+                                    <td class="whitespace-nowrap">{{ $interpretation->interpretation->worknumber }}</td>
+                                    <td class="whitespace-nowrap">{{ $interpretation->interpretation->session_topics }}
                                     </td>
+                                    <td class="whitespace-nowrap">{{ $interpretation->interpretation->language }}</td>
+                                    <td class="whitespace-nowrap">{{ $interpretation->interpretation->interpretationDate
+                                        }}</td>
+                                    <td class="whitespace-nowrap">{{ $interpretation->interpretation->start_time }}</td>
+                                    <td class="whitespace-nowrap">{{ $interpretation->interpretation->end_time }}</td>
+                                    <td class="whitespace-nowrap">{{ $interpretation->interpretation->session_format }}
+                                    </td>
+                                    <td class="whitespace-nowrap">{{ $interpretation->interpretation->location }}
+                                    </td>
+                                    <td class="whitespace-nowrap">${{ $interpretation->per_hour_rate }}</td>
+                                    <td class="whitespace-nowrap">${{ $interpretation->estimated_payment }}</td>
                                     <td class="whitespace-nowrap">
-                                        <div class="flex gap-2">
-                                            @if ($interpretation->order->paymentStatus == 0)
-                                            <div><a href="{{ route('viewInvoice', $translation->id) }}"
-                                                    class="btn btn-warning">View Invoice</a></div>
-                                            @endif
-                                        </div>
+                                        <a href="{{ route('reportToAdmin', $interpretation->id) }}"
+                                            class="btn btn-warning mr-1 mb-2">Report</a>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -64,13 +66,5 @@
         </div>
     </div>
 </div>
-<script>
-    let button = document.querySelector('#uniqueModal');
 
-        button.addEventListener('click', function() {
-            let value = button.value;
-
-            console.log(value);
-        })
-</script>
 @endsection

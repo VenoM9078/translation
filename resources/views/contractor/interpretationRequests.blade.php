@@ -87,7 +87,7 @@
                                                     </div>
                                                     <div class="px-5 pb-8 text-center inline-flex items-stretch"
                                                         style="text-align: center;margin: auto !important;width: 100%;position: relative;justify-content: center;">
-                                                        <a href="{{route('accept.request', $request->interpretation->id)}}"
+                                                        <a href="{{route('accept.request', $request->id)}}"
                                                             class="btn btn-success text-white w-24 mr-1 self-center">
                                                             I'm Sure</a>
                                                         <button type="button" data-tw-dismiss="modal"
@@ -113,7 +113,7 @@
                                                     </div>
                                                     <div class="px-5 pb-8 text-center inline-flex items-stretch"
                                                         style="text-align: center;margin: auto !important;width: 100%;position: relative;justify-content: center;">
-                                                        <a href="{{route('deny.request', $request->interpretation->id)}}"
+                                                        <a href="{{route('deny.request', $request->id)}}"
                                                             class="btn btn-danger w-24 mr-1 self-center">
                                                             I'm Sure</a>
                                                         <button type="button" data-tw-dismiss="modal"

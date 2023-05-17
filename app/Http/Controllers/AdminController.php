@@ -229,7 +229,7 @@ class AdminController extends Controller
 
         Mail::to($contractor->email)->send(new InformContractorOfRequest($contractorInterpretation));
 
-        return redirect()->route('admin.dashboard')->with('success', 'Interpretation assigned successfully!');
+        return redirect()->route('admin.ongoingInterpretations')->with('success', 'Interpretation assigned successfully!');
     }
 
     public function getContractorRate(Request $request)
