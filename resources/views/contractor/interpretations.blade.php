@@ -65,6 +65,13 @@
             </div>
         </div>
     </div>
-</div>
+    <script>
+        let button = document.querySelector('#uniqueModal');
 
-@endsection
+        button.addEventListener('click', function() {
+            let value = button.value;
+
+            console.log(value);
+        })
+    </script>
+    @endsection

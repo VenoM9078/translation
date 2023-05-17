@@ -40,6 +40,28 @@ class ContractorAuthController extends Controller
         return view('contractor.reportToAdmin', compact('interpretation'));
     }
 
+
+    public function reportSubmission(Request $request)
+    {
+        $interpretationReport = ContractorInterpretation::find($request->contractor_interpretation_id);
+        $interpretationReport->feedback = $request->feedback;
+        $interpretationReport->start_time_decided = $request->start_time_decided;
+        $interpretationReport->end_time_decided = $request->end_time_decided;
+        $interpretationReport->save();
+        return redirect()->route('contractor.interpretations');
+    }
+
+
+    public function reportSubmission(Request $request)
+    {
+        $interpretationReport = ContractorInterpretation::find($request->contractor_interpretation_id);
+        $interpretationReport->feedback = $request->feedback;
+        $interpretationReport->start_time_decided = $request->start_time_decided;
+        $interpretationReport->end_time_decided = $request->end_time_decided;
+        $interpretationReport->save();
+        return redirect()->route('contractor.interpretations');
+    }
+
     public function interpretationRequests()
     {
         $contractorId = Auth::id();
@@ -51,6 +73,14 @@ class ContractorAuthController extends Controller
 
         return view('contractor.interpretationRequests', ['interpretationRequests' => $interpretationRequests]);
     }
+
+    public function viewReport($id)
+    {
+        $interpretation = Interpretation::findOrFail($id);
+        return view('contractor.view-report', ['interpretation' => $interpretation]);
+    }
+
+
 
     // public function store(Request $request)
     // {
@@ -190,7 +220,7 @@ class ContractorAuthController extends Controller
     public function completedTranslations()
     {
         $translations = ContractorOrder::where('contractor_id', auth()->guard('contractor')->user()->id)
-            ->where('is_accepted', ContractorOrderEnum::ACCEPTED)
+            ->where('is_accepted', ContractorOrderEnum::ACCEPTED)->orderBy('created_at', 'desc')
             ->get();
         return view('contractor.completed-translations', compact('translations'));
     }
@@ -251,37 +281,65 @@ class ContractorAuthController extends Controller
 
     public function uploadTranslationFile(Request $request)
     {
+        // if ($request->hasFile('translationFile')) {
+        //     $file = $request->file('translationFile');
+        //     $filePath = 'translations_by_contractors/';
+
+        //     // dd($file);
+
+        //     $filename = date('YmdHi') . $file->getClientOriginalName();
+        //     // $folder = uniqid() . '-' . now()->timestamp;
+        //     // $file->move(public_path('documents'), $filename);
+        //     //if the path does not exist, create it
+
+        //     if (!file_exists(public_path($filePath))) {
+        //         mkdir(public_path($filePath), 0777, true);
+        //         $file->move($filePath, $filename);
+        //     } else {
+        //         $file->move($filePath, $filename);
+        //     }
+
+        //     TemporaryFile::create([
+        //         'filename' => $filename
+        //     ]);
+
+        //     // session(['uploaded_translation_file' => $filename]);
+
+
+        $filenames = [];
+
         if ($request->hasFile('translationFile')) {
-            $file = $request->file('translationFile');
+            $files = $request->file('translationFile');
             $filePath = 'translations_by_contractors/';
 
-            // dd($file);
+            foreach ($files as $file) {
+                $filename = date('YmdHi') . $file->getClientOriginalName();
 
-            $filename = date('YmdHi') . $file->getClientOriginalName();
-            // $folder = uniqid() . '-' . now()->timestamp;
-            // $file->move(public_path('documents'), $filename);
-            //if the path does not exist, create it
+                if (!file_exists(public_path($filePath))) {
+                    mkdir(public_path($filePath), 0777, true);
+                }
 
-            if (!file_exists(public_path($filePath))) {
-                mkdir(public_path($filePath), 0777, true);
                 $file->move($filePath, $filename);
-            } else {
-                $file->move($filePath, $filename);
+
+                TemporaryFile::create([
+                    'filename' => $filename
+                ]);
+
+                $filenames[] = $filename;
             }
-
-            TemporaryFile::create([
-                'filename' => $filename
-            ]);
-
-            session(['uploaded_translation_file' => $filename]);
-
-
-            return $filename;
         }
+        session(['uploaded_translation_file' => $filenames]);
+
+        return $filenames;
+        // return response()->json(['filename' => $filename], 200);
+
     }
 
     public function submitTranslationFile(Request $request)
     {
+        // dd($request->all());
+        // dd($request->all(),$request->translationFile, $request->file('translationFile'));
+        // dd($request->hasFile('translationFile'), $request->input('translationFile'));
         $uploadedFilePath = session('uploaded_translation_file', '');
 
         $contractorOrder = ContractorOrder::find($request['contractor_order_id']);
@@ -385,11 +443,12 @@ class ContractorAuthController extends Controller
 
     public function pendingInterpretations()
     {
-        $interpretations =
-            ContractorInterpretation::where([
-                ['contractor_id', '=', Auth::user()->id],
-                ['is_accepted', '=', 1]
-            ])->get();
+        $contractorId = Auth::id();
+
+        $interpretations = ContractorInterpretation::where([
+            ['contractor_id', '=', $contractorId],
+            ['is_accepted', '=', 1]
+        ])->get();
         return view('contractor.interpretations', compact('interpretations'));
     }
 

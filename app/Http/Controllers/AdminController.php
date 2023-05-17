@@ -70,7 +70,8 @@ class AdminController extends Controller
     public function viewEditOrder($orderID)
     {
         $order = Order::find($orderID);
-        return view('admin.edit-order', compact('order'));
+        $contractors = Contractor::all();
+        return view('admin.edit-order', compact('order','contractors'));
     }
 
     public function editOrder(Request $request)
@@ -238,6 +239,16 @@ class AdminController extends Controller
         return response()->json(['interpretation_rate' => $contractor->interpretation_rate]);
     }
 
+    public function getTranslatorRate(Request $request)
+    {
+        if(isset($request->id) && $request->id != null){
+            $contractor = Contractor::find($request->id);
+            return response()->json(['translation_rate' => $contractor->translation_rate]);
+        } else {
+            return response()->json(['translation_rate' => 0]);
+        }
+    }
+
     public function showSubmitQuote($id)
     {
         $interpretation = Interpretation::findOrFail($id);
@@ -266,6 +277,7 @@ class AdminController extends Controller
     {
         // dd($request->input('description'));
         // dd($request->input('amount'));
+        // dd($request->all());
         $contractorOrder = ContractorOrder::create([
             'order_id' => $request->order_id,
             'contractor_id' => $request->contractor_id,
@@ -300,6 +312,7 @@ class AdminController extends Controller
     public function assignProofReader(Request $request)
     {
         $contractor_order_id = ContractorOrder::where('order_id', $request->order_id)->where('is_accepted', 1)->first();
+        // dd($contractor_order_id);
         $proofReaderOrder = ProofReaderOrders::create([
             'order_id' => $request->order_id,
             'contractor_id' => $request->contractor_id,
@@ -310,6 +323,7 @@ class AdminController extends Controller
             'contractor_order_id' => $contractor_order_id->id
         ]);
         $order = Order::find($request->order_id);
+        $order->proofread_status = 1; //change status to 1 *asigned
         $proofReaderOrder->save();
         $contractor = Contractor::where('id', $proofReaderOrder['contractor_id'])->firstOrFail();
 

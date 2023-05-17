@@ -30,8 +30,11 @@
                             <table id="myTable" class="table table-striped hover" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th class="whitespace-nowrap">Description</th>
+                                        <th class="whitespace-nowrap">Order WorkNumber</th>
                                         <th class="whitespace-nowrap">Amount</th>
+                                        <th class="whitespace-nowrap">Order By</th>
+                                        <th class="whitespace-nowrap">Language</th>
+                                        <th class="whitespace-nowrap">Rate Accepted</th>
                                         <th>Created At</th>
                                         <th class="whitespace-nowrap">Status</th>
                                         <th class="whitespace-nowrap">Possible Action</th>
@@ -40,8 +43,12 @@
                                 <tbody>
                                     @foreach ($translations as $key => $translation)
                                         <tr>
-                                            <td class="whitespace-nowrap">{{ $translation->description }}</td>
-                                            <td class="whitespace-nowrap">${{ $translation->amount }}</td>
+                                            <td class="whitespace-nowrap">{{ $translation->order->worknumber }}</td>
+                                            <td class="whitespace-nowrap">${{ $translation->total_payment }}</td>
+                                            <td class="whitespace-nowrap">{{ $translation->order->user->name }}</td>
+                                            <td class="whitespace-nowrap">{{ $translation->order->language1 }}</td>
+                                            <td class="whitespace-nowrap">${{ $translation->order->contractorOrder->rate }}
+                                            </td>
 
                                             <td class="whitespace-nowrap">
                                                 {{ $translation->created_at->timezone('America/Los_Angeles') }}</td>
@@ -67,8 +74,8 @@
                                                 </div>
                                             </td>
                                             <!-- BEGIN: Modal Content -->
-                                            <div id="upload-modal-preview-{{ $key }}" class="modal" tabindex="-1"
-                                                aria-hidden="true">
+                                            <div id="upload-modal-preview-{{ $key }}" class="modal"
+                                                tabindex="-1" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-body p-0">
@@ -82,19 +89,17 @@
                                                                         style="text-align: center;margin: auto !important;width: 100%;position: relative;justify-content: center;">
                                                                         <form
                                                                             action="{{ route('contractor.upload-translation') }}"
-                                                                            method="post"
-                                                                            enctype="multipart/form-data"
-                                                                            accept-charset="utf-8"
-                                                                            >
+                                                                            method="post" enctype="multipart/form-data"
+                                                                            accept-charset="utf-8">
                                                                             @csrf
                                                                             @method('POST')
-                                                                            <input type="hidden" name="contractor_order_id" value="{{$translation->id}}">
+                                                                            <input type="hidden" name="contractor_order_id"
+                                                                                value="{{ $translation->id }}">
                                                                             <div class="col-span-12 p-2 sm:col-span-12">
-                                                                                <input type="file" id="translationFile"
-                                                                                    class="filepond mt-5"
-                                                                                    name="translationFile"
-                                                                                    data-max-file-size="10MB"
-                                                                                     />
+                                                                                <input type="file"
+                                                                                    id="fp-translationFile-{{$key}}" class="filepond fp-translationFile"
+                                                                                    name="translationFile[]" multiple data-max-files="1" 
+                                                                                    data-max-file-size="10MB" />
                                                                                 <button type="submit"
                                                                                     class="btn btn-success w-24">Submit</button>
                                                                             </div>
@@ -135,14 +140,16 @@
 
         // Select the file input and use create() to turn it into a pond
         FilePond.create(
-            document.querySelector('#translationFile')
+            document.querySelector('.fp-translationFile')
         );
 
         FilePond.setOptions({
             server: {
-                url: '/translationUpload',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                process: {
+                    url: '/contractor/translationUpload',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
                 }
             }
         });

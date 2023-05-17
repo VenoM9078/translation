@@ -95,10 +95,13 @@ Route::group(['middleware' => ['auth:contractor']], function () {
 
 
     //Filepond Upload 
-    Route::post('/translationUpload', [ContractorAuthController::class, 'uploadTranslationFile'])->name('contractor.translationUploadFilePond');
+    Route::post('/contractor/translationUpload', [ContractorAuthController::class, 'uploadTranslationFile'])->name('contractor.translationUploadFilePond');
 
     //Download translated data
     Route::get('/contractor/download-translation-file/{orderID}', [ContractorAuthController::class, 'downloadTranslationFile'])->name('contractor.download-translation-file');
+
+    Route::get('/contractor/view-report/{id}', [ContractorAuthController::class, 'viewReport'])->name('contractor.viewReport');
+    Route::post('/contractor/report-submission', [ContractorAuthController::class, 'reportSubmission'])->name('contractor.report-submission');
 });
 
 Route::group(['middleware' => ['auth:admin']], function () {
@@ -111,6 +114,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::post('/admin/contractors/edit', [AdminController::class, 'updateContractor'])->name('admin.updateContractor');
 
     Route::post('get-contractor-rate', [AdminController::class, 'getContractorRate'])->name('get.contractor.rate');
+    Route::post('get-translator-rate', [AdminController::class, 'getTranslatorRate'])->name('get.translator.rate');
 
 
     Route::get('admin/ongoing-interpretations', [AdminController::class, 'ongoingInterpretations'])->name('admin.ongoingInterpretations');

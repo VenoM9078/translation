@@ -18,26 +18,11 @@
                         <div>
                             <div class="intro-x mt-4">
                                 <input type="hidden" name="order_id" value="{{ $order->id }}">
-                                <label for="amount">Enter total words</label>
-                                <input type="number" required name="total_words"
-                                    class="intro-x login__input form-control px-4 block"
-                                    placeholder="Enter Total Words" value="">
-                                <br>
-                                <label for="amount" class="mt-2">Enter Total Payment</label>
-                                <input type="number" required name="total_payment"
-                                    class="intro-x login__input form-control px-4 block"
-                                    placeholder="Enter Total Payment" value="">
-                                <br>
-                                <label for="amount" class="mt-2">Enter Rate</label>
-                                <input type="number" required name="rate"
-                                    class="intro-x login__input form-control px-4 block mt-1"
-                                    placeholder="Enter Rate" value="">
-                                <br>
                                 <div class="mt-1">
-                                    <label for="amount" class="mt-2">Select Translators</label>
-                                    <select data-placeholder="Select A Contractor" required name="contractor_id"
-                                        class="tom-select w-full">
-                                        <option value="-1" selected disabled>Select Contractor</option>
+                                    <label for="amount" class="mt-2">Select Translator</label>
+                                    <select data-placeholder="Select A Contractor" id="contractor_select" required
+                                        name="contractor_id" class="tom-select w-full">
+                                        <option value="-1" selected disabled>--</option>
                                         @foreach ($contractors as $contractor)
                                             <option value="{{ $contractor->id }}">{{ $contractor->name }}
                                                 (${{ $contractor->translation_rate }} / hour)
@@ -45,6 +30,22 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <br>
+                                <label for="amount">Enter total words</label>
+                                <input type="number" required id="total_words" name="total_words"
+                                    class="intro-x login__input form-control px-4 block" placeholder="Enter Total Words"
+                                    value="">
+                                <br>
+                                <label for="amount" class="mt-2">Total Payment</label>
+                                <input type="number" id="total_payment" disabled name="total_payment"
+                                    class="intro-x login__input form-control px-4 block" placeholder="Enter Total Payment"
+                                    value="">
+                                <br>
+                                <label for="amount" class="mt-2">Enter Rate</label>
+                                <input type="number" name="rate"
+                                    class="intro-x login__input form-control px-4 block mt-1 d-none" id="rate"
+                                    value="" placeholder="Enter Rate" value="">
+
                             </div>
                             <input type="submit" class="btn btn-primary mt-5" value="Send Email">
                         </div>
@@ -54,3 +55,50 @@
         </div>
     </div>
 @endsection
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"
+    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+        var rate = 0;
+
+        function calculateEstimatedPayment(words) {
+            return words * rate;
+        }
+
+        $('#contractor_select').change(function() {
+            var contractor_id = $(this).val();
+            $.ajax({
+                url: "{{ route('get.translator.rate') }}",
+                method: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "id": contractor_id
+                },
+                success: function(data) {
+                    rate = data.translation_rate;
+                    var total_words = $("#total_words").val();
+                    //if total words is empty then set total payment to 0
+                    if (total_words == "") {
+                        total_words = 0;
+                    }
+                    var estimated_payment = calculateEstimatedPayment(total_words);
+                    $('#total_payment').val(estimated_payment);
+                    $('#rate').val(rate); // set rate to rate field
+                }
+            });
+        }).change(); // Trigger the change event manually to set the initial values
+
+        $("#rate").change(function() {
+            var total_words = $("#total_words").val();
+            rate = $(this).val(); // use newly entered rate for calculation
+            var estimated_payment = calculateEstimatedPayment(total_words);
+            $('#total_payment').val(estimated_payment);
+        });
+
+        $("#total_words").change(function() {
+            var total_words = $(this).val();
+            var estimated_payment = calculateEstimatedPayment(total_words);
+            $('#total_payment').val(estimated_payment);
+        });
+    });
+</script>

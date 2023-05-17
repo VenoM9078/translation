@@ -22,8 +22,10 @@
                             <table id="myTable" class="table table-striped hover" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th class="whitespace-nowrap">Description</th>
+                                        <th class="whitespace-nowrap">Order WorkNumber</th>
                                         <th class="whitespace-nowrap">Amount</th>
+                                        <th class="whitespace-nowrap">Order By</th>
+                                        <th class="whitespace-nowrap">Language</th>
                                         <th>Created At</th>
                                         <th class="whitespace-nowrap">Status</th>
                                         <th class="whitespace-nowrap">Possible Action</th>
@@ -33,8 +35,10 @@
                                 <tbody>
                                     @foreach ($translations as $key => $translation)
                                         <tr>
-                                            <td class="whitespace-nowrap">{{ $translation->description }}</td>
-                                            <td class="whitespace-nowrap">${{ $translation->amount }}</td>
+                                            <td class="whitespace-nowrap">{{ $translation->order->worknumber }}</td>
+                                            <td class="whitespace-nowrap">${{ $translation->rate }}</td>
+                                            <td class="whitespace-nowrap">{{ $translation->order->user->name }}</td>
+                                            <td class="whitespace-nowrap">{{ $translation->order->language1 }}</td>
 
                                             <td class="whitespace-nowrap">
                                                 {{ $translation->created_at->timezone('America/Los_Angeles') }}</td>

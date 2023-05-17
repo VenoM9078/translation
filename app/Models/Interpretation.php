@@ -40,5 +40,12 @@ class Interpretation extends Model
     public function contractorInterpretation()
     {
         return $this->hasOne('App\Models\ContractorInterpretation', 'interpretation_id');
+        // public function order(){
+    }
+
+    // }
+    public function contractor()
+    {
+        return $this->belongsTo('App\Models\Contractor', 'contractor_id');
     }
 }
