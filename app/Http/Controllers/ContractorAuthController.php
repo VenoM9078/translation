@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Enums\ContractorOrderEnum;
 use App\Enums\TranslationStatusEnum;
 use App\Mail\ContractorNotifyAdmin;
+use App\Mail\InterpretationReportToAdmin;
+use App\Mail\InterpretationReportToUser;
 use App\Mail\NotifyAdminOfContractorAction;
 use App\Mail\NotifyAdminTranslationSubmissionContractor;
 use App\Models\Admin;
@@ -17,7 +19,7 @@ use App\Models\ProofReaderOrders;
 use App\Models\TemporaryFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Mail;
+use Mail as Mail;
 use ZipArchive;
 
 class ContractorAuthController extends Controller
@@ -47,20 +49,30 @@ class ContractorAuthController extends Controller
         $interpretationReport->feedback = $request->feedback;
         $interpretationReport->start_time_decided = $request->start_time_decided;
         $interpretationReport->end_time_decided = $request->end_time_decided;
+        $interpretationReport->dateDecided = $request->interpretationDate;
+
         $interpretationReport->save();
+
+        $interpretation = Interpretation::find($interpretationReport->interpretation->id);
+        $interpretation->start_time = $request->start_time_decided;
+        $interpretation->end_time = $request->end_time_decided;
+        $interpretation->feedback = $request->feedback;
+        $interpretation->interpretationDate = $request->interpretationDate;
+
+        $interpretation->interpreter_completed = 1;
+
+        $interpretation->save();
+
+        // Sending email to admin
+        Mail::to('wahaj.dkz@gmail.com')->send(new InterpretationReportToAdmin($interpretation));
+
+        // Sending email to user
+        Mail::to($interpretation->user->email)->send(new InterpretationReportToUser($interpretation));
+
         return redirect()->route('contractor.interpretations');
     }
 
 
-    public function reportSubmission(Request $request)
-    {
-        $interpretationReport = ContractorInterpretation::find($request->contractor_interpretation_id);
-        $interpretationReport->feedback = $request->feedback;
-        $interpretationReport->start_time_decided = $request->start_time_decided;
-        $interpretationReport->end_time_decided = $request->end_time_decided;
-        $interpretationReport->save();
-        return redirect()->route('contractor.interpretations');
-    }
 
     public function interpretationRequests()
     {
@@ -68,7 +80,7 @@ class ContractorAuthController extends Controller
 
         $interpretationRequests = ContractorInterpretation::where([
             ['contractor_id', '=', $contractorId],
-            ['is_accepted', '=', 0]
+            ['is_accepted', '=', 1]
         ])->get();
 
         return view('contractor.interpretationRequests', ['interpretationRequests' => $interpretationRequests]);
@@ -76,7 +88,10 @@ class ContractorAuthController extends Controller
 
     public function viewReport($id)
     {
-        $interpretation = Interpretation::findOrFail($id);
+        // dd($id);
+
+        $interpretation = ContractorInterpretation::findOrFail($id);
+
         return view('contractor.view-report', ['interpretation' => $interpretation]);
     }
 

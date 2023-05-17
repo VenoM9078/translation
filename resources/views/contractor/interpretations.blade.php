@@ -53,7 +53,7 @@
                                     <td class="whitespace-nowrap">${{ $interpretation->per_hour_rate }}</td>
                                     <td class="whitespace-nowrap">${{ $interpretation->estimated_payment }}</td>
                                     <td class="whitespace-nowrap">
-                                        <a href="{{ route('reportToAdmin', $interpretation->id) }}"
+                                        <a href="{{ route('contractor.viewReport', $interpretation->id) }}"
                                             class="btn btn-warning mr-1 mb-2">Report</a>
                                     </td>
                                 </tr>

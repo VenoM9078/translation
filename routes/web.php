@@ -69,6 +69,7 @@ Route::get('generate-invoice/{id}', [AdminController::class, 'generatePDFInvoice
 
 Route::group(['middleware' => ['auth:contractor']], function () {
     Route::get('contractor/report/{id}', [ContractorAuthController::class, 'reportToAdmin'])->name('reportToAdmin');
+    Route::get('contractor/view-report/{id}', [ContractorAuthController::class, 'viewReport'])->name('contractor.viewReport');
 
 
     Route::get('contractor/dashboard', [ContractorAuthController::class, 'index'])->name('contractor.dashboard');
@@ -100,7 +101,6 @@ Route::group(['middleware' => ['auth:contractor']], function () {
     //Download translated data
     Route::get('/contractor/download-translation-file/{orderID}', [ContractorAuthController::class, 'downloadTranslationFile'])->name('contractor.download-translation-file');
 
-    Route::get('/contractor/view-report/{id}', [ContractorAuthController::class, 'viewReport'])->name('contractor.viewReport');
     Route::post('/contractor/report-submission', [ContractorAuthController::class, 'reportSubmission'])->name('contractor.report-submission');
 });
 
