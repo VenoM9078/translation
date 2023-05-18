@@ -53,8 +53,22 @@
                                     <td class="whitespace-nowrap">${{ $interpretation->per_hour_rate }}</td>
                                     <td class="whitespace-nowrap">${{ $interpretation->estimated_payment }}</td>
                                     <td class="whitespace-nowrap">
-                                        <a href="{{ route('contractor.viewReport', $interpretation->id) }}"
-                                            class="btn btn-warning mr-1 mb-2">Report</a>
+                                        <div class="flex">
+                                            <a href="{{ route('contractor.viewReport', $interpretation->id) }}"
+                                                class="btn btn-warning mr-1 mb-2"><i data-lucide="thumbs-up"
+                                                    class="w-4 h-4 mr-2"></i>Report</a>
+
+                                            @if($interpretation->interpretation->interpreter_completed == 1)
+                                            <form action="{{ route('interpretation.delete', $interpretation->id) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger mr-2 mb-2">
+                                                    <i data-lucide="trash" class="w-4 h-4 mr-2"></i> Cancel
+                                                </button>
+                                            </form>
+                                            @endif
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach

@@ -161,54 +161,76 @@
                                     </td>
 
                                     <td class="whitespace-nowrap">
-                                        @if ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 0 &&
-                                        $interpretation->paymentStatus == 0)
-                                        <a href="{{ route('admin.showSubmitQuote', $interpretation->id) }}"
-                                            class="btn btn-warning mr-1 mb-2">Send Invoice</a>
-                                        @elseif ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 1 &&
-                                        $interpretation->paymentStatus ==
-                                        0)
-                                        <button class="btn btn-warning mr-1 mb-2">Waiting for Payment <i
-                                                data-loading-icon="three-dots" data-color="1a202c"
-                                                class="w-4 h-4 ml-2"></i></button>
-                                        @elseif ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 1 &&
-                                        $interpretation->paymentStatus == 1
-                                        && $interpretation->interpreter_id === NULL &&
-                                        $interpretation->interpreter_completed == 0)
-                                        <button class="btn btn-warning mr-1 mb-2">Assign Interpreter</button>
-                                        @elseif ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 1 &&
-                                        $interpretation->paymentStatus == 1
-                                        && $interpretation->interpreter_id !== NULL &&
-                                        $interpretation->interpreter_completed == 0)
-                                        <button class="btn btn-warning mr-1 mb-2">Assign Interpreter</button>
-                                        @elseif ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 1 &&
-                                        $interpretation->paymentStatus == 1
-                                        && $interpretation->interpreter_id !== NULL &&
-                                        $interpretation->interpreter_completed == 1)
-                                        <button class="btn btn-warning mr-1 mb-2">View Feedback</button>
-                                        @elseif ($interpretation->wantQuote == 1)
-                                        <a href="{{ route('admin.showSubmitQuote', $interpretation->id) }}"
-                                            class="btn btn-warning mr-1 mb-2">Submit Quote</a>
-                                        @elseif ($interpretation->wantQuote == 2)
-                                        <button class="btn btn-warning mr-1 mb-2">Waiting for Payment <i
-                                                data-loading-icon="three-dots" data-color="1a202c"
-                                                class="w-4 h-4 ml-2"></i></button>
-                                        @elseif ($interpretation->wantQuote == 3 && $interpretation->paymentStatus == 1
-                                        && $interpretation->interpreter_id
-                                        === NULL && $interpretation->interpreter_completed == 0)
-                                        <a href="{{ route('view-assign-interpreter', $interpretation->id) }}"
-                                            class="btn btn-pending mr-1">
-                                            <i data-lucide="mail" class="w-5 h-5 mr-2"></i>Assign To Interpreter
-                                        </a> @elseif ($interpretation->wantQuote == 3 && $interpretation->paymentStatus
-                                        == 1
-                                        && $interpretation->interpreter_id
-                                        !== NULL && $interpretation->interpreter_completed == 0)
-                                        <button class="btn btn-warning mr-1 mb-2">Assign Interpreter</button>
-                                        @elseif ($interpretation->wantQuote == 3 && $interpretation->paymentStatus == 1
-                                        && $interpretation->interpreter_id
-                                        !== NULL && $interpretation->interpreter_completed == 1)
-                                        <button class="btn btn-warning mr-1 mb-2">View Feedback</button>
-                                        @endif
+                                        <div class="flex">
+                                            @if ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 0 &&
+                                            $interpretation->paymentStatus == 0)
+                                            <a href="{{ route('admin.showSubmitQuote', $interpretation->id) }}"
+                                                class="btn btn-warning mr-1 mb-2">Send Invoice</a>
+                                            @elseif ($interpretation->wantQuote == 0 && $interpretation->invoiceSent ==
+                                            1 &&
+                                            $interpretation->paymentStatus ==
+                                            0)
+                                            <button class="btn btn-warning mr-1 mb-2">Waiting for Payment <i
+                                                    data-loading-icon="three-dots" data-color="1a202c"
+                                                    class="w-4 h-4 ml-2"></i></button>
+                                            @elseif ($interpretation->wantQuote == 0 && $interpretation->invoiceSent ==
+                                            1 &&
+                                            $interpretation->paymentStatus == 1
+                                            && $interpretation->interpreter_id === NULL &&
+                                            $interpretation->interpreter_completed == 0)
+                                            <button class="btn btn-warning mr-1 mb-2">Assign Interpreter</button>
+                                            @elseif ($interpretation->wantQuote == 0 && $interpretation->invoiceSent ==
+                                            1 &&
+                                            $interpretation->paymentStatus == 1
+                                            && $interpretation->interpreter_id !== NULL &&
+                                            $interpretation->interpreter_completed == 0)
+                                            <button class="btn btn-warning mr-1 mb-2">Assign Interpreter</button>
+                                            @elseif ($interpretation->wantQuote == 0 && $interpretation->invoiceSent ==
+                                            1 &&
+                                            $interpretation->paymentStatus == 1
+                                            && $interpretation->interpreter_id !== NULL &&
+                                            $interpretation->interpreter_completed == 1)
+                                            <button class="btn btn-warning mr-1 mb-2">View Feedback</button>
+                                            @elseif ($interpretation->wantQuote == 1)
+                                            <a href="{{ route('admin.showSubmitQuote', $interpretation->id) }}"
+                                                class="btn btn-warning mr-1 mb-2">Submit Quote</a>
+                                            @elseif ($interpretation->wantQuote == 2)
+                                            <button class="btn btn-warning mr-1 mb-2">Waiting for Payment <i
+                                                    data-loading-icon="three-dots" data-color="1a202c"
+                                                    class="w-4 h-4 ml-2"></i></button>
+                                            @elseif ($interpretation->wantQuote == 3 && $interpretation->paymentStatus
+                                            == 1
+                                            && $interpretation->interpreter_id
+                                            === NULL && $interpretation->interpreter_completed == 0)
+                                            <a href="{{ route('view-assign-interpreter', $interpretation->id) }}"
+                                                class="btn btn-pending mr-1">
+                                                <i data-lucide="mail" class="w-4 h-4 mr-2"></i>Assign To Interpreter
+                                            </a>
+                                            @elseif ($interpretation->wantQuote == 3 &&
+                                            $interpretation->paymentStatus
+                                            == 1
+                                            && $interpretation->interpreter_id
+                                            !== NULL && $interpretation->interpreter_completed == 0)
+                                            <button class="btn btn-warning mr-1 mb-2">Assign Interpreter</button>
+                                            @elseif ($interpretation->wantQuote == 3 && $interpretation->paymentStatus
+                                            == 1
+                                            && $interpretation->interpreter_id
+                                            !== NULL && $interpretation->interpreter_completed == 1)
+                                            <button class="btn btn-warning mr-1 mb-2">View Feedback</button>
+                                            @endif
+
+                                            <div>
+                                                <form
+                                                    action="{{ route('admin.interpretation.delete', $interpretation->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger mr-2">
+                                                        <i data-lucide="trash" class="w-4 h-4 mr-2"></i> Cancel
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </td>
 
 

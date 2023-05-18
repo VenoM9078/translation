@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ContractorOrderEnum;
 use App\Enums\TranslationStatusEnum;
 use App\Mail\ContractorNotifyAdmin;
+use App\Mail\InterpretationCancellation;
 use App\Mail\InterpretationReportToAdmin;
 use App\Mail\InterpretationReportToUser;
 use App\Mail\NotifyAdminOfContractorAction;
@@ -82,7 +83,7 @@ class ContractorAuthController extends Controller
 
         $interpretationRequests = ContractorInterpretation::where([
             ['contractor_id', '=', $contractorId],
-            ['is_accepted', '=', 1]
+            ['is_accepted', '=', 0]
         ])->get();
 
         return view('contractor.interpretationRequests', ['interpretationRequests' => $interpretationRequests]);
@@ -528,7 +529,33 @@ class ContractorAuthController extends Controller
             ['contractor_id', '=', $contractorId],
             ['is_accepted', '=', 1]
         ])->get();
+
         return view('contractor.interpretations', compact('interpretations'));
+    }
+
+    public function deleteInterpretation($id)
+    {
+        $contractorInterpretation = ContractorInterpretation::find($id);
+
+        if ($contractorInterpretation) {
+            // Find the associated interpretation
+            $interpretation = $contractorInterpretation->interpretation;
+
+            if ($interpretation) {
+                // Set interpreter_id to null
+                $interpretation->interpreter_id = null;
+                $interpretation->save();
+            }
+
+            $contractorInterpretation->delete();
+
+            // Send an email to the admin
+            Mail::to('wahaj.dkz@gmail.com')->send(new InterpretationCancellation($interpretation));
+
+            return redirect()->back()->with('success', 'Interpretation cancelled successfully.');
+        }
+
+        return redirect()->back()->with('error', 'Interpretation not found.');
     }
 
     public function login(Request $request)

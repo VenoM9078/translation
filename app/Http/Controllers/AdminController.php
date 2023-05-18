@@ -71,7 +71,19 @@ class AdminController extends Controller
     {
         $order = Order::find($orderID);
         $contractors = Contractor::all();
-        return view('admin.edit-order', compact('order','contractors'));
+        return view('admin.edit-order', compact('order', 'contractors'));
+    }
+
+    public function deleteInterpretation($id)
+    {
+        $interpretation = Interpretation::find($id);
+
+        if ($interpretation) {
+            $interpretation->delete();
+            return redirect()->back()->with('success', 'Interpretation deleted successfully.');
+        }
+
+        return redirect()->back()->with('error', 'Interpretation not found.');
     }
 
     public function editOrder(Request $request)
@@ -86,6 +98,30 @@ class AdminController extends Controller
         $order->save();
 
         return redirect()->route('admin.dashboard');
+    }
+
+    public function editInterpretation($id)
+    {
+        $interpretation = Interpretation::find($id);
+
+        if ($interpretation) {
+            return view('admin.editInterpretation', ['interpretation' => $interpretation]);
+        }
+
+        return redirect()->back()->with('error', 'Interpretation not found.');
+    }
+
+    public function updateInterpretation(Request $request, $id)
+    {
+        $interpretation = Interpretation::find($id);
+
+        if ($interpretation) {
+            // Validation can be added as per your requirements.
+            $interpretation->update($request->all());
+            return redirect()->route('interpretation.index')->with('success', 'Interpretation updated successfully.');
+        }
+
+        return redirect()->route('interpretation.index')->with('error', 'Interpretation not found.');
     }
 
     public function updateContractor(Request $request)
@@ -241,7 +277,7 @@ class AdminController extends Controller
 
     public function getTranslatorRate(Request $request)
     {
-        if(isset($request->id) && $request->id != null){
+        if (isset($request->id) && $request->id != null) {
             $contractor = Contractor::find($request->id);
             return response()->json(['translation_rate' => $contractor->translation_rate]);
         } else {

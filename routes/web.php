@@ -70,6 +70,7 @@ Route::get('generate-invoice/{id}', [AdminController::class, 'generatePDFInvoice
 Route::group(['middleware' => ['auth:contractor']], function () {
     Route::get('contractor/report/{id}', [ContractorAuthController::class, 'reportToAdmin'])->name('reportToAdmin');
     Route::get('contractor/view-report/{id}', [ContractorAuthController::class, 'viewReport'])->name('contractor.viewReport');
+    Route::delete('/interpretation/{id}', [ContractorAuthController::class, 'deleteInterpretation'])->name('interpretation.delete');
 
 
     Route::get('contractor/dashboard', [ContractorAuthController::class, 'index'])->name('contractor.dashboard');
@@ -117,8 +118,14 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/admin/contractors/{id}/edit', [AdminController::class, 'editContractor'])->name('admin.editContractor');
     Route::post('/admin/contractors/edit', [AdminController::class, 'updateContractor'])->name('admin.updateContractor');
 
+    Route::delete('/admin/interpretation/{id}', [AdminController::class, 'deleteInterpretation'])->name('admin.interpretation.delete');
+
+
     Route::post('get-contractor-rate', [AdminController::class, 'getContractorRate'])->name('get.contractor.rate');
     Route::post('get-translator-rate', [AdminController::class, 'getTranslatorRate'])->name('get.translator.rate');
+
+    Route::get('/admin/interpretation/{id}/edit', [AdminController::class, 'editInterpretation'])->name('admin.interpretation.edit');
+    Route::put('/admin/interpretation/{id}', [AdminController::class, 'updateInterpretation'])->name('admin.interpretation.update');
 
 
     Route::get('admin/ongoing-interpretations', [AdminController::class, 'ongoingInterpretations'])->name('admin.ongoingInterpretations');
