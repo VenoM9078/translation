@@ -79,7 +79,8 @@ Route::group(['middleware' => ['auth:contractor']], function () {
     //completed translations
     Route::get('contractor/translations/completed', [ContractorAuthController::class, 'completedTranslations'])->name('contractor.translations.completed');
 
-    Route::get('contractor/proof-reads', [ContractorAuthController::class, 'pendingProofRead'])->name('contractor.proof-read');
+    Route::get('contractor/proof-reads', [ContractorAuthController::class, 'onGoingProofRead'])->name('contractor.proof-read');
+    Route::get('contractor/proof-reads/pending', [ContractorAuthController::class, 'pendingProofRead'])->name('contractor.proof-read-pending');
     Route::get('contractor/interpretaions', [ContractorAuthController::class, 'pendingInterpretations'])->name('contractor.interpretations');
     Route::get('contractor/interpretaions/requests', [ContractorAuthController::class, 'interpretationRequests'])->name('contractor.interpretationRequests');
 
@@ -94,6 +95,9 @@ Route::group(['middleware' => ['auth:contractor']], function () {
     Route::get('/accept-request/{id}', [ContractorAuthController::class, 'acceptInterpretationRequest'])->name('accept.request');
     Route::get('/deny-request/{id}', [ContractorAuthController::class, 'denyInterpretationRequest'])->name('deny.request');
 
+    //accept/reject proof read
+    Route::get('/accept-proofread-request/{id}', [ContractorAuthController::class, 'acceptProofReadRequest'])->name('proof-read-accept.request');
+    Route::get('/deny-proofread-request/{id}', [ContractorAuthController::class, 'denyProofReadRequest'])->name('proof-read-deny.request');
 
     //Filepond Upload 
     Route::post('/contractor/translationUpload', [ContractorAuthController::class, 'uploadTranslationFile'])->name('contractor.translationUploadFilePond');

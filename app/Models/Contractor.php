@@ -35,4 +35,10 @@ class Contractor extends Authenticatable
     {
         return $this->hasMany(ContractorLanguage::class);
     }
+
+    public function proofReadRequest()
+    {
+        return $this->hasOne('App\Models\ProofRequest', 'contractor_id', 'id');
+    }
+
 }

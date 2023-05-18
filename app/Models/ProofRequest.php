@@ -17,11 +17,15 @@ class ProofRequest extends Model
         'email_title',
         'email_body',
         'proofread_status',
-        'translated_files'
+        'translated_files',
+        'contractor_id'
     ];
 
     public function order()
     {
         return $this->belongsTo('App\Models\Order');
+    }
+    public function contractor(){
+        return $this->belongsTo('App\Models\Contractor');
     }
 }

@@ -4,7 +4,7 @@
     <div class="col-span-12 mt-8">
         <div class="intro-y flex items-center h-10">
             <h2 class="text-lg font-medium truncate mr-5 mb-5">
-                All Pending Proofreads
+                All On-Going Proofreads
             </h2>
         </div>
 
@@ -22,13 +22,14 @@
                             <table id="myTable" class="table table-striped hover" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th class="whitespace-nowrap">ID</th>
-                                        <th class="whitespace-nowrap">Description</th>
+                                        <th class="whitespace-nowrap">Order Worknumber</th>
                                         <th class="whitespace-nowrap">Order By</th>
+                                        <th class="whitespace-nowrap">Order Status</th>
                                         <th class="whitespace-nowrap">User Email</th>
                                         <th class="whitespace-nowrap">Language #1</th>
                                         <th class="whitespace-nowrap">Language #2</th>
-                                        <th class="whitespace-nowrap">Amount</th>
+                                        <th class="whitespace-nowrap">Total Payment</th>
+                                        <th class="whitespace-nowrap">Rate</th>
                                         <th>Created At</th>
                                         <th class="whitespace-nowrap">Possible Action</th>
 
@@ -37,20 +38,21 @@
                                 <tbody>
                                     @foreach ($proofReadData as $translation)
                                         <tr>
-                                            <td class="whitespace-nowrap">{{ $translation->id }}</td>
-                                            <td class="whitespace-nowrap">{{ $translation->description }}</td>
+                                            <td class="whitespace-nowrap">{{ $translation->order->worknumber }}</td>
                                             <td class="whitespace-nowrap">{{ $translation->order->user->name }}</td>
+                                            <td class="whitespace-nowrap">{{ $translation->order->orderStatus }}</td>
                                             <td class="whitespace-nowrap">{{ $translation->order->user->email }}</td>
                                             <td class="whitespace-nowrap">{{ $translation->order->language1 }}</td>
                                             <td class="whitespace-nowrap">{{ $translation->order->language2 }}</td>
-                                            <td class="whitespace-nowrap">{{ $translation->contractor->contractorOrders[0]->amount }}</td>
+                                            <td class="whitespace-nowrap">${{ $translation->total_payment }}</td>
+                                            <td class="whitespace-nowrap">${{ $translation->rate }}</td>
                                             <td class="whitespace-nowrap">
                                                 {{ $translation->created_at->timezone('America/Los_Angeles') }}</td>
-                                         
+
                                             <td class="whitespace-nowrap">
                                                 <div class="flex gap-2">
                                                     <div>
-                                                        <a href="{{ route('contractor.downloadFiles', $translation->order->id ) }}"
+                                                        <a href="{{ route('contractor.downloadFiles', $translation->order->id) }}"
                                                             class="btn btn-warning">Download Original Document
                                                         </a>
                                                     </div>

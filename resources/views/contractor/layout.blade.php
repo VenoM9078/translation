@@ -190,13 +190,29 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('contractor.proof-read') }}"
-                        class="{{ Route::getCurrentRoute()->uri == 'user' ? 'side-menu   side-menu--active' : 'side-menu' }}">
+                    <a href="javascript:;"
+                        class="{{ Route::getCurrentRoute()->uri == 'contractor/proof-reads' || Route::getCurrentRoute()->uri == 'contractor/proof-reads/pending' ? 'side-menu side-menu--active' : 'side-menu'  }}">
                         <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
                         <div class="side-menu__title">
-                            Proofread
+                            Proofreads
+                             <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                         </div>
                     </a>
+                    <ul class="">
+                        <li>
+                            <a href="{{ route('contractor.proof-read-pending') }}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="side-menu__title"> Proofread Requests </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('contractor.proof-read') }}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="side-menu__title"> On-Going Proofreads </div>
+                            </a>
+                        </li>
+
+                    </ul>
                 </li>
 
                 <li>
@@ -242,7 +258,8 @@
                 <nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('/') }}">FlowTranslate</a></li>
-                        <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('user.index') }}">User
+                        <li class="breadcrumb-item active" aria-current="page"><a
+                                href="{{ route('user.index') }}">User
                                 Dashboard</a></li>
                     </ol>
                 </nav>
@@ -258,7 +275,8 @@
                 <div class="intro-x dropdown w-8 h-8">
                     <div class="dropdown-toggle w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in"
                         role="button" aria-expanded="false" data-tw-toggle="dropdown">
-                        <img src="{{ url('https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png') }}">
+                        <img
+                            src="{{ url('https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png') }}">
                     </div>
                     <div class="dropdown-menu w-56">
                         <ul class="dropdown-content bg-primary text-white">
@@ -266,12 +284,12 @@
 
                                 <div class="font-medium">
                                     @auth
-                                    {{ Auth::user()->name }}
+                                        {{ Auth::user()->name }}
                                     @endauth
                                 </div>
                                 <div class="text-xs text-white/70 mt-0.5 dark:text-slate-500">
                                     @auth
-                                    {{ Auth::user()->email }}
+                                        {{ Auth::user()->email }}
                                     @endauth
                                 </div>
                             </li>
@@ -302,8 +320,8 @@
 
     <!-- BEGIN: JS Assets-->
     <script src="{{ url('dist/js/app.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"
-        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
     <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
@@ -362,7 +380,8 @@
     <!-- END: JS Assets-->
 </body>
 <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
-<link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
+<link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
+    rel="stylesheet" />
 <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
 <script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js"></script>
 <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>

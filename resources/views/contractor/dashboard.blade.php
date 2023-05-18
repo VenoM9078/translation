@@ -23,7 +23,7 @@
             </div>
         @endif
         <div class="grid grid-cols-12 gap-6">
-            <div class="col-span-4 sm:col-span-6 xl:col-span-3 intro-y">
+            <div class="col-span-4 sm:col-span-6 xl:col-span-4 intro-y">
                 <div class="report-box zoom-in">
                     <div class="box p-5">
                         <div class="flex">
@@ -34,27 +34,29 @@
                     </div>
                 </div>
             </div>
-            <div class="col-span-4 sm:col-span-6 xl:col-span-3 intro-y">
-                <div class="report-box zoom-in">
-                    <div class="box p-5">
-                        <div class="flex">
-                            <i data-feather="monitor" class="report-box__icon text-warning"></i>
-                            
+            <div class="col-span-4 sm:col-span-6 xl:col-span-4 intro-y">
+                <a href="{{ route('contractor.translations.pending') }}">
+                    <div class="report-box zoom-in">
+                        <div class="box p-5">
+                            <div class="flex">
+                                <i data-feather="monitor" class="report-box__icon text-warning"></i>
+
+                            </div>
+                            <div class="text-3xl font-medium leading-8 mt-6">Pending Translations</div>
+                            <div class="text-base text-slate-500 mt-1">{{ $translationsCount }}</div>
                         </div>
-                        <div class="text-3xl font-medium leading-8 mt-6">Pending Translations</div>
-                        <div class="text-base text-slate-500 mt-1">0</div>
                     </div>
-                </div>
+                </a>
             </div>
-            <div class="col-span-4 sm:col-span-6 xl:col-span-3 intro-y">
+            <div class="col-span-4 sm:col-span-6 xl:col-span-4 intro-y">
                 <div class="report-box zoom-in">
                     <div class="box p-5">
                         <div class="flex">
                             <i data-feather="monitor" class="report-box__icon text-warning"></i>
-                           
+
                         </div>
                         <div class="text-3xl font-medium leading-8 mt-6">Pending Proofreads</div>
-                        <div class="text-base text-slate-500 mt-1">22</div>
+                        <div class="text-base text-slate-500 mt-1">{{ $proofReadCount }}</div>
                     </div>
                 </div>
             </div>

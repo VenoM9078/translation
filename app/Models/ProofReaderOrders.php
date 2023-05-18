@@ -15,7 +15,8 @@ class ProofReaderOrders extends Model
         'rate',
         'total_payment',
         'status',
-        'contractor_order_id'
+        'contractor_order_id',
+        'translation_status'
     ];
 
     public function contractor()

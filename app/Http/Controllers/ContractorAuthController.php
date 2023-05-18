@@ -8,6 +8,7 @@ use App\Mail\ContractorNotifyAdmin;
 use App\Mail\InterpretationReportToAdmin;
 use App\Mail\InterpretationReportToUser;
 use App\Mail\NotifyAdminOfContractorAction;
+use App\Mail\NotifyAdminProofRead;
 use App\Mail\NotifyAdminTranslationSubmissionContractor;
 use App\Models\Admin;
 use App\Models\Contractor;
@@ -16,6 +17,7 @@ use App\Models\ContractorOrder;
 use App\Models\Interpretation;
 use App\Models\Order;
 use App\Models\ProofReaderOrders;
+use App\Models\ProofRequest;
 use App\Models\TemporaryFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -119,6 +121,32 @@ class ContractorAuthController extends Controller
     //     return redirect()->route('contractor.dashboard');
     // }
 
+    public function acceptProofReadRequest($id)
+    {
+
+        $contractorProofReader = ProofReaderOrders::findOrFail($id);
+        $contractorProofReader->is_accepted = 1;
+
+        $contractorProofReader->save();
+        $contractorObj = Contractor::findOrFail($contractorProofReader->contractor_id);
+
+        Mail::to('webpage@flowtranslate.com')->send(new NotifyAdminProofRead($contractorObj, 'accepted', $contractorProofReader));
+
+        return redirect()->back()->with('message', 'You have successfully accepted the proof read request.');
+    }
+
+    public function denyProofReadRequest($id)
+    {
+
+        $contractorProofReader = ProofReaderOrders::findOrFail($id);
+        //clear the proof read values
+        $contractorObj = Contractor::find($contractorProofReader->contractor_id);
+        $contractorProofReader->delete();
+
+        Mail::to('webpage@flowtranslate.com')->send(new NotifyAdminProofRead($contractorObj, 'denied', $contractorProofReader));
+
+        return redirect()->back()->with('message', 'You have successfully denied the interpretation request.');
+    }
     public function acceptInterpretationRequest($id)
     {
 
@@ -219,7 +247,22 @@ class ContractorAuthController extends Controller
 
     public function index()
     {
-        return view('contractor.dashboard');
+        $proofReadCount = ProofReaderOrders::with([
+            'contractor',
+            'order',
+            'contractorOrder'
+        ])
+            ->where('contractor_id', auth()->guard('contractor')->user()->id)
+            ->where('is_accepted', 0) // assuming 0 represents "pending"
+            ->where('translation_status', TranslationStatusEnum::PENDING)
+            ->whereHas('contractorOrder', function ($query) {
+                $query->where('is_accepted', ContractorOrderEnum::ACCEPTED);
+            })
+            ->get()->count();
+        $translationsCount = ContractorOrder::where('contractor_id', auth()->guard('contractor')->user()->id)
+            ->where('is_accepted', ContractorOrderEnum::PENDING)
+            ->get()->count();
+        return view('contractor.dashboard', compact('proofReadCount', 'translationsCount'));
     }
 
     public function pendingTranslations()
@@ -440,17 +483,38 @@ class ContractorAuthController extends Controller
 
     public function pendingProofRead()
     {
+        $contractorId = Auth::id();
+
+        $proofReadData = ProofReaderOrders::with([
+            'contractor',
+            'order',
+            'contractorOrder'
+        ])
+            ->where('contractor_id', $contractorId)
+            ->where('is_accepted', 0) // assuming 0 represents "pending"
+            ->where('translation_status', TranslationStatusEnum::PENDING)
+            ->whereHas('contractorOrder', function ($query) {
+                $query->where('is_accepted', ContractorOrderEnum::ACCEPTED);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('contractor.proof-read-pending', compact('proofReadData'));
+    }
+    public function onGoingProofRead()
+    {
         $proofReadData = ProofReaderOrders::with([
             'contractor',
             'order',
             'contractorOrder'
         ])
             ->where('contractor_id', auth()->guard('contractor')->user()->id)
-            ->where('is_accepted', 0) // assuming 0 represents "pending"
+            ->where('is_accepted', 1) // assuming 0 represents "accepted"
             ->where('translation_status', TranslationStatusEnum::PENDING)
             ->whereHas('contractorOrder', function ($query) {
                 $query->where('is_accepted', ContractorOrderEnum::ACCEPTED);
             })
+            ->orderBy('created_at', 'desc')
             ->get();
         // dd($proofReadData);
         return view('contractor.proof-read', compact('proofReadData'));

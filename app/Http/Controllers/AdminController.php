@@ -323,8 +323,8 @@ class AdminController extends Controller
             'contractor_order_id' => $contractor_order_id->id
         ]);
         $order = Order::find($request->order_id);
-        $order->proofread_status = 1; //change status to 1 *asigned
-        $proofReaderOrder->save();
+        // $order->proofread_status = 1; //change status to 1 *asigned
+        // $proofReaderOrder->save();
         $contractor = Contractor::where('id', $proofReaderOrder['contractor_id'])->firstOrFail();
 
         Mail::to($contractor->email)->send(new mailToProofReader($order, $proofReaderOrder, 'New Request! | Proof Read ', "webpage@flowtranslate.com"));
