@@ -118,10 +118,10 @@ class AdminController extends Controller
         if ($interpretation) {
             // Validation can be added as per your requirements.
             $interpretation->update($request->all());
-            return redirect()->route('interpretation.index')->with('success', 'Interpretation updated successfully.');
+            return redirect()->back()->with('success', 'Interpretation updated successfully.');
         }
 
-        return redirect()->route('interpretation.index')->with('error', 'Interpretation not found.');
+        return redirect()->route('admin.ongoingInterpretations')->with('error', 'Interpretation not found.');
     }
 
     public function updateContractor(Request $request)
@@ -241,6 +241,13 @@ class AdminController extends Controller
         return view('admin.assign-interpreter', compact('interpretation', 'contractors'));
     }
 
+    public function viewReAssignInterpreter($interpreterID)
+    {
+        $interpretation = Interpretation::find($interpreterID);
+        $contractors = Contractor::all();
+        // dd($interpretation);
+        return view('admin.re-assign-interpreter', compact('interpretation', 'contractors'));
+    }
     public function assignInterpreter(Request $request)
     {
         // First check if a record already exists for the given interpretation and contractor

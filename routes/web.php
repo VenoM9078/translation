@@ -81,6 +81,7 @@ Route::group(['middleware' => ['auth:contractor']], function () {
     Route::get('contractor/translations/completed', [ContractorAuthController::class, 'completedTranslations'])->name('contractor.translations.completed');
 
     Route::get('contractor/proof-reads', [ContractorAuthController::class, 'onGoingProofRead'])->name('contractor.proof-read');
+    Route::get('contractor/proof-reads/{id}', [ContractorAuthController::class, 'viewProofReadSubmission'])->name('contractor.view-proof-read-submission');
     Route::get('contractor/proof-reads/pending', [ContractorAuthController::class, 'pendingProofRead'])->name('contractor.proof-read-pending');
     Route::get('contractor/interpretaions', [ContractorAuthController::class, 'pendingInterpretations'])->name('contractor.interpretations');
     Route::get('contractor/interpretaions/requests', [ContractorAuthController::class, 'interpretationRequests'])->name('contractor.interpretationRequests');
@@ -107,6 +108,12 @@ Route::group(['middleware' => ['auth:contractor']], function () {
     Route::get('/contractor/download-translation-file/{orderID}', [ContractorAuthController::class, 'downloadTranslationFile'])->name('contractor.download-translation-file');
 
     Route::post('/contractor/report-submission', [ContractorAuthController::class, 'reportSubmission'])->name('contractor.report-submission');
+
+    //create two routes, get and post. for submitting proof reader translations 
+    Route::get('/contractor/proof-read/{orderID}', [ContractorAuthController::class, 'proofRead'])->name('contractor.view-submit-proof-read');
+    Route::post('/contractor/proof-read', [ContractorAuthController::class, 'submitProofRead'])->name('contractor.submit-proof-read');
+    Route::post('/contractor/upload-proof',[ContractorAuthController::class, 'uploadProofFile'])->name('contractor.upload-proof-read-file');
+    Route::get('/contractor/completed-proof-reads',[ContractorAuthController::class,'completedProofReads'])->name('contractor.completed-proof-read');
 });
 
 Route::group(['middleware' => ['auth:admin']], function () {
@@ -127,6 +134,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/admin/interpretation/{id}/edit', [AdminController::class, 'editInterpretation'])->name('admin.interpretation.edit');
     Route::put('/admin/interpretation/{id}', [AdminController::class, 'updateInterpretation'])->name('admin.interpretation.update');
 
+
+    // Route::get('admin/interpretations', [AdminController::class, 'editInterpretations'])->name('admin.edit-interpretation');
 
     Route::get('admin/ongoing-interpretations', [AdminController::class, 'ongoingInterpretations'])->name('admin.ongoingInterpretations');
     Route::get('/admin/submitQuote/{id}', [AdminController::class, 'showSubmitQuote'])->name('admin.showSubmitQuote');
@@ -172,7 +181,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::post('/assign-proofreader', [AdminController::class, 'assignProofReader'])->name('assign-proofreader');
     Route::get('/assign-interpreter/{interpreterID}', [AdminController::class, 'viewAssignInterpreter'])->name('view-assign-interpreter');
     Route::post('/assign-interpreter', [AdminController::class, 'assignInterpreter'])->name('assign-interpreter');
-
+    // Route::post('/re-assign-interpreter', [AdminController::class, 'reAssignInterpreter'])->name('re-assign-interpreter');
+    Route::get('/re-assign-interpreter/{interpreterID}', [AdminController::class, 'viewReAssignInterpreter'])->name('view-re-assign-interpreter');
     Route::get('/edit-order/{orderID}', [AdminController::class, 'viewEditOrder'])->name('view-edit-order');
     Route::post('/edit-order/save', [AdminController::class, 'editOrder'])->name('admin.edit-order');
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ContractorOrderEnum;
+use App\Enums\OrderStatusEnum;
 use App\Enums\TranslationStatusEnum;
 use App\Mail\ContractorNotifyAdmin;
 use App\Mail\InterpretationCancellation;
@@ -521,6 +522,24 @@ class ContractorAuthController extends Controller
         return view('contractor.proof-read', compact('proofReadData'));
     }
 
+    public function completedProofReads()
+    {
+        $proofReadData = ProofReaderOrders::with([
+            'contractor',
+            'order',
+            'contractorOrder'
+        ])
+            ->where('contractor_id', auth()->guard('contractor')->user()->id)
+            ->where('is_accepted', 1) // assuming 0 represents "accepted"
+            ->where('translation_status', TranslationStatusEnum::ACCEPTED)
+            ->whereHas('contractorOrder', function ($query) {
+                $query->where('is_accepted', ContractorOrderEnum::ACCEPTED);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('contractor.proof-read-completed', compact('proofReadData'));
+    }
+
     public function pendingInterpretations()
     {
         $contractorId = Auth::id();
@@ -578,6 +597,61 @@ class ContractorAuthController extends Controller
             ]);
         }
     }
+
+    public function viewProofReadSubmission($id)
+    {
+        $proofReaderOrders = ProofReaderOrders::find($id);
+        return view('contractor.submit-proof-read', compact('proofReaderOrders'));
+    }
+    public function uploadProofFile(Request $request)
+    {
+        if ($request->hasFile('proofReadFile')) {
+            $file = $request->file('proofReadFile');
+            $filePath = 'proofread_by_proofreader/';
+            $filename = date('YmdHi') . $file->getClientOriginalName();
+
+            if (!file_exists(public_path($filePath))) {
+                mkdir(public_path($filePath), 0777, true);
+            }
+
+            $file->move($filePath, $filename);
+
+            TemporaryFile::create([
+                'filename' => $filename
+            ]);
+
+            return $filename;
+        }
+
+        return null;
+    }
+    //create a function for submission of proof reader order file
+    public function submitProofRead(Request $request)
+    {
+        // dd($request);
+        $proofReaderOrders = ProofReaderOrders::find($request->id);
+        // dd($proofReaderOrders);
+        $proofReaderOrders->translation_status = TranslationStatusEnum::ACCEPTED; //completed
+        $proofReaderOrders->file_name = $request->proofReadFile;
+        $proofReaderOrders->feedback = $request->feedback;
+        $proofReaderOrders->save();
+
+        $order = $proofReaderOrders->order;
+        $order->proofread_status = OrderStatusEnum::COMPLETED;
+        $order->completed = OrderStatusEnum::COMPLETED;
+        $order->orderStatus = "Completed";
+        $order->save();
+
+        $contractor = $proofReaderOrders->contractor;
+        $contractorName = $contractor->name;
+
+        // $admin = User::where('role', 'admin')->first();
+
+        // Mail::to($admin->email)->send(new NotifyAdminProofReadSubmissionContractor($contractorName, $contractorOrder));
+
+        return redirect()->route('contractor.completed-proof-read');
+    }
+
     public function logout(Request $request)
     {
         Auth::guard('contractor')->logout();

@@ -4,7 +4,7 @@
     <div class="col-span-12 mt-8">
         <div class="intro-y flex items-center h-10">
             <h2 class="text-lg font-medium truncate mr-5 mb-5">
-                All On-Going Proofreads
+                All Completed Proofreads
             </h2>
         </div>
 
@@ -31,7 +31,7 @@
                                         <th class="whitespace-nowrap">Total Payment</th>
                                         <th class="whitespace-nowrap">Rate</th>
                                         <th>Created At</th>
-                                        <th class="whitespace-nowrap">Possible Action</th>
+                                        {{-- <th class="whitespace-nowrap">Possible Action</th> --}}
 
                                     </tr>
                                 </thead>
@@ -49,7 +49,7 @@
                                             <td class="whitespace-nowrap">
                                                 {{ $translation->created_at->timezone('America/Los_Angeles') }}</td>
 
-                                            <td class="whitespace-nowrap">
+                                            {{-- <td class="whitespace-nowrap">
                                                 <div class="flex gap-2">
                                                     <div>
                                                         <a href="{{ route('contractor.downloadFiles', $translation->order->id) }}"
@@ -67,7 +67,7 @@
                                                         </a>
                                                     </div>
                                                 </div>
-                                            </td>
+                                            </td> --}}
                                         </tr>
                                     @endforeach
                                 </tbody>
