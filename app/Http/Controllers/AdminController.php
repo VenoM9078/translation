@@ -118,7 +118,7 @@ class AdminController extends Controller
         if ($interpretation) {
             // Validation can be added as per your requirements.
             $interpretation->update($request->all());
-            return redirect()->back()->with('success', 'Interpretation updated successfully.');
+            return redirect()->route('admin.ongoingInterpretations')->with('success', 'Interpretation updated successfully.');
         }
 
         return redirect()->route('admin.ongoingInterpretations')->with('error', 'Interpretation not found.');

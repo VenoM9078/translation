@@ -16,7 +16,7 @@
             <form action="{{ route('assign-interpreter') }}" method="post">
                 @csrf
                 @method('POST')
-                <div class="preview">
+                <div class="preview spaxy-y-4">
                     <div>
                         <div class="intro-x mt-4">
                             <input type="hidden" name="interpretation_id" value="{{ $interpretation->id }}">
