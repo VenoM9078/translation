@@ -17,17 +17,6 @@
                     <div class="preview">
                         <div>
                             <div class="intro-x mt-4">
-                                <input type="hidden" name="order_id" value="{{ $order->id }}">
-                                <label for="amount" class="mt-4">Enter Total Payment</label>
-                                <input type="number" required name="total_payment"
-                                    class="intro-x login__input form-control px-4 block" placeholder="Enter Total Payment"
-                                    value="">
-                                <br>
-                                <label for="amount" class="mt-2">Enter Rate</label>
-                                <input type="number" required name="rate"
-                                    class="intro-x login__input form-control px-4 block mt-1" placeholder="Enter Rate"
-                                    value="">
-                                <br>
                                 <div class="mt-1">
                                     <label for="amount" class="mt-2">Select Proofreader</label>
                                     <select data-placeholder="Select A Contractor" required name="contractor_id"
@@ -40,6 +29,17 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <br>
+                                <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                <label for="amount" class="mt-4">Enter Total Payment</label>
+                                <input type="number" required name="total_payment"
+                                    class="intro-x login__input form-control px-4 block" placeholder="Enter Total Payment"
+                                    value="">
+                                <br>
+                                <label for="amount" class="mt-2">Enter Rate</label>
+                                <input type="number" required name="rate"
+                                    class="intro-x login__input form-control px-4 block mt-1" placeholder="Enter Rate"
+                                    value="">
                             </div>
                         </div>
                         <input type="submit" class="btn btn-primary mt-5" value="Send Email">

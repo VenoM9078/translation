@@ -62,9 +62,8 @@
                                                             class="btn btn-warning mr-1 mb-2"> <i data-lucide="download"
                                                                 class="w-5 h-5"></i> </a>
                                                         <!-- BEGIN: Modal Toggle -->
-                                                        <div class="text-center"> <a href="javascript:;"
-                                                                data-tw-toggle="modal"
-                                                                data-tw-target="#upload-modal-preview-{{ $key }}"
+                                                        <div class="text-center"> 
+                                                            <a href="{{ route('contractor.view-submit-translation', $translation->id) }}"
                                                                 class="btn btn-primary">
                                                                 <i data-lucide="upload" class="w-5 h-5"
                                                                     title="Upload for Submission"></i>
@@ -74,7 +73,7 @@
                                                 </div>
                                             </td>
                                             <!-- BEGIN: Modal Content -->
-                                            <div id="upload-modal-preview-{{ $key }}" class="modal"
+                                            {{-- <div id="upload-modal-preview-{{ $key }}" class="modal"
                                                 tabindex="-1" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
@@ -111,7 +110,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div> <!-- END: Modal Content -->
+                                            </div> <!-- END: Modal Content --> --}}
                                         </tr>
                                     @endforeach
                                 </tbody>

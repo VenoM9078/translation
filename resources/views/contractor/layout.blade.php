@@ -191,7 +191,7 @@
 
                 <li>
                     <a href="javascript:;"
-                        class="{{ Route::getCurrentRoute()->uri == 'contractor/proof-reads' || Route::getCurrentRoute()->uri == 'contractor/proof-reads/pending' ? 'side-menu side-menu--active' : 'side-menu'  }}">
+                        class="{{ Route::getCurrentRoute()->uri == 'contractor/proof-reads' || Route::getCurrentRoute()->uri == 'contractor/proof-reads/pending' || Route::getCurrentRoute()->uri == 'contractor/completed-proof-reads' ? 'side-menu side-menu--active' : 'side-menu'  }}">
                         <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
                         <div class="side-menu__title">
                             Proofreads
@@ -209,6 +209,12 @@
                             <a href="{{ route('contractor.proof-read') }}" class="side-menu">
                                 <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
                                 <div class="side-menu__title"> On-Going Proofreads </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('contractor.completed-proof-read') }}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="side-menu__title"> Completed Proofreads </div>
                             </a>
                         </li>
 
@@ -259,7 +265,7 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('/') }}">FlowTranslate</a></li>
                         <li class="breadcrumb-item active" aria-current="page"><a
-                                href="{{ route('user.index') }}">User
+                                href="{{ route('contractor.dashboard') }}">Contractor
                                 Dashboard</a></li>
                     </ol>
                 </nav>

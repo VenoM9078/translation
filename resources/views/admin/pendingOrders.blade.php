@@ -32,6 +32,8 @@
                                     <th class="whitespace-nowrap">Order Status</th>
                                     <th class="whitespace-nowrap">Contractor Assigned</th>
                                     <th class="whitespace-nowrap">Translation File</th>
+                                    <th class="whitespace-nowrap">ProofReader Assigned</th>
+                                    <th class="whitespace-nowrap">ProofRead File</th>
                                     {{-- <th class="whitespace-nowrap">Translation Status</th> --}}
                                     {{-- <th class="whitespace-nowrap">Proofread Status</th> --}}
                                     <th class="whitespace-nowrap">Actions</th>
@@ -141,7 +143,9 @@
 
                                         </td>
                                         {{-- @isset($order->contractorOrder) --}}
-                                        @if (isset($order->contractorOrder) && $order->contractorOrder->contractor->name != '')
+                                        @if (isset($order->contractorOrder) &&
+                                                $order->contractorOrder->contractor->name != '' &&
+                                                $order->contractorOrder->is_accepted == 1)
                                             <td>{{ $order->contractorOrder->contractor->name }}</td>
                                         @else
                                             <td>N/A</td>
@@ -150,6 +154,38 @@
                                             <td>
                                                 <a class="btn" title="Download Translation"
                                                     href="{{ route('download-translation-file', $order->id) }}">
+                                                    Download
+                                                </a>
+                                            </td>
+                                        @else
+                                            <td>N/A</td>
+                                        @endif
+                                        @if (isset($order->proofReaderOrder) &&
+                                                $order->proofReaderOrder->contractor->name != '' &&
+                                                $order->proofReaderOrder->is_accepted == 1)
+                                            <td>{{ $order->proofReaderOrder->contractor->name }}</td>
+                                        @else
+                                            <td>N/A</td>
+                                        @endif
+                                        @if (
+                                            $order->invoiceSent == 1 &&
+                                                $order->paymentStatus == 2 &&
+                                                $order->translation_status == 1 &&
+                                                $order->proofread_status == 1)
+                                            <td>
+                                                <a class="btn" title="Download ProofRead File"
+                                                    href="{{ route('download-proof-read-file', $order->id) }}">
+                                                    Download
+                                                </a>
+                                            </td>
+                                        @elseif(
+                                            $order->invoiceSent == 1 &&
+                                                $order->paymentStatus == 1 &&
+                                                $order->translation_status == 1 &&
+                                                $order->proofread_status == 1)
+                                            <td>
+                                                <a class="btn" title="Download ProofRead File"
+                                                    href="{{ route('download-proof-read-file', $order->id) }}">
                                                     Download
                                                 </a>
                                             </td>
@@ -189,8 +225,9 @@
                                                         data-tw-target="#delete-modal-preview"
                                                         class="btn btn-danger">Delete</a>
                                                 </div> <!-- END: Modal Toggle -->
-                                                <div class="text-center"> 
-                                                    <a href="{{route('view-edit-order',$order->id)}}" class="btn btn-primary">Edit
+                                                <div class="text-center">
+                                                    <a href="{{ route('view-edit-order', $order->id) }}"
+                                                        class="btn btn-primary ml-1">Edit
                                                     </a>
                                                 </div>
 
@@ -333,10 +370,10 @@
                                                     $order->paymentStatus == 2 &&
                                                     $order->translation_status == 0 &&
                                                     $order->translation_sent == 0)
-                                                <a href="{{ route('mailToTranslator', $order->id) }}"
+                                                {{-- <a href="{{ route('mailToTranslator', $order->id) }}"
                                                     class="btn btn-pending mr-1">
                                                     <i data-lucide="mail" class="w-5 h-5 mr-2"></i> Mail to Translator
-                                                </a>
+                                                </a> --}}
                                                 <a href="{{ route('view-assign-contractor', ['orderID' => $order->id]) }}"
                                                     class="btn btn-pending mr-1">
                                                     <i data-lucide="mail" class="w-5 h-5 mr-2"></i>Assign To Translator
@@ -365,21 +402,14 @@
                                                     $order->translation_sent == 1)
                                                 <div class="btn-group">
 
-                                                    <a href="{{ route('showTranslationRequests') }}"
-                                                        class="btn btn-pending mr-1 ">
-                                                        <i data-lucide="mail" class="w-5 h-5 mr-2"></i> Track Translation
-                                                        Request
+                                                    <a href="{{ route('view-assign-contractor', ['orderID' => $order->id]) }}"
+                                                        class="btn btn-pending mr-1">
+                                                        <i data-lucide="mail" class="w-5 h-5 mr-2"></i>Re-Assign To
+                                                        Translator
                                                     </a>
-                                                    <a href="{{ route('mailToTranslator', $order->id) }}"
-                                                        class="btn btn-pending mr-1 "> <i data-lucide="mail"
-                                                            class="w-5 h-5 mr-2"></i> Mail to Translator </a>
 
                                                 </div>
                                             @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 1 && $order->translation_status == 0)
-                                                <a href="{{ route('mailToTranslator', $order->id) }}"
-                                                    class="btn btn-pending mr-1">
-                                                    <i data-lucide="mail" class="w-5 h-5 mr-2"></i> Mail to Translator
-                                                </a>
                                                 <a href="{{ route('view-assign-contractor', ['orderID' => $order->id]) }}"
                                                     class="btn btn-pending mr-1">
                                                     <i data-lucide="mail" class="w-5 h-5 mr-2"></i>Assign To Translator
@@ -389,20 +419,22 @@
                                                     $order->paymentStatus == 1 &&
                                                     $order->translation_status == 1 &&
                                                     $order->proofread_status == 0 &&
-                                                    $order->proofread_sent == 1)
+                                                    $order->proofread_sent == 1 &&
+                                                    isset($order->proofReaderOrder) &&
+                                                    $order->proofReaderOrder->is_accepted == 1)
                                                 <div class="btn-group">
 
-                                                    <a href="{{ route('showProofReadRequests') }}"
+                                                    {{-- <a href="{{ route('showProofReadRequests') }}"
                                                         class="btn btn-dark mr-1"><i data-lucide="mail"
                                                             class="w-5 h-5 mr-2"></i> Track Proofread Request
-                                                    </a>
+                                                    </a> --}}
                                                     {{-- <a href="{{ route('mailToProofReader', $order->id) }}"
                                                         class="btn btn-dark mr-1"><i data-lucide="mail"
                                                             class="w-5 h-5 mr-2"></i>
                                                         Mail to Proofreader </a> --}}
                                                     <a href="{{ route('view-assign-proofreader', $order->id) }}"
                                                         title="Assign Proof Reader" class="btn btn-dark mr-1">
-                                                        <i data-lucide="book-copy" class="w-5 h-5 mr-2"></i>
+                                                        <i data-lucide="user" class="w-5 h-5 mr-2"></i>
                                                         Assign Proof Reader
                                                     </a>
                                                 </div>
@@ -419,24 +451,29 @@
                                                     class="btn btn-success mr-1"><i data-lucide="mail"
                                                         class="w-5 h-5 mr-2"></i>
                                                     Send Translation to User </a> --}}
-                                                       <a href="{{ route('view-assign-proofreader', $order->id) }}"
-                                                        title="Assign Proof Reader" class="btn btn-dark mr-1">
-                                                        <i data-lucide="book-copy" class="w-5 h-5 mr-2"></i>
-                                                        Assign Proof Reader
-                                                    </a>
+                                                <a href="{{ route('view-assign-proofreader', $order->id) }}"
+                                                    title="Assign Proof Reader" class="btn btn-dark mr-1">
+                                                    <i data-lucide="user" class="w-5 h-5 mr-2"></i>
+                                                    Assign Proof Reader
+                                                </a>
                                             @elseif (
                                                 $order->invoiceSent == 1 &&
                                                     $order->paymentStatus == 2 &&
                                                     $order->translation_status == 1 &&
                                                     $order->proofread_status == 0)
-                                                <a href="{{ route('mailToProofReader', $order->id) }}"
+                                                {{-- <a href="{{ route('mailToProofReader', $order->id) }}"
                                                     class="btn btn-dark mr-1"><i data-lucide="mail"
                                                         class="w-5 h-5 mr-2"></i>
                                                     Mail to Proofreader </a>
                                                 <a href="{{ route('mailOfCompletion', $order->id) }}"
                                                     class="btn btn-success mr-1"><i data-lucide="mail"
                                                         class="w-5 h-5 mr-2"></i>
-                                                    Send Translation to User </a>
+                                                    Send Translation to User </a> --}}
+                                                <a href="{{ route('view-assign-proofreader', $order->id) }}"
+                                                    title="Assign Proof Reader" class="btn btn-dark mr-1">
+                                                    <i data-lucide="user" class="w-5 h-5 mr-2"></i>
+                                                    Assign Proof Reader
+                                                </a>
                                             @elseif (
                                                 $order->invoiceSent == 1 &&
                                                     $order->paymentStatus == 1 &&

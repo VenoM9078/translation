@@ -99,7 +99,12 @@ class ContractorAuthController extends Controller
         return view('contractor.view-report', ['interpretation' => $interpretation]);
     }
 
+    public function viewTranslationSubmissionPage($id)
+    {
+        $contractorOrder = ContractorOrder::findOrFail($id);
 
+        return view('contractor.submit-translation-file', ['contractorOrder' => $contractorOrder]);
+    }
 
     // public function store(Request $request)
     // {
@@ -264,7 +269,10 @@ class ContractorAuthController extends Controller
         $translationsCount = ContractorOrder::where('contractor_id', auth()->guard('contractor')->user()->id)
             ->where('is_accepted', ContractorOrderEnum::PENDING)
             ->get()->count();
-        return view('contractor.dashboard', compact('proofReadCount', 'translationsCount'));
+        $interpretationsCount = ContractorInterpretation::where('contractor_id', auth()->guard('contractor')->user()->id)
+            ->where('is_accepted', ContractorOrderEnum::PENDING)
+            ->get()->count();
+        return view('contractor.dashboard', compact('proofReadCount', 'translationsCount', 'interpretationsCount'));
     }
 
     public function pendingTranslations()
@@ -300,6 +308,29 @@ class ContractorAuthController extends Controller
             Mail::to($admin->email)->send(new ContractorNotifyAdmin($contractorName, $contractorOrder, true));
         }
         return redirect()->route('contractor.translations.completed');
+    }
+
+    //create function for downloading proofread file
+    public function downloadProofreadFile($id)
+    {
+        //select only file_name;
+        $filePath = '/proofread_by_proofreader/' . ProofReaderOrders::where(['order_id' => $id])->firstOrFail()->file_name;
+        $file = "";
+
+        if (public_path() . file_exists($filePath)) {
+            $file = public_path($filePath);
+        }
+        $zip = new ZipArchive;
+        $zipName = date('YmdHi') . $id . '.zip';
+
+        if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
+            $relativeNameInZipFile = basename($file);
+            // dd($file, $relativeNameInZipFile);
+            $zip->addFile($file, $relativeNameInZipFile);
+
+            $zip->close();
+        }
+        return response()->download($file);
     }
 
     public function downloadTranslationFile($id)
@@ -341,56 +372,57 @@ class ContractorAuthController extends Controller
 
     public function uploadTranslationFile(Request $request)
     {
-        // if ($request->hasFile('translationFile')) {
-        //     $file = $request->file('translationFile');
-        //     $filePath = 'translations_by_contractors/';
+        $filename = '';
+        if ($request->hasFile('translationFile')) {
+            $file = $request->file('translationFile');
+            $filePath = 'translations_by_contractors/';
 
-        //     // dd($file);
+            // dd($file);
 
-        //     $filename = date('YmdHi') . $file->getClientOriginalName();
-        //     // $folder = uniqid() . '-' . now()->timestamp;
-        //     // $file->move(public_path('documents'), $filename);
-        //     //if the path does not exist, create it
+            $filename = date('YmdHi') . $file->getClientOriginalName();
+            // $folder = uniqid() . '-' . now()->timestamp;
+            // $file->move(public_path('documents'), $filename);
+            //if the path does not exist, create it
 
-        //     if (!file_exists(public_path($filePath))) {
-        //         mkdir(public_path($filePath), 0777, true);
-        //         $file->move($filePath, $filename);
-        //     } else {
-        //         $file->move($filePath, $filename);
-        //     }
+            if (!file_exists(public_path($filePath))) {
+                mkdir(public_path($filePath), 0777, true);
+                $file->move($filePath, $filename);
+            } else {
+                $file->move($filePath, $filename);
+            }
 
-        //     TemporaryFile::create([
-        //         'filename' => $filename
-        //     ]);
-
+            TemporaryFile::create([
+                'filename' => $filename
+            ]);
+        }
         //     // session(['uploaded_translation_file' => $filename]);
 
 
-        $filenames = [];
+        // $filenames = [];
 
-        if ($request->hasFile('translationFile')) {
-            $files = $request->file('translationFile');
-            $filePath = 'translations_by_contractors/';
+        // if ($request->hasFile('translationFile')) {
+        //     $files = $request->file('translationFile');
+        //     $filePath = 'translations_by_contractors/';
 
-            foreach ($files as $file) {
-                $filename = date('YmdHi') . $file->getClientOriginalName();
+        //     foreach ($files as $file) {
+        //         $filename = date('YmdHi') . $file->getClientOriginalName();
 
-                if (!file_exists(public_path($filePath))) {
-                    mkdir(public_path($filePath), 0777, true);
-                }
+        //         if (!file_exists(public_path($filePath))) {
+        //             mkdir(public_path($filePath), 0777, true);
+        //         }
 
-                $file->move($filePath, $filename);
+        //         $file->move($filePath, $filename);
 
-                TemporaryFile::create([
-                    'filename' => $filename
-                ]);
+        //         TemporaryFile::create([
+        //             'filename' => $filename
+        //         ]);
 
-                $filenames[] = $filename;
-            }
-        }
-        session(['uploaded_translation_file' => $filenames]);
+        //         $filenames[] = $filename;
+        //     }
+        // }
+        // session(['uploaded_translation_file' => $filenames]);
 
-        return $filenames;
+        return $filename;
         // return response()->json(['filename' => $filename], 200);
 
     }
@@ -399,13 +431,12 @@ class ContractorAuthController extends Controller
     {
         // dd($request->all());
         // dd($request->all(),$request->translationFile, $request->file('translationFile'));
-        // dd($request->hasFile('translationFile'), $request->input('translationFile'));
-        $uploadedFilePath = session('uploaded_translation_file', '');
-
+        $uploadedFilePath = $request->input('translationFile');
         $contractorOrder = ContractorOrder::find($request['contractor_order_id']);
         $contractorOrder->file_name = $uploadedFilePath;
+        // dd($contractorOrder);
         $contractorOrder->save();
-        $request->session()->forget('uploaded_translation_file');
+        // $request->session()->forget('uploaded_translation_file');
 
         //fetch order with the order_id, then update the orders table column translationStatus to 1
         $order = Order::find($contractorOrder->order_id);
@@ -415,7 +446,7 @@ class ContractorAuthController extends Controller
         $contractorName = Auth::guard('contractor')->user()->name;
         $admins = Admin::all(['email']);
         foreach ($admins as $admin) {
-            Mail::to($admin->email)->send(new NotifyAdminTranslationSubmissionContractor($contractorName, $contractorOrder));
+            Mail::to($admin->email)->send(new NotifyAdminTranslationSubmissionContractor($contractorName, $contractorOrder, $order));
         }
         return redirect()->route('contractor.translations.completed');
     }
@@ -500,7 +531,7 @@ class ContractorAuthController extends Controller
             })
             ->orderBy('created_at', 'desc')
             ->get();
-
+        // dd($proofReadData);
         return view('contractor.proof-read-pending', compact('proofReadData'));
     }
     public function onGoingProofRead()

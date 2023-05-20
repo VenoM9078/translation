@@ -81,8 +81,8 @@ Route::group(['middleware' => ['auth:contractor']], function () {
     Route::get('contractor/translations/completed', [ContractorAuthController::class, 'completedTranslations'])->name('contractor.translations.completed');
 
     Route::get('contractor/proof-reads', [ContractorAuthController::class, 'onGoingProofRead'])->name('contractor.proof-read');
-    Route::get('contractor/proof-reads/{id}', [ContractorAuthController::class, 'viewProofReadSubmission'])->name('contractor.view-proof-read-submission');
     Route::get('contractor/proof-reads/pending', [ContractorAuthController::class, 'pendingProofRead'])->name('contractor.proof-read-pending');
+    Route::get('contractor/proof-reads/{id}', [ContractorAuthController::class, 'viewProofReadSubmission'])->name('contractor.view-proof-read-submission');
     Route::get('contractor/interpretaions', [ContractorAuthController::class, 'pendingInterpretations'])->name('contractor.interpretations');
     Route::get('contractor/interpretaions/requests', [ContractorAuthController::class, 'interpretationRequests'])->name('contractor.interpretationRequests');
 
@@ -104,16 +104,18 @@ Route::group(['middleware' => ['auth:contractor']], function () {
     //Filepond Upload 
     Route::post('/contractor/translationUpload', [ContractorAuthController::class, 'uploadTranslationFile'])->name('contractor.translationUploadFilePond');
 
+    Route::get('/contractor/submit-translations/{contractorOrderID}', [ContractorAuthController::class, 'viewTranslationSubmissionPage'])->name('contractor.view-submit-translation');
     //Download translated data
     Route::get('/contractor/download-translation-file/{orderID}', [ContractorAuthController::class, 'downloadTranslationFile'])->name('contractor.download-translation-file');
+    //create route for downloading proofread file
 
     Route::post('/contractor/report-submission', [ContractorAuthController::class, 'reportSubmission'])->name('contractor.report-submission');
 
     //create two routes, get and post. for submitting proof reader translations 
     Route::get('/contractor/proof-read/{orderID}', [ContractorAuthController::class, 'proofRead'])->name('contractor.view-submit-proof-read');
     Route::post('/contractor/proof-read', [ContractorAuthController::class, 'submitProofRead'])->name('contractor.submit-proof-read');
-    Route::post('/contractor/upload-proof',[ContractorAuthController::class, 'uploadProofFile'])->name('contractor.upload-proof-read-file');
-    Route::get('/contractor/completed-proof-reads',[ContractorAuthController::class,'completedProofReads'])->name('contractor.completed-proof-read');
+    Route::post('/contractor/upload-proof', [ContractorAuthController::class, 'uploadProofFile'])->name('contractor.upload-proof-read-file');
+    Route::get('/contractor/completed-proof-reads', [ContractorAuthController::class, 'completedProofReads'])->name('contractor.completed-proof-read');
 });
 
 Route::group(['middleware' => ['auth:admin']], function () {
@@ -142,6 +144,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::post('admin/submitQuote', [AdminController::class, 'submitQuote'])->name('admin.submitQuote');
 
     Route::get('admin/view-contractors', [AdminController::class, 'viewContractors'])->name('admin.viewContractors');
+    // Add this route definition
+    Route::get('/admin/contractor/{id}', [AdminController::class,'viewContractor'])->name('admin.viewContractor');
 
 
     Route::delete('destroy/{id}', [AdminController::class, 'destroy'])->name('destroy');
@@ -185,6 +189,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/re-assign-interpreter/{interpreterID}', [AdminController::class, 'viewReAssignInterpreter'])->name('view-re-assign-interpreter');
     Route::get('/edit-order/{orderID}', [AdminController::class, 'viewEditOrder'])->name('view-edit-order');
     Route::post('/edit-order/save', [AdminController::class, 'editOrder'])->name('admin.edit-order');
+
+    Route::get('/download-proof-read-file/{orderID}', [AdminController::class, 'downloadProofReadFile'])->name('download-proof-read-file');
 });
 
 Route::middleware(['web', 'auth'])->group(function () {

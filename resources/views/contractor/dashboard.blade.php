@@ -27,7 +27,7 @@
                 <div class="report-box zoom-in">
                     <div class="box p-5">
                         <div class="flex">
-                            <i data-feather="monitor" class="report-box__icon text-warning"></i>
+                            <i data-lucide="user" class="report-box__icon text-warning"></i>
                         </div>
                         <div class="text-3xl font-medium leading-8 mt-6">Welcome</div>
                         <div class="text-base text-slate-500 mt-1">{{ Auth::user()->name }}</div>
@@ -39,7 +39,7 @@
                     <div class="report-box zoom-in">
                         <div class="box p-5">
                             <div class="flex">
-                                <i data-feather="monitor" class="report-box__icon text-warning"></i>
+                                <i data-lucide="monitor" class="report-box__icon text-warning"></i>
 
                             </div>
                             <div class="text-3xl font-medium leading-8 mt-6">Pending Translations</div>
@@ -52,11 +52,22 @@
                 <div class="report-box zoom-in">
                     <div class="box p-5">
                         <div class="flex">
-                            <i data-feather="monitor" class="report-box__icon text-warning"></i>
+                            <i data-lucide="book" class="report-box__icon text-warning"></i>
 
                         </div>
                         <div class="text-3xl font-medium leading-8 mt-6">Pending Proofreads</div>
                         <div class="text-base text-slate-500 mt-1">{{ $proofReadCount }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-span-4 sm:col-span-6 xl:col-span-4 intro-y">
+                <div class="report-box zoom-in">
+                    <div class="box p-5">
+                        <div class="flex">
+                            <i data-lucide="book" class="report-box__icon text-warning"></i>
+                        </div>
+                        <div class="text-3xl font-medium leading-8 mt-6">Pending Interpretations</div>
+                        <div class="text-base text-slate-500 mt-1">{{ $interpretationsCount }}</div>
                     </div>
                 </div>
             </div>

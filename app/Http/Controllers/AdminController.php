@@ -100,6 +100,12 @@ class AdminController extends Controller
         return redirect()->route('admin.dashboard');
     }
 
+    public function viewContractor($id){
+        //fetch the contractor from this id
+        $contractor = Contractor::find($id);
+        $languages = ContractorLanguage::where('contractor_id', $contractor->id)->distinct()->get();
+        return view('admin.view-contractor-info', compact('contractor', 'languages'));
+    }
     public function editInterpretation($id)
     {
         $interpretation = Interpretation::find($id);
@@ -320,7 +326,6 @@ class AdminController extends Controller
     {
         // dd($request->input('description'));
         // dd($request->input('amount'));
-        // dd($request->all());
         $contractorOrder = ContractorOrder::create([
             'order_id' => $request->order_id,
             'contractor_id' => $request->contractor_id,
@@ -329,6 +334,9 @@ class AdminController extends Controller
             'total_payment' => $request->total_payment,
             'rate' => $request->rate
         ]);
+        $order = Order::find($request->order_id);
+        $order->translation_sent = 1;
+        $order->save();
         $contractorOrder->save();
         // $data = $request->all();
         $contractor = Contractor::where('id', $contractorOrder['contractor_id'])->firstOrFail();
@@ -354,6 +362,12 @@ class AdminController extends Controller
 
     public function assignProofReader(Request $request)
     {
+        $existingAssignment = ProofReaderOrders::where('order_id', $request->order_id)
+            ->first();
+        // If it exists, delete it
+        if ($existingAssignment) {
+            $existingAssignment->delete();
+        }
         $contractor_order_id = ContractorOrder::where('order_id', $request->order_id)->where('is_accepted', 1)->first();
         // dd($contractor_order_id);
         $proofReaderOrder = ProofReaderOrders::create([
@@ -366,7 +380,9 @@ class AdminController extends Controller
             'contractor_order_id' => $contractor_order_id->id
         ]);
         $order = Order::find($request->order_id);
-        // $order->proofread_status = 1; //change status to 1 *asigned
+
+        $order->proofread_sent = 1; //change status to 1 *asigned
+        $order->save();
         // $proofReaderOrder->save();
         $contractor = Contractor::where('id', $proofReaderOrder['contractor_id'])->firstOrFail();
 
@@ -822,7 +838,27 @@ class AdminController extends Controller
         return redirect()->route('showTranslationRequests');
     }
 
+    public function downloadProofreadFile($id)
+    {
+        //select only file_name;
+        $filePath = '/proofread_by_proofreader/' . ProofReaderOrders::where(['order_id' => $id])->firstOrFail()->file_name;
+        $file = "";
 
+        if (public_path() . file_exists($filePath)) {
+            $file = public_path($filePath);
+        }
+        $zip = new ZipArchive;
+        $zipName = date('YmdHi') . $id . '.zip';
+
+        if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
+            $relativeNameInZipFile = basename($file);
+            // dd($file, $relativeNameInZipFile);
+            $zip->addFile($file, $relativeNameInZipFile);
+
+            $zip->close();
+        }
+        return response()->download($file);
+    }
     public function viewCompletedOrders()
     {
         $orders = Order::where('completed', 1)->get();

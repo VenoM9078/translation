@@ -151,9 +151,9 @@
                         <div class="intro-x mt-4">
                             <input type="hidden" name="order_id" value="{{ $order->id }}">
                             <input type="hidden" name="user_id" value="{{ $order->user->id }}">
-                            <input type="hidden" name="translation_id" value="{{ $order->translationRequest->id }}">
-                            @if (isset($order->proofReadRequest->id))
-                            <input type="hidden" name="proofreader_id" value="{{ $order->proofReadRequest->id }}">
+                            <input type="hidden" name="translation_id" value="{{ $order->contractorOrder->id }}">
+                            @if (isset($order->proofReaderOrder->id))
+                            <input type="hidden" name="proofreader_id" value="{{ $order->proofReaderOrder->id }}">
                             @endif
                             <input type="email" name="email" readonly="readonly"
                                 class="intro-x login__input form-control py-3 px-4 block"

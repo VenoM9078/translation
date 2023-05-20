@@ -18,10 +18,13 @@ class NotifyAdminTranslationSubmissionContractor extends Mailable
      */
     public $contractorName;
     public $contractorOrder;
-    public function __construct($contractorName, $contractorOrder)
+
+    public $order;
+    public function __construct($contractorName, $contractorOrder,$order)
     {
         $this->contractorName = $contractorName;
         $this->contractorOrder = $contractorOrder;
+        $this->order = $order;
     }
 
     /**
