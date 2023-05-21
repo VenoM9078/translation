@@ -35,6 +35,9 @@ Route::get('contact', function () {
     return view('contact');
 })->name('contact');
 
+Route::get('/inputForm', [GuestController::class, 'apiRequest']);
+Route::post('/inputForm', [GuestController::class, 'realApiRequest'])->name('realApiRequest');
+
 Route::post('sendContactForm', function (Request $request) {
     $validated = $request->validate([
         'name' => 'string|max:255',
