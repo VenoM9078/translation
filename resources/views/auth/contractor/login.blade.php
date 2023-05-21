@@ -44,18 +44,24 @@
                     <h2 class="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-left">
                         Contractor Sign In
                     </h2>
-                    @error('email')
-                        <div class="alert alert-danger-soft show flex items-center mb-2 mt-2" role="alert">
-                            {{ $message }} </div>
-                    @enderror
+
                     <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">A few more clicks to sign in to your
                         account. Manage all your orders in one place!</div>
+                    @if($errors->any())
+                    <div class="alert alert-danger mt-3 mb-3">
+                        <ul>
+                            @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif\
                     <form action="{{ route('contractor.login') }}" method="POST">
                         @csrf
                         @method('POST')
                         <div class="intro-x mt-8">
-                            <input type="email" name="email"
-                                class="intro-x login__input form-control py-3 px-4 block" placeholder="Email">
+                            <input type="email" name="email" class="intro-x login__input form-control py-3 px-4 block"
+                                placeholder="Email">
                             <input type="password" name="password"
                                 class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="Password">
                         </div>

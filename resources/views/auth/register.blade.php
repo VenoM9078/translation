@@ -45,6 +45,15 @@
                     </h2>
                     <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">A few more clicks to sign in to your
                         account. Manage all your e-commerce accounts in one place</div>
+                    @if($errors->any())
+                    <div class="alert alert-danger mt-3 mb-3">
+                        <ul>
+                            @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                     <form action="{{ route('register') }}" method="POST">
                         @csrf
                         @method('POST')

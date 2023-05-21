@@ -57,6 +57,7 @@ Route::get('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin
 
 Route::get('/contractor/login', [ContractorAuthController::class, 'showLoginForm'])->name('contractor.login');
 Route::get('/contractor/register', [ContractorAuthController::class, 'showRegisterForm'])->name('contractor.register');
+Route::post('/contractor/register-complete', [ContractorAuthController::class, 'showRegisterForm2'])->name('contractor.register2');
 Route::post('/contractor/register', [ContractorAuthController::class, 'store'])->name('contractor.register');
 Route::post('/contractor/login', [ContractorAuthController::class, 'login'])->name('contractor.login');
 

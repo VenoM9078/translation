@@ -34,6 +34,39 @@ class ContractorAuthController extends Controller
         return view('auth.contractor.register');
     }
 
+    public function showRegisterForm2(Request $request)
+    {
+
+        $validated = $request->validate(
+            [
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'password' => 'required|string|min:6',
+                'password2' => 'required|string|min:6|same:password',
+            ],
+            [
+                'name.required' => 'The name field is required.',
+                'name.max' => 'The name may not be greater than 255 characters.',
+                'email.required' => 'The email field is required.',
+                'email.max' => 'The email may not be greater than 255 characters.',
+                'password.required' => 'The password field is required.',
+                'password.min' => 'The password must be at least 6 characters.',
+                'password2.required' => 'The confirmation password field is required.',
+                'password2.same' => 'The confirmation password does not match.',
+                'password2.min' => 'The confirmation password must be at least 6 characters.',
+            ]
+        );
+
+        // Pass input data from the previous form to the view
+        return view('auth.contractor.register2', [
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => $request->input('password'),
+            'password2' => $request->input('password2'),
+        ]);
+    }
+
+
     public function showLoginForm()
     {
         return view('auth.contractor.login');
@@ -199,11 +232,21 @@ class ContractorAuthController extends Controller
         // dd($request->input('translator_languages'));
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email',
+            'email' => 'required|email|max:255',
             'password' => 'required|string|min:6',
             'password2' => 'required|string|min:6|same:password',
-
+        ], [
+            'name.required' => 'The name field is required.',
+            'name.max' => 'The name may not be greater than 255 characters.',
+            'email.required' => 'The email field is required.',
+            'email.max' => 'The email may not be greater than 255 characters.',
+            'password.required' => 'The password field is required.',
+            'password.min' => 'The password must be at least 6 characters.',
+            'password2.required' => 'The confirmation password field is required.',
+            'password2.same' => 'The confirmation password does not match.',
+            'password2.min' => 'The confirmation password must be at least 6 characters.',
         ]);
+
 
         $validated['password'] = bcrypt($validated['password']);
 

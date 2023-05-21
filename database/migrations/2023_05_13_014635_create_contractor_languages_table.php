@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('contractor_id');
             $table->foreign('contractor_id')->references('id')->on('contractors')->onDelete('cascade');
-            $table->string('language');
+            $table->string('language')->nullable();
             $table->boolean('is_translator')->default(0);
             $table->boolean('is_interpreter')->default(0);
             $table->boolean('is_proofreader')->default(0);
