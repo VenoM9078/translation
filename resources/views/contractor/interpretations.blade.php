@@ -1,6 +1,35 @@
 @extends('contractor.layout')
 
 @section('content')
+<style>
+    #dropdownList {
+        position: absolute;
+        top: 100%;
+        z-index: 99999999 !important;
+        /* This positions the top edge of the dropdown at the bottom of the container */
+        left: 0;
+        /* This aligns the dropdown to the left of the container */
+        /* Other styles... */
+    }
+
+    #dropdownListGroup {
+        position: absolute;
+        top: 100%;
+        z-index: 99999999 !important;
+        /* This positions the top edge of the dropdown at the bottom of the container */
+        left: 0;
+        /* This aligns the dropdown to the left of the container */
+        /* Other styles... */
+    }
+</style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+{{--
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css" /> --}}
+<link rel="stylesheet" type="text/css" {{--
+    href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" /> --}}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
 <div class="col-span-12 mt-8">
     <div class="intro-y flex items-center h-10">
         <h2 class="text-lg font-medium truncate mr-5 mb-5">
@@ -13,13 +42,50 @@
         <p>{{ $message }}</p>
     </div>
     @endif
+    <div class="flex justify-end gap-4">
+        <div class="dropdown-container relative inline-block my-2">
+            <button id="dropdownBgHoverButton" data-dropdown-toggle="dropdownBgHover"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                type="button">Filter Columns<svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg></button>
 
+            <!-- Dropdown menu -->
+            <div id="dropdownList" class="z-10 hidden w-48 bg-white rounded-lg shadow dark:bg-gray-700">
+                <ul class="space-y-1 overflow-y-auto h-40 text-sm text-gray-700 dark:text-gray-200"
+                    aria-labelledby="dropdownBgHoverButton">
+
+                </ul>
+            </div>
+        </div>
+        <div class="dropdown-container relative inline-block my-2">
+            <button id="dropdownBgHoverButtonGroup" data-dropdown-toggle="dropdownBgHoverGroup"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                type="button">Filter Groups<svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg></button>
+
+            <!-- Dropdown menu -->
+            <div id="dropdownListGroup" class="z-10 hidden w-48 bg-white rounded-lg shadow dark:bg-gray-700">
+                <ul class=" space-y-1 overflow-y-auto h-40 text-sm text-gray-700 dark:text-gray-200"
+                    aria-labelledby="dropdownBgHoverButtonGroup">
+
+                </ul>
+            </div>
+        </div>
+    </div>
     <div class="intro-y box">
         <div id="vertical-form" class="p-5">
             <div class="preview">
                 <div>
                     <div class="overflow-x-auto">
-                        <table id="myTable" class="table table-striped hover" style="width:100%">
+
+
+                        <table id="interpretationsTable" class="table table-striped hover" style="width:100%">
+
+
                             <thead>
                                 <tr>
                                     <th class="whitespace-nowrap">Worknumber</th>
@@ -63,7 +129,7 @@
                                                 method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger mr-2 mb-2">
+                                                <button type="submit" class="btn bg-red-500 btn-danger mr-2 mb-2">
                                                     <i data-lucide="trash" class="w-4 h-4 mr-2"></i> Cancel
                                                 </button>
                                             </form>
@@ -79,6 +145,10 @@
             </div>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
     <script>
         let button = document.querySelector('#uniqueModal');
 
@@ -88,4 +158,79 @@
             console.log(value);
         })
     </script>
+
+
+    <script>
+        $(document).ready(function() {
+    var table = $('#interpretationsTable').DataTable({
+        ordering: true,
+        info: true,
+        paging: true
+    });
+
+    // Generate a checkbox for each column in the dropdown
+    table.columns().every(function() {
+        var column = this;
+        
+        var checkbox = $('<li><div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600"><input checked id="checkbox-item-' + column.index() + '" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500 toggle-vis" data-column="' + column.index() + '"><label for="checkbox-item-' + column.index() + '" class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">' + $(column.header()).text() + '</label></div></li>');
+        checkbox.appendTo('#dropdownList ul');
+    });
+
+    // Hide/show the column when its checkbox is toggled
+    $('input.toggle-vis').on('change', function(e) {
+        e.preventDefault();
+        var column = table.column($(this).attr('data-column'));
+        column.visible(!column.visible());
+    });
+
+    // Toggle dropdown visibility for column filter
+    $("#dropdownBgHoverButton").click(function() {
+        $('#dropdownList').toggle();
+    });
+    
+    var groups = {
+        'Date/Time Information': [3, 4, 5],
+        'Payment Information': [8, 9]
+    }
+
+    for (var groupName in groups) {
+        var checkbox = $('<li><div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600"><input checked id="checkbox-group-item-' + groupName + '" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 toggle-vis-group" data-group="' + groupName + '"><label for="checkbox-group-item-' + groupName + '" class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">' + groupName + '</label></div></li>');
+        checkbox.appendTo('#dropdownListGroup ul');
+    }
+
+    $('input.toggle-vis-group').on('change', function(e) {
+        e.preventDefault();
+        var group = $(this).attr('data-group');
+        var visible = $(this).is(':checked');
+        groups[group].forEach(function(index) {
+            table.column(index).visible(visible);
+        });
+    });
+
+    // Toggle dropdown visibility for group filter
+    $("#dropdownBgHoverButtonGroup").click(function() {
+        $('#dropdownListGroup').toggle();
+    });
+});
+    </script>
+
+    {{-- <script>
+        $(document).ready(function() {
+                var table = $('#interpretationsTable').DataTable({
+                    ordering: true,
+                    info: true,
+                    paging: true
+                });
+
+                $('button.toggle-vis').on('click', function (e) {
+                e.preventDefault();
+                
+                // Get the column API object
+                var column = table.column($(this).attr('data-column'));
+                
+                // Toggle the visibility
+                column.visible(!column.visible());
+                });
+            });
+    </script> --}}
     @endsection

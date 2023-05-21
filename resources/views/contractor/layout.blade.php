@@ -361,9 +361,9 @@
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable({
-                ordering: false,
-                info: false,
-                paging: false
+                ordering: true,
+                info: true,
+                paging: true
             });
         });
     </script>

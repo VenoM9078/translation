@@ -57,7 +57,7 @@
                             <div class="flex mt-5 ">
                                 <div class="form-check form-switch mb-4">
                                     <input
-                                        class="form-check-input appearance-none w-9 border-md shadow-lg justify-start border p-2 -ml-10 rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-gray-300 focus:outline-none cursor-pointer shadow-sm"
+                                        class="form-check-input appearance-none w-9 border-md justify-start border p-2 -ml-10 rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-gray-300 focus:outline-none cursor-pointer shadow-sm"
                                         type="checkbox" role="switch" id="flexSwitchCheckDefault" name="isPayNow">
                                     <label class="form-check-label inline-block text-black"
                                         for="flexSwitchCheckDefault">Pay Now</label>
