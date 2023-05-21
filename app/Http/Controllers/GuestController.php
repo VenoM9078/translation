@@ -23,7 +23,6 @@ class GuestController extends Controller
 
     public function apiRequest()
     {
-        dd("what");
         return view('submitButton');
     }
 
