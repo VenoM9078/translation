@@ -65,9 +65,10 @@
                         </div>
                     </form>
                     <hr class="mt-3 mb-3">
-                    <p class="mt-5 text-slate-600 dark:text-slate-500 text-xs sm:text-sm">Are you a Contractor? <a
-                            href="{{route('contractor.login')}}">Sign
-                            In</a></p>
+                    <div class="alert alert-secondary show flex items-center mb-2" role="alert"> <i
+                            data-lucide="alert-circle" class="w-6 h-6 mr-2"></i> Are you a Contractor? <a
+                            href="{{route('contractor.login')}}" class="underline font-bold ml-2">Sign
+                            In</a> </div>
                 </div>
             </div>
 
