@@ -100,7 +100,8 @@ class AdminController extends Controller
         return redirect()->route('admin.dashboard');
     }
 
-    public function viewContractor($id){
+    public function viewContractor($id)
+    {
         //fetch the contractor from this id
         $contractor = Contractor::find($id);
         $languages = ContractorLanguage::where('contractor_id', $contractor->id)->distinct()->get();
@@ -1048,7 +1049,13 @@ class AdminController extends Controller
 
     public function ongoingInterpretations()
     {
-        $interpretations = Interpretation::orderByDesc('created_at')->get();
+        $interpretations = Interpretation::orderByDesc('created_at')->where('interpreter_completed', '=', 0)->get();
         return view('admin.ongoingInterpretations', compact('interpretations'));
+    }
+
+    public function viewCompletedInterpretations()
+    {
+        $interpretations = Interpretation::orderByDesc('created_at')->where('interpreter_completed', '=', 1)->get();
+        return view('admin.completedInterpretations', compact('interpretations'));
     }
 }

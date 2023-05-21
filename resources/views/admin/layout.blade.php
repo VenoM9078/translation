@@ -202,7 +202,7 @@
 
                 <li>
                     <a href="javascript:;"
-                        class="{{ ((Route::getCurrentRoute()->uri == 'admin/pending' || (Route::getCurrentRoute()->uri == 'completedOrders')) ? 'side-menu side-menu--active' : 'side-menu' ) }}">
+                        class="{{ ((Route::getCurrentRoute()->uri == 'admin/ongoing-interpretations' || (Route::getCurrentRoute()->uri == 'admin/view-completed-interpretations')) ? 'side-menu side-menu--active' : 'side-menu' ) }}">
                         <div class="side-menu__icon"><svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
                                 width="32" height="32" fill="white" viewBox="0 0 128 128" id="meeting">
                                 <path d="M103 108V80h-4v28a2 2 0 0 0 4 0Z"></path>
@@ -228,7 +228,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('completedOrders') }}" class="side-menu">
+                            <a href="{{ route('admin.viewCompletedInterpretations') }}" class="side-menu">
                                 <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
                                 <div class="side-menu__title"> Completed </div>
                             </a>

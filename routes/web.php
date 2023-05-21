@@ -142,10 +142,11 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('admin/ongoing-interpretations', [AdminController::class, 'ongoingInterpretations'])->name('admin.ongoingInterpretations');
     Route::get('/admin/submitQuote/{id}', [AdminController::class, 'showSubmitQuote'])->name('admin.showSubmitQuote');
     Route::post('admin/submitQuote', [AdminController::class, 'submitQuote'])->name('admin.submitQuote');
+    Route::get('admin/view-completed-interpretations', [AdminController::class, 'viewCompletedInterpretations'])->name('admin.viewCompletedInterpretations');
 
     Route::get('admin/view-contractors', [AdminController::class, 'viewContractors'])->name('admin.viewContractors');
     // Add this route definition
-    Route::get('/admin/contractor/{id}', [AdminController::class,'viewContractor'])->name('admin.viewContractor');
+    Route::get('/admin/contractor/{id}', [AdminController::class, 'viewContractor'])->name('admin.viewContractor');
 
 
     Route::delete('destroy/{id}', [AdminController::class, 'destroy'])->name('destroy');
