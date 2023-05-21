@@ -130,6 +130,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
 
     Route::delete('/admin/interpretation/{id}', [AdminController::class, 'deleteInterpretation'])->name('admin.interpretation.delete');
 
+    Route::put('admin/users/{id}/update', [AdminController::class, 'updateUser'])->name('admin.updateUser');
+
 
     Route::post('get-contractor-rate', [AdminController::class, 'getContractorRate'])->name('get.contractor.rate');
     Route::post('get-translator-rate', [AdminController::class, 'getTranslatorRate'])->name('get.translator.rate');
@@ -138,12 +140,19 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::put('/admin/interpretation/{id}', [AdminController::class, 'updateInterpretation'])->name('admin.interpretation.update');
 
 
+    Route::get('/admin/viewUser/{id}', [AdminController::class, 'viewUser'])->name('admin.viewUser');
+    Route::get('/admin/editUser/{id}', [AdminController::class, 'editUser'])->name('admin.editUser');
+    Route::delete('/admin/deleteUser/{id}', [AdminController::class, 'deleteUser'])->name('admin.deleteUser');
+
+
     // Route::get('admin/interpretations', [AdminController::class, 'editInterpretations'])->name('admin.edit-interpretation');
 
     Route::get('admin/ongoing-interpretations', [AdminController::class, 'ongoingInterpretations'])->name('admin.ongoingInterpretations');
     Route::get('/admin/submitQuote/{id}', [AdminController::class, 'showSubmitQuote'])->name('admin.showSubmitQuote');
     Route::post('admin/submitQuote', [AdminController::class, 'submitQuote'])->name('admin.submitQuote');
     Route::get('admin/view-completed-interpretations', [AdminController::class, 'viewCompletedInterpretations'])->name('admin.viewCompletedInterpretations');
+
+    Route::get('admin/view-customers', [AdminController::class, 'viewCustomers'])->name('admin.viewCustomers');
 
     Route::get('admin/view-contractors', [AdminController::class, 'viewContractors'])->name('admin.viewContractors');
     // Add this route definition

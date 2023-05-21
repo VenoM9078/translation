@@ -158,7 +158,7 @@
                     </a>
                 </li>
 
-
+                <div class="side-nav__devider my-4"></div>
                 <li>
                     <a href="{{ route('invoice.index') }}"
                         class="{{ ((Route::getCurrentRoute()->uri == 'invoice') ? 'side-menu side-menu--active' : 'side-menu' ) }}">
@@ -236,8 +236,8 @@
 
                     </ul>
                 </li>
-
-                <li>
+                <div class="side-nav__devider my-4"></div>
+                {{-- <li>
                     <a href="javascript:;"
                         class="{{ ((Route::getCurrentRoute()->uri == 'showTranslationRequests' || (Route::getCurrentRoute()->uri == 'showProofReadRequests')) ? 'side-menu side-menu--active' : 'side-menu' ) }}">
                         <div class="side-menu__icon"> <i data-lucide="mail"></i> </div>
@@ -261,17 +261,7 @@
                         </li>
 
                     </ul>
-                </li>
-
-                <li>
-                    <a href="{{ route('viewQuoteRequests') }}"
-                        class="{{ ((Route::getCurrentRoute()->uri == 'viewQuoteRequests') ? 'side-menu side-menu--active' : 'side-menu' ) }}">
-                        <div class="side-menu__icon"> <i data-lucide="message-square"></i> </div>
-                        <div class="side-menu__title">
-                            Quote Requests
-                        </div>
-                    </a>
-                </li>
+                </li> --}}
 
                 <li>
                     <a href="{{ route('admin.viewContractors') }}"
@@ -290,6 +280,36 @@
                         </div>
                     </a>
                 </li>
+
+                <li>
+                    <a href="{{ route('admin.viewCustomers') }}"
+                        class="{{ ((Route::getCurrentRoute()->uri == 'view-contractors') ? 'side-menu side-menu--active' : 'side-menu' ) }}">
+                        <div class="side-menu__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                width="32" height="32" fill="white" id="person">
+                                <g data-name="Layer 2">
+                                    <path
+                                        d="M12 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm6 10a1 1 0 0 0 1-1 7 7 0 0 0-14 0 1 1 0 0 0 1 1z"
+                                        data-name="person"></path>
+                                </g>
+                            </svg> </div>
+                        <div class="side-menu__title">
+                            Customers
+                        </div>
+                    </a>
+                </li>
+
+                <div class="side-nav__devider my-4"></div>
+
+                <li>
+                    <a href="{{ route('viewQuoteRequests') }}"
+                        class="{{ ((Route::getCurrentRoute()->uri == 'viewQuoteRequests') ? 'side-menu side-menu--active' : 'side-menu' ) }}">
+                        <div class="side-menu__icon"> <i data-lucide="message-square"></i> </div>
+                        <div class="side-menu__title">
+                            Quote Requests
+                        </div>
+                    </a>
+                </li>
+
 
                 <li>
                     <a href="{{ route('viewFeedback') }}"

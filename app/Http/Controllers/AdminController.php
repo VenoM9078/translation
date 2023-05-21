@@ -107,6 +107,7 @@ class AdminController extends Controller
         $languages = ContractorLanguage::where('contractor_id', $contractor->id)->distinct()->get();
         return view('admin.view-contractor-info', compact('contractor', 'languages'));
     }
+
     public function editInterpretation($id)
     {
         $interpretation = Interpretation::find($id);
@@ -239,6 +240,51 @@ class AdminController extends Controller
         return view('admin.viewContractors', compact('contractors'));
     }
 
+    public function viewUser($id)
+    {
+        $user = User::findOrFail($id);
+
+        // Pass $user to your viewUser view
+        return view('admin.viewUser', ['user' => $user]);
+    }
+
+    public function editUser($id)
+    {
+        $user = User::findOrFail($id);
+
+        // Pass $user to your editUser view
+        return view('admin.editUser', ['user' => $user]);
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+
+        $user->save();
+
+        return redirect()->route('admin.viewCustomers');
+    }
+
+
+    public function deleteUser($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        // Redirect back to the users list with a success message
+        return redirect()->route('admin.users')->with('message', 'User deleted successfully');
+    }
+
+
+    public function viewCustomers()
+    {
+        $users = User::all();
+
+        return view('admin.viewCustomers', compact('users'));
+    }
 
     public function viewAssignInterpreter($interpreterID)
     {
