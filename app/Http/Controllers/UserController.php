@@ -92,27 +92,22 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
-        // dd($request);
-        // dd($request);
         $userID = Auth::id();
-        // // dd($request, $userID);
-        // $validated = $request->validate([
-        //     'language1' => 'required|max:255',
-        //     'language2' => 'required|max:255',
-        //     'access_code' => 'string|max:255',
-        //     'casemanager' => 'string|max:255',
-        //     'files' => 'required',
-        //     'files.*' => 'mimes:docx,doc,png,jpg,pdf,txt'
-        // ]);
 
+        date_default_timezone_set('America/Los_Angeles'); // Set timezone to PST
 
+        // Get the latest worknumber from the Interpretation model
+        $latestWorkNumber = Order::latest('worknumber')->first()->worknumber;
 
-        // $validated['user_id'] = $userID;
-        $currDate = date('Ymd');
-        $randomDigits = mt_rand(1111, 9999);
-        $worknumber = $currDate . date('md', strtotime($currDate . ' + 10 days')) . '_' . $randomDigits;
-        //    var_dump($worknumber);
+        $currentTime = date('ymdHis'); // YYMMDDHHMMSS format
+
+        while ($latestWorkNumber == $currentTime) {
+            // Delay by 1 second if the current time is equal to the latest work order
+            sleep(1);
+            $currentTime = date('ymdHis');
+        }
+
+        $worknumber = $currentTime;
 
         if ($request->input("isPayNow") == "on") {
             $data = [
@@ -462,12 +457,25 @@ class UserController extends Controller
 
     public function storeNewInterpretation(Request $request)
     {
-        $currDate = date('Ymd');
-        $randomDigits = mt_rand(1111, 9999);
-        $worknumber = $currDate . date('md', strtotime($currDate . ' + 10 days')) . '_' . $randomDigits;
+        date_default_timezone_set('America/Los_Angeles'); // Set timezone to PST
+
+        // Get the latest worknumber from the Interpretation model
+        $latestWorkNumber = Interpretation::latest('worknumber')->first()->worknumber;
+
+        $currentTime = date('ymdHis'); // YYMMDDHHMMSS format
+
+        while ($latestWorkNumber == $currentTime) {
+            // Delay by 1 second if the current time is equal to the latest work order
+            sleep(1);
+            $currentTime = date('ymdHis');
+        }
+
+        $worknumber = $currentTime;
 
         $interpretation = new Interpretation();
         $interpretation->worknumber = $worknumber;
+
+
         $interpretation->user_id = auth()->id(); // Add the authenticated user's ID
         $interpretation->language = $request->language;
         $interpretation->interpretationDate = $request->interpretationDate;

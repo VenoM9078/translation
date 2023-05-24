@@ -21,6 +21,14 @@
         /* This aligns the dropdown to the left of the container */
         /* Other styles... */
     }
+
+    #dropdownListStatus {
+        position: absolute;
+        top: 100%;
+        z-index: 99999999 !important;
+        /* This positions the top edge of the dropdown at the bottom of the container */
+        left: 0;
+    }
 </style>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
@@ -68,10 +76,44 @@
                 </svg></button>
 
             <!-- Dropdown menu -->
-            <div id="dropdownListGroup" class="z-10 hidden w-48 bg-white rounded-lg shadow dark:bg-gray-700">
-                <ul class=" space-y-1 overflow-y-auto h-40 text-sm text-gray-700 dark:text-gray-200"
+            <div id="dropdownListGroup" class="z-10 hidden bg-white rounded-lg shadow dark:bg-gray-700">
+                <ul class=" space-y-1 overflow-y-auto text-sm text-gray-700 dark:text-gray-200"
                     aria-labelledby="dropdownBgHoverButtonGroup">
 
+                </ul>
+            </div>
+        </div>
+
+        <div class="dropdown-container relative inline-block my-2">
+            <button id="dropdownBgHoverButtonStatus" data-dropdown-toggle="dropdownBgHoverStatus"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                type="button">Status<svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg></button>
+
+            <!-- Dropdown menu -->
+            <div id="dropdownListStatus" class="z-10 hidden bg-white rounded-lg shadow dark:bg-gray-700">
+                <ul class=" space-y-1 overflow-y-auto text-sm text-gray-700 dark:text-gray-200"
+                    aria-labelledby="dropdownBgHoverButtonStatus">
+                    <li>
+                        <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <input checked id="checkbox-status-pending" type="checkbox"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
+                                data-status="pending">
+                            <label for="checkbox-status-pending"
+                                class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Pending</label>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <input checked id="checkbox-status-completed" type="checkbox"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
+                                data-status="completed">
+                            <label for="checkbox-status-completed"
+                                class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Completed</label>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -98,12 +140,14 @@
                                     <th class="whitespace-nowrap">Address/Link</th>
                                     <th class="whitespace-nowrap">Per Hour Rate</th>
                                     <th class="whitespace-nowrap">Estimated Payment</th>
+                                    <th>Status</th>
                                     <th class="whitespace-nowrap">Possible Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($interpretations as $interpretation)
-                                <tr>
+                                <tr
+                                    data-status="{{ $interpretation->interpretation->interpreter_completed == 1 ? 'completed' : 'pending' }}">
                                     <td class="whitespace-nowrap">{{ $interpretation->interpretation->worknumber }}</td>
                                     <td class="whitespace-nowrap">{{ $interpretation->interpretation->session_topics }}
                                     </td>
@@ -118,6 +162,8 @@
                                     </td>
                                     <td class="whitespace-nowrap">${{ $interpretation->per_hour_rate }}</td>
                                     <td class="whitespace-nowrap">${{ $interpretation->estimated_payment }}</td>
+                                    <td>{{ $interpretation->interpretation->interpreter_completed == 1 ? 'Completed' :
+                                        'Pending' }}</td>
                                     <td class="whitespace-nowrap">
                                         <div class="flex">
                                             <a href="{{ route('contractor.viewReport', $interpretation->id) }}"
@@ -168,12 +214,35 @@
         paging: true
     });
 
+    $.fn.dataTable.ext.search.push(
+    function(settings, data, dataIndex) {
+    var isPendingChecked = $('#checkbox-status-pending').is(':checked');
+    var isCompletedChecked = $('#checkbox-status-completed').is(':checked');
+    
+    if (isPendingChecked && data[10] == 'Pending') {
+    return true;
+    } else if (isCompletedChecked && data[10] == 'Completed') {
+    return true;
+    }
+    
+    return false;
+    }
+    );
+
+  $('.status-filter').on('change', function() {
+table.draw();
+});
+
     // Generate a checkbox for each column in the dropdown
     table.columns().every(function() {
         var column = this;
         
         var checkbox = $('<li><div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600"><input checked id="checkbox-item-' + column.index() + '" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500 toggle-vis" data-column="' + column.index() + '"><label for="checkbox-item-' + column.index() + '" class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">' + $(column.header()).text() + '</label></div></li>');
         checkbox.appendTo('#dropdownList ul');
+    });
+
+    $("#dropdownBgHoverButtonStatus").click(function() {
+    $('#dropdownListStatus').toggle();
     });
 
     // Hide/show the column when its checkbox is toggled
