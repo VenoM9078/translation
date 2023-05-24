@@ -395,6 +395,7 @@ class AdminController extends Controller
     {
         $orders = Order::with(['contractorOrder.contractor'])
             ->orderByDesc('created_at')
+            ->where('orderStatus','!=', 'Cancelled')
             ->get();
         // dd($orders);
         return view('admin.pendingOrders', compact('orders'));
@@ -624,7 +625,9 @@ class AdminController extends Controller
             Feedback::where('order_id', $order->id)->delete();
         }
 
-        $order->delete();
+        $order->orderStatus = 'Cancelled';
+        $order->save();
+        // $order->delete();
 
         return redirect()->back();
     }
