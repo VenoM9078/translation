@@ -205,6 +205,11 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::post('/edit-order/save', [AdminController::class, 'editOrder'])->name('admin.edit-order');
 
     Route::get('/download-proof-read-file/{orderID}', [AdminController::class, 'downloadProofReadFile'])->name('download-proof-read-file');
+
+    //Institute Admin
+    Route::get('/institute/admin/pending',[AdminController::class,'viewInstituteAdminPending'])->name('view-pending-institute-admin');
+    Route::get('/institute/admin/{id}/accept', [AdminController::class, 'acceptInstituteAdmin'])->name('institute-admin.accept');
+    Route::get('/institute/admin/{id}/decline', [AdminController::class, 'declineInstituteAdmin'])->name('institute-admin.decline');
 });
 
 Route::middleware(['web', 'auth'])->group(function () {

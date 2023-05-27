@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('contractor_interpretations', function (Blueprint $table) {
-            $table->text('feedback')->nullable();
+            // $table->text('feedback')->nullable();
         });
     }
 
@@ -27,7 +27,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('contractor_interpretations', function (Blueprint $table) {
-            $table->dropColumn('feedback');
+            // $table->dropColumn('feedback');
         });
     }
 };

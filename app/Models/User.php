@@ -57,4 +57,8 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Invoice');
     }
+
+    public function institute_managed(){
+        return $this->belongsTo('App\Models\Institute', 'managed_by');
+    }
 }

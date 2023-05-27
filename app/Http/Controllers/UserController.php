@@ -207,6 +207,7 @@ class UserController extends Controller
         return view('user.myorders', compact('user', 'orders', 'interpretations'));
     }
 
+
     public function viewQuoteInvoice($interpretationID)
     {
         $interpretation = Interpretation::find($interpretationID);

@@ -5,7 +5,7 @@
 
 <head>
     <meta charset="utf-8">
-    <link href="{{url('dist/images/logo.svg')}}" rel="shortcut icon">
+    <link href="{{ url('dist/images/logo.svg') }}" rel="shortcut icon">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description"
         content="Midone admin is super flexible, powerful, clean & modern responsive tailwind admin template with unlimited possibilities.">
@@ -143,14 +143,14 @@
         <!-- BEGIN: Side Menu -->
         <nav class="side-nav">
             <a href="{{ route('admin.dashboard') }}" class="intro-x flex items-center pl-5 pt-4">
-                <img class="w-6" src="{{url('dist/images/logo.svg')}}">
+                <img class="w-6" src="{{ url('dist/images/logo.svg') }}">
                 <span class="hidden xl:block text-white text-lg ml-3"> Translators </span>
             </a>
             <div class="side-nav__devider my-6"></div>
             <ul>
                 <li>
-                    <a href="{{route('admin.dashboard')}}"
-                        class="{{ ((Route::getCurrentRoute()->uri == 'admin/dashboard') ? 'side-menu   side-menu--active' : 'side-menu' ) }}">
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="{{ Route::getCurrentRoute()->uri == 'admin/dashboard' ? 'side-menu   side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
                         <div class="side-menu__title">
                             Dashboard
@@ -161,7 +161,7 @@
                 <div class="side-nav__devider my-4"></div>
                 <li>
                     <a href="{{ route('invoice.index') }}"
-                        class="{{ ((Route::getCurrentRoute()->uri == 'invoice') ? 'side-menu side-menu--active' : 'side-menu' ) }}">
+                        class="{{ Route::getCurrentRoute()->uri == 'invoice' ? 'side-menu side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"> <i data-lucide="dollar-sign"></i> </div>
                         <div class="side-menu__title">
                             Invoices
@@ -171,7 +171,7 @@
 
                 <li>
                     <a href="javascript:;"
-                        class="{{ ((Route::getCurrentRoute()->uri == 'admin/pending' || (Route::getCurrentRoute()->uri == 'completedOrders')) ? 'side-menu side-menu--active' : 'side-menu' ) }}">
+                        class="{{ Route::getCurrentRoute()->uri == 'admin/pending' || Route::getCurrentRoute()->uri == 'completedOrders' ? 'side-menu side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"><svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
                                 width="32" height="32" fill="white" viewBox="0 0 24 24" id="language">
                                 <path
@@ -202,7 +202,7 @@
 
                 <li>
                     <a href="javascript:;"
-                        class="{{ ((Route::getCurrentRoute()->uri == 'admin/ongoing-interpretations' || (Route::getCurrentRoute()->uri == 'admin/view-completed-interpretations')) ? 'side-menu side-menu--active' : 'side-menu' ) }}">
+                        class="{{ Route::getCurrentRoute()->uri == 'admin/ongoing-interpretations' || Route::getCurrentRoute()->uri == 'admin/view-completed-interpretations' ? 'side-menu side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"><svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
                                 width="32" height="32" fill="white" viewBox="0 0 128 128" id="meeting">
                                 <path d="M103 108V80h-4v28a2 2 0 0 0 4 0Z"></path>
@@ -265,7 +265,7 @@
 
                 <li>
                     <a href="{{ route('admin.viewContractors') }}"
-                        class="{{ ((Route::getCurrentRoute()->uri == 'view-contractors') ? 'side-menu side-menu--active' : 'side-menu' ) }}">
+                        class="{{ Route::getCurrentRoute()->uri == 'view-contractors' ? 'side-menu side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"> <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
                                 width="32" height="32" fill="white" viewBox="0 0 128 128" id="engineer">
                                 <path
@@ -283,7 +283,7 @@
 
                 <li>
                     <a href="{{ route('admin.viewCustomers') }}"
-                        class="{{ ((Route::getCurrentRoute()->uri == 'view-contractors') ? 'side-menu side-menu--active' : 'side-menu' ) }}">
+                        class="{{ Route::getCurrentRoute()->uri == 'view-contractors' ? 'side-menu side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                 width="32" height="32" fill="white" id="person">
                                 <g data-name="Layer 2">
@@ -302,7 +302,7 @@
 
                 <li>
                     <a href="{{ route('viewQuoteRequests') }}"
-                        class="{{ ((Route::getCurrentRoute()->uri == 'viewQuoteRequests') ? 'side-menu side-menu--active' : 'side-menu' ) }}">
+                        class="{{ Route::getCurrentRoute()->uri == 'viewQuoteRequests' ? 'side-menu side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"> <i data-lucide="message-square"></i> </div>
                         <div class="side-menu__title">
                             Quote Requests
@@ -313,7 +313,7 @@
 
                 <li>
                     <a href="{{ route('viewFeedback') }}"
-                        class="{{ ((Route::getCurrentRoute()->uri == 'viewFeedback') ? 'side-menu side-menu--active' : 'side-menu' ) }}">
+                        class="{{ Route::getCurrentRoute()->uri == 'viewFeedback' ? 'side-menu side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"> <i data-lucide="award"></i> </div>
                         <div class="side-menu__title">
                             Feedbacks
@@ -323,7 +323,7 @@
 
                 <li>
                     <a href="{{ route('viewMessages') }}"
-                        class="{{ ((Route::getCurrentRoute()->uri == 'viewMessages') ? 'side-menu side-menu--active' : 'side-menu' ) }}">
+                        class="{{ Route::getCurrentRoute()->uri == 'viewMessages' ? 'side-menu side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"> <i data-lucide="database"></i> </div>
                         <div class="side-menu__title">
                             Messages
@@ -336,7 +336,42 @@
 
                 <li class="side-nav__devider my-6"></li>
 
+                <li>
+                    <a href="javascript:;"
+                        class="{{ Route::getCurrentRoute()->uri == 'admin/institute/admin/pending' || Route::getCurrentRoute()->uri == 'admin/view-completed-interpretations' ? 'side-menu side-menu--active' : 'side-menu' }}">
+                        <div class="side-menu__icon"><svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
+                                width="32" height="32" fill="white" viewBox="0 0 128 128" id="meeting">
+                                <path d="M103 108V80h-4v28a2 2 0 0 0 4 0Z"></path>
+                                <circle cx="64" cy="14" r="14"></circle>
+                                <path
+                                    d="M72.358 30.613h1.37c7.564 0 14.2 6.45 14.2 13.803V59H92V44.416C92 36.115 85.446 28.709 77.277 27a18.377 18.377 0 0 1-4.92 3.613zM40.073 44.416c0-7.353 6.636-13.803 14.2-13.803h1.37A18.377 18.377 0 0 1 50.722 27C42.553 28.71 36 36.115 36 44.416V59h4.073z">
+                                </path>
+                                <circle cx="64" cy="55" r="14"></circle>
+                                <path
+                                    d="M37 90.46v16.505A4.032 4.032 0 0 0 41.02 111H46a9.008 9.008 0 0 0 6 8.475V126a2 2 0 0 0 4 0v-6h17v6a2 2 0 0 0 4 0v-6.95a9.002 9.002 0 0 0 5-8.05h4.98a4.032 4.032 0 0 0 4.02-4.035V90.46C91 81.159 82.76 73 73.366 73H54.635C45.24 73 37 81.16 37 90.46zM54.635 77h18.731A13.903 13.903 0 0 1 87 90.46L86.983 107 82 106.996V91a5.006 5.006 0 0 0-5-5H51a5.006 5.006 0 0 0-5 5v15.969l-5-.004V90.46C41 83.29 47.372 77 54.635 77zM29 108V80h-4v28a2 2 0 0 0 4 0zM17 76h21.965a21.906 21.906 0 0 1 14.467-6.96A18.161 18.161 0 0 1 47.651 62H21a6.007 6.007 0 0 0-6 6v6a2 2 0 0 0 2 2zm57.568-6.96A21.905 21.905 0 0 1 89.036 76H111a2 2 0 0 0 2-2v-6a6.007 6.007 0 0 0-6-6H80.35a18.161 18.161 0 0 1-5.782 7.04z">
+                                </path>
+                            </svg> </div>
+                        <div class="side-menu__title">
+                            Institute Requests
+                            <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="{{ route('view-pending-institute-admin') }}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="side-menu__title"> Institute Admin Requests </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.viewCompletedInterpretations') }}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="side-menu__title"> Institute User Requests </div>
+                            </a>
+                        </li>
 
+                    </ul>
+                </li>
 
             </ul>
         </nav>
@@ -367,7 +402,8 @@
                 <div class="intro-x dropdown w-8 h-8">
                     <div class="dropdown-toggle w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in"
                         role="button" aria-expanded="false" data-tw-toggle="dropdown">
-                        <img src="{{url('https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png')}}">
+                        <img
+                            src="{{ url('https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png') }}">
                     </div>
                     <div class="dropdown-menu w-56">
                         <ul class="dropdown-content bg-primary text-white">
@@ -375,12 +411,12 @@
 
                                 <div class="font-medium">
                                     @auth
-                                    {{ Auth::user()->name }}
+                                        {{ Auth::user()->name }}
                                     @endauth
                                 </div>
                                 <div class="text-xs text-white/70 mt-0.5 dark:text-slate-500">
                                     @auth
-                                    {{ Auth::user()->email }}
+                                        {{ Auth::user()->email }}
                                     @endauth
                                 </div>
                             </li>
@@ -408,19 +444,19 @@
 
 
     <!-- BEGIN: JS Assets-->
-    <script src="{{url('dist/js/app.js')}}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"
-        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="{{ url('dist/js/app.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
     <script>
-        $(document).ready( function () {
+        $(document).ready(function() {
             $('#myTable').DataTable({
                 ordering: false,
                 info: false,
                 paging: false
             });
-        } );
+        });
     </script>
 
     {{-- <script type="text/javascript">

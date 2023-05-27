@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\InstituteRequestEnum;
 use App\Http\Controllers\Controller;
+use App\Models\Institute;
+use App\Models\InstituteAdminRequests;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -44,6 +47,90 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        event(new Registered($user));
+
+        Auth::login($user);
+
+        return redirect()->route('user.index');
+    }
+
+
+    public function register2(Request $request)
+    {
+        $validated = $request->validate(
+            [
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'password' => 'required|string|min:6',
+            ],
+            [
+                'name.required' => 'The name field is required.',
+                'name.max' => 'The name may not be greater than 255 characters.',
+                'email.required' => 'The email field is required.',
+                'email.max' => 'The email may not be greater than 255 characters.',
+                'password.required' => 'The password field is required.',
+                'password.min' => 'The password must be at least 6 characters.'
+            ]
+        );
+        // dd($request->all());
+        // Pass input data from the previous form to the view
+        if ($request->role_id == 0) {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role_id' => 0
+            ]);
+
+            event(new Registered($user));
+
+            Auth::login($user);
+
+            return redirect(RouteServiceProvider::HOME);
+        } else {
+            return view('auth.register2', [
+                'name' => $request->input('name'),
+                'role_id' => $request->input('role_id'),
+                'email' => $request->input('email'),
+                'password' => $request->input('password'),
+            ]);
+        }
+    }
+    public function register2Complete(Request $request)
+    {
+        $institute = Institute::where('passcode', $request->institute_passcode)
+            ->where('is_active', InstituteRequestEnum::ACCEPTED)
+            ->first();
+
+            // dd($request->all());
+        if ($request->role_id == 2) { //checking for insitute admin
+            if ($institute) {
+                return redirect()->back()->with('error', 'Passcode already exists!');
+            } else {
+                //Create user
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'role_id' => $request->role_id
+                ]);
+                // Institute does not exist, so create it
+                $institute = Institute::create([
+                    'name' => $request->institute_name,
+                    'passcode' => $request->institute_passcode,
+                    'managed_by' => $user->id,
+                    'is_active' => InstituteRequestEnum::PENDING
+                ]);
+            }
+        } else {
+            //handle user here
+        }
+
+        if (!$institute) {
+            return redirect()->back()->with('error', 'Passcode does not exist!');
+        }
+
 
         event(new Registered($user));
 

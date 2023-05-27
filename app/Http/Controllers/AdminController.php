@@ -11,12 +11,15 @@ use App\Mail\LatePaymentApproved;
 use App\Mail\LatePaymentRejected;
 use App\Mail\mailOfCompletion;
 use App\Mail\mailToProofReader;
+use App\Mail\NotifiyInstituteAdminMail;
 use App\Mail\orderToTranslator;
 use App\Mail\paymentApproved;
 use App\Mail\paymentRejected;
 use App\Mail\QuoteSent;
 use App\Models\Contractor;
 use App\Models\ContractorOrder;
+use App\Models\Institute;
+use App\Models\InstituteMembers;
 use App\Models\ProofReaderOrders;
 use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
@@ -194,6 +197,48 @@ class AdminController extends Controller
 
         // Redirect or return a response
         return redirect()->back()->with('success', 'Contractor updated successfully.');
+    }
+
+    public function viewInstituteAdminPending()
+    {
+        $institute = Institute::all();
+        // dd($institute[0]->admin);
+        return view('admin.institute-admin-list', compact('institute'));
+    }
+
+    public function acceptInstituteAdmin($id)
+    {
+        dd("here");
+        $institute = Institute::find($id);
+        $institute_member = new InstituteMembers();
+        // Check if institute exists
+        if ($institute) {
+            // Update the is_active field
+            $institute->is_active = 1;
+            $institute->save();
+
+            // Get the user from the managed_by field
+            $user = User::find($institute->managed_by);
+
+            // Check if user exists
+            if ($user) {
+                // Attach the user to the institute in the pivot table
+                $institute_member->user_id = $institute->managed_by;
+                $institute_member->institute_id = $institute->id;
+                $institute_member->save();
+
+                
+                // Send email to the user and authenticated user
+                // Mail::to($user->email)->send(new NotifiyInstituteAdminMail($institute));
+                // Mail::to(auth()->user()->email)->send(new NotifiyInstituteAdminMail($institute));
+                
+                return back()->with('success', 'Success.');
+            } else {
+                // Handle situation where user doesn't exist
+            }
+        } else {
+            // Handle situation where institute doesn't exist
+        }
     }
 
 
@@ -395,7 +440,7 @@ class AdminController extends Controller
     {
         $orders = Order::with(['contractorOrder.contractor'])
             ->orderByDesc('created_at')
-            ->where('orderStatus','!=', 'Cancelled')
+            ->where('orderStatus', '!=', 'Cancelled')
             ->get();
         // dd($orders);
         return view('admin.pendingOrders', compact('orders'));
