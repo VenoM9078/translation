@@ -6,6 +6,7 @@ use App\Enums\ContractorOrderEnum;
 use App\Enums\TranslationStatusEnum;
 use App\Mail\EmailContractor;
 use App\Mail\InformContractorOfRequest;
+use App\Mail\InstituteAccepted;
 use App\Mail\invoiceSent;
 use App\Mail\LatePaymentApproved;
 use App\Mail\LatePaymentRejected;
@@ -208,7 +209,6 @@ class AdminController extends Controller
 
     public function acceptInstituteAdmin($id)
     {
-        dd("here");
         $institute = Institute::find($id);
         $institute_member = new InstituteMembers();
         // Check if institute exists
@@ -227,11 +227,10 @@ class AdminController extends Controller
                 $institute_member->institute_id = $institute->id;
                 $institute_member->save();
 
-                
+
                 // Send email to the user and authenticated user
-                // Mail::to($user->email)->send(new NotifiyInstituteAdminMail($institute));
-                // Mail::to(auth()->user()->email)->send(new NotifiyInstituteAdminMail($institute));
-                
+                Mail::to($user->email)->send(new InstituteAccepted($user, $institute));
+
                 return back()->with('success', 'Success.');
             } else {
                 // Handle situation where user doesn't exist
@@ -241,6 +240,24 @@ class AdminController extends Controller
         }
     }
 
+    public function declineInstituteAdmin($id)
+    {
+        $institute = Institute::find($id);
+
+        if ($institute) {
+            $user = User::find($institute->managed_by);
+
+            if ($user) {
+                Mail::to($user->email)->send(new InstituteDeclined($user, $institute));
+            }
+
+            $institute->delete();
+
+            return back()->with('success', 'Institute declined successfully.');
+        } else {
+            // Handle situation where institute doesn't exist
+        }
+    }
 
     public function deleteContractor($id)
     {

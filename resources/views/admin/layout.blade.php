@@ -352,7 +352,7 @@
                                 </path>
                             </svg> </div>
                         <div class="side-menu__title">
-                            Institute Requests
+                            Institute
                             <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                         </div>
                     </a>
@@ -360,15 +360,21 @@
                         <li>
                             <a href="{{ route('view-pending-institute-admin') }}" class="side-menu">
                                 <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
-                                <div class="side-menu__title"> Institute Admin Requests </div>
+                                <div class="side-menu__title"> Admin Requests </div>
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('view-pending-institute-admin') }}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="side-menu__title"> All Institutes </div>
+                            </a>
+                        </li>
+                        {{-- <li>
                             <a href="{{ route('admin.viewCompletedInterpretations') }}" class="side-menu">
                                 <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
                                 <div class="side-menu__title"> Institute User Requests </div>
                             </a>
-                        </li>
+                        </li> --}}
 
                     </ul>
                 </li>
@@ -402,8 +408,7 @@
                 <div class="intro-x dropdown w-8 h-8">
                     <div class="dropdown-toggle w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in"
                         role="button" aria-expanded="false" data-tw-toggle="dropdown">
-                        <img
-                            src="{{ url('https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png') }}">
+                        <img src="{{ url('https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png') }}">
                     </div>
                     <div class="dropdown-menu w-56">
                         <ul class="dropdown-content bg-primary text-white">
@@ -411,12 +416,12 @@
 
                                 <div class="font-medium">
                                     @auth
-                                        {{ Auth::user()->name }}
+                                    {{ Auth::user()->name }}
                                     @endauth
                                 </div>
                                 <div class="text-xs text-white/70 mt-0.5 dark:text-slate-500">
                                     @auth
-                                        {{ Auth::user()->email }}
+                                    {{ Auth::user()->email }}
                                     @endauth
                                 </div>
                             </li>
@@ -445,8 +450,8 @@
 
     <!-- BEGIN: JS Assets-->
     <script src="{{ url('dist/js/app.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
     <script>
