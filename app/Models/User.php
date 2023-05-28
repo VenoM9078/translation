@@ -22,6 +22,7 @@ implements MustVerifyEmail
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
         'role_id'
     ];
@@ -64,5 +65,10 @@ implements MustVerifyEmail
     public function institute_managed()
     {
         return $this->hasOne('App\Models\Institute', 'managed_by');
+    }
+
+    public function institute()
+    {
+        return $this->belongsToMany('App\Models\Institute', 'institute_members')->withTimestamps();
     }
 }

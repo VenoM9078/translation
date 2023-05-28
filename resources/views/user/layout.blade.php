@@ -261,7 +261,10 @@
                             <li>
                                 <hr class="dropdown-divider border-white/[0.08]">
                             </li>
-
+                            <li>
+                                <a href="{{ route('user.profile') }}" class="dropdown-item hover:bg-white/5"> <i
+                                        data-lucide="user" class="w-4 h-4 mr-2"></i> View Profile </a>
+                            </li>
                             <li>
                                 <a href="{{ route('logout') }}" class="dropdown-item hover:bg-white/5"> <i
                                         data-lucide="toggle-right" class="w-4 h-4 mr-2"></i> Logout </a>

@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Mail;
 
 use File;
 use Illuminate\Http\File as HttpFile;
+use Illuminate\Support\Facades\Hash;
 use ZipArchive;
 
 class UserController extends Controller
@@ -491,6 +492,52 @@ class UserController extends Controller
         // Pass the institute users and requests to the view
         return view('user.instituteAdmin', compact('institute', 'user', 'instituteUsers', 'instituteRequests'));
     }
+
+    public function updateProfile(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $user->name = $request->input('name');
+        $user->phone = $request->input('phone');
+
+        if ($request->input('password')) {
+            $user->password = Hash::make($request->input('password'));
+        }
+
+        $user->save();
+
+        return back()->with('success', 'Your profile has been updated successfully.');
+    }
+
+
+    public function viewProfile()
+    {
+        $user = Auth::user();
+
+        // dd($user->institute);
+
+        return view('user.profile', compact('user'));
+    }
+
+    public function updateInstitute(Request $request, $id)
+    {
+        // Find the user
+        $user = User::findOrFail($id);
+
+        // Check if the user is a member
+        if ($user->role_id == 2) {
+            // Update the institute
+            $institute = $user->institute_managed;
+            $institute->name = $request->input('name');
+            $institute->passcode = $request->input('passcode');
+            $institute->save();
+        }
+
+        // Redirect back with a success message
+        return redirect()->back()->with('message', 'Institute updated successfully!');
+    }
+
+
 
     public function destroySession(Request $request)
     {

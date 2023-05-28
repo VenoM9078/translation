@@ -235,6 +235,11 @@ Route::group(['middleware' => ['auth:admin']], function () {
 });
 
 Route::middleware(['web', 'auth', 'verified'])->group(function () {
+
+    Route::put('/user/update-profile/{id}', [UserController::class, 'updateProfile'])->name('user.updateProfile');
+    Route::put('user/{id}/update-institute', [UserController::class, 'updateInstitute'])->name('user.updateInstitute');
+
+
     Route::resource('user', UserController::class);
     Route::get('myorders', [UserController::class, 'myorders'])->name('myorders');
     Route::get('allInvoices', [UserController::class, 'allInvoices'])->name('allInvoices');
@@ -242,6 +247,8 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
     Route::get('order-new-interpretation', [UserController::class, 'newInterpretation'])->name('newInterpretation');
     Route::post('order-new-interpretation', [UserController::class, 'storeNewInterpretation'])->name('storeNewInterpretation');
     Route::get('view-quote-invoice/{id}', [UserController::class, 'viewQuoteInvoice'])->name('viewQuoteInvoice');
+
+    Route::get('view-profile', [UserController::class, 'viewProfile'])->name('user.profile');
 
     Route::get('/institute-admin', [UserController::class, 'instituteAdmin'])->name('user.institute-admin');
 
