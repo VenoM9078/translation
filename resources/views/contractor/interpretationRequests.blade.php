@@ -42,8 +42,8 @@
                                     <td class="whitespace-nowrap">{{ $request->interpretation->language }}</td>
                                     <td class="whitespace-nowrap">{{ $request->interpretation->interpretationDate }}
                                     </td>
-                                    <td class="whitespace-nowrap">{{ $request->interpretation->start_time }}</td>
-                                    <td class="whitespace-nowrap">{{ $request->interpretation->end_time }}</td>
+                                    <td class="whitespace-nowrap">{{ App\Helpers\HelperClass::convertTimeToCurrentTimeZone($request->interpretation->start_time,request()->ip()) }}</td>
+                                    <td class="whitespace-nowrap">{{ App\Helpers\HelperClass::convertTimeToCurrentTimeZone($request->interpretation->end_time,request()->ip()) }}</td>
                                     <td class="whitespace-nowrap">{{ $request->interpretation->session_format }}
                                     </td>
                                     <td class="whitespace-nowrap">${{ $request->per_hour_rate }}</td>

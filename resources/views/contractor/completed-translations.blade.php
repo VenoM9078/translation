@@ -51,7 +51,8 @@
                                             </td>
 
                                             <td class="whitespace-nowrap">
-                                                {{ $translation->created_at->timezone('America/Los_Angeles') }}</td>
+                                                {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($translation->created_at, request()->ip()) }}
+                                            </td>
                                             <td class="whitespace-nowrap">
                                                 {{ $translation->is_accepted == 1 ? 'Accepted' : 'Pending' }}
                                             </td>
@@ -62,7 +63,7 @@
                                                             class="btn btn-warning mr-1 mb-2"> <i data-lucide="download"
                                                                 class="w-5 h-5"></i> </a>
                                                         <!-- BEGIN: Modal Toggle -->
-                                                        <div class="text-center"> 
+                                                        <div class="text-center">
                                                             <a href="{{ route('contractor.view-submit-translation', $translation->id) }}"
                                                                 class="btn btn-primary">
                                                                 <i data-lucide="upload" class="w-5 h-5"

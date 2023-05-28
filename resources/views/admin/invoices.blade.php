@@ -75,7 +75,8 @@
 
                                         {{-- {{ route('translator.edit', $translator->id) }} --}}
                                         {{-- {{ route('translator.destroy', $translator->id) }} --}}
-                                        <td>{{ $invoice->created_at->timezone('America/Los_Angeles') }}</td>
+                                        <td> {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($order->created_at, request()->ip()) }}
+                                        </td>
                                         <td class="whitespace-nowrap">
                                             <div class="flex gap-2 items-center">
                                                 <a href="{{ route('invoice.edit', $invoice->id) }}"

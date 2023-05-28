@@ -47,7 +47,8 @@
                                             <td class="whitespace-nowrap">${{ $translation->total_payment }}</td>
                                             <td class="whitespace-nowrap">${{ $translation->rate }}</td>
                                             <td class="whitespace-nowrap">
-                                                {{ $translation->created_at->timezone('America/Los_Angeles') }}</td>
+                                                {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($translation->created_at, request()->ip()) }}
+                                            </td>
 
                                             {{-- <td class="whitespace-nowrap">
                                                 <div class="flex gap-2">

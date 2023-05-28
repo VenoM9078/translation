@@ -39,7 +39,7 @@
                                     <td class="whitespace-nowrap">{{ $invoice->docQuantity }}</td>
                                     <td class="whitespace-nowrap">${{ $invoice->amount }}</td>
 
-                                    <td class="whitespace-nowrap">{{ $invoice->created_at->timezone('America/Los_Angeles') }}</td>
+                                    <td class="whitespace-nowrap">{{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($invoice->created_at, request()->ip()) }}</td>
                                     <td class="whitespace-nowrap">
                                         <div>
                                             @if ($invoice->order->paymentStatus == 0)

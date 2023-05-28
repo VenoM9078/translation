@@ -72,7 +72,8 @@
                 <td>{{ $data->order->language1 }}, {{ $data->order->language2 }}</td>
                 <td>{{ $data->description }}</td>
                 <td align="right">{{ $data->docQuantity }}</td>
-                <td align="right">{{ $data->created_at->timezone('America/Los_Angeles')->format('H:i:s d/m/Y') }}</td>
+                <td align="right">
+                    {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($data->created_at, request()->ip()) }}</td>
                 <td align="right">${{ $data->amount }}</td>
                 {{-- <td align="right">{{ $data->invoice-> }}</td> --}}
             </tr>

@@ -224,8 +224,9 @@
                 <nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('/') }}">FlowTranslate</a></li>
-                        <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('user.index') }}">User
-                                Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('user.index') }}">
+                           @if(Auth::user()->role_id == 1) Institute User @elseif(Auth::user()->role_id == 2) Institute Admin @else User @endif  Dashboard</a>
+                        </li>
                     </ol>
                 </nav>
                 <!-- END: Breadcrumb -->

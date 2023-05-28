@@ -41,7 +41,7 @@
                                             <td class="whitespace-nowrap">{{ $translation->order->language1 }}</td>
 
                                             <td class="whitespace-nowrap">
-                                                {{ $translation->created_at->timezone('America/Los_Angeles') }}</td>
+                                                {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($translation->created_at, request()->ip())}}</td>
                                             <td class="whitespace-nowrap">
                                                 {{ $translation->is_accepted == 1 ? 'Accepted' : 'Pending' }}
                                             </td>

@@ -65,7 +65,8 @@
                                                     class="btn btn-rounded-pending w-24 mr-1 mb-2">Pending</button></td>
                                         @endif
                                         <td class="whitespace-nowrap">
-                                            {{ $translationRequest->created_at->timezone('America/Los_Angeles') }}</td>
+                                            {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($order->created_at, request()->ip()) }}
+                                        </td>
 
                                         {{-- {{ route('translator.edit', $translator->id) }} --}}
                                         {{-- {{ route('translator.destroy', $translator->id) }} --}}

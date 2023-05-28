@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\ContractorOrderEnum;
 use App\Enums\TranslationStatusEnum;
+use App\Mail\AdminNewInterpretation;
 use App\Mail\EmailContractor;
 use App\Mail\InformContractorOfRequest;
 use App\Mail\InstituteAccepted;
