@@ -13,7 +13,9 @@ use App\Mail\OrderCreated;
 use App\Models\ContactAdmin;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 
 /*
@@ -27,6 +29,7 @@ use Illuminate\Support\Facades\Mail;
 |
 */
 
+
 Route::get('/', function () {
     return view('index');
 })->name('/');
@@ -34,6 +37,22 @@ Route::get('/', function () {
 Route::get('contact', function () {
     return view('contact');
 })->name('contact');
+
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect('/home');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 Route::get('/inputForm', [GuestController::class, 'apiRequest']);
 Route::post('/inputForm', [GuestController::class, 'realApiRequest'])->name('realApiRequest');
@@ -207,12 +226,12 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/download-proof-read-file/{orderID}', [AdminController::class, 'downloadProofReadFile'])->name('download-proof-read-file');
 
     //Institute Admin
-    Route::get('/institute/admin/pending',[AdminController::class,'viewInstituteAdminPending'])->name('view-pending-institute-admin');
+    Route::get('/institute/admin/pending', [AdminController::class, 'viewInstituteAdminPending'])->name('view-pending-institute-admin');
     Route::get('/institute/admin/{id}/accept', [AdminController::class, 'acceptInstituteAdmin'])->name('institute-admin.accept');
     Route::get('/institute/admin/{id}/decline', [AdminController::class, 'declineInstituteAdmin'])->name('institute-admin.decline');
 });
 
-Route::middleware(['web', 'auth'])->group(function () {
+Route::middleware(['web', 'auth', 'verified'])->group(function () {
     Route::resource('user', UserController::class);
     Route::get('myorders', [UserController::class, 'myorders'])->name('myorders');
     Route::get('allInvoices', [UserController::class, 'allInvoices'])->name('allInvoices');
@@ -222,7 +241,6 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::get('view-quote-invoice/{id}', [UserController::class, 'viewQuoteInvoice'])->name('viewQuoteInvoice');
 
 
-    Route::get('logout', [UserController::class, 'destroySession'])->name('logout');
     Route::get('viewInvoice/{id}', [UserController::class, 'viewInvoice'])->name('viewInvoice');
     Route::get('provideProof/{id}', [UserController::class, 'provideProof'])->name('provideProof');
     Route::post('payLater', [UserController::class, 'payLater'])->name('payLater');
@@ -247,6 +265,8 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::get('downloadTranslatedForUser/{id}', [UserController::class, 'downloadTranslatedForUser'])->name('downloadTranslatedForUser');
     Route::post('submitFeedback', [UserController::class, 'submitFeedback'])->name('submitFeedback');
 });
+
+Route::get('logout', [UserController::class, 'destroySession'])->name('logout');
 
 
 Route::post('freequote', [GuestController::class, 'freequote'])->name('freequote');

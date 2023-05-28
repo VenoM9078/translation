@@ -48,6 +48,9 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $user->sendEmailVerificationNotification();  // add this line
+
+
         event(new Registered($user));
 
         Auth::login($user);
@@ -83,6 +86,9 @@ class RegisteredUserController extends Controller
                 'role_id' => 0
             ]);
 
+            $user->sendEmailVerificationNotification();  // add this line
+
+
             event(new Registered($user));
 
             Auth::login($user);
@@ -103,7 +109,7 @@ class RegisteredUserController extends Controller
             ->where('is_active', InstituteRequestEnum::ACCEPTED)
             ->first();
 
-            // dd($request->all());
+        // dd($request->all());
         if ($request->role_id == 2) { //checking for insitute admin
             if ($institute) {
                 return redirect()->back()->with('error', 'Passcode already exists!');
@@ -130,6 +136,8 @@ class RegisteredUserController extends Controller
         if (!$institute) {
             return redirect()->back()->with('error', 'Passcode does not exist!');
         }
+
+        $user->sendEmailVerificationNotification();  // add this line
 
 
         event(new Registered($user));
