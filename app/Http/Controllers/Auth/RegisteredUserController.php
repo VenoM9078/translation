@@ -133,7 +133,7 @@ class RegisteredUserController extends Controller
                 ]);
             }
         } else if ($request->role_id == 1) {
-            if (!$institute) {
+            if (!$institute || $institute->is_active == 0) {
                 return view('auth.register2', [
                     'name' => $request->input('name'),
                     'role_id' => $request->input('role_id'),
