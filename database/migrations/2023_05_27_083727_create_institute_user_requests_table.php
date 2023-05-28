@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('institute_users_requests', function (Blueprint $table) {
+        Schema::create('institute_user_requests', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
             $table->integer('institute_id');

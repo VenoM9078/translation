@@ -7,6 +7,7 @@ use App\Enums\TranslationStatusEnum;
 use App\Mail\EmailContractor;
 use App\Mail\InformContractorOfRequest;
 use App\Mail\InstituteAccepted;
+use App\Mail\InstituteDeclined;
 use App\Mail\invoiceSent;
 use App\Mail\LatePaymentApproved;
 use App\Mail\LatePaymentRejected;
@@ -258,6 +259,36 @@ class AdminController extends Controller
             // Handle situation where institute doesn't exist
         }
     }
+
+    public function deleteInstitute($id)
+    {
+        $institute = Institute::find($id);
+
+        if ($institute) {
+            // Fetch the institute members
+            $instituteMembers = $institute->members;
+
+            // Set all member's role_id to 0
+            foreach ($instituteMembers as $member) {
+                $user = User::find($member->user_id);
+                if ($user) {
+                    $user->role_id = 0;
+                    $user->save();
+                }
+            }
+
+            // Delete rows from pivot table
+            $institute->members()->detach();
+
+            // Delete the institute
+            $institute->delete();
+
+            return back()->with('success', 'Institute deleted successfully.');
+        } else {
+            // Handle situation where institute doesn't exist
+        }
+    }
+
 
     public function deleteContractor($id)
     {

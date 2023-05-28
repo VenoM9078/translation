@@ -146,6 +146,9 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('admin/pending', [AdminController::class, 'pendingOrders'])->name('admin.pending');
     Route::get('admin/paidOrders', [AdminController::class, 'paidOrders'])->name('admin.paidOrders');
 
+    Route::delete('/institute/{id}/delete', [AdminController::class, 'deleteInstitute'])->name('institute.delete');
+
+
     Route::get('/admin/contractors/{id}/delete', [AdminController::class, 'deleteContractor'])->name('admin.deleteContractor');
     Route::get('/admin/contractors/{id}/edit', [AdminController::class, 'editContractor'])->name('admin.editContractor');
     Route::post('/admin/contractors/edit', [AdminController::class, 'updateContractor'])->name('admin.updateContractor');

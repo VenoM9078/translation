@@ -43,21 +43,19 @@
                     class="my-auto mx-auto xl:ml-20 bg-white dark:bg-darkmode-600 xl:bg-transparent px-5 sm:px-8 py-8 xl:p-0 rounded-md shadow-md xl:shadow-none w-full sm:w-3/4 lg:w-2/4 xl:w-auto">
                     <h2 class="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-left">
                         @if ($role_id == 1)
-                            Institute User Sign Up
+                        Institute User Sign Up
                         @elseif($role_id == 2)
-                            Institute Admin Sign Up
+                        Institute Admin Sign Up
                         @endif
                     </h2>
                     <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">A few more clicks to sign in to your
                         account. Manage all your e-commerce accounts in one place</div>
-                    @if ($errors->any())
-                        <div class="alert alert-danger mt-3 mb-3">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+                    @if ($error)
+                    <div class="alert alert-danger mt-3 mb-1">
+                        <ul>
+                            <li>{{ $error }}</li>
+                        </ul>
+                    </div>
                     @endif
                     <form action="{{ route('register2-complete') }}" method="POST">
                         @csrf
@@ -65,25 +63,23 @@
                         <div class="intro-x mt-8">
                             <input type="hidden" name="role_id" value="{{$role_id}}">
                             @if ($role_id == 1)
-                                <input type="text" name="institute_passcode"
-                                    class="intro-x login__input form-control py-3 px-4 block"
-                                    placeholder="Enter Institute's Passcode Here">
+                            <input type="text" name="institute_passcode"
+                                class="intro-x login__input form-control py-3 px-4 block"
+                                placeholder="Enter Institute's Passcode Here">
                             @elseif($role_id == 2)
-                                <input type="text" name="institute_name"
-                                    class="intro-x login__input form-control py-3 px-4 block"
-                                    placeholder="Enter Institute's Name Here">
-                                <input type="text" name="institute_passcode"
-                                    class="intro-x mt-2 login__input form-control py-3 px-4 block"
-                                    placeholder="Enter Institute's Passcode Here">
+                            <input type="text" name="institute_name"
+                                class="intro-x login__input form-control py-3 px-4 block"
+                                placeholder="Enter Institute's Name Here">
+                            <input type="text" name="institute_passcode"
+                                class="intro-x mt-2 login__input form-control py-3 px-4 block"
+                                placeholder="Enter Institute's Passcode Here">
                             @endif
-                            <input type="hidden" name="name"
-                                class="intro-x login__input form-control py-3 px-4 block" value="{{ $name }}">
+                            <input type="hidden" name="name" class="intro-x login__input form-control py-3 px-4 block"
+                                value="{{ $name }}">
                             <input type="hidden" name="email"
-                                class="intro-x login__input form-control py-3 px-4 block mt-4"
-                                value="{{ $email }}">
+                                class="intro-x login__input form-control py-3 px-4 block mt-4" value="{{ $email }}">
                             <input type="hidden" name="password"
-                                class="intro-x login__input form-control py-3 px-4 block mt-4"
-                                value="{{ $password }}">
+                                class="intro-x login__input form-control py-3 px-4 block mt-4" value="{{ $password }}">
                         </div>
 
                         <div class="mt-2 xl:mt-8 text-center xl:text-left">

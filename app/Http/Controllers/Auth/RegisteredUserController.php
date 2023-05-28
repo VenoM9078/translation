@@ -4,14 +4,17 @@ namespace App\Http\Controllers\Auth;
 
 use App\Enums\InstituteRequestEnum;
 use App\Http\Controllers\Controller;
+use App\Mail\UserRequestMail;
 use App\Models\Institute;
 use App\Models\InstituteAdminRequests;
+use App\Models\InstituteUserRequests;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules;
 
 class RegisteredUserController extends Controller
@@ -112,7 +115,7 @@ class RegisteredUserController extends Controller
         // dd($request->all());
         if ($request->role_id == 2) { //checking for insitute admin
             if ($institute) {
-                return redirect()->back()->with('error', 'Passcode already exists!');
+                return redirect()->back()->with('error', 'Institute already exists!');
             } else {
                 //Create user
                 $user = User::create([
@@ -129,12 +132,33 @@ class RegisteredUserController extends Controller
                     'is_active' => InstituteRequestEnum::PENDING
                 ]);
             }
-        } else {
-            //handle user here
-        }
+        } else if ($request->role_id == 1) {
+            if (!$institute) {
+                return view('auth.register2', [
+                    'name' => $request->input('name'),
+                    'role_id' => $request->input('role_id'),
+                    'email' => $request->input('email'),
+                    'password' => $request->input('password')
+                ])->with('error', 'Passcode does not exist!');
+            } else {
+                // Create user first
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'role_id' => $request->role_id
+                ]);
 
-        if (!$institute) {
-            return redirect()->back()->with('error', 'Passcode does not exist!');
+                // Create a request to join the institute using the model
+                InstituteUserRequests::create([
+                    'user_id' => $user->id,
+                    'institute_id' => $institute->id,
+                ]);
+
+                // Send an email to the institute manager about the new request
+                $manager = User::find($institute->managed_by);
+                Mail::to($manager->email)->send(new UserRequestMail($user, $institute));
+            }
         }
 
         $user->sendEmailVerificationNotification();  // add this line

@@ -8,7 +8,7 @@
 <div class="col-span-12 mt-8">
     <div class="intro-y flex items-center h-10">
         <h2 class="text-lg font-medium truncate mr-5 mb-5">
-            Institute Admin Requests
+            Institutes & Requests
         </h2>
     </div>
 
@@ -20,10 +20,10 @@
                         <table id="myTable" class="table table-striped hover mt-10" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th class="whitespace-nowrap text-center">Name</th>
-                                    <th class="whitespace-nowrap text-center">Email</th>
+                                    <th class="whitespace-nowrap text-center">Manager Name</th>
+                                    <th class="whitespace-nowrap text-center">Manager Email</th>
                                     <th class="whitespace-nowrap text-center">Institute Name</th>
-                                    <th class="whitespace-nowrap text-center">Passcode</th>
+                                    <th class="whitespace-nowrap text-center">Institute Passcode</th>
                                     <th class="whitespace-nowrap text-center">Status</th>
                                     <th class="whitespace-nowrap text-center">Action</th>
                                 </tr>
@@ -66,7 +66,7 @@
                                             <div>
                                                 <div class="text-center"> <a href="javascript:;" data-tw-toggle="modal"
                                                         data-tw-target="#institute-modal-delete-{{ $key }}"
-                                                        class="btn btn-danger">Delete</a>
+                                                        class="btn btn-danger">Delete Institute</a>
                                                 </div>
                                             </div>
                                             @endif
@@ -124,6 +124,38 @@
                                                         <a href="{{ route('institute-admin.decline', $iAdmin->id) }}"
                                                             class="btn btn-danger w-24 mr-1 self-center">
                                                             I'm Sure</a>
+                                                        <button type="button" data-tw-dismiss="modal"
+                                                            class="btn btn-outline-secondary w-24 mr-1">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> <!-- END: Modal Content -->
+
+                                    <!-- BEGIN: Modal Content -->
+                                    <div id="institute-modal-delete-{{ $key }}" class="modal" tabindex="-1"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-body p-0">
+                                                    <div class="p-5 text-center"> <i data-lucide="x-circle"
+                                                            class="w-16 h-16 text-danger mx-auto mt-3"></i>
+                                                        <div class="text-3xl mt-5">Are you sure?</div>
+                                                        <div class="text-slate-500 mt-2">Rejecting will delete this
+                                                            request from your Dashboard and notify the user of your
+                                                            actions.</div>
+                                                    </div>
+                                                    <div class="px-5 pb-8 text-center inline-flex items-stretch"
+                                                        style="text-align: center;margin: auto !important;width: 100%;position: relative;justify-content: center;">
+                                                        <form action="{{ route('institute.delete', $iAdmin->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="btn btn-danger w-24 mr-1 self-center">
+                                                                I'm Sure
+                                                            </button>
+                                                        </form>
                                                         <button type="button" data-tw-dismiss="modal"
                                                             class="btn btn-outline-secondary w-24 mr-1">Cancel</button>
                                                     </div>

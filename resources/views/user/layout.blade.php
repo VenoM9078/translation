@@ -199,6 +199,17 @@
                 <li class="side-nav__devider my-6"></li>
 
 
+                <li>
+                    <a href="{{ route('myorders') }}"
+                        class="{{ Route::getCurrentRoute()->uri == 'myorders' ? 'side-menu   side-menu--active' : 'side-menu' }}">
+                        <div class="side-menu__icon"> <i data-lucide="codesandbox"></i> </div>
+                        <div class="side-menu__title">
+                            Institute
+                        </div>
+                    </a>
+                </li>
+
+
 
             </ul>
         </nav>
