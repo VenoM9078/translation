@@ -19,8 +19,20 @@ class Institute extends Model
     {
         return $this->hasOne('App\Models\User', 'id', 'managed_by');
     }
+
+    public function manager()
+    {
+        return $this->belongsTo('App\Models\User', 'managed_by');
+    }
+
     public function members()
     {
-        return $this->belongsToMany('App\Models\InstituteMembers', 'institute_id', 'id');
+        return $this->belongsToMany('App\Models\User', 'institute_members', 'institute_id', 'user_id');
+    }
+
+
+    public function requests()
+    {
+        return $this->hasMany('App\Models\InstituteUserRequests', 'institute_id');
     }
 }

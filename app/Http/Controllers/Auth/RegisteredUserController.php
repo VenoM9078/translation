@@ -100,7 +100,7 @@ class RegisteredUserController extends Controller
         } else {
             return view('auth.register2', [
                 'name' => $request->input('name'),
-                'role_id' => $request->input('role_id'),
+                'role_id' => 0,
                 'email' => $request->input('email'),
                 'password' => $request->input('password'),
             ]);
@@ -122,7 +122,7 @@ class RegisteredUserController extends Controller
                     'name' => $request->name,
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
-                    'role_id' => $request->role_id
+                    'role_id' => 0
                 ]);
                 // Institute does not exist, so create it
                 $institute = Institute::create([
@@ -136,7 +136,7 @@ class RegisteredUserController extends Controller
             if (!$institute || $institute->is_active == 0) {
                 return view('auth.register2', [
                     'name' => $request->input('name'),
-                    'role_id' => $request->input('role_id'),
+                    'role_id' => 0,
                     'email' => $request->input('email'),
                     'password' => $request->input('password')
                 ])->with('error', 'Passcode does not exist!');

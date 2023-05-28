@@ -198,17 +198,18 @@
 
                 <li class="side-nav__devider my-6"></li>
 
+                @if(Auth::user()->institute_managed != null && Auth::user()->role_id == 2)
 
                 <li>
-                    <a href="{{ route('myorders') }}"
-                        class="{{ Route::getCurrentRoute()->uri == 'myorders' ? 'side-menu   side-menu--active' : 'side-menu' }}">
-                        <div class="side-menu__icon"> <i data-lucide="codesandbox"></i> </div>
+                    <a href="{{ route('user.institute-admin') }}"
+                        class="{{ Route::getCurrentRoute()->uri == 'institute-admin' ? 'side-menu   side-menu--active' : 'side-menu' }}">
+                        <div class="side-menu__icon"> <i data-lucide="aperture"></i> </div>
                         <div class="side-menu__title">
                             Institute
                         </div>
                     </a>
                 </li>
-
+                @endif
 
 
             </ul>

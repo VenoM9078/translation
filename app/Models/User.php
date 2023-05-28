@@ -23,6 +23,7 @@ implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'role_id'
     ];
 
     /**
@@ -62,6 +63,6 @@ implements MustVerifyEmail
 
     public function institute_managed()
     {
-        return $this->belongsTo('App\Models\Institute', 'managed_by');
+        return $this->hasOne('App\Models\Institute', 'managed_by');
     }
 }

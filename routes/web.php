@@ -243,6 +243,11 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
     Route::post('order-new-interpretation', [UserController::class, 'storeNewInterpretation'])->name('storeNewInterpretation');
     Route::get('view-quote-invoice/{id}', [UserController::class, 'viewQuoteInvoice'])->name('viewQuoteInvoice');
 
+    Route::get('/institute-admin', [UserController::class, 'instituteAdmin'])->name('user.institute-admin');
+
+    Route::get('institute-admin/accept/{id}', [UserController::class, 'instituteUserRequestAccept'])->name('institute-admin.accept');
+    Route::get('institute-admin/decline/{id}', [UserController::class, 'instituteUserRequestDecline'])->name('institute-admin.decline');
+
 
     Route::get('viewInvoice/{id}', [UserController::class, 'viewInvoice'])->name('viewInvoice');
     Route::get('provideProof/{id}', [UserController::class, 'provideProof'])->name('provideProof');

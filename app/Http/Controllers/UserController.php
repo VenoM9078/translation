@@ -7,6 +7,8 @@ use App\Mail\AdminNewInterpretation;
 use App\Mail\adminOrderCreated;
 use App\Mail\AdminPaymentReceived;
 use App\Mail\CustomerPaymentReceived;
+use App\Mail\InstituteRequestAccepted;
+use App\Mail\InstituteRequestDeclined;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Interpretation;
@@ -22,6 +24,7 @@ use App\Mail\UserInterpretationPaymentReceived;
 use App\Mail\UserNewInterpretation;
 use App\Models\CompletedRequest;
 use App\Models\Feedback;
+use App\Models\InstituteUserRequests;
 use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\Mail;
 
@@ -428,6 +431,65 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function instituteUserRequestAccept($id)
+    {
+        // Get the request
+        $request = InstituteUserRequests::findOrFail($id);
+
+        // Update the user's role
+        $user = User::findOrFail($request->user_id);
+        $user->role_id = 1;  // You may need to adjust this according to your role_id for member
+        $user->save();
+
+        // Add the user to the Institute Members
+        $request->institute->members()->attach($user->id);
+
+        // Delete the request
+        $request->delete();
+
+        // Redirect with a success message
+        Mail::to($user->email)->send(new InstituteRequestAccepted($user));
+
+        return redirect()->back()->with('message', 'User request accepted!');
+    }
+
+    public function instituteUserRequestDecline($id)
+    {
+        // Get the request
+        $request = InstituteUserRequests::findOrFail($id);
+
+        $user = User::findOrFail($request->user_id);
+
+        // Delete the request
+        $request->delete();
+
+        // Redirect with a success message
+        Mail::to($user->email)->send(new InstituteRequestDeclined($user));
+
+        return redirect()->back()->with('message', 'User request declined!');
+    }
+
+
+    public function instituteAdmin()
+    {
+        $user = Auth::user();
+
+        // If the user does not manage an institute, return an error
+        if ($user->institute_managed == null) {
+            return redirect()->back()->with('error', 'You do not manage any institute!');
+        }
+        // Get the users of the institute managed by the authenticated user
+        $instituteUsers = $user->institute_managed->members;
+
+        // Get the join requests for the institute managed by the authenticated user
+        $instituteRequests = $user->institute_managed->requests;
+
+        $institute = $user->institute_managed;
+
+        // Pass the institute users and requests to the view
+        return view('user.instituteAdmin', compact('institute', 'user', 'instituteUsers', 'instituteRequests'));
     }
 
     public function destroySession(Request $request)

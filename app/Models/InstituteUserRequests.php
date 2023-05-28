@@ -12,4 +12,14 @@ class InstituteUserRequests extends Model
         'user_id',
         'institute_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id');
+    }
+
+    public function institute()
+    {
+        return $this->belongsTo('App\Models\Institute', 'institute_id');
+    }
 }
