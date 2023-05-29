@@ -112,6 +112,15 @@ class UserController extends Controller
         }
 
         $worknumber = $currentTime;
+        $isInstitute = 0;
+        $paymentStatus = 0;
+        $invoiceSent = 0;
+
+        if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2){
+            $isInstitute = 1;
+            $paymentStatus = 1;
+            $invoiceSent = 1;
+        }
 
         if ($request->input("isPayNow") == "on") {
             $data = [
@@ -123,7 +132,9 @@ class UserController extends Controller
                 'worknumber' => $worknumber,
                 'amount' => 35,
                 'invoiceSent' => 1,
-                'orderStatus' => 'Completed'
+                'orderStatus' => 'Completed',
+                'added_by_institute_user' => $isInstitute,
+                'paymentStatus' => $paymentStatus
             ];
         } else {
             $data = [
@@ -132,7 +143,10 @@ class UserController extends Controller
                 'access_code' => $request->input('access_code'),
                 'casemanager' => $request->input('casemanager'),
                 'user_id' => $userID,
-                'worknumber' => $worknumber
+                'worknumber' => $worknumber,
+                'added_by_institute_user' => $isInstitute,
+                'invoiceSent' => $invoiceSent,
+                'paymentStatus' => $paymentStatus
             ];
         }
 
@@ -169,6 +183,8 @@ class UserController extends Controller
 
             // Mail::mailer('clients')->to($email)->send(new OrderCreated($user, $order, "Flow Translate - Order Created", "info@flowtranslate.com"));
             // Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order, "Flow Translate - New Order Created", "info@flowtranslate.com"));
+        if(Auth::user()->role_id == 0){
+
             if ($request->input("isPayNow") == "on") {
                 // If 'Pay Now' is checked. Proceed to create invoice.
                 $id = $request->input('user_id');
@@ -184,7 +200,7 @@ class UserController extends Controller
 
                 return view('user.paymentInvoice', compact('order'));
             }
-
+        }
 
             // Mail::to($email)->send(new OrderCreated($user, $order));
             // Mail::to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order));
@@ -602,5 +618,10 @@ class UserController extends Controller
 
         return redirect()->route('newInterpretation')
             ->with('message', 'Interpretation request submitted successfully.');
+    }
+
+    public function viewInstituteOrders(){
+        $orders = Order::all()->where('added_by_institute_user',1);
+        return view('user.institute.view-user-orders',compact('orders'));
     }
 }

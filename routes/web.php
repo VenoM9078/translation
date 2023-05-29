@@ -279,6 +279,10 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
 
     Route::get('downloadTranslatedForUser/{id}', [UserController::class, 'downloadTranslatedForUser'])->name('downloadTranslatedForUser');
     Route::post('submitFeedback', [UserController::class, 'submitFeedback'])->name('submitFeedback');
+
+    //Institute
+
+    Route::get('/institute/orders',[UserController::class,'viewInstituteOrders'])->name('view-institute-orders');
 });
 
 Route::get('logout', [UserController::class, 'destroySession'])->name('logout');

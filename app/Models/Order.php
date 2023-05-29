@@ -36,7 +36,8 @@ class Order extends Model
         'translation_status',
         'proofread_sent',
         'proofread_status',
-        'completed'
+        'completed',
+        'added_by_institute_user'
     ];
 
     public function files()

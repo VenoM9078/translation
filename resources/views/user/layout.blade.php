@@ -201,13 +201,34 @@
                 @if(Auth::user()->institute_managed != null && Auth::user()->role_id == 2)
 
                 <li>
-                    <a href="{{ route('user.institute-admin') }}"
+                    <a href="javascript:;"
                         class="{{ Route::getCurrentRoute()->uri == 'institute-admin' ? 'side-menu   side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"> <i data-lucide="aperture"></i> </div>
                         <div class="side-menu__title">
                             Institute
+                            <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                         </div>
                     </a>
+                    <ul class="">
+                        <li>
+                            <a href="{{ route('user.institute-admin') }}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="side-menu__title"> Institute Users & Requests </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('view-institute-orders') }}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="side-menu__title"> Institute Orders </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="side-menu__title"> Completed </div>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 @endif
 
