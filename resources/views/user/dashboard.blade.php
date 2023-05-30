@@ -32,8 +32,10 @@
                         @csrf
                         @method('POST')
                         <div class="intro-x mt-4">
-                              <select name="language1" required aria-placeholder="Current Language of the Document" data-placeholder="Current Language of the Document" class="tom-select w-full">
-                                <option value="Current Document Language" disabled selected>Current Document Language</option>
+                            <select name="language1" required aria-placeholder="Current Language of the Document"
+                                data-placeholder="Current Language of the Document" class="tom-select w-full">
+                                <option value="Current Document Language" disabled selected>Current Document Language
+                                </option>
                                 <option value="Afrikaans">Afrikaans</option>
                                 <option value="Albanian">Albanian</option>
                                 <option value="Amharic">Amharic</option>
@@ -136,8 +138,12 @@
                             {{-- <input type="text" id="language1" name="language1"
                                 class="intro-x login__input form-control py-3 px-4 block" required
                                 placeholder="Current Language of the Document" value=""> --}}
-                             <select name="language2" required aria-placeholder="What Language does the Document needs to be Translated into?" data-placeholder="What Language does the Document needs to be Translated into?" class="tom-select w-full mt-4">
-                                <option value="What Language does the Document needs to be Translated into?" disabled selected>What Language does the Document needs to be Translated into?</option>
+                            <select name="language2" required
+                                aria-placeholder="What Language does the Document needs to be Translated into?"
+                                data-placeholder="What Language does the Document needs to be Translated into?"
+                                class="tom-select w-full mt-4">
+                                <option value="What Language does the Document needs to be Translated into?" disabled
+                                    selected>What Language does the Document needs to be Translated into?</option>
                                 <option value="Afrikaans">Afrikaans</option>
                                 <option value="Albanian">Albanian</option>
                                 <option value="Amharic">Amharic</option>
@@ -239,7 +245,8 @@
                             </select>
                             {{-- <input type="text" id="language2" name="language2"
                                 class="intro-x login__input form-control py-3 px-4 block mt-4" required
-                                placeholder="What Language does the Document needs to be Translated into?" value=""> --}}
+                                placeholder="What Language does the Document needs to be Translated into?" value="">
+                            --}}
                             <input type="text" name="access_code" id="access_code"
                                 class="intro-x login__input form-control py-3 px-4 block mt-4"
                                 placeholder="Access Code (for returning customers)" value="">
@@ -249,7 +256,7 @@
                             <input type="file" id="multipleFiles" class="filepond" name="transFiles[]" multiple
                                 data-max-file-size="10MB" data-max-files="15" />
                             <hr class="my-2 py-2">
-
+                            @if(Auth::user()->institute == null)
                             <span style="color: rgb(185 28 28); margin-top: 20px; padding-top: 20px;"
                                 class="mt-5 pt-5 text-red-600">
                                 Looking to pay instantly and skip the hassle of waiting for a customized invoice? You
@@ -267,7 +274,7 @@
                                     <hr>
                                 </div>
                             </div>
-
+                            @endif
                         </div>
 
                         <div class="btn-group mt-5" role="group" aria-label="Basic example">

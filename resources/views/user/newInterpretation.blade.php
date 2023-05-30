@@ -185,6 +185,7 @@
                                         class="intro-x login__input form-control block h-20"></textarea>
                                 </div>
 
+                                @if(Auth::user()->institute == null)
                                 <div class="flex mt-5 ">
                                     <div class="form-check form-switch mb-4">
                                         <input
@@ -196,7 +197,7 @@
                                         <hr>
                                     </div>
                                 </div>
-
+                                @endif
                             </div>
 
                             <div class="btn-group mt-5" role="group" aria-label="Basic example">

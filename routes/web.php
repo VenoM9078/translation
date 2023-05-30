@@ -282,7 +282,8 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
 
     //Institute
 
-    Route::get('/institute/orders',[UserController::class,'viewInstituteOrders'])->name('view-institute-orders');
+    Route::get('/institute/orders', [UserController::class, 'viewInstituteOrders'])->name('view-institute-orders');
+    Route::get('/institute/interpretations', [UserController::class, 'viewInstituteInterpretations'])->name('view-institute-interpretations');
 });
 
 Route::get('logout', [UserController::class, 'destroySession'])->name('logout');

@@ -25,7 +25,8 @@ class Interpretation extends Model
         'paymentStatus',
         'interpreter_id',
         'interpreter_completed',
-        'feedback'
+        'feedback',
+        'added_by_institute_user'
     ];
 
     public function user()

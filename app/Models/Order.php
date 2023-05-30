@@ -60,22 +60,27 @@ class Order extends Model
         return $this->hasOne('App\Models\TranslationRequest', 'order_id', 'id');
     }
 
-    public function proofReadRequest() {
-        return $this->hasOne('App\Models\ProofRequest', 'order_id','id');
+    public function proofReadRequest()
+    {
+        return $this->hasOne('App\Models\ProofRequest', 'order_id', 'id');
     }
 
-    public function completedRequest() {
-        return $this->hasOne('App\Models\CompletedRequest', 'order_id','id');
+    public function completedRequest()
+    {
+        return $this->hasOne('App\Models\CompletedRequest', 'order_id', 'id');
     }
 
-    public function feedback() {
-        return $this->hasOne('App\Models\Feedback', 'order_id','id');
+    public function feedback()
+    {
+        return $this->hasOne('App\Models\Feedback', 'order_id', 'id');
     }
 
-    public function contractorOrder() {
-        return $this->hasOne('App\Models\ContractorOrder', 'order_id','id');
+    public function contractorOrder()
+    {
+        return $this->hasOne('App\Models\ContractorOrder', 'order_id', 'id');
     }
-    public function proofReaderOrder() {
+    public function proofReaderOrder()
+    {
         return $this->hasOne('App\Models\ProofReaderOrders', 'order_id', 'id');
     }
 }

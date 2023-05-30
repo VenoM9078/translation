@@ -116,7 +116,7 @@ class UserController extends Controller
         $paymentStatus = 0;
         $invoiceSent = 0;
 
-        if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2){
+        if (Auth::user()->role_id == 1 || Auth::user()->role_id == 2) {
             $isInstitute = 1;
             $paymentStatus = 1;
             $invoiceSent = 1;
@@ -183,24 +183,24 @@ class UserController extends Controller
 
             // Mail::mailer('clients')->to($email)->send(new OrderCreated($user, $order, "Flow Translate - Order Created", "info@flowtranslate.com"));
             // Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order, "Flow Translate - New Order Created", "info@flowtranslate.com"));
-        if(Auth::user()->role_id == 0){
+            if (Auth::user()->role_id == 0) {
 
-            if ($request->input("isPayNow") == "on") {
-                // If 'Pay Now' is checked. Proceed to create invoice.
-                $id = $request->input('user_id');
+                if ($request->input("isPayNow") == "on") {
+                    // If 'Pay Now' is checked. Proceed to create invoice.
+                    $id = $request->input('user_id');
 
-                $data = [
-                    'description' => "" . $request->input('language1') . ', ' . $request->input('language2') . "",
-                    'docQuantity' => 1,
-                    'amount' => 35,
-                    'user_id' => $user->id,
-                    'order_id' => $order->id
-                ];
-                Invoice::create($data);
+                    $data = [
+                        'description' => "" . $request->input('language1') . ', ' . $request->input('language2') . "",
+                        'docQuantity' => 1,
+                        'amount' => 35,
+                        'user_id' => $user->id,
+                        'order_id' => $order->id
+                    ];
+                    Invoice::create($data);
 
-                return view('user.paymentInvoice', compact('order'));
+                    return view('user.paymentInvoice', compact('order'));
+                }
             }
-        }
 
             // Mail::to($email)->send(new OrderCreated($user, $order));
             // Mail::to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order));
@@ -596,6 +596,17 @@ class UserController extends Controller
             $currentTime = date('ymdHis');
         }
 
+        $isInstitute = 0;
+        $paymentStatus = 0;
+        $invoiceSent = 0;
+
+        if (Auth::user()->role_id == 1 || Auth::user()->role_id == 2) {
+            $isInstitute = 1;
+            $paymentStatus = 1;
+            $invoiceSent = 1;
+        }
+
+
         $worknumber = $currentTime;
 
         $interpretation = new Interpretation();
@@ -611,6 +622,10 @@ class UserController extends Controller
         $interpretation->location = $request->location;
         $interpretation->session_topics = $request->session_topics;
         $interpretation->wantQuote = $request->has('wantQuote') ? true : false;
+        $interpretation->added_by_institute_user = $isInstitute;
+        $interpretation->invoiceSent = $invoiceSent;
+        $interpretation->paymentStatus = $paymentStatus;
+
         $interpretation->save();
 
         Mail::to('webpage@flowtranslate.com')->send(new AdminNewInterpretation(auth()->user(), $interpretation, "Flow Translate - New Interpretation Request", "info@flowtranslate.com"));
@@ -620,8 +635,15 @@ class UserController extends Controller
             ->with('message', 'Interpretation request submitted successfully.');
     }
 
-    public function viewInstituteOrders(){
-        $orders = Order::all()->where('added_by_institute_user',1);
-        return view('user.institute.view-user-orders',compact('orders'));
+    public function viewInstituteOrders()
+    {
+        $orders = Order::all()->where('added_by_institute_user', 1);
+        return view('user.institute.view-user-orders', compact('orders'));
+    }
+
+    public function viewInstituteInterpretations()
+    {
+        $interpretations = Interpretation::all()->where('added_by_institute_user', 1);
+        return view('user.institute.view-user-interpretations', compact('interpretations'));
     }
 }

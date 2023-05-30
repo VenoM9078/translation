@@ -213,19 +213,19 @@
                         <li>
                             <a href="{{ route('user.institute-admin') }}" class="side-menu">
                                 <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
-                                <div class="side-menu__title"> Institute Users & Requests </div>
+                                <div class="side-menu__title"> Users & Requests </div>
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('view-institute-orders') }}" class="side-menu">
                                 <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
-                                <div class="side-menu__title"> Institute Orders </div>
+                                <div class="side-menu__title"> Orders </div>
                             </a>
                         </li>
                         <li>
-                            <a href="" class="side-menu">
+                            <a href="{{ route('view-institute-interpretations') }}" class="side-menu">
                                 <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
-                                <div class="side-menu__title"> Completed </div>
+                                <div class="side-menu__title"> Interpretations </div>
                             </a>
                         </li>
                     </ul>
@@ -246,7 +246,8 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('/') }}">FlowTranslate</a></li>
                         <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('user.index') }}">
-                           @if(Auth::user()->role_id == 1) Institute User @elseif(Auth::user()->role_id == 2) Institute Admin @else User @endif  Dashboard</a>
+                                @if(Auth::user()->role_id == 1) Institute User @elseif(Auth::user()->role_id == 2)
+                                Institute Admin @else User @endif Dashboard</a>
                         </li>
                     </ol>
                 </nav>
