@@ -21,7 +21,7 @@
                                 <tr>
                                     <th class="whitespace-nowrap">Name</th>
                                     <th class="whitespace-nowrap">Email</th>
-
+                                    <th class="whitespace-nowrap">Institute</th>
                                     <th class="whitespace-nowrap">Case Manager</th>
                                     <th class="whitespace-nowrap">Access Code</th>
                                     <th class="whitespace-nowrap">Work Number</th>
@@ -39,7 +39,11 @@
                                     <tr>
                                         <td class="whitespace-nowrap">{{ $order->user->name }}</td>
                                         <td class="whitespace-nowrap">{{ $order->user->email }}</td>
-
+                                        @if(count($order->user->institute) > 0)
+                                            <td class="whitespace-nowrap">{{ $order->user->institute[0]->name}}</td>
+                                            @else
+                                            <td class="whitespace-nowrap">N/A</td>
+                                        @endif
                                         @if ($order->casemanager == null && $order->access_code == '')
                                             <td class="whitespace-nowrap">N/A</td>
                                             <td class="whitespace-nowrap">N/A</td>

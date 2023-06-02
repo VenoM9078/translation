@@ -17,6 +17,9 @@ class ContractorOrder extends Model
         'rate',
         'total_payment',
         'total_words',
+        'message',
+        'translation_due_date',
+        'translation_type'
     ];
 
     public function contractor()

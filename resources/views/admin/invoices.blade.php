@@ -75,7 +75,7 @@
 
                                         {{-- {{ route('translator.edit', $translator->id) }} --}}
                                         {{-- {{ route('translator.destroy', $translator->id) }} --}}
-                                        <td> {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($order->created_at, request()->ip()) }}
+                                        <td> {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($invoice->created_at, request()->ip()) }}
                                         </td>
                                         <td class="whitespace-nowrap">
                                             <div class="flex gap-2 items-center">

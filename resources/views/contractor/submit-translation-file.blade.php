@@ -33,8 +33,16 @@
                                 @csrf
                                 @method('POST')
                                 <input type="hidden" name="contractor_order_id" value="{{ $contractorOrder->id }}">
+                                <label for="amount" class="mt-2 mb-4">Enter Message</label>
+                                <textarea type="number" id="message"  name="message"
+                                    class="intro-x login__input mt-2 mb-2 form-control px-4 block" rows="10" placeholder="Enter Message"
+                                    value=""></textarea>
+                                 <label for="amount" class="mt-2 mb-2">Enter Translation Type</label>
+                                <input type="number" name="translation_type"
+                                    class="intro-x login__input form-control px-4 block mt-2 d-none" id="translation_type"
+                                    value="" placeholder="Enter Translation Type (i.e Words, Page)" value="">
                                 {{-- <div class="col-span-8 p-2 sm:col-span-12"> --}}
-                                <input type="file" id="fp-translationFile" required class="filepond fp-translationFile"
+                                <input type="file" id="fp-translationFile" required class="filepond mt-2 fp-translationFile"
                                     name="translationFile" multiple data-max-files="1" data-max-file-size="10MB" />
                                 <button type="submit" class="btn btn-success w-24">Submit</button>
                                 {{-- </div> --}}

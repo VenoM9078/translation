@@ -99,7 +99,7 @@ class ContractorAuthController extends Controller
         $interpretation->interpreter_completed = 1;
 
         $interpretation->save();
-
+        $admins = Admin::all()->pluck('email');
         // Sending email to admin
         Mail::to('wahaj.dkz@gmail.com')->send(new InterpretationReportToAdmin($interpretation));
 
@@ -477,6 +477,8 @@ class ContractorAuthController extends Controller
         $uploadedFilePath = $request->input('translationFile');
         $contractorOrder = ContractorOrder::find($request['contractor_order_id']);
         $contractorOrder->file_name = $uploadedFilePath;
+        $contractorOrder->translation_type = $request->translation_type;
+        $contractorOrder->message = $request->message;
         // dd($contractorOrder);
         $contractorOrder->save();
         // $request->session()->forget('uploaded_translation_file');

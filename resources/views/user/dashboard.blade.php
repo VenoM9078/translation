@@ -247,6 +247,9 @@
                                 class="intro-x login__input form-control py-3 px-4 block mt-4" required
                                 placeholder="What Language does the Document needs to be Translated into?" value="">
                             --}}
+                            <textarea name="message"
+                                    class="intro-x login__input form-control py-3 px-4 block mt-4 h-30" required
+                                    placeholder="Enter Description."></textarea>
                             <input type="text" name="access_code" id="access_code"
                                 class="intro-x login__input form-control py-3 px-4 block mt-4"
                                 placeholder="Access Code (for returning customers)" value="">

@@ -134,7 +134,8 @@ class UserController extends Controller
                 'invoiceSent' => 1,
                 'orderStatus' => 'Completed',
                 'added_by_institute_user' => $isInstitute,
-                'paymentStatus' => $paymentStatus
+                'paymentStatus' => $paymentStatus,
+                'message' => $request->input('message')
             ];
         } else {
             $data = [
@@ -146,7 +147,8 @@ class UserController extends Controller
                 'worknumber' => $worknumber,
                 'added_by_institute_user' => $isInstitute,
                 'invoiceSent' => $invoiceSent,
-                'paymentStatus' => $paymentStatus
+                'paymentStatus' => $paymentStatus,
+                'message' => $request->input('message')
             ];
         }
 

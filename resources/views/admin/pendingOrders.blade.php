@@ -24,7 +24,7 @@
                                 <th class="whitespace-nowrap">Next Step</th>
                                 <th class="whitespace-nowrap">Name</th>
                                 <th class="whitespace-nowrap">Email</th>
-
+                                <th class="whitespace-nowrap">Order Note</th>
                                 <th class="whitespace-nowrap">Case Manager</th>
                                 <th class="whitespace-nowrap">Access Code</th>
                                 <th class="whitespace-nowrap">Work Number</th>
@@ -37,6 +37,19 @@
                                 <th class="whitespace-nowrap">Translation File</th>
                                 <th class="whitespace-nowrap">ProofReader Assigned</th>
                                 <th class="whitespace-nowrap">ProofRead File</th>
+                                <th class="whitespace-nowrap">Contractor Rate</th>
+                                <th class="whitespace-nowrap">Translation Rate</th>
+                                <th class="whitespace-nowrap">Total Words</th>
+                                <th class="whitespace-nowrap">Translation Due Date</th>
+                                <th class="whitespace-nowrap">Translation Type</th>
+                                <th class="whitespace-nowrap">Total Payment</th>
+                                <th class="whitespace-nowrap">Translation Note</th>
+                                <th class="whitespace-nowrap">Proofread Due Date</th>
+                                <th class="whitespace-nowrap">Proofread Rate</th>
+                                <th class="whitespace-nowrap">Proofread Total Payment</th>
+                                <th class="whitespace-nowrap">Proofread Note</th>
+                                <th class="whitespace-nowrap">Proofread Type</th>
+                                <th class="whitespace-nowrap">Invoice</th>
                                 {{-- <th class="whitespace-nowrap">Translation Status</th> --}}
                                 {{-- <th class="whitespace-nowrap">Proofread Status</th> --}}
 
@@ -306,6 +319,11 @@
                                 </td>
                                 <td class="whitespace-nowrap">{{ $order->user->name }}</td>
                                 <td class="whitespace-nowrap">{{ $order->user->email }}</td>
+                                @if($order->message)
+                                <td class="whitespace-nowrap">{{ $order->message }}</td>
+                                @else
+                                <td class="whitespace-nowrap">-</td>
+                                @endif
                                 <td class="whitespace-nowrap">
                                     {{ $order->casemanager != '' ? $order->casemanager : 'N/A' }}
                                 </td>
@@ -456,25 +474,43 @@
                                 @else
                                 <td>N/A</td>
                                 @endif
-                                {{-- @endisset --}}
-                                {{-- {{ route('translator.edit', $translator->id) }} --}}
-                                {{-- {{ route('translator.destroy', $translator->id) }} --}}
-
-                                {{-- @if ($order->translation_status == 1)
-                                <td class="whitespace-nowrap"><button
-                                        class="btn btn-rounded-success w-24 mr-1 mb-2">Translated</button></td>
-                                @else($order->translation_status == 0)
-                                <td class="whitespace-nowrap"><button
-                                        class="btn btn-rounded-pending w-24 mr-1 mb-2">Pending</button></td>
-                                @endif
-                                @if ($order->proofread_status == 1)
-                                <td class="whitespace-nowrap"><button
-                                        class="btn btn-rounded-success w-24 mr-1 mb-2">Done</button></td>
+                                @if($order->contractorOrder)
+                                    <td>${{$order->contractorOrder->contractor->translation_rate}}</td>
+                                    <td>${{$order->contractorOrder->rate}}</td>
+                                    <td>${{$order->contractorOrder->total_words}}</td>
+                                    <td>{{$order->contractorOrder->translation_due_date}}</td>
+                                    <td>{{$order->contractorOrder->translation_type}}</td>
+                                    <td>${{$order->contractorOrder->total_payment}}</td>
+                                    <td>{{$order->contractorOrder->message}}</td>
                                 @else
-                                <td class="whitespace-nowrap"><button
-                                        class="btn btn-rounded-pending w-24 mr-1 mb-2">Pending</button></td>
-                                @endif --}}
-
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                @endif
+                                @if($order->proofReaderOrder)
+                                    <td>{{$order->proofReaderOrder->proof_read_due_date}}</td>
+                                    <td>{{$order->proofReaderOrder->rate}}</td>
+                                    <td>{{$order->proofReaderOrder->total_payment}}</td>
+                                    <td>{{$order->proofReaderOrder->feedback}}</td>
+                                    <td>{{$order->proofReaderOrder->proofread_type}}</td>
+                                @else
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                @endif
+                                @if(isset($order->invoice) && $order->user->role_id == 1 && $order->invoiceSent == 1)
+                                    <td><a href="
+                                        {{-- {{route('view-invoice',['id'=>$order->invoice->id])}} --}}
+                                        " class="btn btn-secondary m-2">View Invoice</a></td>
+                                @else
+                                    <td>N/A</td>
+                                @endif
                                 <td class="whitespace-nowrap">
                                     {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($order->created_at,
                                     request()->ip()) }}

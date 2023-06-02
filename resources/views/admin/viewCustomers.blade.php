@@ -25,6 +25,9 @@
                                         <th class="whitespace-nowrap text-center">Name</th>
                                         <th class="whitespace-nowrap text-center">Email</th>
                                         <th class="whitespace-nowrap text-center">Orders Count</th>
+                                        <th class="whitespace-nowrap text-center">Institute Name</th>
+                                        <th class="whitespace-nowrap text-center">Institute Account</th>
+                                        <th class="whitespace-nowrap text-center">Institute Admin</th>
                                         <th class="whitespace-nowrap text-center">Interpretations Count</th>
                                         <th class="whitespace-nowrap text-center">Created At</th>
                                         <th class="whitespace-nowrap text-center">Action</th>
@@ -36,6 +39,21 @@
                                             <td class="whitespace-nowrap">{{ $user->name }}</td>
                                             <td class="whitespace-nowrap">{{ $user->email }}</td>
                                             <td class="whitespace-nowrap">{{ $user->orders()->count() }}</td>
+                                            @if(isset($user->institute) && $user->institute != null && count($user->institute) > 0)
+                                                <td class="whitespace-nowrap">{{ $user->institute[0]->name }}</td>
+                                            @else
+                                                <td class="whitespace-nowrap">--</td>
+                                            @endif
+                                            @if($user->role_id == 1 || $user->role_id == 2)
+                                                <td class="whitespace-nowrap">Yes</td>
+                                            @else
+                                                <td class="whitespace-nowrap">No</td>
+                                            @endif
+                                            @if( $user->role_id == 2)
+                                            <td class="whitespace-nowrap">Yes</td>
+                                            @else
+                                            <td class="whitespace-nowrap">No</td>
+                                            @endif
                                             <td class="whitespace-nowrap">{{ $user->interpretations()->count() }}</td>
                                             <td class="whitespace-nowrap">
                                                 {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($user->created_at, request()->ip()) }}

@@ -40,7 +40,7 @@
                                 <input type="number" id="total_payment" readonly  name="total_payment"
                                     class="intro-x login__input form-control px-4 block" placeholder="Enter Total Payment"
                                     value="">
-                                <br>
+                                <br>                                
                                 <label for="amount" class="mt-2">Enter Rate</label>
                                 <input type="number" name="rate"
                                     class="intro-x login__input form-control px-4 block mt-1 d-none" id="rate"

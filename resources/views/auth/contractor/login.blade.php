@@ -55,7 +55,7 @@
                             @endforeach
                         </ul>
                     </div>
-                    @endif\
+                    @endif
                     <form action="{{ route('contractor.login') }}" method="POST">
                         @csrf
                         @method('POST')

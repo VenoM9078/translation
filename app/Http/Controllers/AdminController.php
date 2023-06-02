@@ -376,7 +376,7 @@ class AdminController extends Controller
     public function viewCustomers()
     {
         $users = User::all();
-
+        // dd($users[3]->institute[0]->name);
         return view('admin.viewCustomers', compact('users'));
     }
 
@@ -467,13 +467,15 @@ class AdminController extends Controller
     {
         // dd($request->input('description'));
         // dd($request->input('amount'));
+        $due_date = Carbon::now()->addDays(7);
         $contractorOrder = ContractorOrder::create([
             'order_id' => $request->order_id,
             'contractor_id' => $request->contractor_id,
             'is_accepted' => ContractorOrderEnum::PENDING,
             'total_words' => $request->total_words,
             'total_payment' => $request->total_payment,
-            'rate' => $request->rate
+            'rate' => $request->rate,
+            'translation_due_date' => $due_date
         ]);
         $order = Order::find($request->order_id);
         $order->translation_sent = 1;
@@ -485,13 +487,18 @@ class AdminController extends Controller
         return redirect()->route('admin.dashboard');
     }
 
+    public function viewInvoice($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+        return view('admin.view-invoice', compact('invoice'));
+    }
     public function pendingOrders()
     {
         $orders = Order::with(['contractorOrder.contractor'])
             ->orderByDesc('created_at')
             ->where('orderStatus', '!=', 'Cancelled')
             ->get();
-        // dd($orders);
+        // dd($orders[0]->invoice);
         return view('admin.pendingOrders', compact('orders'));
     }
 

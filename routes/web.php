@@ -183,7 +183,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
     // Add this route definition
     Route::get('/admin/contractor/{id}', [AdminController::class, 'viewContractor'])->name('admin.viewContractor');
 
-
+    Route::get('/viewInvoice/{id}', [AdminController::class, 'viewInvoice'])->name('view-invoice');
+    
     Route::delete('destroy/{id}', [AdminController::class, 'destroy'])->name('destroy');
     Route::get('downloadFiles/{order}', [AdminController::class, 'downloadFiles'])->name('downloadFiles');
     Route::get('downloadEvidence/{order}', [AdminController::class, 'downloadEvidence'])->name('downloadEvidence');
@@ -232,6 +233,9 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/institute/admin/pending', [AdminController::class, 'viewInstituteAdminPending'])->name('view-pending-institute-admin');
     Route::get('/institute/admin/{id}/accept', [AdminController::class, 'acceptInstituteAdmin'])->name('institute-admin.accept');
     Route::get('/institute/admin/{id}/decline', [AdminController::class, 'declineInstituteAdmin'])->name('institute-admin.decline');
+
+   
+
 });
 
 Route::middleware(['web', 'auth', 'verified'])->group(function () {
