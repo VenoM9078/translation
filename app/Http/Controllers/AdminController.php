@@ -475,7 +475,9 @@ class AdminController extends Controller
             'total_words' => $request->total_words,
             'total_payment' => $request->total_payment,
             'rate' => $request->rate,
-            'translation_due_date' => $due_date
+            'translation_due_date' => $due_date,
+            'translation_type' => $request->translation_type,
+            'message' => $request->message
         ]);
         $order = Order::find($request->order_id);
         $order->translation_sent = 1;
@@ -496,7 +498,7 @@ class AdminController extends Controller
     {
         $orders = Order::with(['contractorOrder.contractor'])
             ->orderByDesc('created_at')
-            ->where('orderStatus', '!=', 'Cancelled')
+            // ->where('orderStatus', '!=', 'Cancelled')
             ->get();
         // dd($orders[0]->invoice);
         return view('admin.pendingOrders', compact('orders'));
@@ -1199,7 +1201,7 @@ class AdminController extends Controller
 
     public function ongoingInterpretations()
     {
-        $interpretations = Interpretation::orderByDesc('created_at')->where('interpreter_completed', '=', 0)->get();
+        $interpretations = Interpretation::orderByDesc('created_at')->get();
         return view('admin.ongoingInterpretations', compact('interpretations'));
     }
 

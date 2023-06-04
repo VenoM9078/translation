@@ -183,7 +183,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
     // Add this route definition
     Route::get('/admin/contractor/{id}', [AdminController::class, 'viewContractor'])->name('admin.viewContractor');
 
-    Route::get('/viewInvoice/{id}', [AdminController::class, 'viewInvoice'])->name('view-invoice');
+    Route::get('/view-invoice/{id}', [AdminController::class, 'viewInvoice'])->name('view-invoice');
     
     Route::delete('destroy/{id}', [AdminController::class, 'destroy'])->name('destroy');
     Route::get('downloadFiles/{order}', [AdminController::class, 'downloadFiles'])->name('downloadFiles');

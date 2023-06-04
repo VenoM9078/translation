@@ -477,8 +477,6 @@ class ContractorAuthController extends Controller
         $uploadedFilePath = $request->input('translationFile');
         $contractorOrder = ContractorOrder::find($request['contractor_order_id']);
         $contractorOrder->file_name = $uploadedFilePath;
-        $contractorOrder->translation_type = $request->translation_type;
-        $contractorOrder->message = $request->message;
         // dd($contractorOrder);
         $contractorOrder->save();
         // $request->session()->forget('uploaded_translation_file');
