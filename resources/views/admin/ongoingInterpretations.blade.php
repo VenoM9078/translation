@@ -221,17 +221,20 @@
                                                         <button class="btn btn-warning mr-1  ">View Feedback</button>
                                                     @endif
 
+                                                    <button type="submit" class="btn btn-md btn-danger  text-black">
                                                     <div>
                                                         <form
                                                             action="{{ route('admin.interpretation.delete', $interpretation->id) }}"
                                                             method="POST">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger mr-2">
-                                                                <i data-lucide="trash" class="w-4 h-4 mr-2"></i> Cancel
-                                                            </button>
-                                                        </form>
-                                                    </div>
+                                                                <i data-lucide="trash" class="w-4 h-4 text-red" style="color:red"></i> 
+                                                                <span class="text-black">
+                                                                    {{-- Cancel --}}
+                                                                </span>
+                                                            </form>
+                                                        </div>
+                                                    </button>
                                                 </div>
                                             </td>
                                             <td class="whitespace-nowrap w-40">
