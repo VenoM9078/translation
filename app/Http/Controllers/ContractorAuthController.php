@@ -402,6 +402,10 @@ class ContractorAuthController extends Controller
         $contractorOrder = ContractorOrder::find($contractor_order_id);
         $contractorOrder->is_accepted = ContractorOrderEnum::DECLINED;
         $contractorOrder->save();
+
+        $order = Order::find($contractorOrder->order_id);
+        $order->translation_sent = 0;
+        $order->save();
         //only select emails of admins from the query
         $contractorName = Auth::guard('contractor')->user()->name;
         $admins = Admin::all(['email']);
