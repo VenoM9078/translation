@@ -100,7 +100,7 @@ class RegisteredUserController extends Controller
         } else {
             return view('auth.register2', [
                 'name' => $request->input('name'),
-                'role_id' => 0,
+                'role_id' => 1,
                 'email' => $request->input('email'),
                 'password' => $request->input('password'),
             ]);
