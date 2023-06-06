@@ -55,20 +55,35 @@
                     @if($user->role_id == 1)
                     <div class="w-full">
                         <label for="change-password-form-1" class="form-label">Institute Name</label>
+                        @if(isset($user->institute_managed))
                         <input id="change-password-form-1" type="text" class="form-control" name="name"
-                            value="{{$user->institute_managed->name}}" disabled>
+                            value="{{$user->institute[0]->name}}" disabled>
+                        @else
+                        <input id="change-password-form-1" type="text" class="form-control" name="name"
+                            value="N/A">
+                        @endif
                     </div>
                     @elseif($user->role_id == 2)
                     <div class="w-full">
                         <label for="change-password-form-1" class="form-label">Institute Name</label>
+                        @if(isset($user->institute_managed))
                         <input id="change-password-form-1" type="text" class="form-control" name="name"
-                            value="{{$user->institute_managed->name}}">
+                            value="{{$user->institute_managed[0]->name}}">
+                        @else
+                            <input id="change-password-form-1" type="text" class="form-control" name="name"
+                            value="N/A">
+                        @endif
                     </div>
 
                     <div class="w-full">
                         <label for="change-password-form-2" class="form-label">Institute Passcode</label>
+                        @if(isset($user->institute_managed))
                         <input id="change-password-form-2" name="passcode" type="text" class="form-control"
                             value="{{$user->institute_managed->passcode}}">
+                        @else
+                        <input id="change-password-form-2" name="passcode" type="text" class="form-control"
+                            value="--">
+                        @endif
                     </div>
                     @endif
 

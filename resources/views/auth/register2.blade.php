@@ -42,9 +42,9 @@
                 <div
                     class="my-auto mx-auto xl:ml-20 bg-white dark:bg-darkmode-600 xl:bg-transparent px-5 sm:px-8 py-8 xl:p-0 rounded-md shadow-md xl:shadow-none w-full sm:w-3/4 lg:w-2/4 xl:w-auto">
                     <h2 class="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-left">
-                        @if ($role_id == 1)
+                        @if ($role_id_sent == 1)
                         Institute User Sign Up
-                        @elseif($role_id == 2)
+                        @elseif($role_id_sent == 2)
                         Institute Admin Sign Up
                         @endif
                     </h2>
@@ -61,12 +61,12 @@
                         @csrf
                         @method('POST')
                         <div class="intro-x mt-8">
-                            <input type="hidden" name="role_id" value="{{$role_id}}">
-                            @if ($role_id == 1)
+                            <input type="hidden" name="role_id" value="{{$role_id_sent}}">
+                            @if ($role_id_sent == 1)
                             <input type="text" name="institute_passcode"
                                 class="intro-x login__input form-control py-3 px-4 block"
                                 placeholder="Enter Institute's Passcode Here">
-                            @elseif($role_id == 2)
+                            @elseif($role_id_sent == 2)
                             <input type="text" name="institute_name"
                                 class="intro-x login__input form-control py-3 px-4 block"
                                 placeholder="Enter Institute's Name Here">
