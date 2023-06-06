@@ -601,7 +601,7 @@
                                 @else
                                 <td>N/A</td>
                                 @endif
-                                @if($order->contractorOrder)
+                                @if($order->contractorOrder && $order->contractorOrder->is_accepted == 1)
                                     <td>${{$order->contractorOrder->contractor->translation_rate}}</td>
                                     <td>${{$order->contractorOrder->rate}}</td>
                                     <td>${{$order->contractorOrder->total_words}}</td>

@@ -400,8 +400,8 @@ class ContractorAuthController extends Controller
     public function declineTranslation($contractor_order_id)
     {
         $contractorOrder = ContractorOrder::find($contractor_order_id);
-        $contractorOrder->is_accepted = ContractorOrderEnum::DECLINED;
-        $contractorOrder->save();
+        // $contractorOrder->is_accepted = ContractorOrderEnum::DECLINED;
+        $contractorOrder->delete();
 
         $order = Order::find($contractorOrder->order_id);
         $order->translation_sent = 0;

@@ -68,9 +68,9 @@
 <script>
     $(document).ready(function() {
         var hours = {{ (int)$interpretation->end_time - (int)$interpretation->start_time }};
-        
+        // console.log("hours",hours);
         function calculateEstimatedPayment(rate) {
-            return hours * rate;
+            return Math.abs(hours * rate);
         }
         
         $('#contractor_select').change(function() {
