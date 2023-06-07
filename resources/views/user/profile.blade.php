@@ -34,6 +34,11 @@
                         <input autocomplete="false" id="change-password-form-4" type="password" class="form-control"
                             name="password" placeholder="(Leave Empty if do not want to change)">
                     </div>
+                    <div class="w-full mt-3">
+                        <label for="change-password-form-4" class="form-label">User Status</label>
+                        <input autocomplete="false" id="status-form-4" type="text" disabled class="form-control"
+                        name="role" placeholder="{{($user->role_id == 0) ? 'Individual' : (($user->role_id == 1) ? 'Institute User' : 'Institute Admin') }}">
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary mt-4">Update Profile</button>
             </form>
