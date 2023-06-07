@@ -74,7 +74,7 @@
                                         <label for="regular_user"
                                             class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">
                                             <div class="block">
-                                                <div class="w-full text-md font-semibold">Regular User</div>
+                                                <div class="w-full text-md font-semibold">Individual User</div>
 
                                             </div>
                                             {{-- <svg aria-hidden="true" class="w-6 h-6 ml-3" fill="currentColor"

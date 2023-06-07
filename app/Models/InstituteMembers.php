@@ -9,7 +9,7 @@ class InstituteMembers extends Model
 {
     use HasFactory;
 
-    protected $table = 'institute_member';
+    protected $table = 'institute_members';
 
 
     protected $fillable = [

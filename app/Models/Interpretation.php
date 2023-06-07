@@ -26,7 +26,8 @@ class Interpretation extends Model
         'interpreter_id',
         'interpreter_completed',
         'feedback',
-        'added_by_institute_user'
+        'added_by_institute_user',
+        'message'
     ];
 
     public function user()

@@ -621,12 +621,19 @@ class UserController extends Controller
         $interpretation->start_time = $request->start_time;
         $interpretation->end_time = $request->end_time;
         $interpretation->session_format = $request->session_format;
-        $interpretation->location = $request->location;
+        if(isset($request->link)){
+            $interpretation->location = $request->link;
+        } else if(isset($request->address)) {
+            $interpretation->location = $request->address;
+        } else {
+            $interpretation->location = null;
+        }
         $interpretation->session_topics = $request->session_topics;
         $interpretation->wantQuote = $request->has('wantQuote') ? true : false;
         $interpretation->added_by_institute_user = $isInstitute;
         $interpretation->invoiceSent = $invoiceSent;
         $interpretation->paymentStatus = $paymentStatus;
+        $interpretation->message = $request->message;
 
         $interpretation->save();
 

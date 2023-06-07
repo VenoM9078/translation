@@ -70,8 +70,8 @@ Route::post('sendContactForm', function (Request $request) {
 })->name('sendContactForm');
 
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
-Route::get('/admin/register', [AdminAuthController::class, 'showRegisterForm'])->name('admin.register');
-Route::post('/admin/register', [AdminAuthController::class, 'store'])->name('admin.register');
+// Route::get('/admin/register', [AdminAuthController::class, 'showRegisterForm'])->name('admin.register');
+// Route::post('/admin/register', [AdminAuthController::class, 'store'])->name('admin.register');
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login');
 Route::get('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
@@ -231,8 +231,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
 
     //Institute Admin
     Route::get('/institute/admin/pending', [AdminController::class, 'viewInstituteAdminPending'])->name('view-pending-institute-admin');
-    Route::get('/institute/admin/{id}/accept', [AdminController::class, 'acceptInstituteAdmin'])->name('institute-admin.accept');
-    Route::get('/institute/admin/{id}/decline', [AdminController::class, 'declineInstituteAdmin'])->name('institute-admin.decline');
+    Route::get('/institute/admin/{id}/accept', [AdminController::class, 'acceptInstituteAdmin'])->name('institute-admin-accept');
+    Route::get('/institute/admin/{id}/decline', [AdminController::class, 'declineInstituteAdmin'])->name('institute-admin-decline');
 
    
 

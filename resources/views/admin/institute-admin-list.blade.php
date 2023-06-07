@@ -103,7 +103,7 @@
                                                             </div>
                                                             <div class="px-5 pb-8 text-center inline-flex items-stretch"
                                                                 style="text-align: center;margin: auto !important;width: 100%;position: relative;justify-content: center;">
-                                                                <a href="{{ route('institute-admin.accept', $iAdmin->id) }}"
+                                                                <a href="{{ route('institute-admin-accept', $iAdmin->id) }}"
                                                                     class="btn btn-success text-white w-24 mr-1 self-center">
                                                                     I'm Sure</a>
                                                                 <button type="button" data-tw-dismiss="modal"
@@ -129,7 +129,7 @@
                                                             </div>
                                                             <div class="px-5 pb-8 text-center inline-flex items-stretch"
                                                                 style="text-align: center;margin: auto !important;width: 100%;position: relative;justify-content: center;">
-                                                                <a href="{{ route('institute-admin.decline', $iAdmin->id) }}"
+                                                                <a href="{{ route('institute-admin-decline', $iAdmin->id) }}"
                                                                     class="btn btn-danger w-24 mr-1 self-center">
                                                                     I'm Sure</a>
                                                                 <button type="button" data-tw-dismiss="modal"

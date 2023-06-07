@@ -60,14 +60,14 @@
                                 class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="Password">
                         </div>
 
-                        <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
+                        <div class="flex  mt-4 xl:mt-6 text-center xl:text-left">
                             <button type="submit"
-                                class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-2 align-top">Login</button>
-                            <a href="{{ route('admin.register') }}"
-                                class="btn btn-outline-secondary xl:mr-2 py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top">Register</a>
+                                class="btn btn-primary py-3 px-4 w-full xl:mr-3 align-top">Login</button>
+                            {{-- <a href="{{ route('admin.register') }}"
+                                class="btn btn-outline-secondary xl:mr-2 py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top">Register</a> --}}
 
-                            <a href="{{ route('login') }}" class="btn btn-outline-secondary "
-                                style="margin: auto; margin-left: 10px;"><i data-lucide="user"></i></a>
+                            <a href="{{ route('login') }}" class="btn btn-outline-secondary py-3 px-4 w-fullmt-3 xl:mt-0 align-top"
+                                style="margin: auto; margin-left: 5px;"><i data-lucide="user"></i></a>
 
                         </div>
                         <hr class="mt-3 mb-3">

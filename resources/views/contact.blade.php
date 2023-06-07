@@ -208,13 +208,13 @@
     <div class="contact-info-area pt-130">
         <div class="container">
             <div class="row mt-none-30">
-                <div class="col-xl-4 col-lg-6 col-md-6 mt-30">
+                {{-- <div class="col-xl-4 col-lg-6 col-md-6 mt-30">
                     <div class="contact-info">
                         <h4 class="contact-info__title">Vincent Chang</h4>
                         <p>Commercial Director</p>
                         <a href="tel:6508689374">(650) 868-9374</a>
                     </div>
-                </div>
+                </div> --}}
                 <div class="col-xl-4 col-lg-6 col-md-6 mt-30">
                     <div class="contact-info">
                         <h4 class="contact-info__title">Silvia Cabal</h4>
