@@ -15,6 +15,7 @@ use App\Mail\LatePaymentRejected;
 use App\Mail\mailOfCompletion;
 use App\Mail\mailToProofReader;
 use App\Mail\NotifiyInstituteAdminMail;
+use App\Mail\OrderQuoteSent;
 use App\Mail\orderToTranslator;
 use App\Mail\paymentApproved;
 use App\Mail\paymentRejected;
@@ -445,6 +446,26 @@ class AdminController extends Controller
 
         return view('admin.submitQuote', compact('interpretation'));
     }
+
+    public function showOrderSubmitQuote($id){
+        $order = Order::findOrFail($id);
+        return view('admin.submitOrderQuote',compact('order'));
+    }
+
+    public function submitOrderQuote(Request $request)
+    {
+
+        $order = Order::find($request->order_id);
+        $order->quote_price = $request->quote_price;
+        $order->quote_description = $request->quote_description;
+        $order->want_quote = 2;
+        $order->save();
+
+        // Send the email to the user
+        Mail::to($order->user->email)->send(new OrderQuoteSent($order));
+        return redirect()->route('admin.pending')->with('message', 'Quote has been sent successfully');
+    }
+
 
     public function submitQuote(Request $request)
     {

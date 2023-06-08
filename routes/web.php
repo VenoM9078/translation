@@ -175,6 +175,10 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('admin/ongoing-interpretations', [AdminController::class, 'ongoingInterpretations'])->name('admin.ongoingInterpretations');
     Route::get('/admin/submitQuote/{id}', [AdminController::class, 'showSubmitQuote'])->name('admin.showSubmitQuote');
     Route::post('admin/submitQuote', [AdminController::class, 'submitQuote'])->name('admin.submitQuote');
+
+    Route::get('/admin/order/quote/{id}',[AdminController::class,'showOrderSubmitQuote'])->name('admin.showOrderSubmitQuote');
+    Route::post('/admin/order/quote/submit', [AdminController::class, 'submitOrderQuote'])->name('admin.submitOrderQuote');
+
     Route::get('admin/view-completed-interpretations', [AdminController::class, 'viewCompletedInterpretations'])->name('admin.viewCompletedInterpretations');
 
     Route::get('admin/view-customers', [AdminController::class, 'viewCustomers'])->name('admin.viewCustomers');

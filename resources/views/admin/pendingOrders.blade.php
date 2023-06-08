@@ -326,6 +326,8 @@
                                         <i data-lucide="thumbs-up" class="w-5 h-5"></i></a>
                                     <a href="{{ route('rejectEvidence', $order->id) }}" class="btn btn-danger mr-1">
                                         <i data-lucide="thumbs-down" class="w-5 h-5"></i></a>
+                                    @elseif ($order->want_quote == 2)
+                                        <button class="btn btn-warning mr-1  ">Waiting for Payment <i  data-loading-icon="three-dots" data-color="1a202c" class="w-4 h-4 ml-2"></i></button>
                                     @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 0)
                                     <button class="btn btn-warning mr-1"> Waiting for Payment <i
                                             data-loading-icon="three-dots" data-color="1a202c" class="w-4 h-4 ml-2"></i>
@@ -340,6 +342,8 @@
                                         class="btn btn-pending mr-1">
                                         <i data-lucide="mail" class="w-5 h-5 mr-2"></i>Assign To Translator
                                     </a>
+                                    @elseif($order->want_quote == 1)
+                                     <a href="{{ route('admin.showOrderSubmitQuote', $order->id) }}" class="btn btn-warning mr-1  ">Submit Quote</a>
                                     @elseif (
                                     $order->invoiceSent == 1 &&
                                     $order->paymentStatus == 1 &&
