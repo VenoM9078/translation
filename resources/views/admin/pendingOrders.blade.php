@@ -163,17 +163,17 @@
                                 <th class="whitespace-nowrap">Translation File</th>
                                 <th class="whitespace-nowrap">ProofReader Assigned</th>
                                 <th class="whitespace-nowrap">ProofRead File</th>
-                                <th class="whitespace-nowrap">Translation Rate</th>
-                                <th class="whitespace-nowrap">Translation Adjusted Rate</th>
+                                <th class="whitespace-nowrap">Translation Rate ($/W or $/P)</th>
+                                <th class="whitespace-nowrap">Translation Adjusted Rate ($)</th>
                                 <th class="whitespace-nowrap">Total Words</th>
                                 <th class="whitespace-nowrap">Translation Due Date</th>
                                 <th class="whitespace-nowrap">Translation Type</th>
                                 <th class="whitespace-nowrap">Total Translation Payment</th>
-                                <th class="whitespace-nowrap">Translation Note</th>
+                                <th class="whitespace-nowrap">Translation Adjust Note</th>
                                 <th class="whitespace-nowrap">Proofread Due Date</th>
-                                <th class="whitespace-nowrap">Proofread Adjusted Rate</th>
+                                <th class="whitespace-nowrap">Proofread Adjusted Rate ($/W or $/P)</th>
                                 <th class="whitespace-nowrap">Proofread Total Payment</th>
-                                <th class="whitespace-nowrap">Proofread Note</th>
+                                <th class="whitespace-nowrap">Proofread Adjust Note</th>
                                 <th class="whitespace-nowrap">Proofread Type</th>
                                 <th class="whitespace-nowrap">Invoice</th>
                                 {{-- <th class="whitespace-nowrap">Translation Status</th> --}}
@@ -608,7 +608,7 @@
                                 @if($order->contractorOrder && $order->contractorOrder->is_accepted == 1)
                                     <td>${{$order->contractorOrder->contractor->translation_rate}}</td>
                                     <td>${{$order->contractorOrder->rate}}</td>
-                                    <td>${{$order->contractorOrder->total_words}}</td>
+                                    <td>{{$order->contractorOrder->total_words}}</td>
                                     <td>{{$order->contractorOrder->translation_due_date}}</td>
                                     <td>{{$order->contractorOrder->translation_type}}</td>
                                     <td>${{$order->contractorOrder->total_payment}}</td>

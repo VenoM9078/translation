@@ -253,12 +253,13 @@
                             <input type="text" name="access_code" id="access_code"
                                 class="intro-x login__input form-control py-3 px-4 block mt-4"
                                 placeholder="Access Code (for returning customers)" value="">
-
+                            @if(Auth::user()->role_id == 0)
                                 <select name="want_quote" required class="form-control mt-3" id="">
                                     <option value="">Needs Quote?</option>
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>
                                 </select>
+                            @endif
                             <input type="text" name="casemanager" id="casemanager" style="margin-bottom: 20px;"
                                 class="intro-x login__input form-control py-3 px-4 block mt-4"
                                 placeholder="Case Manager (optional)" value="">
