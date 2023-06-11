@@ -79,7 +79,7 @@ class InvoiceController extends Controller
             Order::where('id', $order_id)->update(['amount' => $invoice->amount]);
             $userMail = $user->email;
 
-            Mail::mailer('clients')->to($userMail)->send(new invoiceSent($user, $order, $invoice, "Flow Translate - New Invoice", "info@flowtranslate.com"));
+            Mail::mailer('clients')->to($userMail)->send(new invoiceSent($user, $order, $invoice, "Flow Translate - New Invoice", "noiznixon98@gmail.com"));
 
             // Mail::to($userMail)->send(new invoiceSent($user, $order, $invoice));
             return redirect()->route('invoice.index');

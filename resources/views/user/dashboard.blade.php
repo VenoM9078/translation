@@ -32,9 +32,10 @@
                         @csrf
                         @method('POST')
                         <div class="intro-x mt-4">
-                            <select name="language1" required aria-placeholder="Current Language of the Document"
-                                data-placeholder="Current Language of the Document" class="tom-select w-full">
-                                <option value="Current Document Language" disabled selected>Current Document Language
+                        
+                            <select name="language1" required aria-placeholder="Source Language"
+                                data-placeholder="Source Language" class="tom-select w-full">
+                                <option value="Source Language" disabled selected>Source Language
                                 </option>
                                 <option value="Afrikaans">Afrikaans</option>
                                 <option value="Albanian">Albanian</option>
@@ -139,11 +140,11 @@
                                 class="intro-x login__input form-control py-3 px-4 block" required
                                 placeholder="Current Language of the Document" value=""> --}}
                             <select name="language2" required
-                                aria-placeholder="What Language does the Document needs to be Translated into?"
-                                data-placeholder="What Language does the Document needs to be Translated into?"
+                                aria-placeholder="Target Language"
+                                data-placeholder="Target Language"
                                 class="tom-select w-full mt-4">
-                                <option value="What Language does the Document needs to be Translated into?" disabled
-                                    selected>What Language does the Document needs to be Translated into?</option>
+                                <option value="Target Language" disabled
+                                    selected>Target Language</option>
                                 <option value="Afrikaans">Afrikaans</option>
                                 <option value="Albanian">Albanian</option>
                                 <option value="Amharic">Amharic</option>
@@ -250,27 +251,20 @@
                             <textarea name="message"
                                     class="intro-x login__input form-control py-3 px-4 block mt-4 h-30" required
                                     placeholder="Enter Description."></textarea>
-                            <input type="text" name="access_code" id="access_code"
-                                class="intro-x login__input form-control py-3 px-4 block mt-4"
-                                placeholder="Access Code (for returning customers)" value="">
                             @if(Auth::user()->role_id == 0)
-                                <select name="want_quote" required class="form-control mt-3" id="">
+                                <select name="want_quote" required class="form-control mt-3 mb-3" id="">
                                     <option value="">Needs Quote?</option>
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>
                                 </select>
                             @endif
-                            <input type="text" name="casemanager" id="casemanager" style="margin-bottom: 20px;"
-                                class="intro-x login__input form-control py-3 px-4 block mt-4"
-                                placeholder="Case Manager (optional)" value="">
                             <input type="file" id="multipleFiles" class="filepond" name="transFiles[]" multiple
                                 data-max-file-size="10MB" data-max-files="15" />
                             <hr class="my-2 py-2">
-                            @if(Auth::user()->institute == null)
+                            @if(count(Auth::user()->institute) < 1)
                             <span style="color: rgb(185 28 28); margin-top: 20px; padding-top: 20px;"
                                 class="mt-5 pt-5 text-red-600">
-                                Looking to pay instantly and skip the hassle of waiting for a customized invoice? You
-                                can now Pay Now by enabling the button below.
+                               If you are looking for a quote, do not select this field.
                             </span>
 
                             <div class="flex mt-5 ">

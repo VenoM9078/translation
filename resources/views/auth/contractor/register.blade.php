@@ -67,6 +67,9 @@
                                 placeholder="Name">
                             <input type="email" name="email"
                                 class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="Email">
+                                @if(isset($error))
+                                <p>{{$message}}</p>
+                                @endif
                             <div><input type="password" name="password"
                                     class="intro-x login__input form-control py-3 px-4 block mt-4"
                                     placeholder="Password">

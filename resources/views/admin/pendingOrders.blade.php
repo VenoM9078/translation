@@ -451,7 +451,9 @@
                                 <td class="whitespace-nowrap">{{ $order->user->email }}</td>
                                 <td class="whitespace-nowrap badge badge-success">{{ $order->orderStatus }}</td>
                                 @if($order->message)
-                                <td class="whitespace-nowrap">{{ $order->message }}</td>
+                                <td class="whitespace-nowrap" title="{{$order->message}}">
+                                    <i data-lucide="message-square" class="w-5 h-5 mr-2" > </i>
+                                    </td>
                                 @else
                                 <td class="whitespace-nowrap">-</td>
                                 @endif
@@ -612,7 +614,7 @@
                                     <td>{{$order->contractorOrder->translation_due_date}}</td>
                                     <td>{{$order->contractorOrder->translation_type}}</td>
                                     <td>${{$order->contractorOrder->total_payment}}</td>
-                                    <td>{{$order->contractorOrder->message}}</td>
+                                    <td title="{{$order->contractorOrder->message}}"><i data-lucide="message-square" class="w-5 h-5 mr-2" > </i></td>
                                 @else
                                 <td>-</td>
                                 <td>-</td>
@@ -626,7 +628,10 @@
                                     <td>{{$order->proofReaderOrder->proof_read_due_date}}</td>
                                     <td>{{$order->proofReaderOrder->rate}}</td>
                                     <td>{{$order->proofReaderOrder->total_payment}}</td>
-                                    <td>{{$order->proofReaderOrder->feedback}}</td>
+                                    
+                                    <td title="{{$order->proofReaderOrder->feedback}}">
+                                    <i data-lucide="message-square" class="w-5 h-5 mr-2" > </i>
+                                    </td>
                                     <td>{{$order->proofReaderOrder->proofread_type}}</td>
                                 @else
                                 <td>-</td>

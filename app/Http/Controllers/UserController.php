@@ -185,8 +185,8 @@ class UserController extends Controller
 
             $email = $user->email;
 
-            // Mail::mailer('clients')->to($email)->send(new OrderCreated($user, $order, "Flow Translate - Order Created", "info@flowtranslate.com"));
-            // Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order, "Flow Translate - New Order Created", "info@flowtranslate.com"));
+            // Mail::mailer('clients')->to($email)->send(new OrderCreated($user, $order, "Flow Translate - Order Created", "noiznixon98@gmail.com"));
+            // Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order, "Flow Translate - New Order Created", "noiznixon98@gmail.com"));
             if (Auth::user()->role_id == 0) {
 
                 if ($request->input("isPayNow") == "on") {
@@ -277,8 +277,8 @@ class UserController extends Controller
 
         $email = $order->user->email;
 
-        Mail::mailer('clients')->to($email)->send(new CustomerPaymentReceived($order, "Flow Translate - Payment Received", "info@flowtranslate.com"));
-        Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new AdminPaymentReceived($order, "Flow Translate - Customer Payment Received", "info@flowtranslate.com"));
+        Mail::mailer('clients')->to($email)->send(new CustomerPaymentReceived($order, "Flow Translate - Payment Received", "noiznixon98@gmail.com"));
+        Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new AdminPaymentReceived($order, "Flow Translate - Customer Payment Received", "noiznixon98@gmail.com"));
 
         return view('user.thankyou');
     }
@@ -299,8 +299,8 @@ class UserController extends Controller
 
         $email = $interpretation->user->email;
 
-        Mail::mailer('clients')->to($email)->send(new UserInterpretationPaymentReceived($interpretation, "Flow Translate - Payment Received", "info@flowtranslate.com"));
-        Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new AdminInterpretationPaymentReceived($interpretation, "Flow Translate - Customer Payment Received", "info@flowtranslate.com"));
+        Mail::mailer('clients')->to($email)->send(new UserInterpretationPaymentReceived($interpretation, "Flow Translate - Payment Received", "noiznixon98@gmail.com"));
+        Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new AdminInterpretationPaymentReceived($interpretation, "Flow Translate - Customer Payment Received", "noiznixon98@gmail.com"));
 
         return view('user.quoteThankYou');
     }
@@ -461,7 +461,7 @@ class UserController extends Controller
 
         // Update the user's role
         $user = User::findOrFail($request->user_id);
-        $user->role_id = 1;  // You may need to adjust this according to your role_id for member
+        $user->role_id = 1; // You may need to adjust this according to your role_id for member
         $user->save();
 
         // Add the user to the Institute Members
@@ -623,9 +623,9 @@ class UserController extends Controller
         $interpretation->start_time = $request->start_time;
         $interpretation->end_time = $request->end_time;
         $interpretation->session_format = $request->session_format;
-        if(isset($request->link)){
+        if (isset($request->link)) {
             $interpretation->location = $request->link;
-        } else if(isset($request->address)) {
+        } else if (isset($request->address)) {
             $interpretation->location = $request->address;
         } else {
             $interpretation->location = null;
@@ -639,8 +639,8 @@ class UserController extends Controller
 
         $interpretation->save();
 
-        Mail::to('webpage@flowtranslate.com')->send(new AdminNewInterpretation(auth()->user(), $interpretation, "Flow Translate - New Interpretation Request", "info@flowtranslate.com"));
-        Mail::to(auth()->user()->email)->send(new UserNewInterpretation(auth()->user(), $interpretation, "Flow Translate - Your Interpretation Request", "info@flowtranslate.com"));
+        Mail::to('webpage@flowtranslate.com')->send(new AdminNewInterpretation(auth()->user(), $interpretation, "Flow Translate - New Interpretation Request", "noiznixon98@gmail.com"));
+        Mail::to(auth()->user()->email)->send(new UserNewInterpretation(auth()->user(), $interpretation, "Flow Translate - Your Interpretation Request", "noiznixon98@gmail.com"));
 
         return redirect()->route('newInterpretation')
             ->with('message', 'Interpretation request submitted successfully.');

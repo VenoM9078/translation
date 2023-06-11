@@ -50,7 +50,7 @@ return [
             'host' => env('MAIL_HOST', 'smtp.ionos.com'),
             'port' => env('MAIL_PORT', 587),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => "info@flowtranslate.com",
+            'username' => "noiznixon98@gmail.com",
             'password' => "NewInfoFlowtranslate2023",
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
