@@ -101,11 +101,11 @@ class UserController extends Controller
         date_default_timezone_set('America/Los_Angeles'); // Set timezone to PST
 
         // Get the latest worknumber from the Interpretation model
-        $latestWorkNumber = Order::latest('worknumber')->first()->worknumber;
+        $latestWorkNumber = Order::latest('worknumber')->first();
 
         $currentTime = date('ymdHis'); // YYMMDDHHMMSS format
-        if(isset($latestWorkNumber)){
-
+        if(isset($latestWorkNumber->worknumber)){
+            $latestWorkNumber = $latestWorkNumber->worknumber;
             while ($latestWorkNumber == $currentTime) {
                 // Delay by 1 second if the current time is equal to the latest work order
                 sleep(1);
@@ -609,10 +609,11 @@ class UserController extends Controller
         date_default_timezone_set('America/Los_Angeles'); // Set timezone to PST
 
         // Get the latest worknumber from the Interpretation model
-        $latestWorkNumber = Interpretation::latest('worknumber')->first()->worknumber;
+        $latestWorkNumber = Interpretation::latest('worknumber')->first();
 
         $currentTime = date('ymdHis'); // YYMMDDHHMMSS format
-        if (isset($latestWorkNumber)){
+        if (isset($latestWorkNumber->worknumber)){
+            $latestWorkNumber = $latestWorkNumber->worknumber;
             while ($latestWorkNumber == $currentTime) {
                 // Delay by 1 second if the current time is equal to the latest work order
                 sleep(1);
