@@ -38,7 +38,8 @@ class Order extends Model
         'proofread_status',
         'completed',
         'added_by_institute_user',
-        'message'
+        'message',
+        'want_quote'
     ];
 
     public function files()

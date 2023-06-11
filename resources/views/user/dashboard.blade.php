@@ -253,7 +253,7 @@
                                     placeholder="Enter Description."></textarea>
                             @if(Auth::user()->role_id == 0)
                                 <select name="want_quote" required class="form-control mt-3 mb-3" id="">
-                                    <option value="" aria-readonly="true">Needs Quote?</option>
+                                    <option value="">Needs Quote?</option>
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>
                                 </select>

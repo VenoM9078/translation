@@ -97,7 +97,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $userID = Auth::id();
-
+        // dd($request->all());
         date_default_timezone_set('America/Los_Angeles'); // Set timezone to PST
 
         // Get the latest worknumber from the Interpretation model

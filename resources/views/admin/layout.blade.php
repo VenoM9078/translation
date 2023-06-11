@@ -170,7 +170,7 @@
                 </li>
 
                 <li>
-                    <a href="javascript:;"
+                    {{-- <a href="javascript:;"
                         class="{{ Route::getCurrentRoute()->uri == 'admin/pending' || Route::getCurrentRoute()->uri == 'completedOrders' ? 'side-menu side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"><svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
                                 width="32" height="32" fill="white" viewBox="0 0 24 24" id="language">
@@ -197,12 +197,24 @@
                             </a>
                         </li>
 
-                    </ul>
+                    </ul> --}}
+                    <a href="{{ route('admin.pending') }}"
+                        class="{{ Route::getCurrentRoute()->uri == 'admin/pending' || Route::getCurrentRoute()->uri == 'completedOrders' ? 'side-menu side-menu--active' : 'side-menu' }}">
+                        <div class="side-menu__icon"><svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
+                                width="32" height="32" fill="white" viewBox="0 0 24 24" id="language">
+                                <path
+                                    d="M20,5.5H4A2.50294,2.50294,0,0,0,1.5,8v8A2.50294,2.50294,0,0,0,4,18.5H20A2.50263,2.50263,0,0,0,22.5,16V8A2.50263,2.50263,0,0,0,20,5.5Zm-8.5,12H4A1.50164,1.50164,0,0,1,2.5,16V8A1.50164,1.50164,0,0,1,4,6.5h7.5Zm10-1.5A1.50164,1.50164,0,0,1,20,17.5H12.5V6.5H20A1.50164,1.50164,0,0,1,21.5,8ZM4.8418,15.47412a.498.498,0,0,0,.63232-.31592L6.02692,13.5H7.97308l.5528,1.6582a.49982.49982,0,1,0,.94824-.3164l-2-6a.52019.52019,0,0,0-.94824,0l-2,6A.49957.49957,0,0,0,4.8418,15.47412ZM7,10.58105,7.63971,12.5H6.36029ZM19,11.5H17.52765a3.64579,3.64579,0,0,0,1.0329,2.07617c.26172.32813.55175.69141.85547,1.14649a.5.5,0,1,1-.832.55468c-.28515-.42773-.55859-.76855-.80468-1.07666A8.18684,8.18684,0,0,1,17,13.105a8.18684,8.18684,0,0,1-.7793,1.0957c-.24609.30811-.51953.64893-.80468,1.07666a.5.5,0,1,1-.832-.55468c.30372-.45508.59375-.81836.85547-1.14649A3.64579,3.64579,0,0,0,16.47235,11.5H15a.5.5,0,0,1,0-1h1.5V9a.5.5,0,0,1,1,0v1.5H19a.5.5,0,0,1,0,1Z">
+                                </path>
+                            </svg></div>
+                        <div class="side-menu__title">
+                            Translations
+                        </div>
+                    </a>
                 </li>
 
                 <li>
-                    <a href="javascript:;"
-                        class="{{ Route::getCurrentRoute()->uri == 'admin/ongoing-interpretations' || Route::getCurrentRoute()->uri == 'admin/view-completed-interpretations' ? 'side-menu side-menu--active' : 'side-menu' }}">
+                    <a href="{{ route('admin.ongoingInterpretations') }}"
+                         class="{{ Route::getCurrentRoute()->uri == 'admin/ongoing-interpretations' || Route::getCurrentRoute()->uri == 'admin/view-completed-interpretations' ? 'side-menu side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"><svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
                                 width="32" height="32" fill="white" viewBox="0 0 128 128" id="meeting">
                                 <path d="M103 108V80h-4v28a2 2 0 0 0 4 0Z"></path>
@@ -212,29 +224,13 @@
                                 </path>
                                 <circle cx="64" cy="55" r="14"></circle>
                                 <path
-                                    d="M37 90.46v16.505A4.032 4.032 0 0 0 41.02 111H46a9.008 9.008 0 0 0 6 8.475V126a2 2 0 0 0 4 0v-6h17v6a2 2 0 0 0 4 0v-6.95a9.002 9.002 0 0 0 5-8.05h4.98a4.032 4.032 0 0 0 4.02-4.035V90.46C91 81.159 82.76 73 73.366 73H54.635C45.24 73 37 81.16 37 90.46zM54.635 77h18.731A13.903 13.903 0 0 1 87 90.46L86.983 107 82 106.996V91a5.006 5.006 0 0 0-5-5H51a5.006 5.006 0 0 0-5 5v15.969l-5-.004V90.46C41 83.29 47.372 77 54.635 77zM29 108V80h-4v28a2 2 0 0 0 4 0zM17 76h21.965a21.906 21.906 0 0 1 14.467-6.96A18.161 18.161 0 0 1 47.651 62H21a6.007 6.007 0 0 0-6 6v6a2 2 0 0 0 2 2zm57.568-6.96A21.905 21.905 0 0 1 89.036 76H111a2 2 0 0 0 2-2v-6a6.007 6.007 0 0 0-6-6H80.35a18.161 18.161 0 0 1-5.782 7.04z">
+                                    d="M37 90.46v16.505A4.032 4.032 0 0 0 41.on02 111H46a9.008 9.008 0 0 0 6 8.475V126a2 2 0 0 0 4 0v-6h17v6a2 2 0 0 0 4 0v-6.95a9.002 9.002 0 0 0 5-8.05h4.98a4.032 4.032 0 0 0 4.02-4.035V90.46C91 81.159 82.76 73 73.366 73H54.635C45.24 73 37 81.16 37 90.46zM54.635 77h18.731A13.903 13.903 0 0 1 87 90.46L86.983 107 82 106.996V91a5.006 5.006 0 0 0-5-5H51a5.006 5.006 0 0 0-5 5v15.969l-5-.004V90.46C41 83.29 47.372 77 54.635 77zM29 108V80h-4v28a2 2 0 0 0 4 0Z">
                                 </path>
-                            </svg> </div>
+                            </svg></div>
                         <div class="side-menu__title">
                             Interpretations
-                            <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                         </div>
                     </a>
-                    <ul class="">
-                        <li>
-                            <a href="{{ route('admin.ongoingInterpretations') }}" class="side-menu">
-                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
-                                <div class="side-menu__title"> In-Progress </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.viewCompletedInterpretations') }}" class="side-menu">
-                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
-                                <div class="side-menu__title"> Completed </div>
-                            </a>
-                        </li>
-
-                    </ul>
                 </li>
                 <div class="side-nav__devider my-4"></div>
                 {{-- <li>
@@ -337,7 +333,7 @@
                 <li class="side-nav__devider my-6"></li>
 
                 <li>
-                    <a href="javascript:;"
+                    <a href="{{ route('view-pending-institute-admin') }}"
                         class="{{ Route::getCurrentRoute()->uri == 'admin/institute/admin/pending' || Route::getCurrentRoute()->uri == 'admin/view-completed-interpretations' ? 'side-menu side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"><svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
                                 width="32" height="32" fill="white" viewBox="0 0 128 128" id="meeting">
@@ -348,35 +344,13 @@
                                 </path>
                                 <circle cx="64" cy="55" r="14"></circle>
                                 <path
-                                    d="M37 90.46v16.505A4.032 4.032 0 0 0 41.02 111H46a9.008 9.008 0 0 0 6 8.475V126a2 2 0 0 0 4 0v-6h17v6a2 2 0 0 0 4 0v-6.95a9.002 9.002 0 0 0 5-8.05h4.98a4.032 4.032 0 0 0 4.02-4.035V90.46C91 81.159 82.76 73 73.366 73H54.635C45.24 73 37 81.16 37 90.46zM54.635 77h18.731A13.903 13.903 0 0 1 87 90.46L86.983 107 82 106.996V91a5.006 5.006 0 0 0-5-5H51a5.006 5.006 0 0 0-5 5v15.969l-5-.004V90.46C41 83.29 47.372 77 54.635 77zM29 108V80h-4v28a2 2 0 0 0 4 0zM17 76h21.965a21.906 21.906 0 0 1 14.467-6.96A18.161 18.161 0 0 1 47.651 62H21a6.007 6.007 0 0 0-6 6v6a2 2 0 0 0 2 2zm57.568-6.96A21.905 21.905 0 0 1 89.036 76H111a2 2 0 0 0 2-2v-6a6.007 6.007 0 0 0-6-6H80.35a18.161 18.161 0 0 1-5.782 7.04z">
+                                    d="M37 90.46v16.505A4.032 4.032 0 0 0 41.02 111H46a9.008 9.008 0 0 0 6 8.475V126a2 2 0 0 0 4 0v-6h17v6a2 2 0 0 0 4 0v-6.95a9.002 9.002 0 0 0 5-8.05h4.98a4.032 4.032 0 0 0 4.02-4.035V90.46C91 81.159 82.76 73 73.366 73H54.635C45.24 73 37 81.16 37 90.46zM54.635 77h18.731A13.903 13.903 0 0 1 87 90.46L86.983 107 82 106.996V91a5.006 5.006 0 0 0-5-5H51a5.006 5.006 0 0 0-5 5v15.969l-5-.004V90.46C41 83.29 47.372 77 54.635 77zM29 108V80h-4v28a2 2 0 0 0 4 0Z">
                                 </path>
-                            </svg> </div>
+                            </svg></div>
                         <div class="side-menu__title">
                             Institute
-                            <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                         </div>
                     </a>
-                    <ul class="">
-                        <li>
-                            <a href="{{ route('view-pending-institute-admin') }}" class="side-menu">
-                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
-                                <div class="side-menu__title"> Admin Requests </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('view-pending-institute-admin') }}" class="side-menu">
-                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
-                                <div class="side-menu__title"> All Institutes </div>
-                            </a>
-                        </li>
-                        {{-- <li>
-                            <a href="{{ route('admin.viewCompletedInterpretations') }}" class="side-menu">
-                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
-                                <div class="side-menu__title"> Institute User Requests </div>
-                            </a>
-                        </li> --}}
-
-                    </ul>
                 </li>
 
             </ul>
@@ -408,7 +382,8 @@
                 <div class="intro-x dropdown w-8 h-8">
                     <div class="dropdown-toggle w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in"
                         role="button" aria-expanded="false" data-tw-toggle="dropdown">
-                        <img src="{{ url('https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png') }}">
+                        <img
+                            src="{{ url('https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png') }}">
                     </div>
                     <div class="dropdown-menu w-56">
                         <ul class="dropdown-content bg-primary text-white">
@@ -416,12 +391,12 @@
 
                                 <div class="font-medium">
                                     @auth
-                                    {{ Auth::user()->name }}
+                                        {{ Auth::user()->name }}
                                     @endauth
                                 </div>
                                 <div class="text-xs text-white/70 mt-0.5 dark:text-slate-500">
                                     @auth
-                                    {{ Auth::user()->email }}
+                                        {{ Auth::user()->email }}
                                     @endauth
                                 </div>
                             </li>
@@ -450,8 +425,8 @@
 
     <!-- BEGIN: JS Assets-->
     <script src="{{ url('dist/js/app.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"
-        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
     <script>
