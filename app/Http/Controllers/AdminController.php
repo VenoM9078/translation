@@ -606,7 +606,11 @@ class AdminController extends Controller
         if ($choice == 1) {
             $order->update(['paymentStatus' => 2, 'orderStatus' => 'Translation Pending', 'paymentLaterApproved' => 1]);
             // Mail::to($order->user->email)->send(new LatePaymentApproved());
-            Mail::mailer('clients')->to($order->user->email)->send(new LatePaymentApproved("Flow Translate - Late Payment Approved", "noiznixon98@gmail.com"));
+            if(env("IS_DEV") == 1){
+                Mail::mailer('dev')->to($order->user->email)->send(new LatePaymentApproved("Flow Translate - Late Payment Approved", env("ADMIN_EMAIL_DEV")));
+            } else {
+                Mail::mailer('clients')->to($order->user->email)->send(new LatePaymentApproved("Flow Translate - Late Payment Approved", env("ADMIN_EMAIL")));
+            }
 
             return redirect()->back();
         } else if ($choice == 0) {
@@ -700,7 +704,11 @@ class AdminController extends Controller
 
 
         // Mail::to($order->user->email)->send(new paymentApproved());
-        Mail::mailer('clients')->to($order->user->email)->send(new paymentApproved("Flow Translate - Payment Approved", "noiznixon98@gmail.com"));
+        if(env("IS_DEV") == 1){
+            Mail::mailer('dev')->to($order->user->email)->send(new paymentApproved("Flow Translate - Payment Approved", env("ADMIN_EMAIL_DEV")));
+        } else {
+            Mail::mailer('clients')->to($order->user->email)->send(new paymentApproved("Flow Translate - Payment Approved", env("ADMIN_EMAIL")));
+        }
 
         return redirect()->route('admin.pending');
     }
@@ -1161,8 +1169,12 @@ class AdminController extends Controller
         Order::where('id', $order_id)->update(['orderStatus' => 'Completed']);
         Order::where('id', $order_id)->update(['completed' => 1]);
 
-        Mail::mailer('clients')->to($email)->send(new mailOfCompletion($order, $zipName2, $emailTitle, "noiznixon98@gmail.com"));
-
+          if(env("IS_DEV") == 1)
+          {
+            Mail::mailer('dev')->to($email)->send(new mailOfCompletion($order, $zipName2, $emailTitle, env("ADMIN_EMAIL_DEV")));
+          } else {
+            Mail::mailer('clients')->to($email)->send(new mailOfCompletion($order, $zipName2, $emailTitle, env("ADMIN_EMAIL")));
+          }
         //Send Invoice
 
         // $validated = $request->validate([

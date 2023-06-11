@@ -185,8 +185,13 @@ class UserController extends Controller
 
             $email = $user->email;
 
-            // Mail::mailer('clients')->to($email)->send(new OrderCreated($user, $order, "Flow Translate - Order Created", "noiznixon98@gmail.com"));
-            // Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order, "Flow Translate - New Order Created", "noiznixon98@gmail.com"));
+            if(env("IS_DEV") == 1){
+                Mail::mailer('dev')->to($email)->send(new OrderCreated($user, $order, "Flow Translate - Order Created", env("ADMIN_EMAIL_DEV")));
+                Mail::mailer('dev')->to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order, "Flow Translate - New Order Created", env("ADMIN_EMAIL_DEV")));
+            } else {
+                Mail::mailer('clients')->to($email)->send(new OrderCreated($user, $order, "Flow Translate - Order Created", env("ADMIN_EMAIL")));
+                Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order, "Flow Translate - New Order Created", env("ADMIN_EMAIL")));
+            }
             if (Auth::user()->role_id == 0) {
 
                 if ($request->input("isPayNow") == "on") {
@@ -210,7 +215,7 @@ class UserController extends Controller
             // Mail::to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order));
 
 
-            return redirect()->route('myorders')->with('status', 'Translation Order placed successfully!');
+            return redirect()->route('myorders')->with('message', 'Translation Order placed successfully!');
         }
         return redirect()->back()->with('status', 'Attach Files!');
         // redirect()->back();
@@ -277,9 +282,13 @@ class UserController extends Controller
 
         $email = $order->user->email;
 
-        Mail::mailer('clients')->to($email)->send(new CustomerPaymentReceived($order, "Flow Translate - Payment Received", "noiznixon98@gmail.com"));
-        Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new AdminPaymentReceived($order, "Flow Translate - Customer Payment Received", "noiznixon98@gmail.com"));
-
+          if(env("IS_DEV") == 1){
+            Mail::mailer('dev')->to($email)->send(new CustomerPaymentReceived($order, "Flow Translate - Payment Received", env("ADMIN_EMAIL_DEV")));
+            Mail::mailer('dev')->to('webpage@flowtranslate.com')->send(new AdminPaymentReceived($order, "Flow Translate - Customer Payment Received", env("ADMIN_EMAIL_DEV")));
+          } else {
+            Mail::mailer('clients')->to($email)->send(new CustomerPaymentReceived($order, "Flow Translate - Payment Received", env("ADMIN_EMAIL")));
+            Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new AdminPaymentReceived($order, "Flow Translate - Customer Payment Received", env("ADMIN_EMAIL")));
+          }
         return view('user.thankyou');
     }
 
@@ -299,8 +308,13 @@ class UserController extends Controller
 
         $email = $interpretation->user->email;
 
-        Mail::mailer('clients')->to($email)->send(new UserInterpretationPaymentReceived($interpretation, "Flow Translate - Payment Received", "noiznixon98@gmail.com"));
-        Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new AdminInterpretationPaymentReceived($interpretation, "Flow Translate - Customer Payment Received", "noiznixon98@gmail.com"));
+        if(env("IS_DEV") == 1){
+            Mail::mailer('dev')->to($email)->send(new UserInterpretationPaymentReceived($interpretation, "Flow Translate - Payment Received", env("ADMIN_EMAIL_DEV")));
+            Mail::mailer('dev')->to('webpage@flowtranslate.com')->send(new AdminInterpretationPaymentReceived($interpretation, "Flow Translate - Customer Payment Received", env("ADMIN_EMAIL_DEV")));
+        } else {
+            Mail::mailer('clients')->to($email)->send(new UserInterpretationPaymentReceived($interpretation, "Flow Translate - Payment Received", env("ADMIN_EMAIL")));
+            Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new AdminInterpretationPaymentReceived($interpretation, "Flow Translate - Customer Payment Received", env("ADMIN_EMAIL")));
+        }
 
         return view('user.quoteThankYou');
     }
@@ -639,9 +653,13 @@ class UserController extends Controller
 
         $interpretation->save();
 
-        Mail::to('webpage@flowtranslate.com')->send(new AdminNewInterpretation(auth()->user(), $interpretation, "Flow Translate - New Interpretation Request", "noiznixon98@gmail.com"));
-        Mail::to(auth()->user()->email)->send(new UserNewInterpretation(auth()->user(), $interpretation, "Flow Translate - Your Interpretation Request", "noiznixon98@gmail.com"));
-
+        if(env("IS_DEV") == 1){
+            Mail::to('webpage@flowtranslate.com')->send(new AdminNewInterpretation(auth()->user(), $interpretation, "Flow Translate - New Interpretation Request", env("ADMIN_EMAIL_DEV")));
+            Mail::to(auth()->user()->email)->send(new UserNewInterpretation(auth()->user(), $interpretation, "Flow Translate - Your Interpretation Request", env("ADMIN_EMAIL_DEV")));
+        } else {
+            Mail::to('webpage@flowtranslate.com')->send(new AdminNewInterpretation(auth()->user(), $interpretation, "Flow Translate - New Interpretation Request", env("ADMIN_EMAIL")));
+            Mail::to(auth()->user()->email)->send(new UserNewInterpretation(auth()->user(), $interpretation, "Flow Translate - Your Interpretation Request", env("ADMIN_EMAIL")));
+        }
         return redirect()->route('newInterpretation')
             ->with('message', 'Interpretation request submitted successfully.');
     }

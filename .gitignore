@@ -17,4 +17,5 @@ yarn-error.log
 /public/proofread_by_proofreader
 /public/documents
 /public/compressed
+/public/compressed/
 /public/translated
