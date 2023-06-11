@@ -104,10 +104,15 @@ class UserController extends Controller
         $latestWorkNumber = Order::latest('worknumber')->first()->worknumber;
 
         $currentTime = date('ymdHis'); // YYMMDDHHMMSS format
+        if(isset($latestWorkNumber)){
 
-        while ($latestWorkNumber == $currentTime) {
-            // Delay by 1 second if the current time is equal to the latest work order
-            sleep(1);
+            while ($latestWorkNumber == $currentTime) {
+                // Delay by 1 second if the current time is equal to the latest work order
+                sleep(1);
+                $currentTime = date('ymdHis');
+            }
+        } else {
+            $latestWorkNumber = "";
             $currentTime = date('ymdHis');
         }
 
@@ -607,10 +612,14 @@ class UserController extends Controller
         $latestWorkNumber = Interpretation::latest('worknumber')->first()->worknumber;
 
         $currentTime = date('ymdHis'); // YYMMDDHHMMSS format
-
-        while ($latestWorkNumber == $currentTime) {
-            // Delay by 1 second if the current time is equal to the latest work order
-            sleep(1);
+        if (isset($latestWorkNumber)){
+            while ($latestWorkNumber == $currentTime) {
+                // Delay by 1 second if the current time is equal to the latest work order
+                sleep(1);
+                $currentTime = date('ymdHis');
+            }
+        } else {
+            $latestWorkNumber = "";
             $currentTime = date('ymdHis');
         }
 
