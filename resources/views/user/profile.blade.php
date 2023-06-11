@@ -45,7 +45,7 @@
         </div>
     </div>
 
-    @if($user->institute)
+    @if(count($user->institute) > 0)
     <div class="intro-y box lg:mt-5">
         <div class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
             <h2 class="font-medium text-base mr-auto">
