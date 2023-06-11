@@ -144,7 +144,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($interpretations as $interpretation)
+                                    @foreach ($interpretations as $key => $interpretation)
                                         <tr>
                                             <td class="whitespace-nowrap">
                                                 <div class="flex">
@@ -338,7 +338,7 @@
                                             {{-- @dd($interpretation->user->institute) --}}
                                             <td class="whitespace-nowrap" style="display: none">{{ $interpretation->interpreter_completed }}</td>
                                             <td class="whitespace-nowrap">{{ $interpretation->worknumber }}</td>
-                                            @if ($interpretation->user->institute != null)
+                                            @if (count($interpretation->user->institute) > 0)
                                              <td class="whitespace-nowrap">  
                                                 @foreach ($interpretation->user->institute as $institute)
                                                     {{ $institute->name }}
