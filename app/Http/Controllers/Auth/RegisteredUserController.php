@@ -67,7 +67,7 @@ class RegisteredUserController extends Controller
         $validated = $request->validate(
             [
                 'name' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => 'required|string|min:6',
             ],
             [
@@ -89,7 +89,7 @@ class RegisteredUserController extends Controller
                 'role_id' => 0
             ]);
 
-            $user->sendEmailVerificationNotification();  // add this line
+            // $user->sendEmailVerificationNotification();  // add this line
 
 
             event(new Registered($user));
