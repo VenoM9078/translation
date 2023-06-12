@@ -199,6 +199,11 @@
 
                                         <!-- BEGIN: Modal Toggle -->
                                         <div class="text-center">
+                                            <a href="{{ route('show-order', $order->id) }}"
+                                                class="btn btn-primary ml-1">Show
+                                            </a>
+                                        </div>
+                                        <div class="text-center">
                                             <a href="{{ route('view-edit-order', $order->id) }}"
                                                 class="btn btn-primary ml-1">Edit
                                             </a>

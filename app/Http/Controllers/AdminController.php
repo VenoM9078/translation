@@ -1198,6 +1198,11 @@ class AdminController extends Controller
         return redirect()->route('completedOrders');
     }
 
+    public function show($id){
+        $order = $orders = Order::with(['contractorOrder.contractor'])->where('id',$id)
+            ->firstOrFail();
+        return view('admin.show-order',compact('order'));
+    }
     public function generatePDFInvoice($invoiceID)
     {
         $users = User::get();
