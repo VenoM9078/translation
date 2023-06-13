@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Mail;
 use File;
 use Illuminate\Http\File as HttpFile;
 use Illuminate\Support\Facades\Hash;
+use phpDocumentor\Reflection\Types\Null_;
 use ZipArchive;
 
 class UserController extends Controller
@@ -133,6 +134,11 @@ class UserController extends Controller
         $isInstitute = 0;
         $paymentStatus = 0;
         $invoiceSent = 0;
+        $wantQuote = $request->input('want_quote');
+
+        if ($wantQuote == "" || $wantQuote == NULL) {
+            $wantQuote = 0;
+        }
 
         if (Auth::user()->role_id == 1 || Auth::user()->role_id == 2) {
             $isInstitute = 1;
@@ -154,7 +160,7 @@ class UserController extends Controller
                 'added_by_institute_user' => $isInstitute,
                 'paymentStatus' => $paymentStatus,
                 'message' => $request->input('message'),
-                'want_quote' => $request->input('want_quote')
+                'want_quote' => $wantQuote
             ];
         } else {
             $data = [
@@ -168,7 +174,7 @@ class UserController extends Controller
                 'invoiceSent' => $invoiceSent,
                 'paymentStatus' => $paymentStatus,
                 'message' => $request->input('message'),
-                'want_quote' => $request->input('want_quote')
+                'want_quote' => $wantQuote
             ];
         }
 
