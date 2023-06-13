@@ -147,7 +147,7 @@ class RegisteredUserController extends Controller
                     'name' => $request->name,
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
-                    'role_id' => $request->role_id
+                    'role_id' => 0
                 ]);
 
                 // Create a request to join the institute using the model

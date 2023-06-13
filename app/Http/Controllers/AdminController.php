@@ -226,6 +226,8 @@ class AdminController extends Controller
             // Check if user exists
             if ($user) {
                 // Attach the user to the institute in the pivot table
+                $user->role_id = 2;
+                $user->save();
                 $institute_member->user_id = $institute->managed_by;
                 $institute_member->institute_id = $institute->id;
                 $institute_member->save();
