@@ -40,7 +40,13 @@ Route::get('contact', function () {
 
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
+})->middleware(['auth'])->name('verification.notice');
+
+// Route::get('/email/verify', function () {
+//     dd("hi");
+//     return view('auth.verify-email');
+// })->middleware(['auth:contractor'])->name('cont.verification.notice');
+
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
@@ -77,6 +83,12 @@ Route::get('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin
 
 //Contracter
 
+Route::get('verify-email/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect()->route('contractor.dashboard');
+})->middleware(['auth:contractor', 'signed', 'throttle:6,1'])->name('verification.verify'); 
+
 Route::get('/contractor/login', [ContractorAuthController::class, 'showLoginForm'])->name('contractor.login');
 Route::get('/contractor/register', [ContractorAuthController::class, 'showRegisterForm'])->name('contractor.register');
 Route::post('/contractor/register-complete', [ContractorAuthController::class, 'showRegisterForm2'])->name('contractor.register2');
@@ -90,7 +102,7 @@ Route::get('/dashboard', function () {
 
 Route::get('generate-invoice/{id}', [AdminController::class, 'generatePDFInvoice'])->name('generatePDFInvoice');
 
-Route::group(['middleware' => ['auth:contractor']], function () {
+Route::group(['middleware' => ['auth:contractor', 'contractor.verified']], function () {
     Route::get('contractor/report/{id}', [ContractorAuthController::class, 'reportToAdmin'])->name('reportToAdmin');
     Route::get('contractor/view-report/{id}', [ContractorAuthController::class, 'viewReport'])->name('contractor.viewReport');
     Route::delete('/interpretation/{id}', [ContractorAuthController::class, 'deleteInterpretation'])->name('interpretation.delete');
@@ -147,7 +159,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('admin/paidOrders', [AdminController::class, 'paidOrders'])->name('admin.paidOrders');
 
     //view orders
-    Route::get('admin/orders/{id}',[AdminController::class,'show'])->name('show-order');
+    Route::get('admin/orders/{id}', [AdminController::class, 'show'])->name('show-order');
     Route::delete('/institute/{id}/delete', [AdminController::class, 'deleteInstitute'])->name('institute.delete');
 
 
@@ -178,7 +190,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/admin/submitQuote/{id}', [AdminController::class, 'showSubmitQuote'])->name('admin.showSubmitQuote');
     Route::post('admin/submitQuote', [AdminController::class, 'submitQuote'])->name('admin.submitQuote');
 
-    Route::get('/admin/order/quote/{id}',[AdminController::class,'showOrderSubmitQuote'])->name('admin.showOrderSubmitQuote');
+    Route::get('/admin/order/quote/{id}', [AdminController::class, 'showOrderSubmitQuote'])->name('admin.showOrderSubmitQuote');
     Route::post('/admin/order/quote/submit', [AdminController::class, 'submitOrderQuote'])->name('admin.submitOrderQuote');
 
     Route::get('admin/view-completed-interpretations', [AdminController::class, 'viewCompletedInterpretations'])->name('admin.viewCompletedInterpretations');
@@ -190,7 +202,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/admin/contractor/{id}', [AdminController::class, 'viewContractor'])->name('admin.viewContractor');
 
     Route::get('/view-invoice/{id}', [AdminController::class, 'viewInvoice'])->name('view-invoice');
-    
+
     Route::delete('destroy/{id}', [AdminController::class, 'destroy'])->name('destroy');
     Route::get('downloadFiles/{order}', [AdminController::class, 'downloadFiles'])->name('downloadFiles');
     Route::get('downloadEvidence/{order}', [AdminController::class, 'downloadEvidence'])->name('downloadEvidence');
@@ -239,9 +251,6 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/institute/admin/pending', [AdminController::class, 'viewInstituteAdminPending'])->name('view-pending-institute-admin');
     Route::get('/institute/admin/{id}/accept', [AdminController::class, 'acceptInstituteAdmin'])->name('institute-admin-accept');
     Route::get('/institute/admin/{id}/decline', [AdminController::class, 'declineInstituteAdmin'])->name('institute-admin-decline');
-
-   
-
 });
 
 Route::middleware(['web', 'auth', 'verified'])->group(function () {

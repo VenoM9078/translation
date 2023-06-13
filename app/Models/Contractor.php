@@ -2,13 +2,18 @@
 
 namespace App\Models;
 
+use App\Notifications\ContractorVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Contractor extends Authenticatable
+
+implements MustVerifyEmail
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
     protected $fillable = [
         'name',
         'email',
@@ -41,4 +46,8 @@ class Contractor extends Authenticatable
         return $this->hasOne('App\Models\ProofRequest', 'contractor_id', 'id');
     }
 
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new ContractorVerifyEmail); // assuming you have a ContractorVerifyEmail notification
+    }
 }

@@ -289,6 +289,10 @@ class ContractorAuthController extends Controller
             }
         }
 
+        if (!$contractor->hasVerifiedEmail()) {
+            $contractor->sendEmailVerificationNotification();
+            // return redirect()->route('verification.notice');
+        }
         Auth::guard('contractor')->login($contractor);
 
         return redirect()->route('contractor.dashboard');
