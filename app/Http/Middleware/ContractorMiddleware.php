@@ -18,8 +18,8 @@ class ContractorMiddleware
     public function handle(Request $request, Closure $next)
     {
         // Get the contractor user
+        // dd(Auth::guard('contractor')->user());
         $contractor = Auth::guard('contractor')->user();
-        // dd($contractor->hasVerifiedEmail());
         // If contractor is null, they are not logged in, redirect to login page
         if (is_null($contractor)) {
             return redirect()->route('contractor.login');
@@ -28,6 +28,6 @@ class ContractorMiddleware
         elseif (!$contractor->hasVerifiedEmail()) {
             return redirect()->route('verification.notice');
         }
-        // return $next($request);
+        return $next($request);
     }
 }

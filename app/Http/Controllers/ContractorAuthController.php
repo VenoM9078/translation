@@ -12,6 +12,7 @@ use App\Mail\InterpretationReportToUser;
 use App\Mail\NotifyAdminOfContractorAction;
 use App\Mail\NotifyAdminProofRead;
 use App\Mail\NotifyAdminTranslationSubmissionContractor;
+use App\Mail\VerifyContractorMail;
 use App\Models\Admin;
 use App\Models\Contractor;
 use App\Models\ContractorInterpretation;
@@ -21,6 +22,7 @@ use App\Models\Order;
 use App\Models\ProofReaderOrders;
 use App\Models\ProofRequest;
 use App\Models\TemporaryFile;
+use App\Models\VerifyContractor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Mail as Mail;
@@ -236,16 +238,16 @@ class ContractorAuthController extends Controller
             'password' => 'required|string|min:6',
             'password2' => 'required|string|min:6|same:password',
         ], [
-            'name.required' => 'The name field is required.',
-            'name.max' => 'The name may not be greater than 255 characters.',
-            'email.required' => 'The email field is required.',
-            'email.max' => 'The email may not be greater than 255 characters.',
-            'password.required' => 'The password field is required.',
-            'password.min' => 'The password must be at least 6 characters.',
-            'password2.required' => 'The confirmation password field is required.',
-            'password2.same' => 'The confirmation password does not match.',
-            'password2.min' => 'The confirmation password must be at least 6 characters.',
-        ]);
+                'name.required' => 'The name field is required.',
+                'name.max' => 'The name may not be greater than 255 characters.',
+                'email.required' => 'The email field is required.',
+                'email.max' => 'The email may not be greater than 255 characters.',
+                'password.required' => 'The password field is required.',
+                'password.min' => 'The password must be at least 6 characters.',
+                'password2.required' => 'The confirmation password field is required.',
+                'password2.same' => 'The confirmation password does not match.',
+                'password2.min' => 'The confirmation password must be at least 6 characters.',
+            ]);
 
 
         $validated['password'] = bcrypt($validated['password']);
@@ -289,15 +291,36 @@ class ContractorAuthController extends Controller
             }
         }
 
-        if (!$contractor->hasVerifiedEmail()) {
-            $contractor->sendEmailVerificationNotification();
-            // return redirect()->route('verification.notice');
-        }
+        $verifyContractor = VerifyContractor::create([
+            'contractor_id' => $contractor->id,
+            'token' => sha1(time())
+        ]);
+
+        Mail::to($contractor->email)->send(new VerifyContractorMail($contractor));
+
         Auth::guard('contractor')->login($contractor);
 
         return redirect()->route('contractor.dashboard');
     }
 
+    public function verifyContractor($token)
+    {
+        // dd($token);
+        $verifyUser = VerifyContractor::where('token', $token)->first();
+        if (isset($verifyUser)) {
+            $contractor = $verifyUser->contractor;
+            if (!$contractor->verified) {
+                $verifyUser->contractor->verified = 1;
+                $verifyUser->contractor->save();
+                $status = "Your e-mail is verified. You can now login.";
+            } else {
+                $status = "Your e-mail is already verified. You can now login.";
+            }
+        } else {
+            return redirect()->route('contractor.login')->with('warning', "Sorry your email cannot be identified.");
+        }
+        return redirect()->route('contractor.dashboard')->with('status', $status);
+    }
 
     public function index()
     {
@@ -667,11 +690,15 @@ class ContractorAuthController extends Controller
         ]);
 
         if (
-            auth()->guard('contractor')->attempt([
-                'email' => $request->email,
-                'password' => $request->password
-            ])
-        ) {
+            auth()->guard('contractor')->attempt(['email' => $request->email, 'password' => $request->password])) 
+            {
+            $contractor = auth()->guard('contractor')->user();
+            // dd($contractor);
+            if ($contractor->verified != 1) {
+                
+                auth()->logout();
+                return back()->with('warning', 'You need to confirm your account. We have sent you an activation code, please check your email.');
+            }
             return redirect()->intended(url('/contractor/dashboard'));
         } else {
             return back()->withErrors([

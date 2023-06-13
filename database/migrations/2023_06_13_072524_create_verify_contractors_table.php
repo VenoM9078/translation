@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('contractors', function (Blueprint $table) {
-            $table->timestamp('email_verified_at')->nullable();
-            $table->int('verified')->default(0);
+        Schema::create('verify_contractors', function (Blueprint $table) {
+            $table->integer('contractor_id');
+            $table->string('token');
+            $table->timestamps();
         });
     }
 
@@ -26,9 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('contractors', function (Blueprint $table) {
-            $table->dropColumn('email_verified_at');
-            $table->dropColumn('verified');
-        });
+        Schema::dropIfExists('verify_contractors');
     }
 };

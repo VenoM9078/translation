@@ -47,21 +47,26 @@
 
                     <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">A few more clicks to sign in to your
                         account. Manage all your orders in one place!</div>
-                    @if($errors->any())
-                    <div class="alert alert-danger mt-3 mb-3">
-                        <ul>
-                            @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
+                    @if ($errors->any())
+                        <div class="alert alert-danger mt-3 mb-3">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    @if (session('warning'))
+                        <div class="alert alert-warning">
+                            {{ session('warning') }}
+                        </div>
                     @endif
                     <form action="{{ route('contractor.login') }}" method="POST">
                         @csrf
                         @method('POST')
                         <div class="intro-x mt-8">
-                            <input type="email" name="email" class="intro-x login__input form-control py-3 px-4 block"
-                                placeholder="Email">
+                            <input type="email" name="email"
+                                class="intro-x login__input form-control py-3 px-4 block" placeholder="Email">
                             <input type="password" name="password"
                                 class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="Password">
                         </div>

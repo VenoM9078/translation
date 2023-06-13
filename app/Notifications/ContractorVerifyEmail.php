@@ -42,14 +42,16 @@ class ContractorVerifyEmail extends Notification
      */
     public function toMail($notifiable)
     {
-        $verificationUrl = URL::temporarySignedRoute(
-            'verification.verify',
-            now()->addMinutes(Config::get('auth.verification.expire', 60)),
-            [
-                'id' => $notifiable->getKey(),
-                'hash' => sha1($notifiable->getEmailForVerification()),
-            ],
-            false
+        $verificationUrl = URL::to(
+            URL::temporarySignedRoute(
+                'contractor-verification.verify',
+                now()->addMinutes(Config::get('auth.verification.expire', 60)),
+                [
+                    'id' => $notifiable->getKey(),
+                    'hash' => sha1($notifiable->getEmailForVerification()),
+                ],
+                false
+            )
         );
 
         // dd($verificationUrl);

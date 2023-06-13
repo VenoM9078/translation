@@ -42,6 +42,11 @@ Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware(['auth'])->name('verification.notice');
 
+Route::get('/email/verify-contractor', function () {
+    // dd("comes");
+    return view('auth.verify-email');
+})->name('contractor.verification.notice');
+
 // Route::get('/email/verify', function () {
 //     dd("hi");
 //     return view('auth.verify-email');
@@ -83,11 +88,8 @@ Route::get('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin
 
 //Contracter
 
-Route::get('verify-email/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
+Route::get('/contractor/verify/{token}', [ContractorAuthController::class,'verifyContractor'])->name('verify-contractor');
 
-    return redirect()->route('contractor.dashboard');
-})->middleware(['auth:contractor', 'signed', 'throttle:6,1'])->name('verification.verify'); 
 
 Route::get('/contractor/login', [ContractorAuthController::class, 'showLoginForm'])->name('contractor.login');
 Route::get('/contractor/register', [ContractorAuthController::class, 'showRegisterForm'])->name('contractor.register');
