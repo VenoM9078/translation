@@ -63,23 +63,20 @@
                         <div class="intro-x mt-8">
                             <input type="hidden" name="role_id" value="{{$role_id_sent}}">
                             @if ($role_id_sent == 1)
-                            <input type="text" name="institute_passcode"
+                            <input required type="text" name="institute_passcode"
                                 class="intro-x login__input form-control py-3 px-4 block"
                                 placeholder="Enter Institute's Passcode Here">
                             @elseif($role_id_sent == 2)
-                            <input type="text" name="institute_name"
+                            <input required type="text" name="institute_name"
                                 class="intro-x login__input form-control py-3 px-4 block"
                                 placeholder="Enter Institute's Name Here">
-                            <input type="text" name="institute_passcode"
+                            <input required type="text" name="institute_passcode"
                                 class="intro-x mt-2 login__input form-control py-3 px-4 block"
                                 placeholder="Enter Institute's Passcode Here">
                             @endif
-                            <input type="hidden" name="name" class="intro-x login__input form-control py-3 px-4 block"
-                                value="{{ $name }}">
-                            <input type="hidden" name="email"
-                                class="intro-x login__input form-control py-3 px-4 block mt-4" value="{{ $email }}">
-                            <input type="hidden" name="password"
-                                class="intro-x login__input form-control py-3 px-4 block mt-4" value="{{ $password }}">
+                            <input type="hidden" name="name" class="" value="{{ $name }}">
+                            <input type="hidden" name="email" class="" value="{{ $email }}">
+                            <input type="hidden" name="password" class="" value="{{ $password }}">
                         </div>
 
                         <div class="mt-2 xl:mt-8 text-center xl:text-left">

@@ -45,9 +45,22 @@ class UserController extends Controller
         return view('user.dashboard');
     }
 
+    public function newOrder()
+    {
+        return view('user.new-order');
+    }
+
     public function newInterpretation()
     {
         return view('user.newInterpretation');
+    }
+
+    public function myinterpretations()
+    {
+        $user = Auth::user();
+        $interpretations = Interpretation::where('user_id', $user->id)->orderByDesc('created_at')->get();
+
+        return view('user.viewMyInterpretations', compact('user', 'interpretations'));
     }
     /**
      * Show the form for creating a new resource.
@@ -104,7 +117,7 @@ class UserController extends Controller
         $latestWorkNumber = Order::latest('worknumber')->first();
 
         $currentTime = date('ymdHis'); // YYMMDDHHMMSS format
-        if(isset($latestWorkNumber->worknumber)){
+        if (isset($latestWorkNumber->worknumber)) {
             $latestWorkNumber = $latestWorkNumber->worknumber;
             while ($latestWorkNumber == $currentTime) {
                 // Delay by 1 second if the current time is equal to the latest work order
@@ -190,7 +203,7 @@ class UserController extends Controller
 
             $email = $user->email;
 
-            if(env("IS_DEV") == 1){
+            if (env("IS_DEV") == 1) {
                 Mail::mailer('dev')->to($email)->send(new OrderCreated($user, $order, "Flow Translate - Order Created", env("ADMIN_EMAIL_DEV")));
                 Mail::mailer('dev')->to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order, "Flow Translate - New Order Created", env("ADMIN_EMAIL_DEV")));
             } else {
@@ -287,13 +300,13 @@ class UserController extends Controller
 
         $email = $order->user->email;
 
-          if(env("IS_DEV") == 1){
+        if (env("IS_DEV") == 1) {
             Mail::mailer('dev')->to($email)->send(new CustomerPaymentReceived($order, "Flow Translate - Payment Received", env("ADMIN_EMAIL_DEV")));
             Mail::mailer('dev')->to('webpage@flowtranslate.com')->send(new AdminPaymentReceived($order, "Flow Translate - Customer Payment Received", env("ADMIN_EMAIL_DEV")));
-          } else {
+        } else {
             Mail::mailer('clients')->to($email)->send(new CustomerPaymentReceived($order, "Flow Translate - Payment Received", env("ADMIN_EMAIL")));
             Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new AdminPaymentReceived($order, "Flow Translate - Customer Payment Received", env("ADMIN_EMAIL")));
-          }
+        }
         return view('user.thankyou');
     }
 
@@ -313,7 +326,7 @@ class UserController extends Controller
 
         $email = $interpretation->user->email;
 
-        if(env("IS_DEV") == 1){
+        if (env("IS_DEV") == 1) {
             Mail::mailer('dev')->to($email)->send(new UserInterpretationPaymentReceived($interpretation, "Flow Translate - Payment Received", env("ADMIN_EMAIL_DEV")));
             Mail::mailer('dev')->to('webpage@flowtranslate.com')->send(new AdminInterpretationPaymentReceived($interpretation, "Flow Translate - Customer Payment Received", env("ADMIN_EMAIL_DEV")));
         } else {
@@ -612,7 +625,7 @@ class UserController extends Controller
         $latestWorkNumber = Interpretation::latest('worknumber')->first();
 
         $currentTime = date('ymdHis'); // YYMMDDHHMMSS format
-        if (isset($latestWorkNumber->worknumber)){
+        if (isset($latestWorkNumber->worknumber)) {
             $latestWorkNumber = $latestWorkNumber->worknumber;
             while ($latestWorkNumber == $currentTime) {
                 // Delay by 1 second if the current time is equal to the latest work order
@@ -663,7 +676,7 @@ class UserController extends Controller
 
         $interpretation->save();
 
-        if(env("IS_DEV") == 1){
+        if (env("IS_DEV") == 1) {
             Mail::to('webpage@flowtranslate.com')->send(new AdminNewInterpretation(auth()->user(), $interpretation, "Flow Translate - New Interpretation Request", env("ADMIN_EMAIL_DEV")));
             Mail::to(auth()->user()->email)->send(new UserNewInterpretation(auth()->user(), $interpretation, "Flow Translate - Your Interpretation Request", env("ADMIN_EMAIL_DEV")));
         } else {

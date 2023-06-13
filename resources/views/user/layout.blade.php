@@ -155,8 +155,18 @@
                 <div class="side-nav__devider my-6"></div>
 
                 <li>
-                    <a href="{{ route('myorders') }}"
-                        class="{{ Route::getCurrentRoute()->uri == 'myorders' ? 'side-menu   side-menu--active' : 'side-menu' }}">
+                    <a href="{{ route('user.profile') }}"
+                        class="{{ Route::getCurrentRoute()->uri == 'view-profile' ? 'side-menu   side-menu--active' : 'side-menu' }}">
+                        <div class="side-menu__icon"> <i data-lucide="user"></i> </div>
+                        <div class="side-menu__title">
+                            User Profile
+                        </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('user.index') }}"
+                        class="{{ Route::getCurrentRoute()->uri == 'user' ? 'side-menu   side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"> <i data-lucide="codesandbox"></i> </div>
                         <div class="side-menu__title">
                             Dashboard
@@ -165,27 +175,87 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('user.index') }}"
-                        class="{{ Route::getCurrentRoute()->uri == 'user' ? 'side-menu   side-menu--active' : 'side-menu' }}">
-                        <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                    <a href="javascript:;"
+                        class="{{ Route::getCurrentRoute()->uri == 'newOrder' || Route::getCurrentRoute()->uri == 'myorders' ? 'side-menu side-menu--active' : 'side-menu' }}">
+                        <div class="side-menu__icon"> <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
+                                width="32" height="32" fill="white" viewBox="0 0 24 24" id="language">
+                                <path
+                                    d="M20,5.5H4A2.50294,2.50294,0,0,0,1.5,8v8A2.50294,2.50294,0,0,0,4,18.5H20A2.50263,2.50263,0,0,0,22.5,16V8A2.50263,2.50263,0,0,0,20,5.5Zm-8.5,12H4A1.50164,1.50164,0,0,1,2.5,16V8A1.50164,1.50164,0,0,1,4,6.5h7.5Zm10-1.5A1.50164,1.50164,0,0,1,20,17.5H12.5V6.5H20A1.50164,1.50164,0,0,1,21.5,8ZM4.8418,15.47412a.498.498,0,0,0,.63232-.31592L6.02692,13.5H7.97308l.5528,1.6582a.49982.49982,0,1,0,.94824-.3164l-2-6a.52019.52019,0,0,0-.94824,0l-2,6A.49957.49957,0,0,0,4.8418,15.47412ZM7,10.58105,7.63971,12.5H6.36029ZM19,11.5H17.52765a3.64579,3.64579,0,0,0,1.0329,2.07617c.26172.32813.55175.69141.85547,1.14649a.5.5,0,1,1-.832.55468c-.28515-.42773-.55859-.76855-.80468-1.07666A8.18684,8.18684,0,0,1,17,13.105a8.18684,8.18684,0,0,1-.7793,1.0957c-.24609.30811-.51953.64893-.80468,1.07666a.5.5,0,1,1-.832-.55468c.30372-.45508.59375-.81836.85547-1.14649A3.64579,3.64579,0,0,0,16.47235,11.5H15a.5.5,0,0,1,0-1h1.5V9a.5.5,0,0,1,1,0v1.5H19a.5.5,0,0,1,0,1Z">
+                                </path>
+                            </svg> </div>
                         <div class="side-menu__title">
-                            Order Translation
+                            Translations
+                            <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="{{ route('newOrder') }}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="side-menu__title"> New Order </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('myorders') }}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="side-menu__title"> View Orders </div>
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </li>
+
+
+                <li>
+                    <a href="javascript:;"
+                        class="{{ Route::getCurrentRoute()->uri == 'order-new-interpretation' || Route::getCurrentRoute()->uri == 'myinterpretations' ? 'side-menu side-menu--active' : 'side-menu' }}">
+                        <div class="side-menu__icon"> <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
+                                width="32" height="32" fill="white" viewBox="0 0 128 128" id="meeting">
+                                <path d="M103 108V80h-4v28a2 2 0 0 0 4 0Z"></path>
+                                <circle cx="64" cy="14" r="14"></circle>
+                                <path
+                                    d="M72.358 30.613h1.37c7.564 0 14.2 6.45 14.2 13.803V59H92V44.416C92 36.115 85.446 28.709 77.277 27a18.377 18.377 0 0 1-4.92 3.613zM40.073 44.416c0-7.353 6.636-13.803 14.2-13.803h1.37A18.377 18.377 0 0 1 50.722 27C42.553 28.71 36 36.115 36 44.416V59h4.073z">
+                                </path>
+                                <circle cx="64" cy="55" r="14"></circle>
+                                <path
+                                    d="M37 90.46v16.505A4.032 4.032 0 0 0 41.02 111H46a9.008 9.008 0 0 0 6 8.475V126a2 2 0 0 0 4 0v-6h17v6a2 2 0 0 0 4 0v-6.95a9.002 9.002 0 0 0 5-8.05h4.98a4.032 4.032 0 0 0 4.02-4.035V90.46C91 81.159 82.76 73 73.366 73H54.635C45.24 73 37 81.16 37 90.46zM54.635 77h18.731A13.903 13.903 0 0 1 87 90.46L86.983 107 82 106.996V91a5.006 5.006 0 0 0-5-5H51a5.006 5.006 0 0 0-5 5v15.969l-5-.004V90.46C41 83.29 47.372 77 54.635 77zM29 108V80h-4v28a2 2 0 0 0 4 0zM17 76h21.965a21.906 21.906 0 0 1 14.467-6.96A18.161 18.161 0 0 1 47.651 62H21a6.007 6.007 0 0 0-6 6v6a2 2 0 0 0 2 2zm57.568-6.96A21.905 21.905 0 0 1 89.036 76H111a2 2 0 0 0 2-2v-6a6.007 6.007 0 0 0-6-6H80.35a18.161 18.161 0 0 1-5.782 7.04z">
+                                </path>
+                            </svg> </div>
+                        <div class="side-menu__title">
+                            Interpretations
+                            <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="{{ route('newInterpretation') }}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="side-menu__title"> New Interpretation </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('myinterpretations') }}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="side-menu__title"> View Interpretations </div>
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="{{ route('logout') }}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="log-out"></i> </div>
+                        <div class="side-menu__title">
+                            Log Out
                         </div>
                     </a>
                 </li>
 
-                <li>
-                    <a href="{{ route('newInterpretation') }}"
-                        class="{{ Route::getCurrentRoute()->uri == 'order-new-interpretation' ? 'side-menu   side-menu--active' : 'side-menu' }}">
-                        <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
-                        <div class="side-menu__title">
-                            Order Interpretation
-                        </div>
-                    </a>
-                </li>
 
-
-                <li>
+                {{-- <li>
                     <a href="{{ route('allInvoices') }}"
                         class="{{ Route::getCurrentRoute()->uri == 'allInvoices' ? 'side-menu   side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"> <i data-lucide="help-circle"></i> </div>
@@ -193,7 +263,7 @@
                             Invoices
                         </div>
                     </a>
-                </li>
+                </li> --}}
 
 
                 <li class="side-nav__devider my-6"></li>

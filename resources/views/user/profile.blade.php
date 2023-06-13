@@ -37,7 +37,8 @@
                     <div class="w-full mt-3">
                         <label for="change-password-form-4" class="form-label">User Status</label>
                         <input autocomplete="false" id="status-form-4" type="text" disabled class="form-control"
-                        name="role" placeholder="{{($user->role_id == 0) ? 'Individual' : (($user->role_id == 1) ? 'Institute User' : 'Institute Admin') }}">
+                            name="role"
+                            placeholder="{{($user->role_id == 0) ? 'Individual' : (($user->role_id == 1) ? 'Institute User' : 'Institute Admin') }}">
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary mt-4">Update Profile</button>
@@ -60,23 +61,19 @@
                     @if($user->role_id == 1)
                     <div class="w-full">
                         <label for="change-password-form-1" class="form-label">Institute Name</label>
-                        @if(isset($user->institute_managed))
+                        @foreach($user->institute as $institute)
                         <input id="change-password-form-1" type="text" class="form-control" name="name"
-                            value="{{$user->institute[0]->name}}" disabled>
-                        @else
-                        <input id="change-password-form-1" type="text" class="form-control" name="name"
-                            value="N/A">
-                        @endif
+                            value="{{$institute->name}}" disabled>
+                        @endforeach
                     </div>
                     @elseif($user->role_id == 2)
                     <div class="w-full">
                         <label for="change-password-form-1" class="form-label">Institute Name</label>
                         @if(isset($user->institute_managed))
                         <input id="change-password-form-1" type="text" class="form-control" name="name"
-                            value="{{$user->institute_managed[0]->name}}">
+                            value="{{$user->institute_managed->name}}">
                         @else
-                            <input id="change-password-form-1" type="text" class="form-control" name="name"
-                            value="N/A">
+                        <input id="change-password-form-1" type="text" class="form-control" name="name" value="N/A">
                         @endif
                     </div>
 
@@ -86,8 +83,7 @@
                         <input id="change-password-form-2" name="passcode" type="text" class="form-control"
                             value="{{$user->institute_managed->passcode}}">
                         @else
-                        <input id="change-password-form-2" name="passcode" type="text" class="form-control"
-                            value="--">
+                        <input id="change-password-form-2" name="passcode" type="text" class="form-control" value="--">
                         @endif
                     </div>
                     @endif

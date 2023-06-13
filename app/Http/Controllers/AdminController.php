@@ -372,7 +372,7 @@ class AdminController extends Controller
         $user->delete();
 
         // Redirect back to the users list with a success message
-        return redirect()->route('admin.users')->with('message', 'User deleted successfully');
+        return redirect()->route('admin.viewCustomers')->with('message', 'User deleted successfully');
     }
 
 
@@ -608,7 +608,7 @@ class AdminController extends Controller
         if ($choice == 1) {
             $order->update(['paymentStatus' => 2, 'orderStatus' => 'Translation Pending', 'paymentLaterApproved' => 1]);
             // Mail::to($order->user->email)->send(new LatePaymentApproved());
-            if(env("IS_DEV") == 1){
+            if (env("IS_DEV") == 1) {
                 Mail::mailer('dev')->to($order->user->email)->send(new LatePaymentApproved("Flow Translate - Late Payment Approved", env("ADMIN_EMAIL_DEV")));
             } else {
                 Mail::mailer('clients')->to($order->user->email)->send(new LatePaymentApproved("Flow Translate - Late Payment Approved", env("ADMIN_EMAIL")));
@@ -706,7 +706,7 @@ class AdminController extends Controller
 
 
         // Mail::to($order->user->email)->send(new paymentApproved());
-        if(env("IS_DEV") == 1){
+        if (env("IS_DEV") == 1) {
             Mail::mailer('dev')->to($order->user->email)->send(new paymentApproved("Flow Translate - Payment Approved", env("ADMIN_EMAIL_DEV")));
         } else {
             Mail::mailer('clients')->to($order->user->email)->send(new paymentApproved("Flow Translate - Payment Approved", env("ADMIN_EMAIL")));
@@ -1171,12 +1171,11 @@ class AdminController extends Controller
         Order::where('id', $order_id)->update(['orderStatus' => 'Completed']);
         Order::where('id', $order_id)->update(['completed' => 1]);
 
-          if(env("IS_DEV") == 1)
-          {
+        if (env("IS_DEV") == 1) {
             Mail::mailer('dev')->to($email)->send(new mailOfCompletion($order, $zipName2, $emailTitle, env("ADMIN_EMAIL_DEV")));
-          } else {
+        } else {
             Mail::mailer('clients')->to($email)->send(new mailOfCompletion($order, $zipName2, $emailTitle, env("ADMIN_EMAIL")));
-          }
+        }
         //Send Invoice
 
         // $validated = $request->validate([
@@ -1200,10 +1199,11 @@ class AdminController extends Controller
         return redirect()->route('completedOrders');
     }
 
-    public function show($id){
-        $order = $orders = Order::with(['contractorOrder.contractor'])->where('id',$id)
+    public function show($id)
+    {
+        $order = $orders = Order::with(['contractorOrder.contractor'])->where('id', $id)
             ->firstOrFail();
-        return view('admin.show-order',compact('order'));
+        return view('admin.show-order', compact('order'));
     }
     public function generatePDFInvoice($invoiceID)
     {

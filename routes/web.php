@@ -88,7 +88,7 @@ Route::get('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin
 
 //Contracter
 
-Route::get('/contractor/verify/{token}', [ContractorAuthController::class,'verifyContractor'])->name('verify-contractor');
+Route::get('/contractor/verify/{token}', [ContractorAuthController::class, 'verifyContractor'])->name('verify-contractor');
 
 
 Route::get('/contractor/login', [ContractorAuthController::class, 'showLoginForm'])->name('contractor.login');
@@ -262,7 +262,11 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
 
 
     Route::resource('user', UserController::class);
+    Route::get('newOrder', [UserController::class, 'newOrder'])->name('newOrder');
+
     Route::get('myorders', [UserController::class, 'myorders'])->name('myorders');
+    Route::get('myinterpretations', [UserController::class, 'myinterpretations'])->name('myinterpretations');
+
     Route::get('allInvoices', [UserController::class, 'allInvoices'])->name('allInvoices');
 
     Route::get('order-new-interpretation', [UserController::class, 'newInterpretation'])->name('newInterpretation');

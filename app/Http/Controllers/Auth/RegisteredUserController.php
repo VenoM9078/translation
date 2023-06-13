@@ -113,7 +113,6 @@ class RegisteredUserController extends Controller
             ->where('is_active', InstituteRequestEnum::ACCEPTED)
             ->first();
 
-        // dd($request->all());
         if ($request->role_id == 2) { //checking for insitute admin
             if ($institute) {
                 return redirect()->back()->with('error', 'Institute already exists!');
@@ -139,7 +138,8 @@ class RegisteredUserController extends Controller
                     'name' => $request->input('name'),
                     'role_id' => 0,
                     'email' => $request->input('email'),
-                    'password' => $request->input('password')
+                    'password' => $request->input('password'),
+                    'role_id_sent' => $request->role_id
                 ])->with('error', 'Passcode does not exist!');
             } else {
                 // Create user first

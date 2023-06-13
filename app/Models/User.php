@@ -71,4 +71,9 @@ implements MustVerifyEmail
     {
         return $this->belongsToMany('App\Models\Institute', 'institute_members')->withTimestamps();
     }
+
+    public function user_requests()
+    {
+        return $this->hasMany('App\Models\InstituteUserRequests', 'user_id');
+    }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('contractors', function (Blueprint $table) {
             $table->timestamp('email_verified_at')->nullable();
-            $table->int('verified')->default(0);
+            $table->integer('verified')->default(0);
         });
     }
 
