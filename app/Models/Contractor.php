@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Notifications\ContractorVerifyEmail;
+use App\Notifications\CustomResetPasswordNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -63,5 +64,9 @@ class Contractor extends Authenticatable implements MustVerifyEmail
     public function verifyContractor()
     {
         return $this->hasOne('App\Models\VerifyContractor');
+    }
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new CustomResetPasswordNotification($token));
     }
 }

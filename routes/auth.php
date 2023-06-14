@@ -39,7 +39,7 @@ Route::middleware('guest')->group(function () {
     Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
         ->name('password.reset');
 
-    Route::get('contractor-reset-password/{token}', [NewPasswordController::class, 'create'])
+    Route::get('contractor-reset-password/{token}', [NewPasswordController::class, 'contractorCreate'])
     ->name('contractor.password.reset');
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])

@@ -339,7 +339,7 @@ class ContractorAuthController extends Controller
             if (!$contractor->verified) {
                 $verifyUser->contractor->verified = 1;
                 $verifyUser->contractor->save();
-                $status = "Your e-mail is verified. You can now login.";
+                $status = "Your e-mail is verified. You can now setup your profile.";
             } else {
                 $status = "Your e-mail is already verified. You can now login.";
             }
@@ -440,7 +440,7 @@ class ContractorAuthController extends Controller
         }
 
         // Redirect or return a response
-        return redirect()->back()->with('success', 'Contractor updated successfully.');
+        return redirect()->back()->with('status', 'Contractor updated successfully.');
     }
 
     public function pendingTranslations()

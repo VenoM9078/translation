@@ -107,8 +107,8 @@
 
                 <li>
                     <a href="{{ route('contractor.translations.pending') }}" class="menu">
-                        <div class="menu__icon"> <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" width="24"
-                                height="24" viewBox="0 0 24 24" id="language">
+                        <div class="menu__icon"> <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
+                                width="24" height="24" viewBox="0 0 24 24" id="language">
                                 <path
                                     d="M20,5.5H4A2.50294,2.50294,0,0,0,1.5,8v8A2.50294,2.50294,0,0,0,4,18.5H20A2.50263,2.50263,0,0,0,22.5,16V8A2.50263,2.50263,0,0,0,20,5.5Zm-8.5,12H4A1.50164,1.50164,0,0,1,2.5,16V8A1.50164,1.50164,0,0,1,4,6.5h7.5Zm10-1.5A1.50164,1.50164,0,0,1,20,17.5H12.5V6.5H20A1.50164,1.50164,0,0,1,21.5,8ZM4.8418,15.47412a.498.498,0,0,0,.63232-.31592L6.02692,13.5H7.97308l.5528,1.6582a.49982.49982,0,1,0,.94824-.3164l-2-6a.52019.52019,0,0,0-.94824,0l-2,6A.49957.49957,0,0,0,4.8418,15.47412ZM7,10.58105,7.63971,12.5H6.36029ZM19,11.5H17.52765a3.64579,3.64579,0,0,0,1.0329,2.07617c.26172.32813.55175.69141.85547,1.14649a.5.5,0,1,1-.832.55468c-.28515-.42773-.55859-.76855-.80468-1.07666A8.18684,8.18684,0,0,1,17,13.105a8.18684,8.18684,0,0,1-.7793,1.0957c-.24609.30811-.51953.64893-.80468,1.07666a.5.5,0,1,1-.832-.55468c.30372-.45508.59375-.81836.85547-1.14649A3.64579,3.64579,0,0,0,16.47235,11.5H15a.5.5,0,0,1,0-1h1.5V9a.5.5,0,0,1,1,0v1.5H19a.5.5,0,0,1,0,1Z">
                                 </path>
@@ -202,7 +202,7 @@
 
                 <li>
                     <a href="javascript:;"
-                        class="{{ Route::getCurrentRoute()->uri == 'contractor/proof-reads' || Route::getCurrentRoute()->uri == 'contractor/proof-reads/pending' || Route::getCurrentRoute()->uri == 'contractor/completed-proof-reads' ? 'side-menu side-menu--active' : 'side-menu'  }}">
+                        class="{{ Route::getCurrentRoute()->uri == 'contractor/proof-reads' || Route::getCurrentRoute()->uri == 'contractor/proof-reads/pending' || Route::getCurrentRoute()->uri == 'contractor/completed-proof-reads' ? 'side-menu side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"
                                 width="32" height="32" fill="white" id="student-reading">
                                 <path
@@ -309,7 +309,8 @@
                 <div class="intro-x dropdown w-8 h-8">
                     <div class="dropdown-toggle w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in"
                         role="button" aria-expanded="false" data-tw-toggle="dropdown">
-                        <img src="{{ url('https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png') }}">
+                        <img
+                            src="{{ url('https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png') }}">
                     </div>
                     <div class="dropdown-menu w-56">
                         <ul class="dropdown-content bg-primary text-white">
@@ -317,19 +318,22 @@
 
                                 <div class="font-medium">
                                     @auth
-                                    {{ Auth::user()->name }}
+                                        {{ Auth::user()->name }}
                                     @endauth
                                 </div>
                                 <div class="text-xs text-white/70 mt-0.5 dark:text-slate-500">
                                     @auth
-                                    {{ Auth::user()->email }}
+                                        {{ Auth::user()->email }}
                                     @endauth
                                 </div>
                             </li>
                             <li>
                                 <hr class="dropdown-divider border-white/[0.08]">
                             </li>
-
+                            <li>
+                                <a href="{{ route('contractor.edit-profile') }}" class="dropdown-item hover:bg-white/5"> <i
+                                        data-lucide="user" class="w-4 h-4 mr-2"></i> View Profile </a>
+                            </li>
                             <li>
                                 <a href="{{ route('contractor.logout') }}" class="dropdown-item hover:bg-white/5"> <i
                                         data-lucide="toggle-right" class="w-4 h-4 mr-2"></i> Logout </a>
@@ -353,8 +357,8 @@
 
     <!-- BEGIN: JS Assets-->
     <script src="{{ url('dist/js/app.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"
-        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
     <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
@@ -413,7 +417,8 @@
     <!-- END: JS Assets-->
 </body>
 <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
-<link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
+<link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
+    rel="stylesheet" />
 <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
 <script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js"></script>
 <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>

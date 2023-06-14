@@ -167,6 +167,7 @@ Route::group(['middleware' => ['auth:contractor','contractor.verified']], functi
     Route::get('/contractor/completed-proof-reads', [ContractorAuthController::class, 'completedProofReads'])->name('contractor.completed-proof-read');
 
     Route::get('/contractor/profile',[ContractorAuthController::class,'viewProfile'])->name('contractor.edit-profile');
+    Route::post('/contractor/profile/update',[ContractorAuthController::class,'updateProfile'])->name('contractor.edit-profile-submit');
 });
 
 Route::group(['middleware' => ['auth:admin']], function () {
