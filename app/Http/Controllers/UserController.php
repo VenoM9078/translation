@@ -548,7 +548,7 @@ class UserController extends Controller
         $institute = $user->institute_managed;
 
         // Pass the institute users and requests to the view
-        return view('user.instituteAdmin', compact('institute', 'user', 'instituteUsers', 'instituteRequests'));
+        return view('user.InstituteAdmin', compact('institute', 'user', 'instituteUsers', 'instituteRequests'));
     }
 
     public function updateProfile(Request $request, $id)
