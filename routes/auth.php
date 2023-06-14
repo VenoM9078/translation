@@ -26,17 +26,27 @@ Route::middleware('guest')->group(function () {
 
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
-    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
+    Route::get('forgot-password/{isContractor?}', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');
+
 
     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
         ->name('password.email');
 
+    Route::post('contractor-forgot-password', [PasswordResetLinkController::class, 'contractorStore'])
+    ->name('contractor.password.email');
+
     Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
         ->name('password.reset');
 
+    Route::get('contractor-reset-password/{token}', [NewPasswordController::class, 'create'])
+    ->name('contractor.password.reset');
+
     Route::post('reset-password', [NewPasswordController::class, 'store'])
         ->name('password.update');
+
+    Route::post('contractor-reset-password', [NewPasswordController::class, 'contractorStore'])
+    ->name('contractor.password.update');
 });
 
 Route::middleware('auth:contractor')->group(function () {

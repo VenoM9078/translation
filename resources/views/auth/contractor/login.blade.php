@@ -73,7 +73,7 @@
                         <div class="intro-x flex text-slate-600 dark:text-slate-500 text-xs sm:text-sm mt-4">
                             <div class="flex items-center mr-auto">
                             </div>
-                            <a href="{{ route('password.request') }}">Forgot Password?</a>
+                            <a href="{{ route('password.request',['isContractor' => 1]) }}">Forgot Password?</a>
                         </div>
                         <div class="intro-x mt-2 xl:mt-6 text-center xl:text-left">
                             <button type="submit"

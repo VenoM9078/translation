@@ -16,6 +16,7 @@ use App\Mail\VerifyContractorMail;
 use App\Models\Admin;
 use App\Models\Contractor;
 use App\Models\ContractorInterpretation;
+use App\Models\ContractorLanguage;
 use App\Models\ContractorOrder;
 use App\Models\Interpretation;
 use App\Models\Order;
@@ -58,14 +59,38 @@ class ContractorAuthController extends Controller
                 'password2.min' => 'The confirmation password must be at least 6 characters.',
             ]
         );
+        $validated['password'] = bcrypt($validated['password']);
 
-        // Pass input data from the previous form to the view
-        return view('auth.contractor.register2', [
+          $contractor = Contractor::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'password' => $request->input('password'),
-            'password2' => $request->input('password2'),
+            'password' => bcrypt($request->input('password')),
+            'address' => "",
+            'phonenumber' => "",
+            'SSN' => "",
+            'translation_rate' => 0,
+            'interpretation_rate' => 0,
+            'proofreader_rate' => 0,
+            'verified' => 0
         ]);
+
+        $verifyContractor = VerifyContractor::create([
+            'contractor_id' => $contractor->id,
+            'token' => sha1(time())
+        ]);
+
+        Mail::to($contractor->email)->send(new VerifyContractorMail($contractor));
+
+        Auth::guard('contractor')->login($contractor);
+        return redirect()->route('contractor.verification.notice');
+
+        // Pass input data from the previous form to the view
+        // return view('auth.contractor.register2', [
+        //     'name' => $request->input('name'),
+        //     'email' => $request->input('email'),
+        //     'password' => $request->input('password'),
+        //     'password2' => $request->input('password2'),
+        // ]);
     }
 
 
@@ -321,7 +346,15 @@ class ContractorAuthController extends Controller
         } else {
             return redirect()->route('contractor.login')->with('warning', "Sorry your email cannot be identified.");
         }
-        return redirect()->route('contractor.dashboard')->with('status', $status);
+        $languages = ContractorLanguage::where('contractor_id', $verifyUser->contractor->id)->distinct()->get();
+       return redirect()->route('contractor.edit-profile')->with(['status'=> $status,'languages'=>$languages]);
+    }
+
+    public function viewProfile(Request $request)
+    {
+        // dd($request['languages']);
+        $languages = ContractorLanguage::where('contractor_id', Auth::user()->id)->distinct()->get();
+        return view('contractor.edit-profile',compact('languages'));
     }
 
     public function index()

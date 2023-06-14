@@ -14,8 +14,12 @@ class PasswordResetLinkController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function create($isContractor = null)
     {
+        if(isset($isContractor)){
+            $isContractor = 1;
+            return view('auth.enterEmail',compact('isContractor'));
+        }
         return view('auth.enterEmail');
     }
 
@@ -50,6 +54,12 @@ class PasswordResetLinkController extends Controller
             'email' => ['required', 'email'],
         ]);
         // dd($request->all());
+        $contractor = Contractor::where('email', $request->email)->first();
+        if (isset($contractor) && $contractor->verified != 1) {
+            return back()->with('emailNotVerified', 'Your account is not verified, please verify it first');
+        } else if(!isset($contractor)){
+            return back()->with('emailNotFound', 'Invalid email');
+        }
         $status = Password::broker('contractors')->sendResetLink(
             $request->only('email')
         );
