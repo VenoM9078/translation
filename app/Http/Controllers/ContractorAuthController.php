@@ -380,6 +380,69 @@ class ContractorAuthController extends Controller
         return view('contractor.dashboard', compact('proofReadCount', 'translationsCount', 'interpretationsCount'));
     }
 
+    public function updateProfile(Request $request){
+        $id = Auth::user()->id;
+        $contractor = Contractor::findOrFail($id);
+
+        // Update basic fields
+        $contractor->name = $request->input('name');
+        $contractor->phonenumber = $request->input('phonenumber');
+        $contractor->address = $request->input('address');
+        $contractor->email = $request->input('email');
+
+        $contractor->interpretation_rate = $request->input('interpretation_rate');
+        $contractor->translation_rate = $request->input('translation_rate');
+        $contractor->proofreader_rate = $request->input('proofreader_rate');
+
+        // Update password if provided
+        $password = $request->input('password');
+        if (!empty($password)) {
+            $contractor->password = bcrypt($password);
+        }
+
+        // Save the contractor
+        $contractor->save();
+
+        // Delete previous translator languages
+        $contractor->languages()->where('is_translator', 1)->delete();
+
+        // Insert new translator languages
+        $translatorLanguages = $request->input('translator_languages', []);
+        foreach ($translatorLanguages as $language) {
+            $contractor->languages()->create([
+                'language' => $language,
+                'is_translator' => 1,
+            ]);
+        }
+
+        // Delete previous interpreter languages
+        $contractor->languages()->where('is_interpreter', 1)->delete();
+
+        // Insert new interpreter languages
+        $interpreterLanguages = $request->input('interpreter_languages', []);
+        foreach ($interpreterLanguages as $language) {
+            $contractor->languages()->create([
+                'language' => $language,
+                'is_interpreter' => 1,
+            ]);
+        }
+
+        // Delete previous proofreader languages
+        $contractor->languages()->where('is_proofreader', 1)->delete();
+
+        // Insert new proofreader languages
+        $proofreaderLanguages = $request->input('proofreader_languages', []);
+        foreach ($proofreaderLanguages as $language) {
+            $contractor->languages()->create([
+                'language' => $language,
+                'is_proofreader' => 1,
+            ]);
+        }
+
+        // Redirect or return a response
+        return redirect()->back()->with('success', 'Contractor updated successfully.');
+    }
+
     public function pendingTranslations()
     {
         // $translations = [];
