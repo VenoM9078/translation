@@ -74,8 +74,13 @@
                     <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
                     <div class="intro-x mt-8">
-                        <input required type="email" name="email"
-                            class="intro-x login__input form-control py-3 px-4 block" placeholder="Enter Email Address">
+                        @if(isset($contractorEmail))
+                        <input required type="email" readonly name="email"
+                            class="intro-x login__input form-control py-3 px-4 block" value="{{ $contractorEmail}}">
+                        @else
+                            <input required type="email" name="email"
+                            class="intro-x login__input form-control py-3 px-4 block" placeholder="Enter Email">
+                        @endif
                     </div>
                     <div class="intro-x mt-8">
                         <input required type="password" name="password"
