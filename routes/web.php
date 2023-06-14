@@ -62,17 +62,17 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::post('/email/verification-notification', function (Request $request) {
-    if($request->user()){
+    if ($request->user()) {
         dd("ur a ccontractor");
     }
     $request->user()->sendEmailVerificationNotification();
 
     return back()->with('message', 'Verification link sent!');
-})->middleware(['auth','auth:contractor', 'throttle:6,1'])->name('verification.send');
+})->middleware(['auth', 'auth:contractor', 'throttle:6,1'])->name('verification.send');
 
 Route::post('/email/contractor-verification-notification', function (Request $request) {
-    $contractor = Contractor::where('id',$request->user()->id)->first();
-    Mail::to($request->user()->email)->send(new VerifyContractorMail($contractor));    
+    $contractor = Contractor::where('id', $request->user()->id)->first();
+    Mail::to($request->user()->email)->send(new VerifyContractorMail($contractor));
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth:contractor', 'throttle:6,1'])->name('contractor.verification.send');
 
@@ -116,7 +116,7 @@ Route::get('/dashboard', function () {
 
 Route::get('generate-invoice/{id}', [AdminController::class, 'generatePDFInvoice'])->name('generatePDFInvoice');
 
-Route::group(['middleware' => ['auth:contractor','contractor.verified']], function () {
+Route::group(['middleware' => ['auth:contractor', 'contractor.verified']], function () {
     Route::get('contractor/report/{id}', [ContractorAuthController::class, 'reportToAdmin'])->name('reportToAdmin');
     Route::get('contractor/view-report/{id}', [ContractorAuthController::class, 'viewReport'])->name('contractor.viewReport');
     Route::delete('/interpretation/{id}', [ContractorAuthController::class, 'deleteInterpretation'])->name('interpretation.delete');
@@ -166,14 +166,21 @@ Route::group(['middleware' => ['auth:contractor','contractor.verified']], functi
     Route::post('/contractor/upload-proof', [ContractorAuthController::class, 'uploadProofFile'])->name('contractor.upload-proof-read-file');
     Route::get('/contractor/completed-proof-reads', [ContractorAuthController::class, 'completedProofReads'])->name('contractor.completed-proof-read');
 
-    Route::get('/contractor/profile',[ContractorAuthController::class,'viewProfile'])->name('contractor.edit-profile');
-    Route::post('/contractor/profile/update',[ContractorAuthController::class,'updateProfile'])->name('contractor.edit-profile-submit');
+    Route::get('/contractor/profile', [ContractorAuthController::class, 'viewProfile'])->name('contractor.edit-profile');
+    Route::post('/contractor/profile/update', [ContractorAuthController::class, 'updateProfile'])->name('contractor.edit-profile-submit');
 });
 
 Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('admin/pending', [AdminController::class, 'pendingOrders'])->name('admin.pending');
     Route::get('admin/paidOrders', [AdminController::class, 'paidOrders'])->name('admin.paidOrders');
+
+    Route::get('admin/new-translation-order', [AdminController::class, 'newTranslationOrder'])->name('admin.newTranslationOrder');
+    Route::post('admin/new-translation-order', [AdminController::class, 'submitNewTranslationOrder'])->name('admin.submitNewTranslationOrder');
+    Route::post('adminUploadTranslationImage', [AdminController::class, 'uploadTranslationImage'])->name('uploadTranslationImage');
+
+    Route::get('admin/new-interpretation', [AdminController::class, 'newInterpretation'])->name('admin.newInterpretation');
+    Route::post('admin/new-interpretation', [AdminController::class, 'submitNewInterpretation'])->name('admin.submitNewInterpretation');
 
     //view orders
     Route::get('admin/orders/{id}', [AdminController::class, 'show'])->name('show-order');

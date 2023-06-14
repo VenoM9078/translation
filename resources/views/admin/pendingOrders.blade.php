@@ -1,141 +1,143 @@
 @extends('admin.layout')
 
 @section('content')
- <style>
-        #dropdownList {
-            position: absolute;
-            top: 100%;
-            z-index: 99999999 !important;
-            /* This positions the top edge of the dropdown at the bottom of the container */
-            left: 0;
-            /* This aligns the dropdown to the left of the container */
-            /* Other styles... */
-        }
+<style>
+    #dropdownList {
+        position: absolute;
+        top: 100%;
+        z-index: 99999999 !important;
+        /* This positions the top edge of the dropdown at the bottom of the container */
+        left: 0;
+        /* This aligns the dropdown to the left of the container */
+        /* Other styles... */
+    }
 
-        #dropdownListGroup {
-            position: absolute;
-            top: 100%;
-            z-index: 99999999 !important;
-            /* This positions the top edge of the dropdown at the bottom of the container */
-            left: 0;
-            /* This aligns the dropdown to the left of the container */
-            /* Other styles... */
-        }
+    #dropdownListGroup {
+        position: absolute;
+        top: 100%;
+        z-index: 99999999 !important;
+        /* This positions the top edge of the dropdown at the bottom of the container */
+        left: 0;
+        /* This aligns the dropdown to the left of the container */
+        /* Other styles... */
+    }
 
-        #dropdownListStatus {
-            position: absolute;
-            top: 100%;
-            z-index: 99999999 !important;
-            /* This positions the top edge of the dropdown at the bottom of the container */
-            left: 0;
-        }
-    </style>
-     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-        crossorigin="anonymous"></script>
-    {{--
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css" /> --}}
-    <link rel="stylesheet" type="text/css" {{--
-    href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" /> --}} <link rel="stylesheet" type="text/css"
-        href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+    #dropdownListStatus {
+        position: absolute;
+        top: 100%;
+        z-index: 99999999 !important;
+        /* This positions the top edge of the dropdown at the bottom of the container */
+        left: 0;
+    }
+</style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+
+<link rel="stylesheet" type="text/css"
+    href="https://cdn.datatables.net/fixedcolumns/4.2.2/css/fixedColumns.dataTables.min.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+
+
 <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4 mb-4">
 
 </div>
 
 <div class="intro-y flex items-center h-10 mb-5 mt-2">
     <h2 class="text-lg font-medium truncate ml-2 mr-5">
-        Orders
+        Translation Orders
     </h2>
 </div>
 <hr style="margin-bottom: 30px;">
 <!-- BEGIN: Data List -->
 {{-- DropDown --}}
 <div class="flex justify-end gap-4">
-            <div class="dropdown-container relative inline-block my-2">
-                <button id="dropdownBgHoverButton" data-dropdown-toggle="dropdownBgHover"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    type="button">Filter Columns<svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg></button>
+    <div class="dropdown-container relative inline-block my-2">
+        <button id="dropdownBgHoverButton" data-dropdown-toggle="dropdownBgHover"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            type="button">Filter Columns<svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg></button>
 
-                <!-- Dropdown menu -->
-                <div id="dropdownList" class="z-10 hidden w-48 bg-white rounded-lg shadow dark:bg-gray-700">
-                    <ul class="space-y-1 overflow-y-auto h-40 text-sm text-gray-700 dark:text-gray-200"
-                        aria-labelledby="dropdownBgHoverButton">
+        <!-- Dropdown menu -->
+        <div id="dropdownList" class="z-10 hidden w-48 bg-white rounded-lg shadow dark:bg-gray-700">
+            <ul class="space-y-1 overflow-y-auto h-40 text-sm text-gray-700 dark:text-gray-200"
+                aria-labelledby="dropdownBgHoverButton">
 
-                    </ul>
-                </div>
-            </div>
-            <div class="dropdown-container relative inline-block my-2">
-                <button id="dropdownBgHoverButtonGroup" data-dropdown-toggle="dropdownBgHoverGroup"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    type="button">Filter Groups<svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg></button>
-
-                <!-- Dropdown menu -->
-                <div id="dropdownListGroup" class="z-10 hidden bg-white rounded-lg shadow dark:bg-gray-700">
-                    <ul class=" space-y-1 overflow-y-auto text-sm text-gray-700 dark:text-gray-200"
-                        aria-labelledby="dropdownBgHoverButtonGroup">
-
-                    </ul>
-                </div>
-            </div>
-
-            <div class="dropdown-container relative inline-block my-2">
-                <button id="dropdownBgHoverButtonStatus" data-dropdown-toggle="dropdownBgHoverStatus"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    type="button">Status<svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg></button>
-
-                <!-- Dropdown menu -->
-                <div id="dropdownListStatus" class="z-10 hidden bg-white rounded-lg shadow dark:bg-gray-700">
-                    <ul class=" space-y-1 overflow-y-auto text-sm text-gray-700 dark:text-gray-200"
-                        aria-labelledby="dropdownBgHoverButtonStatus">
-                        <li>
-                            <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                <input checked id="checkbox-status-pending" type="checkbox"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
-                                    data-status="pending">
-                                <label for="checkbox-status-pending"
-                                    class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Pending</label>
-                            </div>
-                        </li>
-                         <li>
-                            <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                <input checked id="checkbox-status-cancelled" type="checkbox"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
-                                    data-status="pending">
-                                <label for="checkbox-status-cancelled"
-                                    class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Cancelled</label>
-                            </div>
-                        </li>
-                         <li>
-                            <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                <input checked id="checkbox-status-invoice-pending" type="checkbox"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
-                                    data-status="pending">
-                                <label for="checkbox-status-invoice-pending"
-                                    class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Invoice Pending</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                <input checked id="checkbox-status-completed" type="checkbox"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
-                                    data-status="completed">
-                                <label for="checkbox-status-completed"
-                                    class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Completed</label>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            </ul>
         </div>
+    </div>
+    <div class="dropdown-container relative inline-block my-2">
+        <button id="dropdownBgHoverButtonGroup" data-dropdown-toggle="dropdownBgHoverGroup"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            type="button">Filter Groups<svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg></button>
+
+        <!-- Dropdown menu -->
+        <div id="dropdownListGroup" class="z-10 hidden bg-white rounded-lg shadow dark:bg-gray-700">
+            <ul class=" space-y-1 overflow-y-auto text-sm text-gray-700 dark:text-gray-200"
+                aria-labelledby="dropdownBgHoverButtonGroup">
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="dropdown-container relative inline-block my-2">
+        <button id="dropdownBgHoverButtonStatus" data-dropdown-toggle="dropdownBgHoverStatus"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            type="button">Status<svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg></button>
+
+        <!-- Dropdown menu -->
+        <div id="dropdownListStatus" class="z-10 hidden bg-white rounded-lg shadow dark:bg-gray-700">
+            <ul class=" space-y-1 overflow-y-auto text-sm text-gray-700 dark:text-gray-200"
+                aria-labelledby="dropdownBgHoverButtonStatus">
+                <li>
+                    <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                        <input checked id="checkbox-status-pending" type="checkbox"
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
+                            data-status="pending">
+                        <label for="checkbox-status-pending"
+                            class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Pending</label>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                        <input checked id="checkbox-status-cancelled" type="checkbox"
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
+                            data-status="pending">
+                        <label for="checkbox-status-cancelled"
+                            class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Cancelled</label>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                        <input checked id="checkbox-status-invoice-pending" type="checkbox"
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
+                            data-status="pending">
+                        <label for="checkbox-status-invoice-pending"
+                            class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Invoice
+                            Pending</label>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                        <input checked id="checkbox-status-completed" type="checkbox"
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
+                            data-status="completed">
+                        <label for="checkbox-status-completed"
+                            class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Completed</label>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 {{-- DropDown End --}}
 <div class="intro-y box">
     <div id="vertical-form" class="p-5">
@@ -151,14 +153,11 @@
                                 <th class="whitespace-nowrap">Email</th>
                                 <th class="whitespace-nowrap">Order Status</th>
                                 <th class="whitespace-nowrap">Order Note</th>
-                                <th class="whitespace-nowrap">Case Manager</th>
-                                <th class="whitespace-nowrap">Access Code</th>
+                                <th class="whitespace-nowrap">Institute</th>
                                 <th class="whitespace-nowrap">Work Number</th>
                                 <th class="whitespace-nowrap">Current Language</th>
                                 <th class="whitespace-nowrap">Translated Language</th>
                                 <th class="whitespace-nowrap">Original Doc</th>
-                                <th class="whitespace-nowrap">Payment Status</th>
-                                <th class="whitespace-nowrap">Order Status</th>
                                 <th class="whitespace-nowrap">Contractor Assigned</th>
                                 <th class="whitespace-nowrap">Translation File</th>
                                 <th class="whitespace-nowrap">ProofReader Assigned</th>
@@ -190,7 +189,7 @@
 
                             <tr>
                                 <td class="whitespace-nowrap">
-                                    <div class="flex gap-2 items-center">
+                                    <div class="flex gap-1 items-center">
                                         {{-- <a href="javascript:;" data-trigger="click"
                                             title="{{ $order->orderStatus }}" class="tooltip btn btn-primary mr-1">Show
                                             Progress</a> --}}
@@ -199,17 +198,19 @@
 
                                         <!-- BEGIN: Modal Toggle -->
                                         <div class="text-center">
-                                            <a href="{{ route('show-order', $order->id) }}"
-                                                class="btn btn-primary ml-1">Show
+                                            <a href="{{ route('show-order', $order->id) }}" class="btn btn-primary"><i
+                                                    data-lucide="eye" class="w-5 h-5 text-white mx-auto"></i>
                                             </a>
                                         </div>
                                         <div class="text-center">
                                             <a href="{{ route('view-edit-order', $order->id) }}"
-                                                class="btn btn-primary ml-1">Edit
+                                                class="btn btn-warning"><i data-lucide="edit"
+                                                    class="w-5 h-5 text-white mx-auto"></i>
                                             </a>
                                         </div>
                                         <div class="text-center"> <a href="javascript:;" data-tw-toggle="modal"
-                                                data-tw-target="#delete-modal-preview" class="btn btn-danger">Delete</a>
+                                                data-tw-target="#delete-modal-preview" class="btn btn-danger"><i
+                                                    data-lucide="trash-2" class="w-5 h-5 text-white mx-auto"></i></a>
                                         </div> <!-- END: Modal Toggle -->
 
 
@@ -323,7 +324,8 @@
 
                                     </div> <!-- END: Modal Content -->
                                     @elseif($order->want_quote == 1)
-                                     <a href="{{ route('admin.showOrderSubmitQuote', $order->id) }}" class="btn btn-warning mr-1  ">Submit Quote</a>
+                                    <a href="{{ route('admin.showOrderSubmitQuote', $order->id) }}"
+                                        class="btn btn-warning mr-1  ">Submit Quote</a>
                                     @elseif($order->invoiceSent == 1 && $order->paymentStatus == 0 &&
                                     $order->is_evidence == 1)
                                     <a href="{{ route('downloadEvidence', $order->id) }}" class="btn btn-warning mr-1">
@@ -334,7 +336,9 @@
                                     <a href="{{ route('rejectEvidence', $order->id) }}" class="btn btn-danger mr-1">
                                         <i data-lucide="thumbs-down" class="w-5 h-5"></i></a>
                                     @elseif ($order->want_quote == 2)
-                                        <button class="btn btn-warning mr-1  ">Waiting for Payment <i  data-loading-icon="three-dots" data-color="1a202c" class="w-4 h-4 ml-2"></i></button>
+                                    <button class="btn btn-warning mr-1  ">Waiting for Payment <i
+                                            data-loading-icon="three-dots" data-color="1a202c"
+                                            class="w-4 h-4 ml-2"></i></button>
                                     @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 0)
                                     <button class="btn btn-warning mr-1"> Waiting for Payment <i
                                             data-loading-icon="three-dots" data-color="1a202c" class="w-4 h-4 ml-2"></i>
@@ -457,118 +461,37 @@
                                 <td class="whitespace-nowrap badge badge-success">{{ $order->orderStatus }}</td>
                                 @if($order->message)
                                 <td class="whitespace-nowrap" title="{{$order->message}}">
-                                    <i data-lucide="message-square" class="w-5 h-5 mr-2" > </i>
-                                    </td>
+                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                </td>
                                 @else
                                 <td class="whitespace-nowrap">-</td>
                                 @endif
-                                <td class="whitespace-nowrap">
-                                    {{ $order->casemanager != '' ? $order->casemanager : 'N/A' }}
-                                </td>
-                                <td class="whitespace-nowrap">
-                                    {{ $order->access_code != '' ? $order->access_code : 'N/A' }}
-                                </td>
-
+                                @if($order->added_by_institute_user)
+                                @if($order->user->role_id == 1)
+                                @foreach($order->user->institute as $institute)
+                                <td class="whitespace-nowrap">{{ $institute->name }}</td>
+                                @endforeach
+                                @elseif($order->user->role_id == 2)
+                                <td class="whitespace-nowrap">{{ $order->user->institute_managed->name }}</td>
+                                @endif
+                                @else
+                                <td class="whitespace-nowrap">-</td>
+                                @endif
                                 <td class="whitespace-nowrap">{{ $order->worknumber }}</td>
                                 <td class="whitespace-nowrap">{{ $order->language1 }}</td>
                                 <td class="whitespace-nowrap">{{ $order->language2 }}</td>
                                 <td class="whitespace-nowrap"><a href="{{ route('downloadFiles', $order->id) }}"
                                         class="btn btn-warning mr-1">
                                         <i data-lucide="download" class="w-5 h-5"></i> </a></td>
-                                @if ($order->user->role_id == 1 || $order->user->role_id == 2)
-                                <td class="whitespace-nowrap"><button
-                                        class="btn btn-rounded-warning w-24 mr-1">Institute</button></td>
-                                @elseif ($order->paymentStatus == 1)
-                                <td class="whitespace-nowrap"><button
-                                        class="btn btn-rounded-success w-24 mr-1">Paid</button></td>
-                                @elseif ($order->paymentStatus == 2)
-                                <td class="whitespace-nowrap"><button class="btn btn-rounded-warning w-28 mr-1">Deferred
-                                        Payment</button></td>
-                                @else
-                                <td class="whitespace-nowrap"><button
-                                        class="btn btn-rounded-pending w-24 mr-1">Pending</button></td>
-                                @endif
-                                <td class="whitespace-nowrap">
-                                    @if ($order->invoiceSent == 0)
-                                    <div class="progress h-6">
-                                        <div class="progress-bar w-1/4" role="progressbar" aria-valuenow="0"
-                                            aria-valuemin="0" aria-valuemax="100">0%</div>
-                                    </div>
-                                    @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 3 &&
-                                    $order->payLaterCode != null)
-                                    <div class="progress h-6">
-                                        <div class="progress-bar w-1/4" role="progressbar" aria-valuenow="0"
-                                            aria-valuemin="0" aria-valuemax="100">10%</div>
-                                    </div>
-                                    @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 0 &&
-                                    $order->is_evidence == 1)
-                                    <div class="progress h-6">
-                                        <div class="progress-bar w-1/4" role="progressbar" aria-valuenow="0"
-                                            aria-valuemin="0" aria-valuemax="100">30%</div>
-                                    </div>
-                                    @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 0)
-                                    <div class="progress h-6">
-                                        <div class="progress-bar w-1/4" role="progressbar" aria-valuenow="0"
-                                            aria-valuemin="0" aria-valuemax="100">25%</div>
-                                    </div>
-                                    @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 2)
-                                    <div class="progress h-6">
-                                        <div class="progress-bar w-2/4" role="progressbar" aria-valuenow="0"
-                                            aria-valuemin="0" aria-valuemax="100">50%</div>
-                                    </div>
-                                    @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 1 &&
-                                    $order->translation_status == 0)
-                                    <div class="progress h-6">
-                                        <div class="progress-bar w-2/4" role="progressbar" aria-valuenow="0"
-                                            aria-valuemin="0" aria-valuemax="100">50%</div>
-                                    </div>
-                                    @elseif (
-                                    $order->invoiceSent == 1 &&
-                                    $order->paymentStatus == 1 &&
-                                    $order->translation_status == 0 &&
-                                    $order->translation_sent == 1)
-                                    <div class="progress h-6">
-                                        <div class="progress-bar w-2/4" role="progressbar" aria-valuenow="0"
-                                            aria-valuemin="0" aria-valuemax="100">60%</div>
-                                    </div>
-                                    @elseif (
-                                    $order->invoiceSent == 1 &&
-                                    $order->paymentStatus == 1 &&
-                                    $order->translation_status == 1 &&
-                                    $order->proofread_status == 0)
-                                    <div class="progress h-6">
-                                        <div class="progress-bar w-3/4" role="progressbar" aria-valuenow="0"
-                                            aria-valuemin="0" aria-valuemax="100">75%</div>
-                                    </div>
-                                    @elseif (
-                                    $order->invoiceSent == 1 &&
-                                    $order->paymentStatus == 1 &&
-                                    $order->translation_status == 1 &&
-                                    $order->proofread_status == 0 &&
-                                    $order->proofread_sent == 1)
-                                    <div class="progress h-6">
-                                        <div class="progress-bar w-3/4" role="progressbar" aria-valuenow="0"
-                                            aria-valuemin="0" aria-valuemax="100">85%</div>
-                                    </div>
-                                    @elseif (
-                                    $order->invoiceSent == 1 &&
-                                    $order->paymentStatus == 1 &&
-                                    $order->translation_status == 1 &&
-                                    $order->proofread_status == 1)
-                                    <div class="progress h-6">
-                                        <div class="progress-bar w-4/4" role="progressbar" aria-valuenow="0"
-                                            aria-valuemin="0" aria-valuemax="100">100%</div>
-                                    </div>
-                                    @endif
 
-                                </td>
+
                                 {{-- @isset($order->contractorOrder) --}}
                                 @if (isset($order->contractorOrder) &&
                                 $order->contractorOrder->contractor->name != '' &&
                                 $order->contractorOrder->is_accepted == 1)
                                 <td>{{ $order->contractorOrder->contractor->name }}</td>
                                 @else
-                                <td>N/A</td>
+                                <td> </td>
                                 @endif
                                 @if (isset($order->contractorOrder) && $order->contractorOrder->file_name != '')
                                 <td>
@@ -578,14 +501,14 @@
                                     </a>
                                 </td>
                                 @else
-                                <td>N/A</td>
+                                <td> </td>
                                 @endif
                                 @if (isset($order->proofReaderOrder) &&
                                 $order->proofReaderOrder->contractor->name != '' &&
                                 $order->proofReaderOrder->is_accepted == 1)
                                 <td>{{ $order->proofReaderOrder->contractor->name }}</td>
                                 @else
-                                <td>N/A</td>
+                                <td> </td>
                                 @endif
                                 @if (
                                 $order->invoiceSent == 1 &&
@@ -610,16 +533,17 @@
                                     </a>
                                 </td>
                                 @else
-                                <td>N/A</td>
+                                <td> </td>
                                 @endif
                                 @if($order->contractorOrder && $order->contractorOrder->is_accepted == 1)
-                                    <td>${{$order->contractorOrder->contractor->translation_rate}}</td>
-                                    <td>${{$order->contractorOrder->rate}}</td>
-                                    <td>{{$order->contractorOrder->total_words}}</td>
-                                    <td>{{$order->contractorOrder->translation_due_date}}</td>
-                                    <td>{{$order->contractorOrder->translation_type}}</td>
-                                    <td>${{$order->contractorOrder->total_payment}}</td>
-                                    <td title="{{$order->contractorOrder->message}}"><i data-lucide="message-square" class="w-5 h-5 mr-2" > </i></td>
+                                <td>${{$order->contractorOrder->contractor->translation_rate}}</td>
+                                <td>${{$order->contractorOrder->rate}}</td>
+                                <td>{{$order->contractorOrder->total_words}}</td>
+                                <td>{{$order->contractorOrder->translation_due_date}}</td>
+                                <td>{{$order->contractorOrder->translation_type}}</td>
+                                <td>${{$order->contractorOrder->total_payment}}</td>
+                                <td title="{{$order->contractorOrder->message}}"><i data-lucide="message-square"
+                                        class="w-5 h-5 mr-2"> </i></td>
                                 @else
                                 <td>-</td>
                                 <td>-</td>
@@ -630,14 +554,14 @@
                                 <td>-</td>
                                 @endif
                                 @if($order->proofReaderOrder)
-                                    <td>{{$order->proofReaderOrder->proof_read_due_date}}</td>
-                                    <td>{{$order->proofReaderOrder->rate}}</td>
-                                    <td>{{$order->proofReaderOrder->total_payment}}</td>
-                                    
-                                    <td title="{{$order->proofReaderOrder->feedback}}">
-                                    <i data-lucide="message-square" class="w-5 h-5 mr-2" > </i>
-                                    </td>
-                                    <td>{{$order->proofReaderOrder->proofread_type}}</td>
+                                <td>{{$order->proofReaderOrder->proof_read_due_date}}</td>
+                                <td>{{$order->proofReaderOrder->rate}}</td>
+                                <td>{{$order->proofReaderOrder->total_payment}}</td>
+
+                                <td title="{{$order->proofReaderOrder->feedback}}">
+                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                </td>
+                                <td>{{$order->proofReaderOrder->proofread_type}}</td>
                                 @else
                                 <td>-</td>
                                 <td>-</td>
@@ -646,11 +570,11 @@
                                 <td>-</td>
                                 @endif
                                 @if(isset($order->invoice) && $order->user->role_id == 1 && $order->invoiceSent == 1)
-                                    <td><a href="
+                                <td><a href="
                                         {{route('view-invoice',['id'=>$order->invoice->id])}}
                                         " class="btn btn-secondary m-2">View Invoice</a></td>
                                 @else
-                                    <td>N/A</td>
+                                <td> </td>
                                 @endif
                                 <td class="whitespace-nowrap">
                                     {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($order->created_at,
@@ -668,15 +592,22 @@
         </div>
     </div>
 </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/4.2.2/js/dataTables.fixedColumns.min.js">
+</script>
 <script>
- $(document).ready(function() {
+    $(document).ready(function() {
                 var table = $('#ordersTable').DataTable({
+                    scrollX: true,
+                    scrollCollapse: true,
                     ordering: true,
                     info: true,
-                    paging: true
+                    paging: true,
+                    fixedColumns: {
+                        leftColumn: 1
+                    }
                 });
 
                 $.fn.dataTable.ext.search.push(

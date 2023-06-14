@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ContractorOrderEnum;
 use App\Enums\TranslationStatusEnum;
 use App\Mail\AdminNewInterpretation;
+use App\Mail\adminOrderCreated;
 use App\Mail\EmailContractor;
 use App\Mail\InformContractorOfRequest;
 use App\Mail\InstituteAccepted;
@@ -15,11 +16,13 @@ use App\Mail\LatePaymentRejected;
 use App\Mail\mailOfCompletion;
 use App\Mail\mailToProofReader;
 use App\Mail\NotifiyInstituteAdminMail;
+use App\Mail\OrderCreated;
 use App\Mail\OrderQuoteSent;
 use App\Mail\orderToTranslator;
 use App\Mail\paymentApproved;
 use App\Mail\paymentRejected;
 use App\Mail\QuoteSent;
+use App\Mail\UserNewInterpretation;
 use App\Models\Contractor;
 use App\Models\ContractorOrder;
 use App\Models\Institute;
@@ -46,6 +49,7 @@ use Illuminate\Support\Facades\Mail;
 
 use App\Models\User;
 use File;
+use Illuminate\Support\Facades\Hash;
 use ZipArchive;
 
 class AdminController extends Controller
@@ -311,6 +315,175 @@ class AdminController extends Controller
         // If contractor does not exist, redirect back with an error message
         return back()->with('error', 'Contractor not found.');
     }
+
+    public function newTranslationOrder()
+    {
+        return view('admin.newOrder');
+    }
+
+    public function newInterpretation()
+    {
+        return view('admin.newInterpretation');
+    }
+
+    public function submitNewInterpretation(Request $request)
+    {
+        date_default_timezone_set('America/Los_Angeles'); // Set timezone to PST
+
+        // Get the latest worknumber from the Interpretation model
+        $latestWorkNumber = Interpretation::latest('worknumber')->first();
+
+        $currentTime = date('ymdHis'); // YYMMDDHHMMSS format
+        if (isset($latestWorkNumber->worknumber)) {
+            $latestWorkNumber = $latestWorkNumber->worknumber;
+            while ($latestWorkNumber == $currentTime) {
+                // Delay by 1 second if the current time is equal to the latest work order
+                sleep(1);
+                $currentTime = date('ymdHis');
+            }
+        } else {
+            $latestWorkNumber = "";
+            $currentTime = date('ymdHis');
+        }
+
+        $worknumber = $currentTime;
+
+        // Create a new user
+        $newUser = User::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make('password'), // Hash password for security
+        ]);
+
+        $interpretation = new Interpretation();
+        $interpretation->worknumber = $worknumber;
+
+        $interpretation->user_id = $newUser->id; // Add the newly created user's ID
+        $interpretation->language = $request->language;
+        $interpretation->interpretationDate = $request->interpretationDate;
+        $interpretation->start_time = $request->start_time;
+        $interpretation->end_time = $request->end_time;
+        $interpretation->session_format = $request->session_format;
+        if (isset($request->link)) {
+            $interpretation->location = $request->link;
+        } else if (isset($request->address)) {
+            $interpretation->location = $request->address;
+        } else {
+            $interpretation->location = null;
+        }
+        $interpretation->session_topics = $request->session_topics;
+        $interpretation->wantQuote = 0; // As per your requirement
+        $interpretation->added_by_institute_user = 1; // As per your requirement
+        $interpretation->invoiceSent = 1; // As per your requirement
+        $interpretation->paymentStatus = 1; // As per your requirement
+        $interpretation->message = $request->message;
+
+        $interpretation->save();
+
+        if (env("IS_DEV") == 1) {
+            Mail::to('webpage@flowtranslate.com')->send(new AdminNewInterpretation($newUser, $interpretation, "Flow Translate - New Interpretation Request", env("ADMIN_EMAIL_DEV")));
+            Mail::to($newUser->email)->send(new UserNewInterpretation($newUser, $interpretation, "Flow Translate - Your Interpretation Request", env("ADMIN_EMAIL_DEV")));
+        } else {
+            Mail::to('webpage@flowtranslate.com')->send(new AdminNewInterpretation($newUser, $interpretation, "Flow Translate - New Interpretation Request", env("ADMIN_EMAIL")));
+            Mail::to($newUser->email)->send(new UserNewInterpretation($newUser, $interpretation, "Flow Translate - Your Interpretation Request", env("ADMIN_EMAIL")));
+        }
+        return redirect()->route('admin.ongoingInterpretations')
+            ->with('message', 'Interpretation request submitted successfully.');
+    }
+
+
+    public function submitNewTranslationOrder(Request $request)
+    {
+        date_default_timezone_set('America/Los_Angeles'); // Set timezone to PST
+
+        // Get the latest worknumber from the Order model
+        $latestWorkNumber = Order::latest('worknumber')->first();
+
+        $currentTime = date('ymdHis'); // YYMMDDHHMMSS format
+        if (isset($latestWorkNumber->worknumber)) {
+            $latestWorkNumber = $latestWorkNumber->worknumber;
+            while ($latestWorkNumber == $currentTime) {
+                // Delay by 1 second if the current time is equal to the latest work order
+                sleep(1);
+                $currentTime = date('ymdHis');
+            }
+        } else {
+            $latestWorkNumber = "";
+            $currentTime = date('ymdHis');
+        }
+
+        $worknumber = $currentTime;
+
+        // Create a new user
+        $newUser = User::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make('password'), // Hash password for security
+        ]);
+
+        // Create a new translation order on behalf of the new user
+        $data = [
+            'language1' => $request->input('language1'),
+            'language2' => $request->input('language2'),
+            'user_id' => $newUser->id,
+            'worknumber' => $worknumber,
+            'added_by_institute_user' => 0,
+            'invoiceSent' => 1,
+            'paymentStatus' => 1,
+            'message' => $request->input('message'),
+            'want_quote' => 0
+        ];
+
+        $order = Order::create($data);
+
+        if ($request->transFiles) {
+            $files = $request->transFiles;
+            foreach ($files as $file) {
+                $filename = $file;
+                OrderFiles::create([
+                    'order_id' => $order->id,
+                    'user_id' => $newUser->id,
+                    'filename' => $filename
+                ]);
+            }
+
+            if (env("IS_DEV") == 1) {
+                Mail::mailer('dev')->to($newUser->email)->send(new OrderCreated($newUser, $order, "Flow Translate - Order Created", env("ADMIN_EMAIL_DEV")));
+                Mail::mailer('dev')->to('webpage@flowtranslate.com')->send(new adminOrderCreated($newUser, $order, "Flow Translate - New Order Created", env("ADMIN_EMAIL_DEV")));
+            } else {
+                Mail::mailer('clients')->to($newUser->email)->send(new OrderCreated($newUser, $order, "Flow Translate - Order Created", env("ADMIN_EMAIL")));
+                Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new adminOrderCreated($newUser, $order, "Flow Translate - New Order Created", env("ADMIN_EMAIL")));
+            }
+
+            return redirect()->route('admin.pending')->with('message', 'Translation Order placed successfully!');
+        }
+
+        return redirect()->back()->with('status', 'Attach Files!');
+    }
+
+    public function uploadTranslationImage(Request $request)
+    {
+        if ($request->hasFile('transFiles')) {
+            $files = $request->file('transFiles');
+
+            // dd($files);
+
+            foreach ($files as $file) {
+
+                $filename = date('YmdHi') . $file->getClientOriginalName();
+                // $folder = uniqid() . '-' . now()->timestamp;
+                // $file->move(public_path('documents'), $filename);
+                $file->move('documents/', $filename);
+
+                TemporaryFile::create([
+                    'filename' => $filename
+                ]);
+
+                return $filename;
+            }
+        }
+    }
+
 
     public function editContractor($id)
     {

@@ -1,4 +1,4 @@
-@extends('user.layout')
+@extends('admin.layout')
 
 @section('content')
 <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
@@ -30,12 +30,23 @@
         <div id="vertical-form" class="p-5">
             <div class="preview">
                 <div>
-                    <form action="{{ route('user.store') }}" accept-charset="utf-8" method="post"
+                    <form action="{{ route('admin.submitNewTranslationOrder') }}" accept-charset="utf-8" method="post"
                         enctype="multipart/form-data">
                         @csrf
                         @method('POST')
                         <div class="intro-x mt-4">
-
+                            <div class="flex gap-2 mb-4">
+                                <div class="w-1/2">
+                                    <label for="change-password-form-1" class="form-label">Full Name</label>
+                                    <input id="change-password-form-1" type="text" class="form-control w-full"
+                                        name="name" placeholder="Enter Customer's Full Name">
+                                </div>
+                                <div class="w-1/2">
+                                    <label for="change-password-form-2" class="form-label">Email</label>
+                                    <input id="change-password-form-2" name="email" type="email"
+                                        class="form-control w-full" placeholder="Enter Customer's Email Address">
+                                </div>
+                            </div>
                             <select name="language1" required aria-placeholder="Source Language"
                                 data-placeholder="Source Language" class="tom-select w-full">
                                 <option value="Source Language" disabled selected>Source Language
@@ -251,34 +262,11 @@
                             <textarea name="message"
                                 class="intro-x login__input form-control py-3 px-4 block mb-4 mt-4 h-30" required
                                 placeholder="Enter Description."></textarea>
-                            @if(Auth::user()->role_id == 0)
-                            <select name="want_quote" required class="form-control mt-3 mb-3" id="">
-                                <option value="">Needs Quote?</option>
-                                <option value="1">Yes</option>
-                                <option value="0">No</option>
-                            </select>
-                            @endif
+
                             <input type="file" id="multipleFiles" class="filepond" name="transFiles[]" multiple
                                 data-max-file-size="10MB" data-max-files="15" />
                             <hr class="my-2 py-2">
-                            @if(count(Auth::user()->institute) < 1) <span
-                                style="color: rgb(185 28 28); margin-top: 20px; padding-top: 20px;"
-                                class="mt-5 pt-5 text-red-600">
-                                If you are looking for a quote, do not select this field.
-                                </span>
 
-                                <div class="flex mt-5 ">
-                                    <div class="form-check form-switch mb-4">
-                                        <input
-                                            class="form-check-input appearance-none w-9 border-md justify-start border p-2 -ml-10 rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-gray-300 focus:outline-none cursor-pointer shadow-sm"
-                                            type="checkbox" role="switch" id="flexSwitchCheckDefault" name="isPayNow">
-                                        <label class="form-check-label inline-block text-black"
-                                            for="flexSwitchCheckDefault">Pay Now</label>
-                                        <br>
-                                        <hr>
-                                    </div>
-                                </div>
-                                @endif
                         </div>
 
                         <div class="btn-group mt-5" role="group" aria-label="Basic example">
@@ -330,7 +318,7 @@
 
         FilePond.setOptions({
             server: {
-                url: '/upload',
+                url: '/adminUploadTranslationImage',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 }
