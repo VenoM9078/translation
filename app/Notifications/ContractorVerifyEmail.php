@@ -44,7 +44,7 @@ class ContractorVerifyEmail extends Notification
     {
         $verificationUrl = URL::to(
             URL::temporarySignedRoute(
-                'contractor-verification.verify',
+                'contractor.message',
                 now()->addMinutes(Config::get('auth.verification.expire', 60)),
                 [
                     'id' => $notifiable->getKey(),

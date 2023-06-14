@@ -70,7 +70,11 @@
                     @endif
 
                     <div class="mt-4 flex items-center justify-between">
-                        <form method="POST" action="{{ route('verification.send') }}">
+                        @if(!auth()->guard('contractor')->user())
+                            <form method="POST" action="{{ route('verification.send') }}">
+                        @else
+                            <form method="POST" action="{{ route('contractor.verification.send') }}">
+                        @endif
                             @csrf
 
                             <div>

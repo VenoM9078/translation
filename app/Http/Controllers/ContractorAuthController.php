@@ -297,10 +297,12 @@ class ContractorAuthController extends Controller
         ]);
 
         Mail::to($contractor->email)->send(new VerifyContractorMail($contractor));
-
+        
         Auth::guard('contractor')->login($contractor);
+        return redirect()->route('contractor.verification.notice');
 
-        return redirect()->route('contractor.dashboard');
+
+        // return redirect()->route('contractor.dashboard');
     }
 
     public function verifyContractor($token)
@@ -695,11 +697,11 @@ class ContractorAuthController extends Controller
             $contractor = auth()->guard('contractor')->user();
             // dd($contractor);
             if ($contractor->verified != 1) {
-                
-                auth()->logout();
-                return back()->with('warning', 'You need to confirm your account. We have sent you an activation code, please check your email.');
+                // auth()->logout();
+                return redirect()->route('contractor.verification.notice');
+            } else {
+                return redirect()->intended(url('/contractor/dashboard'));
             }
-            return redirect()->intended(url('/contractor/dashboard'));
         } else {
             return back()->withErrors([
                 'email' => 'The provided credentials do not match our records.',

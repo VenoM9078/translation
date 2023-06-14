@@ -25,8 +25,8 @@ class ContractorMiddleware
             return redirect()->route('contractor.login');
         }
         // If contractor is logged in but not verified, redirect to verification.notice
-        elseif (!$contractor->hasVerifiedEmail()) {
-            return redirect()->route('verification.notice');
+        elseif ($contractor->verified != 1) {
+            return redirect()->route('contractor.verification.notice');
         }
         return $next($request);
     }

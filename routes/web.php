@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ContractorAuthController;
+use App\Mail\VerifyContractorMail;
+use App\Models\Contractor;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\AdminAuthController;
@@ -60,10 +62,20 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::post('/email/verification-notification', function (Request $request) {
+    if($request->user()){
+        dd("ur a ccontractor");
+    }
     $request->user()->sendEmailVerificationNotification();
 
     return back()->with('message', 'Verification link sent!');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+})->middleware(['auth','auth:contractor', 'throttle:6,1'])->name('verification.send');
+
+Route::post('/email/contractor-verification-notification', function (Request $request) {
+    $contractor = Contractor::where('id',$request->user()->id)->first();
+    Mail::to($request->user()->email)->send(new VerifyContractorMail($contractor));    
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth:contractor', 'throttle:6,1'])->name('contractor.verification.send');
+
 
 Route::get('/inputForm', [GuestController::class, 'apiRequest']);
 Route::post('/inputForm', [GuestController::class, 'realApiRequest'])->name('realApiRequest');
@@ -104,7 +116,7 @@ Route::get('/dashboard', function () {
 
 Route::get('generate-invoice/{id}', [AdminController::class, 'generatePDFInvoice'])->name('generatePDFInvoice');
 
-Route::group(['middleware' => ['auth:contractor', 'contractor.verified']], function () {
+Route::group(['middleware' => ['auth:contractor','contractor.verified']], function () {
     Route::get('contractor/report/{id}', [ContractorAuthController::class, 'reportToAdmin'])->name('reportToAdmin');
     Route::get('contractor/view-report/{id}', [ContractorAuthController::class, 'viewReport'])->name('contractor.viewReport');
     Route::delete('/interpretation/{id}', [ContractorAuthController::class, 'deleteInterpretation'])->name('interpretation.delete');

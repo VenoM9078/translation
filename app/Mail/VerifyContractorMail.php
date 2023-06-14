@@ -32,6 +32,6 @@ class VerifyContractorMail extends Mailable
     public function build()
     {
         return $this->from(env("ADMIN_EMAIL_DEV"), "Flow Translate")
-            ->subject($this->subject)->markdown('emails.verify-contractor');
+            ->subject($this->subject)->markdown('emails.contractor.message');
     }
 }
