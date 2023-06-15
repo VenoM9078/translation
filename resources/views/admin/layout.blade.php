@@ -362,7 +362,7 @@
 
                 <li class="side-nav__devider my-6"></li>
 
-                <li>
+                {{-- <li>
                     <a href="{{ route('view-pending-institute-admin') }}"
                         class="{{ Route::getCurrentRoute()->uri == 'admin/institute/admin/pending' || Route::getCurrentRoute()->uri == 'admin/view-completed-interpretations' ? 'side-menu side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"><svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
@@ -381,7 +381,7 @@
                             Institute
                         </div>
                     </a>
-                </li>
+                </li> --}}
 
             </ul>
         </nav>
