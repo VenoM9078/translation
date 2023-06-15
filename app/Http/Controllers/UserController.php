@@ -9,6 +9,7 @@ use App\Mail\AdminPaymentReceived;
 use App\Mail\CustomerPaymentReceived;
 use App\Mail\InstituteRequestAccepted;
 use App\Mail\InstituteRequestDeclined;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Interpretation;
@@ -116,7 +117,7 @@ class UserController extends Controller
 
         // Get the latest worknumber from the Interpretation model
         $latestWorkNumber = Order::latest('worknumber')->first();
-
+        $due_date = Carbon::now()->addDays(7);
         $currentTime = date('ymdHis'); // YYMMDDHHMMSS format
         if (isset($latestWorkNumber->worknumber)) {
             $latestWorkNumber = $latestWorkNumber->worknumber;
@@ -160,7 +161,8 @@ class UserController extends Controller
                 'added_by_institute_user' => $isInstitute,
                 'paymentStatus' => $paymentStatus,
                 'message' => $request->input('message'),
-                'want_quote' => $wantQuote
+                'want_quote' => $wantQuote,
+                'due_date' => $due_date,
             ];
         } else {
             $data = [
@@ -174,7 +176,8 @@ class UserController extends Controller
                 'invoiceSent' => $invoiceSent,
                 'paymentStatus' => $paymentStatus,
                 'message' => $request->input('message'),
-                'want_quote' => $wantQuote
+                'want_quote' => $wantQuote,
+                'due_date' => $due_date,
             ];
         }
 

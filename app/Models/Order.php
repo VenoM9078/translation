@@ -39,7 +39,15 @@ class Order extends Model
         'completed',
         'added_by_institute_user',
         'message',
-        'want_quote'
+        'want_quote',
+        'c_type',
+        'c_unit',
+        'c_rate',
+        'c_adjust',
+        'c_fee',
+        'c_adjust_note',
+        'c_paid',
+        'due_date'
     ];
 
     public function files()

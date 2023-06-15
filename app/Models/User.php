@@ -76,4 +76,14 @@ implements MustVerifyEmail
     {
         return $this->hasMany('App\Models\InstituteUserRequests', 'user_id');
     }
+
+    protected static function booted()
+    {
+        static::deleting(function ($user) {
+            \DB::transaction(function () use ($user) {
+                $user->orders()->delete();
+                $user->interpretations()->delete();
+            });
+        });
+    }
 }

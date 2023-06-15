@@ -106,6 +106,15 @@ class AdminController extends Controller
         $order->casemanager = $request->input('casemanager');
         $order->amount = $request->input('amount');
         $order->orderStatus = $request->input('orderStatus');
+
+        // new fields
+        $order->c_type = $request->input('c_type');
+        $order->c_unit = $request->input('c_unit');
+        $order->c_rate = $request->input('c_rate');
+        $order->c_adjust = $request->input('c_adjust');
+        $order->c_fee = $request->input('c_fee');
+        $order->c_adjust_note = $request->input('c_adjust_note');
+        $order->c_paid = $request->input('c_paid');
         $order->save();
 
         return redirect()->route('admin.dashboard');
@@ -398,6 +407,7 @@ class AdminController extends Controller
 
         // Get the latest worknumber from the Order model
         $latestWorkNumber = Order::latest('worknumber')->first();
+        $due_date = Carbon::now()->addDays(7);
 
         $currentTime = date('ymdHis'); // YYMMDDHHMMSS format
         if (isset($latestWorkNumber->worknumber)) {
@@ -431,7 +441,8 @@ class AdminController extends Controller
             'invoiceSent' => 1,
             'paymentStatus' => 1,
             'message' => $request->input('message'),
-            'want_quote' => 0
+            'want_quote' => 0,
+            'due_date' => $due_date
         ];
 
         $order = Order::create($data);
@@ -552,6 +563,7 @@ class AdminController extends Controller
     public function viewCustomers()
     {
         $users = User::all();
+        // dd($users[10]->institute_managed->is_active);
         // dd($users[3]->institute[0]->name);
         return view('admin.viewCustomers', compact('users'));
     }

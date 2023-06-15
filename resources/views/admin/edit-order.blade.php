@@ -39,22 +39,11 @@
                                 <br>
                                 <label for="">What Language does the Document needs to be Translated into?</label>
                                 <input type="text" id="language2" name="language2"
-                                    class="intro-x login__input form-control py-3 px-4 block mt-4" required
+                                    class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4" required
                                     placeholder="What Language does the Document needs to be Translated into?"
                                     value="{{ $order->language2 }}">
-                                <br>
-                                <label for="">Access Code</label>
-                                <input type="text" name="access_code" id="access_code"
-                                    class="intro-x login__input form-control py-3 px-4 block mt-4"
-                                    placeholder="Access Code (for returning customers)" value="{{ $order->access_code }}">
-                                <br>
-                                <label for="">Case Manager</label>
-                                <input type="text" name="casemanager" id="casemanager" style="margin-bottom: 20px;"
-                                    class="intro-x login__input form-control py-3 px-4 block mt-4"
-                                    placeholder="Case Manager (optional)" value="{{ $order->casemanager }}">
-                                <br>
 
-                                <label for="contractor_name">Contractor Name</label>
+                                <label for="contractor_name mt-4">Contractor Name</label>
                                 @if ($order->translationStatus == 1 && $order->contractorOrder->is_accepted == 1)
                                     <input type="text" name="contractor_name" disabled id="contractor_name"
                                         style="margin-bottom: 20px;"
@@ -70,11 +59,54 @@
                                         class="intro-x login__input form-control py-3 px-4 block mt-4"
                                         placeholder="Contractor Name"
                                         value="{{ isset($order->contractorOrder->contractor->name) ? $order->contractorOrder->contractor->name : 'N/A' }}">
-                                    <a href="{{ route('view-assign-contractor', $order->id) }}"
-                                        class="mb-2 btn btn-primary">Re-Assign Contractor</a>
+                                    @if (isset($order->contractorOrder->contractor->name))
+                                        <a href="{{ route('view-assign-contractor', $order->id) }}"
+                                            class="mb-2 btn btn-primary">Re-Assign Contractor</a>
+                                    @endif
                                 @endif
                                 <hr class="my-2 py-2">
+                                <!-- C. Type field -->
+                                <label for="c_type">C. Type</label>
+                                <input type="text" id="c_type" name="c_type"
+                                    class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4" required
+                                    placeholder="C. Type" value="{{ $order->c_type }}">
 
+                                <!-- C. Unit field -->
+                                <label for="c_unit">C. Unit</label>
+                                <input type="text" id="c_unit" name="c_unit"
+                                    class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4" required
+                                    placeholder="C. Unit" value="{{ $order->c_unit }}">
+
+                                <!-- C. Rate field -->
+                                <label for="c_rate">C. Rate ($/W or $/P)</label>
+                                <input type="number" step="0.01" id="c_rate" name="c_rate"
+                                    class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4" required
+                                    placeholder="C. Rate ($/W or $/P)" value="{{ $order->c_rate }}">
+
+                                <!-- C. Adjust field -->
+                                <label for="c_adjust">C. Adjust ($)</label>
+                                <input type="number" step="0.01" id="c_adjust" name="c_adjust"
+                                    class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4" required
+                                    placeholder="C. Adjust ($)" value="{{ $order->c_adjust }}">
+
+                                <!-- C. Fee field -->
+                                <label for="c_fee">C. Fee ($)</label>
+                                <input type="number" step="0.01" id="c_fee" name="c_fee"
+                                    class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4" required
+                                    placeholder="C. Fee ($)" value="{{ $order->c_fee }}">
+
+                                <!-- C. Adjust Note field -->
+                                <label for="c_adjust_note">C. Adjust Note</label>
+                                <textarea id="c_adjust_note" name="c_adjust_note" class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4"
+                                    placeholder="C. Adjust Note">{{ $order->c_adjust_note }}</textarea>
+
+                                <!-- C. Paid field -->
+                                <label for="c_paid">C. Paid</label>
+                                <select id="c_paid" name="c_paid" class="form-control py-3 px-4 block mt-4 mb-4"
+                                    required>
+                                    <option value="0" {{ $order->c_paid == 0 ? 'selected' : '' }}>No</option>
+                                    <option value="1" {{ $order->c_paid == 1 ? 'selected' : '' }}>Yes</option>
+                                </select>
                             </div>
                             <div class="btn-group mt-5" role="group" aria-label="Basic example">
                                 <button type="submit" class="btn btn-primary">Edit Order</button>
