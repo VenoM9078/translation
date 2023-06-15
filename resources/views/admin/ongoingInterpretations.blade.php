@@ -150,7 +150,20 @@
                                     <td class="whitespace-nowrap">
                                         <div class="flex">
                                             <a href="{{ route('admin.interpretation.edit', $interpretation->id) }}"
-                                                class="btn btn-success mr-1">Edit</a>
+                                                class="btn btn-warning"><i data-lucide="edit"
+                                                    class="w-5 h-5 text-white mx-auto"></i></a>
+                                            <button type="submit" class="btn btn-danger  text-black">
+                                                <div>
+                                                    <form
+                                                        action="{{ route('admin.interpretation.delete', $interpretation->id) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <i data-lucide="trash-2" class="w-5 h-5 text-white mx-auto"></i>
+
+                                                    </form>
+                                                </div>
+                                            </button>
                                             @if ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 0 &&
                                             $interpretation->paymentStatus == 0)
                                             <a href="{{ route('admin.showSubmitQuote', $interpretation->id) }}"
@@ -224,21 +237,7 @@
                                             <button class="btn btn-warning mr-1  ">View Feedback</button>
                                             @endif
 
-                                            <button type="submit" class="btn btn-md btn-danger  text-black">
-                                                <div>
-                                                    <form
-                                                        action="{{ route('admin.interpretation.delete', $interpretation->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <i data-lucide="trash" class="w-4 h-4 text-red"
-                                                            style="color:red"></i>
-                                                        <span class="text-black">
-                                                            {{-- Cancel --}}
-                                                        </span>
-                                                    </form>
-                                                </div>
-                                            </button>
+
                                         </div>
                                     </td>
                                     <td class="whitespace-nowrap w-40">
@@ -353,7 +352,7 @@
                                     </td>
                                     @else
                                     <td>
-                                        N/A
+
                                     </td>
                                     @endif
                                     <td class="whitespace-nowrap">{{ $interpretation->user->name }}</td>
