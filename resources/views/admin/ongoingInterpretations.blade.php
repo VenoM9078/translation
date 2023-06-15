@@ -148,11 +148,11 @@
                                 @foreach ($interpretations as $key => $interpretation)
                                 <tr>
                                     <td class="whitespace-nowrap">
-                                        <div class="flex">
+                                        <div class="flex gap-1">
                                             <a href="{{ route('admin.interpretation.edit', $interpretation->id) }}"
                                                 class="btn btn-warning"><i data-lucide="edit"
                                                     class="w-5 h-5 text-white mx-auto"></i></a>
-                                            <button type="submit" class="btn btn-danger  text-black">
+                                            <button type="submit" class="btn btn-danger bg-red-600 text-black">
                                                 <div>
                                                     <form
                                                         action="{{ route('admin.interpretation.delete', $interpretation->id) }}"
