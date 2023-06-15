@@ -63,7 +63,7 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
 Route::post('/email/verification-notification', function (Request $request) {
     if ($request->user()) {
-        dd("ur a ccontractor");
+        // dd("ur a ccontractor");
     }
     $request->user()->sendEmailVerificationNotification();
 

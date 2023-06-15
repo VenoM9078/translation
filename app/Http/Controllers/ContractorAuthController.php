@@ -334,6 +334,7 @@ class ContractorAuthController extends Controller
     {
         // dd($token);
         $verifyUser = VerifyContractor::where('token', $token)->first();
+        // dd($verifyUser);
         if (isset($verifyUser)) {
             $contractor = $verifyUser->contractor;
             if (!$contractor->verified) {
@@ -388,11 +389,16 @@ class ContractorAuthController extends Controller
         $contractor->name = $request->input('name');
         $contractor->phonenumber = $request->input('phonenumber');
         $contractor->address = $request->input('address');
-        $contractor->email = $request->input('email');
+        $contractor->education_1 = $request->input('education_1');
+        $contractor->education_2 = $request->input('education_2');
+        $contractor->education_3 = $request->input('education_3');
+        $contractor->certification = $request->input('certification');
+        $contractor->years_of_experience = $request->input('years_of_experience');
+        // $contractor->email = $request->input('email');
 
-        $contractor->interpretation_rate = $request->input('interpretation_rate');
-        $contractor->translation_rate = $request->input('translation_rate');
-        $contractor->proofreader_rate = $request->input('proofreader_rate');
+        // $contractor->interpretation_rate = $request->input('interpretation_rate');
+        // $contractor->translation_rate = $request->input('translation_rate');
+        // $contractor->proofreader_rate = $request->input('proofreader_rate');
 
         // Update password if provided
         $password = $request->input('password');
@@ -791,7 +797,7 @@ class ContractorAuthController extends Controller
             auth()->guard('contractor')->attempt(['email' => $request->email, 'password' => $request->password])) 
             {
             $contractor = auth()->guard('contractor')->user();
-            // dd($contractor);
+            // dd($contractor->verified);
             if ($contractor->verified != 1) {
                 // auth()->logout();
                 return redirect()->route('contractor.verification.notice');

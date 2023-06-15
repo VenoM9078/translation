@@ -21,7 +21,7 @@
                         <input type="hidden" name="contractor_id" value="{{ Auth::user()->id }}">
                         <div class="mb-3">
                             <label>Name</label>
-                            <input type="text" name="name" required
+                            <input type="text" name="name" readonly 
                                 class="intro-x login__input form-control py-3 px-4 block mt-1" placeholder="Enter Name"
                                 value="{{ Auth::user()->name }}">
                         </div>
@@ -39,7 +39,7 @@
                         </div>
                         <div class="mb-3">
                             <label>Email</label>
-                            <input type="email" name="email" required
+                            <input type="email" name="email" disabled
                                 class="intro-x login__input form-control py-3 px-4 block mt-1" placeholder="Enter Email"
                                 value="{{ Auth::user()->email }}">
                         </div>
@@ -49,6 +49,41 @@
                                 class="intro-x login__input form-control py-3 px-4 block mt-1"
                                 placeholder="Enter Password (Don't fill it if you don't want to change the password)"
                                 value="">
+                        </div>
+                          <div class="mt-3">
+                            <label>Education 1</label>
+                            <input type="text" name="education_1"
+                                class="intro-x login__input form-control py-3 px-4 block mt-1"
+                                placeholder="Enter your education"
+                                value="{{ Auth::user()->education_1 }}">
+                        </div>
+                         <div class="mt-3">
+                            <label>Education 2</label>
+                            <input type="text" name="education_2"
+                                class="intro-x login__input form-control py-3 px-4 block mt-1"
+                                placeholder="Enter your education"
+                               value="{{ Auth::user()->education_2 }}">
+                        </div>
+                         <div class="mt-3">
+                            <label>Education 3</label>
+                            <input type="text" name="education_3"
+                                class="intro-x login__input form-control py-3 px-4 block mt-1"
+                                placeholder="Enter your education"
+                                 value="{{ Auth::user()->education_3 }}">
+                        </div>
+                         <div class="mt-3">
+                            <label>Certification</label>
+                            <input type="text" name="certification"
+                                class="intro-x login__input form-control py-3 px-4 block mt-1"
+                                placeholder="Enter your certification"
+                                value="{{ Auth::user()->certification }}">
+                        </div>
+                         <div class="mt-3">
+                            <label>Years of Experience</label>
+                            <input type="number" name="years_of_experience"
+                                class="intro-x login__input form-control py-3 px-4 block mt-1"
+                                placeholder="Enter your years of experience"
+                               value="{{ Auth::user()->years_of_experience }}">
                         </div>
                         <div class="mt-3">
                             <div class="container mt-8">
@@ -185,12 +220,12 @@
                                                 <option value="Romanian">Romanian</option>
                                             </select>
                                         </div>
-                                        <div class="mt-3">
+                                        {{-- <div class="mt-3">
                                             <label for="">Choose Translation Rate (per Word)</label>
                                             <input type="number" name="translation_rate"
                                                 class="intro-x login__input form-control py-3 px-4 block mt-4"
                                                 placeholder="Per Word Rate" value="{{ Auth::user()->translation_rate }}">
-                                        </div>
+                                        </div> --}}
 
                                     </div>
                                     <div id="interpreter" class="tab-pane leading-relaxed" role="tabpanel"
@@ -308,13 +343,13 @@
                                                 <option value="Romanian">Romanian</option>
                                             </select>
                                         </div>
-                                        <div class="mt-3">
+                                        {{-- <div class="mt-3">
                                             <label for="">Choose Interpretation Rate (per Hour)</label>
                                             <input type="number" name="interpretation_rate"
                                                 class="intro-x login__input form-control py-3 px-4 block mt-4"
                                                 placeholder="Per Hour Rate"
                                                 value="{{ Auth::user()->interpretation_rate }}">
-                                        </div>
+                                        </div> --}}
                                     </div>
                                     <div id="proofreader" class="tab-pane leading-relaxed" role="tabpanel"
                                         aria-labelledby="proofreader-tab">
@@ -431,18 +466,19 @@
                                                 <option value="Romanian">Romanian</option>
                                             </select>
                                         </div>
-                                        <div class="mt-3">
+                                        {{-- <div class="mt-3">
                                             <label for="">Choose Proofreading Rate</label>
                                             <input type="number" name="proofreader_rate"
                                                 class="intro-x login__input form-control py-3 px-4 block mt-4"
                                                 placeholder="Rate" value="{{ Auth::user()->proofreader_rate }}">
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
 
                             </div>
 
                         </div>
+                       
                         <input type="submit" class="btn btn-primary mt-5" value="Update Contractor">
                     </div>
                 </form>
