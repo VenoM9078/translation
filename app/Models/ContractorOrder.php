@@ -19,7 +19,8 @@ class ContractorOrder extends Model
         'total_words',
         'message',
         'translation_due_date',
-        'translation_type'
+        'translation_type',
+        'translator_adjust_note'
     ];
 
     public function contractor()
