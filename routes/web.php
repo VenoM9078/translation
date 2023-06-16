@@ -275,6 +275,15 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/institute/admin/pending', [AdminController::class, 'viewInstituteAdminPending'])->name('view-pending-institute-admin');
     Route::get('/institute/admin/{id}/accept', [AdminController::class, 'acceptInstituteAdmin'])->name('institute-admin-accept');
     Route::get('/institute/admin/{id}/decline', [AdminController::class, 'declineInstituteAdmin'])->name('institute-admin-decline');
+
+    //Register User
+    Route::get('/register-user',[AdminController::class,'viewRegisterUser'])->name('register-user');
+    Route::post('/register-user',[AdminController::class,'registerUser'])->name('submit-register-user');
+
+    //Register Contractor
+    Route::get('/register-contractor', [AdminController::class, 'viewRegisterContractor'])->name('register-contractor');
+    Route::post('/register-contractor', [AdminController::class, 'registerContractor'])->name('submit-register-contractor');
+
 });
 
 Route::middleware(['web', 'auth', 'verified'])->group(function () {

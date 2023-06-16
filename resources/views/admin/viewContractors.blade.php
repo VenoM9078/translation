@@ -6,12 +6,19 @@
     </div>
     <!-- BEGIN: Data List -->
     <div class="col-span-12 mt-8">
-        <div class="intro-y flex items-center h-10">
-            <h2 class="text-lg font-medium truncate mr-5 mb-5">
+        <div class="intro-y flex justify-between items-center mb-4 h-10">
+            <h2 class="text-lg font-medium truncate mr-5">
                 All Contractors
             </h2>
+            <div class="text-right">
+                <a href="{{ route('register-contractor') }}" class="btn btn-primary">New</a>
+            </div>
         </div>
-
+        @if (session('success'))
+            <div class="alert alert-success" role="alert">
+                <span class="badge bg-success">{{ session('success') }}</span>
+            </div>
+        @endif
         <div class="intro-y box">
             <div id="vertical-form" class="p-5">
                 <div class="preview">

@@ -169,7 +169,7 @@
                 </li>
 
                 <li>
-                    <a href="javascript:;"
+                    <a href="{{ route('contractor.translations.completed') }}"
                         class="{{ Route::getCurrentRoute()->uri == 'contractor/translations/pending' || Route::getCurrentRoute()->uri == 'contractor/translations/completed' ? 'side-menu side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"> <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
                                 width="32" height="32" fill="white" viewBox="0 0 24 24" id="language">
@@ -179,10 +179,10 @@
                             </svg> </div>
                         <div class="side-menu__title">
                             Translations
-                            <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                            {{-- <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div> --}}
                         </div>
                     </a>
-                    <ul class="">
+                    {{-- <ul class="">
                         <li>
                             <a href="{{ route('contractor.translations.completed') }}" class="side-menu">
                                 <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
@@ -197,7 +197,7 @@
                         </li>
 
 
-                    </ul>
+                    </ul> --}}
                 </li>
 
                 <li>

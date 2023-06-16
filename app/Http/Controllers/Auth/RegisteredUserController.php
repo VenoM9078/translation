@@ -51,7 +51,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $user->sendEmailVerificationNotification();  // add this line
+        $user->sendEmailVerificationNotification(); // add this line
 
 
         event(new Registered($user));
@@ -81,30 +81,36 @@ class RegisteredUserController extends Controller
         );
         // dd($request->all());
         // Pass input data from the previous form to the view
-        if ($request->role_id == 0) {
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'role_id' => 0
-            ]);
+        $verifyUser = User::where('email', $request->email)->first();
+        if (!isset($verifyUser)) {
+            if ($request->role_id == 0) {
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'role_id' => 0
+                ]);
 
-            // $user->sendEmailVerificationNotification();  // add this line
+
+                // $user->sendEmailVerificationNotification();  // add this line
 
 
-            event(new Registered($user));
+                event(new Registered($user));
 
-            Auth::login($user);
+                Auth::login($user);
 
-            return redirect(RouteServiceProvider::HOME);
-        } else {
-            return view('auth.register2', [
-                'name' => $request->input('name'),
-                'role_id' => 0,
-                'role_id_sent' => $request->role_id,
-                'email' => $request->input('email'),
-                'password' => $request->input('password'),
-            ]);
+                return redirect(RouteServiceProvider::HOME);
+            } else {
+                return view('auth.register2', [
+                    'name' => $request->input('name'),
+                    'role_id' => 0,
+                    'role_id_sent' => $request->role_id,
+                    'email' => $request->input('email'),
+                    'password' => $request->input('password'),
+                ]);
+            }
+        } else if (isset($verifyUser)) {
+            return back()->with('error', 'This email already exists');
         }
     }
     public function register2Complete(Request $request)
@@ -162,7 +168,7 @@ class RegisteredUserController extends Controller
             }
         }
 
-        $user->sendEmailVerificationNotification();  // add this line
+        $user->sendEmailVerificationNotification(); // add this line
 
 
         event(new Registered($user));

@@ -40,50 +40,56 @@ class ContractorAuthController extends Controller
     public function showRegisterForm2(Request $request)
     {
 
-        $validated = $request->validate(
-            [
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-                'password' => 'required|string|min:6',
-                'password2' => 'required|string|min:6|same:password',
-            ],
-            [
-                'name.required' => 'The name field is required.',
-                'name.max' => 'The name may not be greater than 255 characters.',
-                'email.required' => 'The email field is required.',
-                'email.max' => 'The email may not be greater than 255 characters.',
-                'password.required' => 'The password field is required.',
-                'password.min' => 'The password must be at least 6 characters.',
-                'password2.required' => 'The confirmation password field is required.',
-                'password2.same' => 'The confirmation password does not match.',
-                'password2.min' => 'The confirmation password must be at least 6 characters.',
-            ]
-        );
-        $validated['password'] = bcrypt($validated['password']);
+        $verifyUser = Contractor::where('email', $request->email)->first();
+        // dd($verifyUser);
+        if (!isset($verifyUser)) {
+            dd("dwadawdwad");
+            $validated = $request->validate(
+                [
+                    'name' => 'required|string|max:255',
+                    'email' => 'required|email|max:255',
+                    'password' => 'required|string|min:6',
+                    'password2' => 'required|string|min:6|same:password',
+                ],
+                [
+                    'name.required' => 'The name field is required.',
+                    'name.max' => 'The name may not be greater than 255 characters.',
+                    'email.required' => 'The email field is required.',
+                    'email.max' => 'The email may not be greater than 255 characters.',
+                    'password.required' => 'The password field is required.',
+                    'password.min' => 'The password must be at least 6 characters.',
+                    'password2.required' => 'The confirmation password field is required.',
+                    'password2.same' => 'The confirmation password does not match.',
+                    'password2.min' => 'The confirmation password must be at least 6 characters.',
+                ]
+            );
+            $validated['password'] = bcrypt($validated['password']);
+            $contractor = Contractor::create([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => bcrypt($request->input('password')),
+                'address' => "",
+                'phonenumber' => "",
+                'SSN' => "",
+                'translation_rate' => 0,
+                'interpretation_rate' => 0,
+                'proofreader_rate' => 0,
+                'verified' => 0
+            ]);
 
-          $contractor = Contractor::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password')),
-            'address' => "",
-            'phonenumber' => "",
-            'SSN' => "",
-            'translation_rate' => 0,
-            'interpretation_rate' => 0,
-            'proofreader_rate' => 0,
-            'verified' => 0
-        ]);
+            $verifyContractor = VerifyContractor::create([
+                'contractor_id' => $contractor->id,
+                'token' => sha1(time())
+            ]);
 
-        $verifyContractor = VerifyContractor::create([
-            'contractor_id' => $contractor->id,
-            'token' => sha1(time())
-        ]);
+            Mail::to($contractor->email)->send(new VerifyContractorMail($contractor));
 
-        Mail::to($contractor->email)->send(new VerifyContractorMail($contractor));
-
-        Auth::guard('contractor')->login($contractor);
-        return redirect()->route('contractor.verification.notice');
-
+            Auth::guard('contractor')->login($contractor);
+            return redirect()->route('contractor.verification.notice');
+        } else if (isset($verifyUser)) {
+            // dd($verifyUser);
+            return redirect()->back()->with('error', 'This email already exists');
+        }
         // Pass input data from the previous form to the view
         // return view('auth.contractor.register2', [
         //     'name' => $request->input('name'),
@@ -276,7 +282,8 @@ class ContractorAuthController extends Controller
 
 
         $validated['password'] = bcrypt($validated['password']);
-
+        // $verifyUser = Contractor::where('email', $request->email)->first();
+        // if (!isset($verifyUser)) {
         $contractor = Contractor::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
@@ -322,9 +329,13 @@ class ContractorAuthController extends Controller
         ]);
 
         Mail::to($contractor->email)->send(new VerifyContractorMail($contractor));
-        
+
         Auth::guard('contractor')->login($contractor);
         return redirect()->route('contractor.verification.notice');
+        // } 
+        // else if (isset($verifyUser)) {
+        //     return back()->with('error', 'This email already exists');
+        // }
 
 
         // return redirect()->route('contractor.dashboard');
@@ -348,14 +359,14 @@ class ContractorAuthController extends Controller
             return redirect()->route('contractor.login')->with('warning', "Sorry your email cannot be identified.");
         }
         $languages = ContractorLanguage::where('contractor_id', $verifyUser->contractor->id)->distinct()->get();
-       return redirect()->route('contractor.edit-profile')->with(['status'=> $status,'languages'=>$languages]);
+        return redirect()->route('contractor.edit-profile')->with(['status' => $status, 'languages' => $languages]);
     }
 
     public function viewProfile(Request $request)
     {
         // dd($request['languages']);
         $languages = ContractorLanguage::where('contractor_id', Auth::user()->id)->distinct()->get();
-        return view('contractor.edit-profile',compact('languages'));
+        return view('contractor.edit-profile', compact('languages'));
     }
 
     public function index()
@@ -381,7 +392,8 @@ class ContractorAuthController extends Controller
         return view('contractor.dashboard', compact('proofReadCount', 'translationsCount', 'interpretationsCount'));
     }
 
-    public function updateProfile(Request $request){
+    public function updateProfile(Request $request)
+    {
         $id = Auth::user()->id;
         $contractor = Contractor::findOrFail($id);
 
@@ -794,8 +806,8 @@ class ContractorAuthController extends Controller
         ]);
 
         if (
-            auth()->guard('contractor')->attempt(['email' => $request->email, 'password' => $request->password])) 
-            {
+            auth()->guard('contractor')->attempt(['email' => $request->email, 'password' => $request->password])
+        ) {
             $contractor = auth()->guard('contractor')->user();
             // dd($contractor->verified);
             if ($contractor->verified != 1) {

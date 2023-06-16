@@ -23,13 +23,16 @@ use App\Mail\paymentApproved;
 use App\Mail\paymentRejected;
 use App\Mail\QuoteSent;
 use App\Mail\UserNewInterpretation;
+use App\Mail\VerifyContractorMail;
 use App\Models\Contractor;
 use App\Models\ContractorOrder;
 use App\Models\Institute;
 use App\Models\InstituteMembers;
 use App\Models\ProofReaderOrders;
+use App\Models\VerifyContractor;
 use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Models\CompletedRequest;
@@ -470,6 +473,66 @@ class AdminController extends Controller
         }
 
         return redirect()->back()->with('status', 'Attach Files!');
+    }
+
+    public function viewRegisterUser()
+    {
+        return view('admin.register-user');
+    }
+
+
+
+    public function registerUser(Request $request)
+    {
+
+        $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        $user = new User;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        // $user->phone = $request->phone;
+        $user->password = bcrypt($request->password);
+        $user->role_id = 0;
+        $user->save();
+
+        event(new Registered($user));
+
+        return redirect()->route('admin.viewCustomers')->with('success', 'Customer created successfully');
+
+    }
+
+    public function viewRegisterContractor()
+    {
+        return view('admin.register-contractor');
+    }
+
+    public function registerContractor(Request $request)
+    {
+
+        $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        $contractor = Contractor::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')),
+        ]);
+
+        $verifyContractor = VerifyContractor::create([
+            'contractor_id' => $contractor->id,
+            'token' => sha1(time())
+        ]);
+
+        Mail::to($contractor->email)->send(new VerifyContractorMail($contractor));
+
+        return redirect()->route('admin.viewContractors')->with('success', 'Contractor created successfully');
     }
 
     public function uploadTranslationImage(Request $request)
