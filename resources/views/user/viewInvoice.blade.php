@@ -1,212 +1,213 @@
 @extends('user.layout')
 
 @section('content')
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css" />
 
-<div class="col-span-12 mt-8">
-    <div class="intro-y flex items-center h-10">
-        <h2 class="text-lg font-medium truncate mr-5 mb-5">
-            Viewing Invoice for Worknumber: {{ $invoice->order->worknumber }}
-        </h2>
+    <div class="col-span-12 mt-8">
+        <div class="intro-y flex items-center h-10">
+            <h2 class="text-lg font-medium truncate mr-5 mb-5">
+                Viewing Invoice for Worknumber: {{ $invoice->order->worknumber }}
+            </h2>
 
-    </div>
-
-    <div class="intro-y box overflow-hidden mt-5">
-        <div class="flex flex-col lg:flex-row pt-10 px-5 sm:px-20 sm:pt-20 lg:pb-20 text-center sm:text-left">
-            <div class="font-semibold text-primary text-3xl">INVOICE</div>
-            <div class="mt-20 lg:mt-0 lg:ml-auto lg:text-right">
-                <div class="text-xl text-primary font-medium">FlowTranslate</div>
-                <div class="mt-1">webpage@flowtranslate.com</div>
-                <div class="mt-1">650-229-4621</div>
-            </div>
         </div>
-        <div class="flex flex-col lg:flex-row border-b px-5 sm:px-20 pt-10 pb-10 sm:pb-20 text-center sm:text-left">
-            <div>
-                <div class="text-base text-slate-500">Client Details</div>
-                <div class="text-lg font-medium text-primary mt-2">{{ $invoice->order->user->name }}</div>
-                <div class="mt-1">{{ $invoice->order->user->email }}</div>
-            </div>
-            <div class="mt-10 lg:mt-0 lg:ml-auto lg:text-right">
-                <div class="text-base text-slate-500">Work Number</div>
-                <?php $amount = $invoice->amount; ?>
-                <div class="text-lg text-primary font-medium mt-2">{{ $orderWork = $invoice->order->worknumber }}</div>
 
-                <div class="text-lg text-pending font-medium mt-2">Created At:
-                    {{ $invoice->created_at->timezone('America/Los_Angeles') }}</div>
+        <div class="intro-y box overflow-hidden mt-5">
+            <div class="flex flex-col lg:flex-row pt-10 px-5 sm:px-20 sm:pt-20 lg:pb-20 text-center sm:text-left">
+                <div class="font-semibold text-primary text-3xl">INVOICE</div>
+                <div class="mt-20 lg:mt-0 lg:ml-auto lg:text-right">
+                    <div class="text-xl text-primary font-medium">FlowTranslate</div>
+                    <div class="mt-1">webpage@flowtranslate.com</div>
+                    <div class="mt-1">650-229-4621</div>
+                </div>
             </div>
-        </div>
-        <div class="px-5 sm:px-16 py-10 sm:py-20">
-            <div class="overflow-x-auto">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th class="border-b-2 dark:border-darkmode-400 whitespace-nowrap">DESCRIPTION</th>
-                            <th class="border-b-2 dark:border-darkmode-400 text-right whitespace-nowrap">QTY</th>
-                            <th class="border-b-2 dark:border-darkmode-400 text-right whitespace-nowrap">PRICE</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="border-b dark:border-darkmode-400">
-                                <div class="font-medium whitespace-nowrap">{{ $invoice->description }} </div>
-                                <div class="text-slate-500 text-sm mt-0.5 whitespace-nowrap">Languages:
-                                    {{ $invoice->order->language1 }}, {{ $invoice->order->language2 }}</div>
-                            </td>
-                            <td class="text-right border-b dark:border-darkmode-400 w-32">{{ $invoice->docQuantity }}
-                            </td>
-                            <td class="text-right border-b dark:border-darkmode-400 w-32">${{ $invoice->amount }}</td>
-                        </tr>
+            <div class="flex flex-col lg:flex-row border-b px-5 sm:px-20 pt-10 pb-10 sm:pb-20 text-center sm:text-left">
+                <div>
+                    <div class="text-base text-slate-500">Client Details</div>
+                    <div class="text-lg font-medium text-primary mt-2">{{ $invoice->order->user->name }}</div>
+                    <div class="mt-1">{{ $invoice->order->user->email }}</div>
+                </div>
+                <div class="mt-10 lg:mt-0 lg:ml-auto lg:text-right">
+                    <div class="text-base text-slate-500">WO#</div>
+                    <?php $amount = $invoice->amount; ?>
+                    <div class="text-lg text-primary font-medium mt-2">{{ $orderWork = $invoice->order->worknumber }}</div>
 
-                    </tbody>
-                </table>
+                    <div class="text-lg text-pending font-medium mt-2">Created At:
+                        {{ $invoice->created_at->timezone('America/Los_Angeles') }}</div>
+                </div>
             </div>
-        </div>
-        @if ($invoice->order->paymentStatus == 0)
-        <div class="px-5 sm:px-20 pb-10 sm:pb-20 flex flex-col-reverse sm:flex-row">
-            <form action="" method="post"></form>
-            <div class="text-center sm:text-left mt-10 sm:mt-0">
-                <div class="text-base text-slate-500 mb-3">Choose Payment Method</div>
-                <a href="{{ route('provideProof', $invoice->order->id) }}" class="btn btn-primary">Already Paid?
-                    Provide
-                    Proof</a>
-                {{-- <div class="text-center"> --}}
-                    <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#header-footer-modal-preview"
-                        class="btn btn-pending">Pay Later</a>
-                    <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#header-footer-modal-preview-2"
-                        style="background-color: purple;" class="text-white btn">View Bank Details</a>
+            <div class="px-5 sm:px-16 py-10 sm:py-20">
+                <div class="overflow-x-auto">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="border-b-2 dark:border-darkmode-400 whitespace-nowrap">DESCRIPTION</th>
+                                <th class="border-b-2 dark:border-darkmode-400 text-right whitespace-nowrap">QTY</th>
+                                <th class="border-b-2 dark:border-darkmode-400 text-right whitespace-nowrap">PRICE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border-b dark:border-darkmode-400">
+                                    <div class="font-medium whitespace-nowrap">{{ $invoice->description }} </div>
+                                    <div class="text-slate-500 text-sm mt-0.5 whitespace-nowrap">Languages:
+                                        {{ $invoice->order->language1 }}, {{ $invoice->order->language2 }}</div>
+                                </td>
+                                <td class="text-right border-b dark:border-darkmode-400 w-32">{{ $invoice->docQuantity }}
+                                </td>
+                                <td class="text-right border-b dark:border-darkmode-400 w-32">${{ $invoice->amount }}</td>
+                            </tr>
 
-                    {{--
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @if ($invoice->order->paymentStatus == 0)
+                <div class="px-5 sm:px-20 pb-10 sm:pb-20 flex flex-col-reverse sm:flex-row">
+                    <form action="" method="post"></form>
+                    <div class="text-center sm:text-left mt-10 sm:mt-0">
+                        <div class="text-base text-slate-500 mb-3">Choose Payment Method</div>
+                        <a href="{{ route('provideProof', $invoice->order->id) }}" class="btn btn-primary">Already Paid?
+                            Provide
+                            Proof</a>
+                        {{-- <div class="text-center"> --}}
+                        <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#header-footer-modal-preview"
+                            class="btn btn-pending">Pay Later</a>
+                        <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#header-footer-modal-preview-2"
+                            style="background-color: purple;" class="text-white btn">View Bank Details</a>
+
+                        {{--
                 </div> --}}
-                {{-- <a href="{{ route('payLater',$invoice->order->id) }}" class="btn btn-pending">Pay Later</a> --}}
+                        {{-- <a href="{{ route('payLater',$invoice->order->id) }}" class="btn btn-pending">Pay Later</a> --}}
 
-                <div id="header-footer-modal-preview-2" class="modal" tabindex="-1" aria-hidden="true">
+                        <div id="header-footer-modal-preview-2" class="modal" tabindex="-1" aria-hidden="true">
 
-                    <div class="modal-dialog">
-                        <form action="{{ route('payLater') }}" method="post">
-                            @csrf
-                            @method('POST')
-                            <div class="modal-content">
-                                <!-- BEGIN: Modal Header -->
-                                <div class="modal-header">
-                                    <h2 class="font-medium text-base mr-auto">Bank Details</h2>
+                            <div class="modal-dialog">
+                                <form action="{{ route('payLater') }}" method="post">
+                                    @csrf
+                                    @method('POST')
+                                    <div class="modal-content">
+                                        <!-- BEGIN: Modal Header -->
+                                        <div class="modal-header">
+                                            <h2 class="font-medium text-base mr-auto">Bank Details</h2>
 
-                                </div> <!-- END: Modal Header -->
-                                <!-- BEGIN: Modal Body -->
+                                        </div> <!-- END: Modal Header -->
+                                        <!-- BEGIN: Modal Body -->
 
-                                {{-- Check to: Flow Translations
+                                        {{-- Check to: Flow Translations
                                 Bank of America
                                 Checking Account No.3251 0717 1449
                                 Routing Number: 121000358 --}}
 
-                                <div class="modal-body grid grid-cols-12 gap-4 gap-y-3">
-                                    <div class="col-span-12 sm:col-span-12">
-                                        <label for="modal-form-1" class="form-label">Name</label>
-                                        <input id="modal-form-1" type="text" disabled class="form-control mb-5"
-                                            value="Flow Translations">
+                                        <div class="modal-body grid grid-cols-12 gap-4 gap-y-3">
+                                            <div class="col-span-12 sm:col-span-12">
+                                                <label for="modal-form-1" class="form-label">Name</label>
+                                                <input id="modal-form-1" type="text" disabled class="form-control mb-5"
+                                                    value="Flow Translations">
 
-                                        <label for="modal-form-1" class="form-label">Bank Name</label>
-                                        <input id="modal-form-1" type="text" disabled class="form-control mb-5"
-                                            value="Bank of America">
+                                                <label for="modal-form-1" class="form-label">Bank Name</label>
+                                                <input id="modal-form-1" type="text" disabled class="form-control mb-5"
+                                                    value="Bank of America">
 
-                                        <label for="modal-form-1" class="form-label">Checking Account No.</label>
-                                        <input id="modal-form-1" type="text" disabled class="form-control mb-5"
-                                            value="3251 0717 1449">
+                                                <label for="modal-form-1" class="form-label">Checking Account No.</label>
+                                                <input id="modal-form-1" type="text" disabled class="form-control mb-5"
+                                                    value="3251 0717 1449">
 
-                                        <label for="modal-form-1" class="form-label">Routing Number</label>
-                                        <input id="modal-form-1" type="text" disabled class="form-control mb-5"
-                                            value="121000358">
+                                                <label for="modal-form-1" class="form-label">Routing Number</label>
+                                                <input id="modal-form-1" type="text" disabled class="form-control mb-5"
+                                                    value="121000358">
+                                            </div>
+
+                                        </div> <!-- END: Modal Body -->
+                                        <!-- BEGIN: Modal Footer -->
+                                        <div class="modal-footer"> <button type="button" data-tw-dismiss="modal"
+                                                class="btn btn-outline-secondary w-20 mr-1">Cancel</button>
+                                            {{-- <button type="submit" class="btn btn-primary w-40">Submit Request</button> --}}
+                                        </div> <!-- END: Modal Footer -->
                                     </div>
-
-                                </div> <!-- END: Modal Body -->
-                                <!-- BEGIN: Modal Footer -->
-                                <div class="modal-footer"> <button type="button" data-tw-dismiss="modal"
-                                        class="btn btn-outline-secondary w-20 mr-1">Cancel</button>
-                                    {{-- <button type="submit" class="btn btn-primary w-40">Submit Request</button> --}}
-                                </div> <!-- END: Modal Footer -->
+                                </form>
                             </div>
-                        </form>
-                    </div>
 
-                </div> <!-- END: Modal Content -->
+                        </div> <!-- END: Modal Content -->
 
-                <div id="header-footer-modal-preview" class="modal" tabindex="-1" aria-hidden="true">
+                        <div id="header-footer-modal-preview" class="modal" tabindex="-1" aria-hidden="true">
 
-                    <div class="modal-dialog">
-                        <form action="{{ route('payLater') }}" method="post">
-                            @csrf
-                            @method('POST')
-                            <div class="modal-content">
-                                <!-- BEGIN: Modal Header -->
-                                <div class="modal-header">
-                                    <h2 class="font-medium text-base mr-auto">Pay Later</h2>
+                            <div class="modal-dialog">
+                                <form action="{{ route('payLater') }}" method="post">
+                                    @csrf
+                                    @method('POST')
+                                    <div class="modal-content">
+                                        <!-- BEGIN: Modal Header -->
+                                        <div class="modal-header">
+                                            <h2 class="font-medium text-base mr-auto">Pay Later</h2>
 
-                                </div> <!-- END: Modal Header -->
-                                <!-- BEGIN: Modal Body -->
-                                <div class="modal-body grid grid-cols-12 gap-4 gap-y-3">
-                                    <div class="col-span-12 sm:col-span-12">
-                                        <input type="hidden" name="order_id" value="{{ $invoice->order->id }}">
-                                        <label for="modal-form-1" class="form-label">Code</label>
-                                        <input id="modal-form-1" type="text" name="payLaterCode" required
-                                            class="form-control" placeholder="Enter Code that helps us recognize you">
+                                        </div> <!-- END: Modal Header -->
+                                        <!-- BEGIN: Modal Body -->
+                                        <div class="modal-body grid grid-cols-12 gap-4 gap-y-3">
+                                            <div class="col-span-12 sm:col-span-12">
+                                                <input type="hidden" name="order_id" value="{{ $invoice->order->id }}">
+                                                <label for="modal-form-1" class="form-label">Code</label>
+                                                <input id="modal-form-1" type="text" name="payLaterCode" required
+                                                    class="form-control"
+                                                    placeholder="Enter Code that helps us recognize you">
+                                            </div>
+
+                                        </div> <!-- END: Modal Body -->
+                                        <!-- BEGIN: Modal Footer -->
+                                        <div class="modal-footer"> <button type="button" data-tw-dismiss="modal"
+                                                class="btn btn-outline-secondary w-20 mr-1">Cancel</button>
+                                            <button type="submit" class="btn btn-primary w-40">Submit Request</button>
+                                        </div> <!-- END: Modal Footer -->
                                     </div>
-
-                                </div> <!-- END: Modal Body -->
-                                <!-- BEGIN: Modal Footer -->
-                                <div class="modal-footer"> <button type="button" data-tw-dismiss="modal"
-                                        class="btn btn-outline-secondary w-20 mr-1">Cancel</button>
-                                    <button type="submit" class="btn btn-primary w-40">Submit Request</button>
-                                </div> <!-- END: Modal Footer -->
+                                </form>
                             </div>
-                        </form>
+
+                        </div> <!-- END: Modal Content -->
+
+                        <hr class="side-nav__devider my-6">
+                        </hr>
+
+                        <div id="paypal-button-container"></div>
+
+                        <hr class="side-nav__devider my-6">
+                        </hr>
+
+                        <div class="text-center text-base text-danger mb-3">Paying through PayPal? PayPal Transaction Fee
+                            ($3.50)<br> must be paid along with the charged amount in the Invoice.</div>
+
+
                     </div>
-
-                </div> <!-- END: Modal Content -->
-
-                <hr class="side-nav__devider my-6">
-                </hr>
-
-                <div id="paypal-button-container"></div>
-
-                <hr class="side-nav__devider my-6">
-                </hr>
-
-                <div class="text-center text-base text-danger mb-3">Paying through PayPal? PayPal Transaction Fee
-                    ($3.50)<br> must be paid along with the charged amount in the Invoice.</div>
-
-
-            </div>
-            <div class="text-center sm:text-right sm:ml-auto">
-                <div class="text-base text-slate-500">Total Amount</div>
-                <div class="text-xl text-primary font-medium mt-2">${{ $invoice->amount }}</div>
-                <div class="mt-1">All Internal Charges Included</div>
-            </div>
+                    <div class="text-center sm:text-right sm:ml-auto">
+                        <div class="text-base text-slate-500">Total Amount</div>
+                        <div class="text-xl text-primary font-medium mt-2">${{ $invoice->amount }}</div>
+                        <div class="mt-1">All Internal Charges Included</div>
+                    </div>
+                </div>
+            @else
+                <div class="px-5 sm:px-20 pb-10 sm:pb-20 flex flex-col-reverse sm:flex-row">
+                    <form action="" method="post"></form>
+                    <div class="text-center sm:text-left mt-10 sm:mt-0">
+                        <div class="text-base text-slate-500 mb-3">Already Paid!</div>
+                    </div>
+                </div>
+            @endif
         </div>
-        @else
-        <div class="px-5 sm:px-20 pb-10 sm:pb-20 flex flex-col-reverse sm:flex-row">
-            <form action="" method="post"></form>
-            <div class="text-center sm:text-left mt-10 sm:mt-0">
-                <div class="text-base text-slate-500 mb-3">Already Paid!</div>
-            </div>
-        </div>
-        @endif
+        <!-- END: Invoice -->
+
+
     </div>
-    <!-- END: Invoice -->
-
-
-</div>
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-    crossorigin="anonymous"></script>
-<script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-{{-- <script
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    {{-- <script
     src="https://www.paypal.com/sdk/js?client-id=Aa2jPGWCMLpswVVeE7IuImi64-45_hAD-gmbh7UY5KhmIUA2CAkaScbXWYjoTPNJiAzQWj_ya7wZNC6s&disable-funding=credit&components=buttons">
 </script> --}}
 
-<script
-    src="https://www.paypal.com/sdk/js?client-id=AapYCwr7IL6pstdnEZ8a8Ugv_WMX3qBJflHAfrlFwye5D-7oB22i8Nrky2_AwRLLLTayYkhWS21uKygn&components=buttons">
-</script>
+    <script
+        src="https://www.paypal.com/sdk/js?client-id=AapYCwr7IL6pstdnEZ8a8Ugv_WMX3qBJflHAfrlFwye5D-7oB22i8Nrky2_AwRLLLTayYkhWS21uKygn&components=buttons">
+    </script>
 
-<script>
-    amount = <?php echo json_encode($amount); ?>;
+    <script>
+        amount = <?php echo json_encode($amount); ?>;
         amount = amount + 3;
         order = <?php echo json_encode($orderWork); ?>;
         order_id = <?php echo json_encode($invoice->order_id); ?>;
@@ -245,5 +246,5 @@
                 });
             }
         }).render('#paypal-button-container');
-</script>
+    </script>
 @endsection

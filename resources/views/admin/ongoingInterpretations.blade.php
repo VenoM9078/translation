@@ -135,10 +135,10 @@
                                     <tr>
                                         <th class="whitespace-nowrap text-center sticky-column-1">Possible Action</th>
                                         <th style="width: 41.0469px;padding-left: 40px;padding-right: 40px;"
-                                            class="whitespace-nowrap w-40 px-12 sticky-column-1" >Status</th>
+                                            class="whitespace-nowrap w-40 px-12 sticky-column-1">Status</th>
                                         <th class="whitespace-nowrap text-center" style="display: none">Interpretation
                                             Status</th>
-                                        <th class="whitespace-nowrap text-center">Work Number</th>
+                                        <th class="whitespace-nowrap text-center">WO#</th>
                                         <th class="whitespace-nowrap text-center">Institute</th>
                                         <th class="whitespace-nowrap text-center">Name</th>
                                         <th class="whitespace-nowrap text-center">Email</th>
@@ -426,7 +426,7 @@
                 ordering: true,
                 info: true,
                 paging: true,
-                pageLength:10
+                pageLength: 10
             });
             console.log("table", table);
 

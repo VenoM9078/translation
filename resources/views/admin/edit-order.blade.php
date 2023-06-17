@@ -32,7 +32,7 @@
                             @csrf
                             @method('POST')
                             <div class="intro-x mt-4">
-                                <input type="hidden" name="order_id" value="{{$order->id}}">
+                                <input type="hidden" name="order_id" value="{{ $order->id }}">
                                 <label class="mt-2" for="">Current Language of the Document</label>
                                 <input type="text" id="language1" name="language1"
                                     class="intro-x login__input form-control py-3 mt-2 px-4 block" required
@@ -66,6 +66,14 @@
                                     @endif
                                 @endif
                                 <hr class="my-2 py-2">
+                                <div class="flex gap-2 w-full">
+                                    <div class="w-full">
+                                        <label for="c_unit">Unit</label>
+                                        <input type="number" id="unit" name="unit"
+                                            class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4" required
+                                            placeholder="Unit" value="{{ $order->unit }}">
+                                    </div>
+                                </div>
                                 <div class="flex gap-2 w-full">
 
                                     <!-- C. Type field -->
@@ -110,10 +118,11 @@
                                     <!-- C. Paid field -->
                                     <div class="w-full">
                                         <label for="c_paid">C. Paid</label>
-                                        <select id="c_paid" name="c_paid" class="form-control py-3 px-4 block mt-4 mb-4"
-                                            required>
+                                        <select id="c_paid" name="c_paid"
+                                            class="form-control py-3 px-4 block mt-4 mb-4" required>
                                             <option value="0" {{ $order->c_paid == 0 ? 'selected' : '' }}>No</option>
-                                            <option value="1" {{ $order->c_paid == 1 ? 'selected' : '' }}>Yes</option>
+                                            <option value="1" {{ $order->c_paid == 1 ? 'selected' : '' }}>Yes
+                                            </option>
                                         </select>
                                     </div>
                                     <!-- C. Fee field -->

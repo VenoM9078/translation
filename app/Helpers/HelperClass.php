@@ -18,7 +18,7 @@ class HelperClass
         $data = json_decode($json);
         $timezone = $data->timezone;
         $carbonTime = \Carbon\Carbon::parse($time);
-        return $carbonTime->timezone($timezone);
+        return $carbonTime->timezone($timezone)->format('h:m:s');
     }
 }
 

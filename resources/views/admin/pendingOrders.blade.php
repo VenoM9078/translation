@@ -165,8 +165,8 @@
                                     <th class="whitespace-nowrap">Order Status</th>
                                     <th class="whitespace-nowrap">Order Note</th>
                                     <th class="whitespace-nowrap">Institute</th>
-                                    <th class="whitespace-nowrap">Work Number</th>
-                                    <th class="whitespace-nowrap">Current Language</th>
+                                    <th class="whitespace-nowrap">WO#</th>
+                                    <th class="whitespace-nowrap">Source Language</th>
                                     <th class="whitespace-nowrap">Translated Language</th>
                                     <th class="whitespace-nowrap">C. Type</th>
                                     <th class="whitespace-nowrap">C. Unit</th>
@@ -450,12 +450,6 @@
                                                     $order->paymentStatus == 2 &&
                                                     $order->translation_status == 1 &&
                                                     $order->proofread_status == 0)
-                                                {{-- <a href="{{ route('mailToProofReader', $order->id) }}"
-                                        class="btn btn-dark mr-1"><i data-lucide="mail" class="w-5 h-5 mr-2"></i>
-                                        Mail to Proofreader </a>
-                                    <a href="{{ route('mailOfCompletion', $order->id) }}"
-                                        class="btn btn-success mr-1"><i data-lucide="mail" class="w-5 h-5 mr-2"></i>
-                                        Send Translation to User </a> --}}
                                                 <a href="{{ route('view-assign-proofreader', $order->id) }}"
                                                     title="Assign Proof Reader" class="btn btn-dark mr-1">
                                                     <i data-lucide="user" class="w-5 h-5 mr-2"></i>

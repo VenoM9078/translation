@@ -19,7 +19,7 @@
                         <table id="myTable" class="table table-striped hover mt-10" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th class="whitespace-nowrap text-center">Work Number</th>
+                                    <th class="whitespace-nowrap text-center">WO#</th>
                                     <th class="whitespace-nowrap text-center">Language</th>
                                     <th class="whitespace-nowrap text-center">Interpretation Date</th>
                                     <th class="whitespace-nowrap text-center">Start Time</th>
@@ -42,7 +42,9 @@
                                         <td class="whitespace-nowrap">
                                             {{ App\Helpers\HelperClass::convertTimeToCurrentTimeZone($interpretation->start_time, request()->ip()) }}
                                         </td>
-                                        <td class="whitespace-nowrap"> {{ App\Helpers\HelperClass::convertTimeToCurrentTimeZone($interpretation->end_time, request()->ip()) }}</td>
+                                        <td class="whitespace-nowrap">
+                                            {{ App\Helpers\HelperClass::convertTimeToCurrentTimeZone($interpretation->end_time, request()->ip()) }}
+                                        </td>
 
                                         <td class="whitespace-nowrap">{{ $interpretation->session_format }}</td>
                                         <td class="whitespace-nowrap">

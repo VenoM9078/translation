@@ -13,7 +13,7 @@
                 <div class="grid grid-cols-1 gap-2 md:grid-cols-2">
                     <div class="flex mt-2 mb-2 gap-2">
                         <div class="w-full">
-                            <label for="order-form-1" class="form-label">Work Number</label>
+                            <label for="order-form-1" class="form-label">WO#</label>
                             <input id="order-form-1" type="text" class="form-control w-full" disabled
                                 value="{{ $order->worknumber }}">
                         </div>

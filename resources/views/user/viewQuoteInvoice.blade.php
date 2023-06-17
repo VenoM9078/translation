@@ -27,7 +27,7 @@
                     <div class="mt-1">{{ $interpretation->user->email }}</div>
                 </div>
                 <div class="mt-10 lg:mt-0 lg:ml-auto lg:text-right">
-                    <div class="text-base text-slate-500">Work Number</div>
+                    <div class="text-base text-slate-500">WO#</div>
                     <?php $amount = $interpretation->quote_price; ?>
                     <div class="text-lg text-primary font-medium mt-2">{{ $orderWork = $interpretation->worknumber }}</div>
 

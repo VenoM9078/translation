@@ -40,6 +40,10 @@ class Interpretation extends Model
         return $this->belongsTo('App\Models\Contractor', 'interpreter_id');
     }
 
+    public function quote(){
+        return $this->quote_description;
+    }
+
     public function contractorInterpretation()
     {
         return $this->hasOne('App\Models\ContractorInterpretation', 'interpretation_id');

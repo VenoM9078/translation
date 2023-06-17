@@ -120,6 +120,7 @@ class AdminController extends Controller
         $order->c_rate = $request->input('c_rate');
         $order->c_adjust = $request->input('c_adjust');
         $order->c_fee = $request->input('c_fee');
+        $order->unit = $request->input('unit');
         $order->c_adjust_note = $request->input('c_adjust_note');
         $order->c_paid = $request->input('c_paid');
         $order->due_date = Carbon::now()->addDays(7);
@@ -451,7 +452,8 @@ class AdminController extends Controller
             'paymentStatus' => 1,
             'message' => $request->input('message'),
             'want_quote' => 0,
-            'due_date' => $due_date
+            'due_date' => $due_date,
+            'unit' => $request->input('unit')
         ];
 
         $order = Order::create($data);

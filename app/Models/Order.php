@@ -47,12 +47,17 @@ class Order extends Model
         'c_fee',
         'c_adjust_note',
         'c_paid',
-        'due_date'
+        'due_date',
+        'unit'
     ];
 
     public function files()
     {
         return $this->hasMany('App\Models\OrderFiles');
+    }
+
+    public function quote(){
+        return $this->quote_description;
     }
 
     public function user()

@@ -53,7 +53,7 @@
                     <div class="mt-1">{{ $order->user->email }}</div>
                 </div>
                 <div class="mt-10 lg:mt-0 lg:ml-auto lg:text-right">
-                    {{-- <div class="text-base text-slate-500">Work Number</div> --}}
+                    {{-- <div class="text-base text-slate-500">WO#</div> --}}
                     {{-- <div class="text-lg text-primary font-medium mt-2">{{ $orderWork = $order->worknumber }}</div> --}}
 
                     <div class="text-lg text-pending font-medium mt-2">Created At:
