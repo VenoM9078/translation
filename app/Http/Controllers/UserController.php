@@ -9,6 +9,8 @@ use App\Mail\AdminPaymentReceived;
 use App\Mail\CustomerPaymentReceived;
 use App\Mail\InstituteRequestAccepted;
 use App\Mail\InstituteRequestDeclined;
+use App\Models\Institute;
+use App\Models\InstituteMembers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -93,7 +95,7 @@ class UserController extends Controller
                 TemporaryFile::create([
                     'filename' => $filename
                 ]);
-
+                // dd($filename);
                 return $filename;
             }
         }
@@ -698,7 +700,24 @@ class UserController extends Controller
 
     public function viewInstituteOrders()
     {
-        $orders = Order::all()->where('added_by_institute_user', 1);
+        $user = Auth::user();
+
+        // Get all the institutes managed by this user
+        $institutes = Institute::where('managed_by', $user->id)->get();
+
+        // Collect all the user IDs associated with these institutes
+        $user_ids = [];
+        foreach ($institutes as $institute) {
+            $members = $institute->members()->get();
+            foreach ($members as $member) {
+                $user_ids[] = $member->id;
+            }
+        }
+        $user_ids = array_unique($user_ids); // Remove duplicates
+
+        // Get all orders made by these users
+        $orders = Order::whereIn('user_id', $user_ids)->get();
+
         return view('user.institute.view-user-orders', compact('orders'));
     }
 
