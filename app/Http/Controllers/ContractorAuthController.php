@@ -24,6 +24,7 @@ use App\Models\ProofReaderOrders;
 use App\Models\ProofRequest;
 use App\Models\TemporaryFile;
 use App\Models\VerifyContractor;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Mail as Mail;
@@ -474,7 +475,7 @@ class ContractorAuthController extends Controller
     public function completedTranslations()
     {
         $translations = ContractorOrder::where('contractor_id', auth()->guard('contractor')->user()->id)
-            ->where('is_accepted', ContractorOrderEnum::ACCEPTED)->orderBy('created_at', 'desc')
+            ->orderBy('created_at', 'desc')
             ->get();
         return view('contractor.completed-translations', compact('translations'));
     }
@@ -732,8 +733,8 @@ class ContractorAuthController extends Controller
             'contractorOrder'
         ])
             ->where('contractor_id', auth()->guard('contractor')->user()->id)
-            ->where('is_accepted', 1) // assuming 0 represents "accepted"
-            ->where('translation_status', TranslationStatusEnum::PENDING)
+            // ->where('is_accepted', 1) // assuming 0 represents "accepted"
+            // ->where('translation_status', TranslationStatusEnum::PENDING)
             ->whereHas('contractorOrder', function ($query) {
                 $query->where('is_accepted', ContractorOrderEnum::ACCEPTED);
             })
@@ -767,7 +768,6 @@ class ContractorAuthController extends Controller
 
         $interpretations = ContractorInterpretation::where([
             ['contractor_id', '=', $contractorId],
-            ['is_accepted', '=', 1]
         ])->get();
 
         return view('contractor.interpretations', compact('interpretations'));
@@ -859,12 +859,13 @@ class ContractorAuthController extends Controller
         $proofReaderOrders->translation_status = TranslationStatusEnum::ACCEPTED; //completed
         $proofReaderOrders->file_name = $request->proofReadFile;
         $proofReaderOrders->feedback = $request->feedback;
+        $proofReaderOrders->proof_read_due_date = Carbon::now()->addDays(7);
         $proofReaderOrders->save();
 
         $order = $proofReaderOrders->order;
         $order->proofread_status = OrderStatusEnum::COMPLETED;
-        $order->completed = OrderStatusEnum::COMPLETED;
-        $order->orderStatus = "Completed";
+        // $order->completed = OrderStatusEnum::COMPLETED;
+        // $order->orderStatus = "Completed";
         $order->save();
 
         $contractor = $proofReaderOrders->contractor;

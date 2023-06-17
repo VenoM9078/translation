@@ -201,7 +201,7 @@
                 </li>
 
                 <li>
-                    <a href="javascript:;"
+                    <a href="{{route('contractor.proof-read')}}"
                         class="{{ Route::getCurrentRoute()->uri == 'contractor/proof-reads' || Route::getCurrentRoute()->uri == 'contractor/proof-reads/pending' || Route::getCurrentRoute()->uri == 'contractor/completed-proof-reads' ? 'side-menu side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"
                                 width="32" height="32" fill="white" id="student-reading">
@@ -211,10 +211,10 @@
                             </svg> </div>
                         <div class="side-menu__title">
                             Proofreads
-                            <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                            {{-- <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div> --}}
                         </div>
                     </a>
-                    <ul class="">
+                    {{-- <ul class="">
                         <li>
                             <a href="{{ route('contractor.proof-read') }}" class="side-menu">
                                 <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
@@ -235,11 +235,11 @@
                             </a>
                         </li>
 
-                    </ul>
+                    </ul> --}}
                 </li>
 
                 <li>
-                    <a href="javascript:;"
+                    <a href="{{route('contractor.interpretations')}}"
                         class="{{ Route::getCurrentRoute()->uri == 'contractor/interpretations/ongoing' || Route::getCurrentRoute()->uri == 'contractor/interpretations/requests' ? 'side-menu side-menu--active' : 'side-menu' }}">
                         <div class="side-menu__icon"><svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
                                 width="32" height="32" fill="white" viewBox="0 0 128 128" id="meeting">
@@ -255,10 +255,10 @@
                             </svg> </div>
                         <div class="side-menu__title">
                             Interpretations
-                            <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                            {{-- <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div> --}}
                         </div>
                     </a>
-                    <ul class="">
+                    {{-- <ul class="">
                         <li>
                             <a href="{{ route('contractor.interpretations') }}" class="side-menu">
                                 <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
@@ -271,8 +271,8 @@
                                 <div class="side-menu__title"> Requests </div>
                             </a>
                         </li>
-
-                    </ul>
+ --}}
+                    {{-- </ul> --}}
                 </li>
 
 

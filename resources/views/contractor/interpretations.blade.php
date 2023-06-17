@@ -145,7 +145,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($interpretations as $interpretation)
+                                    @foreach ($interpretations as $key=> $interpretation)
                                         <tr
                                             data-status="{{ $interpretation->interpretation->interpreter_completed == 1 ? 'completed' : 'pending' }}">
                                             <td class="whitespace-nowrap">{{ $interpretation->interpretation->worknumber }}
@@ -174,21 +174,39 @@
                                             </td>
                                             <td class="whitespace-nowrap">
                                                 <div class="flex">
-                                                    <a href="{{ route('contractor.viewReport', $interpretation->id) }}"
-                                                        class="btn btn-warning mr-1 mb-2"><i data-lucide="thumbs-up"
-                                                            class="w-4 h-4 mr-2"></i>Report</a>
+                                                    @if (!$interpretation->is_accepted)
+                                                        <div>
+                                                            <div class="text-center"> <a href="javascript:;"
+                                                                    data-tw-toggle="modal"
+                                                                    data-tw-target="#offer-modal-accept-{{ $key }}"
+                                                                    class="btn btn-success">Accept</a>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <div class="text-center"> <a href="javascript:;"
+                                                                    data-tw-toggle="modal"
+                                                                    data-tw-target="#offer-modal-reject-{{ $key }}"
+                                                                    class="btn btn-danger ml-1">Reject</a>
+                                                            </div>
+                                                        </div>
+                                                    @else
+                                                        <a href="{{ route('contractor.viewReport', $interpretation->id) }}"
+                                                            class="btn btn-warning mr-1 mb-2"><i data-lucide="thumbs-up"
+                                                                class="w-4 h-4 mr-2"></i>Report</a>
 
-                                                    @if ($interpretation->interpretation->interpreter_completed == 1)
-                                                        <form
-                                                            action="{{ route('interpretation.delete', $interpretation->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit"
-                                                                class="btn bg-red-500 btn-danger mr-2 mb-2">
-                                                                <i data-lucide="trash" class="w-4 h-4 mr-2"></i> Cancel
-                                                            </button>
-                                                        </form>
+                                                        @if ($interpretation->interpretation->interpreter_completed == 1)
+                                                            <form
+                                                                action="{{ route('interpretation.delete', $interpretation->id) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit"
+                                                                    class="btn bg-red-500 btn-danger mr-2 mb-2">
+                                                                    <i data-lucide="trash" class="w-4 h-4 mr-2"></i>
+                                                                    Cancel
+                                                                </button>
+                                                            </form>
+                                                        @endif
                                                     @endif
                                                 </div>
                                             </td>

@@ -12,6 +12,16 @@
             /* Other styles... */
         }
 
+        .sticky-column-1,
+        .sticky-column-2 {
+            position: sticky !important;
+            /* left: 0; */
+            background-color: white;
+            /* Adjust as per your need */
+            z-index: 1000;
+            /* Adjust as per your need */
+        }
+
         #dropdownListGroup {
             position: absolute;
             top: 100%;
@@ -33,10 +43,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
         crossorigin="anonymous"></script>
-
+    {{-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" /> --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
     <link rel="stylesheet" type="text/css"
         href="https://cdn.datatables.net/fixedcolumns/4.2.2/css/fixedColumns.dataTables.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
 
 
     <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4 mb-4">
@@ -106,7 +116,8 @@
                                 class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Pending</label>
                         </div>
                     </li>
-                    <li>
+                    {{-- hiding cancelled status --}}
+                    <li style="display: none">
                         <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
                             <input checked id="checkbox-status-cancelled" type="checkbox"
                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
@@ -147,8 +158,8 @@
                         <table id="ordersTable" class="table table-striped" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th class="whitespace-nowrap">Actions</th>
-                                    <th class="whitespace-nowrap">Next Step</th>
+                                    <th class="whitespace-nowrap sticky-column-1">Actions</th>
+                                    <th class="whitespace-nowrap sticky-column-2 ">Next Step</th>
                                     <th class="whitespace-nowrap">Name</th>
                                     <th class="whitespace-nowrap">Email</th>
                                     <th class="whitespace-nowrap">Order Status</th>
@@ -485,27 +496,27 @@
                                                 @if ($order->user->role_id == 1 && count($order->user->institute) > 0)
                                                     @forelse ($order->user->institute as $institute)
                                                         {{-- <td class="whitespace-nowrap"> --}}
-                                                            {{ $institute->name }}
+                                                        {{ $institute->name }}
                                                         {{-- </td> --}}
                                                     @empty
                                                         {{-- <td class="whitespace-nowrap"> --}}
-                                                            --
+                                                        --
                                                         {{-- </td> --}}
                                                     @endforelse
-                                                @elseif($order->user->role_id == 2 )
+                                                @elseif($order->user->role_id == 2)
                                                     @if (isset($order->user->institute_managed))
                                                         {{-- <td class="whitespace-nowrap"> --}}
-                                                            {{ $order->user->institute_managed->name }}
+                                                        {{ $order->user->institute_managed->name }}
                                                         {{-- </td> --}}
                                                     @else
                                                         {{-- <td class="whitespace-nowrap"> --}}
-                                                            --
+                                                        --
                                                         {{-- </td> --}}
                                                     @endif
                                                 @endif
                                             @else
                                                 {{-- <td class="whitespace-nowrap"> --}}
-                                                    -
+                                                -
                                                 {{-- </td> --}}
                                             @endif
                                         </td>
@@ -513,6 +524,7 @@
                                         <td class="whitespace-nowrap">{{ $order->language1 }}</td>
                                         <td class="whitespace-nowrap">{{ $order->language2 }}</td>
                                         <td class="whitespace-nowrap">{{ $order->c_type }}</td>
+                                        {{-- @dd($order->c_type) --}}
                                         <td class="whitespace-nowrap">{{ $order->c_unit }}</td>
                                         <td class="whitespace-nowrap">{{ $order->c_rate }}</td>
                                         <td class="whitespace-nowrap">{{ $order->c_adjust }}</td>
@@ -631,9 +643,10 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    {{-- <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script> --}}
     <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/4.2.2/js/dataTables.fixedColumns.min.js">
     </script>
     <script>
@@ -641,12 +654,12 @@
             var table = $('#ordersTable').DataTable({
                 scrollX: true,
                 scrollCollapse: true,
-                ordering: true,
-                info: true,
                 paging: true,
                 fixedColumns: {
-                    leftColumn: 1
-                }
+                    left: 1,
+                    right: 1
+                },
+                pageLength: 10
             });
 
             $.fn.dataTable.ext.search.push(
@@ -674,6 +687,34 @@
             $('.status-filter').on('change', function() {
                 table.draw();
             });
+
+            table.on('draw.dt', function() {
+                // Define the columns to be sticky
+                var stickyColumns = [0, 1];
+
+                var leftPosition = 0;
+
+                // Loop through the columns
+                for (var i = 0; i < stickyColumns.length; i++) {
+                    var column = table.column(stickyColumns[i]);
+
+                    // Add the CSS class to the header and cells
+                    $(column.header()).addClass('sticky-column-' + (i + 1));
+                    $(column.nodes()).addClass('sticky-column-' + (i + 1));
+
+                    // Calculate the width of the column
+                    // var columnWidth = $(column.nodes()).outerWidth();
+                    var columnWidth = $('.sticky-column-' + (i + 1)).first().outerWidth();
+                    // Set the left position of the column
+                    $('.sticky-column-' + (i + 1)).css({
+                        left: leftPosition + "px",
+                        zIndex: 1000
+                    });
+
+                    // Update the left position for the next column
+                    leftPosition += columnWidth;
+                }
+            }).draw();
 
             // Generate a checkbox for each column in the dropdown
             table.columns().every(function() {

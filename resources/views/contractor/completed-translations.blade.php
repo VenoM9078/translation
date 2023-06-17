@@ -113,34 +113,25 @@
                                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
                                     data-status="pending">
                                 <label for="checkbox-status-pending"
-                                    class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Pending</label>
+                                    class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Pending
+                                    Approval</label>
                             </div>
                         </li>
                         <li>
                             <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                <input checked id="checkbox-status-cancelled" type="checkbox"
+                                <input checked id="checkbox-status-on-going" type="checkbox"
                                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
                                     data-status="pending">
                                 <label for="checkbox-status-cancelled"
-                                    class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Cancelled</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                <input checked id="checkbox-status-invoice-pending" type="checkbox"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
-                                    data-status="pending">
-                                <label for="checkbox-status-invoice-pending"
-                                    class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Invoice
-                                    Pending</label>
+                                    class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">On-Going</label>
                             </div>
                         </li>
                         <li>
                             <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
                                 <input checked id="checkbox-status-completed" type="checkbox"
                                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
-                                    data-status="completed">
-                                <label for="checkbox-status-completed"
+                                    data-status="pending">
+                                <label for="checkbox-status-invoice-pending"
                                     class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Completed</label>
                             </div>
                         </li>
@@ -163,6 +154,7 @@
                                         <th>Target Language</th>
                                         <th>Rate Accepted</th>
                                         <th class="whitespace-nowrap">T. Rate</th>
+                                        <th>Translation Status</th>
                                         <th class="whitespace-nowrap">T. Adjust</th>
                                         <th class="whitespace-nowrap">T. Fee</th>
                                         <th class="whitespace-nowrap">T. Adjust Note</th>
@@ -183,6 +175,13 @@
                                             <td>${{ $translation->order->contractorOrder->rate }}</td>
                                             <td>{{ $translation->total_payment }}</td>
                                             <td>{{ $translation->contractor->translation_rate }}</td>
+                                            <td>
+                                                @if ($translation->file_name != null)
+                                                    Completed
+                                                @else
+                                                    On-Going
+                                                @endif
+                                            </td>
                                             @if ($translation->translation_adjust_note)
                                                 <td class="whitespace-nowrap"
                                                     title="{{ $translation->translation_adjust_note }}">
@@ -206,9 +205,83 @@
                                                             <i data-lucide="upload" class="w-5 h-5"
                                                                 title="Upload for Submission"></i>
                                                         </a>
+                                                    @elseif (!$translation->is_accepted)
+                                                        <div>
+                                                            <div class="text-center"> <a href="javascript:;"
+                                                                    data-tw-toggle="modal"
+                                                                    data-tw-target="#translation-modal-accept-{{ $key }}"
+                                                                    class="btn btn-success">Accept</a>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <div class="text-center"> <a href="javascript:;"
+                                                                    data-tw-toggle="modal"
+                                                                    data-tw-target="#translation-modal-reject-{{ $key }}"
+                                                                    class="btn btn-danger">Reject</a>
+                                                            </div>
+                                                        </div>
                                                     @endif
                                                 </div>
                                             </td>
+                                            <!-- BEGIN: Modal Content -->
+                                            <div id="translation-modal-accept-{{ $key }}" class="modal"
+                                                tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body p-0">
+                                                            <div class="p-5 text-center"><svg
+                                                                    xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    icon-name="check-circle" data-lucide="check-circle"
+                                                                    class="lucide lucide-check-circle w-16 h-16 text-success mx-auto mt-3">
+                                                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
+                                                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                                                </svg>
+                                                                <div class="text-3xl mt-5">Are you sure?</div>
+                                                                <div class="text-slate-500 mt-2">Your action will advance
+                                                                    this
+                                                                    request and notify the Admin of your agreement!</div>
+                                                            </div>
+                                                            <div class="px-5 pb-8 text-center inline-flex items-stretch"
+                                                                style="text-align: center;margin: auto !important;width: 100%;position: relative;justify-content: center;">
+                                                                <a href="{{ route('contractor.accept', $translation->id) }}"
+                                                                    class="btn btn-success text-white w-24 mr-1 self-center">
+                                                                    I'm Sure</a>
+                                                                <button type="button" data-tw-dismiss="modal"
+                                                                    class="btn btn-outline-secondary w-24 mr-1">Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- END: Modal Content -->
+
+                                            <!-- BEGIN: Modal Content -->
+                                            <div id="translation-modal-reject-{{ $key }}" class="modal"
+                                                tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body p-0">
+                                                            <div class="p-5 text-center"> <i data-lucide="x-circle"
+                                                                    class="w-16 h-16 text-danger mx-auto mt-3"></i>
+                                                                <div class="text-3xl mt-5">Are you sure?</div>
+                                                                <div class="text-slate-500 mt-2">Rejecting will delete this
+                                                                    request from your Dashboard and notify the Admin of your
+                                                                    actions.</div>
+                                                            </div>
+                                                            <div class="px-5 pb-8 text-center inline-flex items-stretch"
+                                                                style="text-align: center;margin: auto !important;width: 100%;position: relative;justify-content: center;">
+                                                                <a href="{{ route('contractor.decline', $translation->id) }}"
+                                                                    class="btn btn-danger w-24 mr-1 self-center">
+                                                                    I'm Sure</a>
+                                                                <button type="button" data-tw-dismiss="modal"
+                                                                    class="btn btn-outline-secondary w-24 mr-1">Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- END: Modal Content -->
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -273,16 +346,15 @@
                 function(settings, data, dataIndex) {
                     var isPendingChecked = $('#checkbox-status-pending').is(':checked');
                     var isCompletedChecked = $('#checkbox-status-completed').is(':checked');
-                    var isCancelledChecked = $('#checkbox-status-cancelled').is(':checked');
-                    var isInvoicePendingChecked = $('#checkbox-status-invoice-pending').is(':checked');
+                    var isOnGoingChecked = $('#checkbox-status-on-going').is(':checked');
 
-                    if (isPendingChecked && data[4] == 'Translation Pending') {
+                    console.log(data[12]);
+                    if (isPendingChecked && data[12] == 'Pending') {
                         return true;
-                    } else if (isCompletedChecked && data[4] == 'Completed') {
+                    } else if (isCompletedChecked && data[8] == 'Completed') {
                         return true;
-                    } else if (isCancelledChecked && data[4] == 'Cancelled') {
-                        return true;
-                    } else if (isInvoicePendingChecked && data[4] == 'Invoice Pending') {
+                    } else if (isOnGoingChecked && data[8] == 'On-Going') {
+                        console.log("YEs")
                         return true;
                     }
 
@@ -326,10 +398,8 @@
             });
 
             var groups = {
-                'User Info': [2, 3],
-                'Order Info': [4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-                'Translator Info': [14, 15, 18, 19, 20, 21, 22, 23, 24],
-                'ProofRead Info': [16, 17, 25, 26, 27, 28, 29]
+                'Order Info': [0, 1, 2, 3, 4],
+                'Translator Info': [5, 6, 7, 8, 9, 10, 11],
             }
 
             for (var groupName in groups) {

@@ -84,6 +84,7 @@ class AdminController extends Controller
     public function viewEditOrder($orderID)
     {
         $order = Order::find($orderID);
+        // dd($order);
         $contractors = Contractor::all();
         return view('admin.edit-order', compact('order', 'contractors'));
     }
@@ -102,13 +103,16 @@ class AdminController extends Controller
 
     public function editOrder(Request $request)
     {
-        $order = Order::find($request->input('order_id'));
-        $order->worknumber = $request->input('worknumber');
+        // dd($request->order_id);
+        $order = Order::where('id',$request->order_id)->first();
+        // $order->worknumber = $order->worknumber;
+        // dd($order);
+        // dd($request->input('language1'));
         $order->language1 = $request->input('language1');
         $order->language2 = $request->input('language2');
-        $order->casemanager = $request->input('casemanager');
-        $order->amount = $request->input('amount');
-        $order->orderStatus = $request->input('orderStatus');
+        // $order->casemanager = $request->input('casemanager');
+        // $order->amount = $request->input('amount');
+        // $order->orderStatus = $request->input('orderStatus');
 
         // new fields
         $order->c_type = $request->input('c_type');
@@ -118,9 +122,11 @@ class AdminController extends Controller
         $order->c_fee = $request->input('c_fee');
         $order->c_adjust_note = $request->input('c_adjust_note');
         $order->c_paid = $request->input('c_paid');
+        $order->due_date = Carbon::now()->addDays(7);
         $order->save();
+        // dd($order);
 
-        return redirect()->route('admin.dashboard');
+        return redirect()->route('admin.pending');
     }
 
     public function viewContractor($id)
@@ -770,8 +776,9 @@ class AdminController extends Controller
     {
         $orders = Order::with(['contractorOrder.contractor'])
             ->orderByDesc('created_at')
-            // ->where('orderStatus', '!=', 'Cancelled')
+            // ->where('id',34)
             ->get();
+            // dd($orders);
         // dd($orders[0]->invoice);
         return view('admin.pendingOrders', compact('orders'));
     }

@@ -19,7 +19,9 @@ class ProofReaderOrders extends Model
         'translation_status',
         'feedback',
         'proofread_type',
-        'proof_read_due_date'
+        'proof_read_due_date',
+        'proof_read_paid',
+        'proof_read_adjust_note'
     ];
 
     public function contractor()
