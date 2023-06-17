@@ -28,7 +28,9 @@ class Contractor extends Authenticatable implements MustVerifyEmail
         'education_2',
         'education_3',
         'years_of_experience',
-        'certification'
+        'certification',
+        'interpreter_adjust_note',
+        'interpreter_paid'
     ];
 
 

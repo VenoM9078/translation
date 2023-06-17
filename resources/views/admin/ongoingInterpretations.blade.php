@@ -140,16 +140,26 @@
                                             Status</th>
                                         <th class="whitespace-nowrap text-center">WO#</th>
                                         <th class="whitespace-nowrap text-center">Institute</th>
-                                        <th class="whitespace-nowrap text-center">Name</th>
-                                        <th class="whitespace-nowrap text-center">Email</th>
+                                        <th class="whitespace-nowrap text-center">Requester</th>
+                                        <th class="whitespace-nowrap text-center">Date</th>
+                                        <th class="whitespace-nowrap text-center">Scheduled Time</th>
                                         <th class="whitespace-nowrap text-center">Language</th>
-                                        <th class="whitespace-nowrap text-center">Interpretation Date</th>
-                                        <th class="whitespace-nowrap text-center">Start Time</th>
-                                        <th class="whitespace-nowrap text-center">End Time</th>
                                         <th class="whitespace-nowrap text-center">Session Format</th>
-                                        <th class="whitespace-nowrap text-center">Interpreter Assigned</th>
+                                        <th class="whitespace-nowrap text-center">Session Location</th>
+                                        <th class="whitespace-nowrap text-center">Session Title</th>
+                                        <th class="whitespace-nowrap text-center">Quote</th>
+                                        {{-- <th class="whitespace-nowrap">C. Rate</th>
+                                        <th class="whitespace-nowrap">C. Adjust</th>
+                                        <th class="whitespace-nowrap">C. Fee</th>
+                                        <th class="whitespace-nowrap">C. Adjust Note</th>
+                                        <th class="whitespace-nowrap">C. Paid</th> --}}
+                                        <th class="whitespace-nowrap text-center">Interpreter</th>
+                                        <th class="whitespace-nowrap text-center">Interpreter Message</th>
                                         <th class="whitespace-nowrap text-center">I.Rate</th>
-                                        <th class="whitespace-nowrap text-center">E.Payment</th>
+                                        <th class="whitespace-nowrap text-center">I.Adjust ($)</th>
+                                        {{-- <th class="whitespace-nowrap text-center">I. Fee</th> --}}
+                                        <th class="whitespace-nowrap text-center">I. Adjust Note</th>
+                                        <th class="whitespace-nowrap text-center">I. Paid</th>
                                         <th class="whitespace-nowrap text-center">Created At</th>
 
                                     </tr>
@@ -363,24 +373,26 @@
                                                 </td>
                                             @endif
                                             <td class="whitespace-nowrap">{{ $interpretation->user->name }}</td>
-                                            <td class="whitespace-nowrap">{{ $interpretation->user->email }}</td>
-                                            <td class="whitespace-nowrap">{{ $interpretation->language }}</td>
                                             <td class="whitespace-nowrap">{{ $interpretation->interpretationDate }}</td>
                                             <td class="whitespace-nowrap">
                                                 {{ App\Helpers\HelperClass::convertTimeToCurrentTimeZone($interpretation->start_time, request()->ip()) }}
-                                            </td>
-                                            <td class="whitespace-nowrap">
+                                                -
                                                 {{ App\Helpers\HelperClass::convertTimeToCurrentTimeZone($interpretation->end_time, request()->ip()) }}
                                             </td>
+                                            <td class="whitespace-nowrap">{{ $interpretation->language }}</td>
 
                                             <td class="whitespace-nowrap">{{ $interpretation->session_format }}</td>
-                                            <td class="whitespace-nowrap">
-                                                @if ($interpretation->interpreter_id === null)
-                                                    N/A
-                                                @else
-                                                    {{ $interpretation->interpreter->name }}
-                                                @endif
+                                            <td class="whitespace-nowrap">{{ $interpretation->location }}</td>
+                                            <td class="whitespace-nowrap">{{ $interpretation->session_topics ?? '-' }}
                                             </td>
+                                            <td title="{{ $interpretation->quote_description }}"><i
+                                                    data-lucide="message-square" class="w-100 h-5"> </i>
+                                            </td>
+                                            <td class="whitespace-nowrap">{{ $interpretation->interpreter->name ?? '-' }}
+                                            </td>
+                                            <td class="whitespace-nowrap">{{ $interpretation->message }}</td>
+
+
                                             <td class="whitespace-nowrap">
                                                 @if ($interpretation->interpreter_id === null || $interpretation->contractorInterpretation->per_hour_rate == null)
                                                     N/A
@@ -395,6 +407,11 @@
                                                     ${{ $interpretation->contractorInterpretation->estimated_payment }}
                                                 @endif
                                             </td>
+                                            <td title="{{ $interpretation->interpreter_adjust_note ?? ''}}"><i
+                                                    data-lucide="message-square" class="w-100 h-5"> </i>
+                                            </td>
+                                            <td class="whitespace-nowrap">{{ $interpretation->interpreter_paid }}</td>
+
                                             <td class="whitespace-nowrap">
                                                 {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($interpretation->created_at, request()->ip()) }}
                                             </td>
