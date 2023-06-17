@@ -121,7 +121,14 @@ class RegisteredUserController extends Controller
 
         if ($request->role_id == 2) { //checking for insitute admin
             if ($institute) {
-                return redirect()->back()->with('error', 'Institute already exists!');
+                return view('auth.register2', [
+                    'name' => $request->input('name'),
+                    'role_id' => 2,
+                    'email' => $request->input('email'),
+                    'password' => $request->input('password'),
+                    'role_id_sent' => $request->role_id
+                ])->with('error', 'Passcode already exist!');
+                // return redirect()->back()->with('error', 'Institute already exists!');
             } else {
                 //Create user
                 $user = User::create([
