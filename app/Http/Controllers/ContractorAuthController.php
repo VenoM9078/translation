@@ -44,7 +44,6 @@ class ContractorAuthController extends Controller
         $verifyUser = Contractor::where('email', $request->email)->first();
         // dd($verifyUser);
         if (!isset($verifyUser)) {
-            dd("dwadawdwad");
             $validated = $request->validate(
                 [
                     'name' => 'required|string|max:255',
@@ -270,16 +269,16 @@ class ContractorAuthController extends Controller
             'password' => 'required|string|min:6',
             'password2' => 'required|string|min:6|same:password',
         ], [
-                'name.required' => 'The name field is required.',
-                'name.max' => 'The name may not be greater than 255 characters.',
-                'email.required' => 'The email field is required.',
-                'email.max' => 'The email may not be greater than 255 characters.',
-                'password.required' => 'The password field is required.',
-                'password.min' => 'The password must be at least 6 characters.',
-                'password2.required' => 'The confirmation password field is required.',
-                'password2.same' => 'The confirmation password does not match.',
-                'password2.min' => 'The confirmation password must be at least 6 characters.',
-            ]);
+            'name.required' => 'The name field is required.',
+            'name.max' => 'The name may not be greater than 255 characters.',
+            'email.required' => 'The email field is required.',
+            'email.max' => 'The email may not be greater than 255 characters.',
+            'password.required' => 'The password field is required.',
+            'password.min' => 'The password must be at least 6 characters.',
+            'password2.required' => 'The confirmation password field is required.',
+            'password2.same' => 'The confirmation password does not match.',
+            'password2.min' => 'The confirmation password must be at least 6 characters.',
+        ]);
 
 
         $validated['password'] = bcrypt($validated['password']);
