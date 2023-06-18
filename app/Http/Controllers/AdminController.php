@@ -104,7 +104,7 @@ class AdminController extends Controller
     public function editOrder(Request $request)
     {
         // dd($request->order_id);
-        $order = Order::where('id',$request->order_id)->first();
+        $order = Order::where('id', $request->order_id)->first();
         // $order->worknumber = $order->worknumber;
         // dd($order);
         // dd($request->input('language1'));
@@ -510,7 +510,6 @@ class AdminController extends Controller
         event(new Registered($user));
 
         return redirect()->route('admin.viewCustomers')->with('success', 'Customer created successfully');
-
     }
 
     public function viewRegisterContractor()
@@ -520,12 +519,6 @@ class AdminController extends Controller
 
     public function registerContractor(Request $request)
     {
-
-        $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6|confirmed',
-        ]);
 
         $contractor = Contractor::create([
             'name' => $request->input('name'),
@@ -540,7 +533,7 @@ class AdminController extends Controller
 
         Mail::to($contractor->email)->send(new VerifyContractorMail($contractor));
 
-        return redirect()->route('admin.viewContractors')->with('success', 'Contractor created successfully');
+        return redirect()->route('admin.viewContractors')->with('success', 'Contractor has been created successfully');
     }
 
     public function uploadTranslationImage(Request $request)
@@ -780,7 +773,7 @@ class AdminController extends Controller
             ->orderByDesc('created_at')
             // ->where('id',34)
             ->get();
-            // dd($orders);
+        // dd($orders);
         // dd($orders[0]->invoice);
         return view('admin.pendingOrders', compact('orders'));
     }

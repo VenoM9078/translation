@@ -47,25 +47,19 @@
                     <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">A few more clicks to sign in to your
                         account. Manage all your e-commerce accounts in one place</div>
                     @if ($errors->any())
-                        <div class="alert alert-danger mt-3 mb-3">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+                    <div class="alert alert-danger mt-3 mb-3">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                     @endif
                     <form action="{{ route('register2') }}" method="POST">
                         @csrf
                         @method('POST')
                         <div class="intro-x mt-8">
-                            <input type="text" name="name"
-                                class="intro-x login__input form-control py-3 px-4 block" placeholder="Name">
-                            <input type="email" name="email"
-                                class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="Email">
-                            <input type="password" name="password"
-                                class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="Password">
-                            <div class="mt-4">
+                            <div class="mt-2 mb-4">
                                 <label for="user_role">What are you registering as?</label>
                                 <ul class="grid w-full gap-2 mt-3 md:grid-cols-3">
                                     <li>
@@ -119,6 +113,13 @@
                                     </li>
                                 </ul>
                             </div>
+                            <input type="text" name="name" class="intro-x login__input form-control py-3 px-4 block"
+                                placeholder="Name">
+                            <input type="email" name="email"
+                                class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="Email">
+                            <input type="password" name="password"
+                                class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="Password">
+
 
                             {{-- <div class="mt-2">
                                 <label class="inline-flex items-center">
