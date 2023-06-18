@@ -63,10 +63,10 @@ class Contractor extends Authenticatable implements MustVerifyEmail
         return $this->hasOne('App\Models\ProofRequest', 'contractor_id', 'id');
     }
 
-    public function sendEmailVerificationNotification()
-    {
-        $this->notify(new ContractorVerifyEmail); // assuming you have a ContractorVerifyEmail notification
-    }
+    // public function sendEmailVerificationNotification()
+    // {
+    //     $this->notify(new ContractorVerifyEmail); // assuming you have a ContractorVerifyEmail notification
+    // }
 
     public function verifyContractor()
     {

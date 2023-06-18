@@ -10,9 +10,13 @@ class VerifyContractor extends Model
     use HasFactory;
     protected $fillable = [
         'contractor_id',
-        'token'
+        'token',
+        'expiry_time'
     ];
 
+    protected $dates = [
+        'expiry_time',
+    ];
     public function contractor()
     {
         return $this->belongsTo('App\Models\Contractor', 'contractor_id');
