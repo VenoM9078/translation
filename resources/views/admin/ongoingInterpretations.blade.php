@@ -185,6 +185,12 @@
                                                             </form>
                                                         </div>
                                                     </button>
+                                                    <div class="text-center"> <a href="javascript:;"
+                                                            data-tw-toggle="modal"
+                                                            data-tw-target="#track-modal-preview{{ $interpretation->id }}"
+                                                            class="btn btn-success"><i data-lucide="target"
+                                                                class="w-5 h-5 text-white mx-auto"></i></a>
+                                                    </div>
                                                     @if ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 0 && $interpretation->paymentStatus == 0)
                                                         <a href="{{ route('admin.showSubmitQuote', $interpretation->id) }}"
                                                             class="btn btn-warning mr-1">Send
@@ -407,7 +413,7 @@
                                                     ${{ $interpretation->contractorInterpretation->estimated_payment }}
                                                 @endif
                                             </td>
-                                            <td title="{{ $interpretation->interpreter_adjust_note ?? ''}}"><i
+                                            <td title="{{ $interpretation->interpreter_adjust_note ?? '' }}"><i
                                                     data-lucide="message-square" class="w-100 h-5"> </i>
                                             </td>
                                             <td class="whitespace-nowrap">{{ $interpretation->interpreter_paid }}</td>
@@ -416,6 +422,22 @@
                                                 {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($interpretation->created_at, request()->ip()) }}
                                             </td>
                                         </tr>
+                                        <div id="track-modal-preview{{ $interpretation->id }}" class="modal" tabindex="-1"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-body p-0">
+                                                        <div class="p-5 text-center"> <i data-lucide="target"
+                                                                class="w-16 h-16 text-success mx-auto mt-3"></i>
+                                                            <div class="text-3xl mt-5">Track Order</div>
+                                                        </div>
+                                                        <div class="intro-y box py-10 mt-5">
+                                                            @include('utils.track-interpretation',['order'=>$interpretation])
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> 
                                     @endforeach
                                 </tbody>
                             </table>
