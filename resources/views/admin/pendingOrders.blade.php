@@ -222,6 +222,11 @@
                                                     data-lucide="eye" class="w-5 h-5 text-white mx-auto"></i>
                                             </a>
                                         </div>
+                                          <div class="text-center"> <a href="javascript:;" data-tw-toggle="modal"
+                                                        data-tw-target="#track-modal-preview{{ $order->id }}"
+                                                        class="btn btn-success"><i data-lucide="target"
+                                                            class="w-5 h-5 text-white mx-auto"></i></a>
+                                        </div>
                                         <div class="text-center">
                                             <a href="{{ route('view-edit-order', $order->id) }}"
                                                 class="btn btn-warning"><i data-lucide="edit"
@@ -237,6 +242,22 @@
 
                                     </div>
                                 </td>
+                                <div id="track-modal-preview{{ $order->id }}" class="modal" tabindex="-1"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-body p-0">
+                                                        <div class="p-5 text-center"> <i data-lucide="target"
+                                                                class="w-16 h-16 text-success mx-auto mt-3"></i>
+                                                            <div class="text-3xl mt-5">Track Order</div>
+                                                        </div>
+                                                        <div class="intro-y box py-10 mt-5">
+                                                            @include('utils.track-order',['order'=>$order])
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> <!-- END: Modal Content -->
                                 <!-- BEGIN: Modal Content -->
                                 <div id="delete-modal-preview{{ $order->id }}" class="modal" tabindex="-1"
                                     aria-hidden="true">
@@ -635,7 +656,7 @@
                     left: 1,
                     right: 1
                 },
-                pageLength: 10
+                pageLength: 5
             });
 
             $.fn.dataTable.ext.search.push(

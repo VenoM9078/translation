@@ -14,9 +14,6 @@ class VerifyContractor extends Model
         'expiry_time'
     ];
 
-    protected $dates = [
-        'expiry_time',
-    ];
     public function contractor()
     {
         return $this->belongsTo('App\Models\Contractor', 'contractor_id');
