@@ -759,7 +759,7 @@ class AdminController extends Controller
         // $data = $request->all();
         $contractor = Contractor::where('id', $contractorOrder['contractor_id'])->firstOrFail();
         Mail::to($contractor->email)->send(new EmailContractor($contractorOrder));
-        return redirect()->route('admin.dashboard');
+        return redirect()->route('admin.pending');
     }
 
     public function viewInvoice($id)
