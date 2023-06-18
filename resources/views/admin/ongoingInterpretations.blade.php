@@ -43,9 +43,14 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
         crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" {{--
-    href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" /> --}} <link rel="stylesheet" type="text/css"
-        href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+ 
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css"> 
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
+
+        {{-- <link href="https://cdn.datatables.net/v/bs5/dt-1.13.4/b-2.3.6/b-html5-2.3.6/datatables.min.css" rel="stylesheet"/> --}}
+         {{-- <link   href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css"/> --}}
+    <!-- Buttons CSS -->
+    {{-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css" /> --}}
     <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4 mb-4">
     </div>
     <!-- BEGIN: Data List -->
@@ -129,6 +134,10 @@
             <div id="vertical-form" class="p-5">
                 <div class="preview">
                     <div>
+                        {{-- <div class="container">
+                            <a href="{{ route('table-export', ['model' => 'interpretation']) }}"
+                                class="btn btn-primary">Export</a>
+                        </div> --}}
                         <div class="overflow-x-auto">
                             <table id="myinterpretationsTable" class="table table-striped" style="width:100%">
                                 <thead>
@@ -422,8 +431,8 @@
                                                 {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($interpretation->created_at, request()->ip()) }}
                                             </td>
                                         </tr>
-                                        <div id="track-modal-preview{{ $interpretation->id }}" class="modal" tabindex="-1"
-                                            aria-hidden="true">
+                                        <div id="track-modal-preview{{ $interpretation->id }}" class="modal"
+                                            tabindex="-1" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-body p-0">
@@ -432,12 +441,14 @@
                                                             <div class="text-3xl mt-5">Track Order</div>
                                                         </div>
                                                         <div class="intro-y box py-10 mt-5">
-                                                            @include('utils.track-interpretation',['order'=>$interpretation])
+                                                            @include('utils.track-interpretation', [
+                                                                'order' => $interpretation,
+                                                            ])
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div> 
+                                        </div>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -453,19 +464,55 @@
     </div>
     <!-- END: Data List -->
     <!-- END: Pagination -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     {{-- </div> --}}
     {{-- <script src="https://code.jquery.com/jquery-3.6.0.js"
+    
     integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script> --}}
+      {{-- <script src="https://cdn.datatables.net/v/bs5/dt-1.13.4/b-2.3.6/b-html5-2.3.6/datatables.min.js"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
-    <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <!-- HTML5 and print buttons -->
+    <!-- Buttons -->
+ 
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
+    {{-- <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script> --}}
+   
     <script>
-        $(document).ready(function() {
+  
+
+        // $(document).ready(function() {
             var table = $('#myinterpretationsTable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'csv',
+                        exportOptions: {
+                            columns: ':gt(1)'
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: ':gt(1)'
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: ':gt(1)'
+                        }
+                    },
+                ],
                 ordering: true,
                 info: true,
                 paging: true,
-                pageLength: 10
+                pageLength: 10,
             });
             console.log("table", table);
 
@@ -578,6 +625,6 @@
             $("#dropdownBgHoverButtonGroup").click(function() {
                 $('#dropdownListGroup').toggle();
             });
-        });
+        // });
     </script>
 @endsection
