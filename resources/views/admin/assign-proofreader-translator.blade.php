@@ -55,11 +55,11 @@
                                         </select>
                                     </div>
                                     <br>
-                                    <label for="amount">Enter total words</label>
+                                    {{-- <label for="amount">Enter total words</label>
                                     <input type="number" required id="total_words" name="total_words"
                                         class="intro-x login__input form-control px-4 block" placeholder="Enter Total Words"
                                         value="">
-                                    <br>
+                                    <br> --}}
                                     <label for="amount" class="mt-2">Total Payment</label>
                                     <input type="number" id="total_payment" readonly name="total_payment"
                                         class="intro-x login__input form-control px-4 block"
@@ -75,12 +75,9 @@
                                     <label for="amount" class="mt-2">Enter Rate</label>
                                     <input type="number" name="rate" step="0.001"
                                         class="mb-3 intro-x login__input form-control px-4 block mt-1 d-none" id="rate"
-                                        value="" placeholder="Enter Rate" value="{{ $cOrder->contractor->rate }}">
+                                        value="" placeholder="Enter Rate" value="{{ $cOrder->rate }}">
                                     <br>
 
-                                    <label for="amount" class="mt-2 mb-4">Enter Message</label>
-                                    <textarea type="number" id="message" name="message" class="intro-x login__input mt-2 mb-2 form-control px-4 block"
-                                        rows="3" placeholder="Enter Message" value="{{ $cOrder->message }}"></textarea>
                                     <label for="amount" class="mt-2 mb-2">Enter Translation Type</label>
                                     <select data-placeholder="Enter Translation Type" required name="translation_type"
                                         class="tom-select w-full">
@@ -90,10 +87,9 @@
                                     </select>
                                     <br>
                                     <label for="amount" class="mt-2">Enter Unit</label>
-                                    <input type="number" name="rate" step="0.001"
-                                        class="mb-3 intro-x login__input form-control px-4 block mt-1 d-none"
-                                        id="rate" value="" placeholder="Enter Unit"
-                                        value="{{ $cOrder->translator_unit }}">
+                                    <input type="number" name="t_unit" step="0.001"
+                                        class="mb-3 intro-x login__input form-control px-4 block mt-1 d-none" id="rate"
+                                        value="" placeholder="Enter Unit" value="{{ $cOrder->translator_unit }}">
                                     <br>
                                     <label for="t_adjust_note">T. Adjust Note</label>
                                     <textarea id="t_adjust_note" name="translator_adjust_note"
@@ -106,7 +102,12 @@
                                         <option value="1">Yes</option>
                                         <option value="0">No</option>
                                     </select>
+                                    <label for="amount" class="mt-2 mb-4">Enter Message</label>
+                                    <textarea type="number" id="message" name="message"
+                                        class="intro-x login__input mt-2 mb-2 form-control px-4 block" rows="3" placeholder="Enter Message"
+                                        value="{{ $cOrder->message }}"></textarea>
                                 </div>
+
                                 <input type="submit" class="btn btn-primary mt-5" id="submit_1" value="Send Email">
                             </form>
                         </div>
