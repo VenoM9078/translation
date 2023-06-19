@@ -149,19 +149,111 @@ class AdminController extends Controller
         return redirect()->back()->with('error', 'Interpretation not found.');
     }
 
-    public function assignProofReadTranslator($order){
+    public function assignProofReadTranslator($order)
+    {
         $order = Order::find($order);
         $contractors = Contractor::all();
-        $cOrder = ContractorOrder::where('order_id',$order)->first();
-        if(!isset($cOrder)){
+        $cOrder = ContractorOrder::where('order_id', $order)->first();
+        if (!isset($cOrder)) {
             $cOrder = ContractorOrder::emptyModel();
         }
-        $pOrder = ProofReaderOrders::where('order_id',$order)->first();
-        if(!isset($pOrder)){
+        $pOrder = ProofReaderOrders::where('order_id', $order)->first();
+        if (!isset($pOrder)) {
             $pOrder = ProofReaderOrders::emptyModel();
         }
         // dd($contractorOrder);
-        return view('admin.assign-proofreader-translator', compact('order', 'contractors','cOrder','pOrder'));
+        return view('admin.assign-proofreader-translator', compact('order', 'contractors', 'cOrder', 'pOrder'));
+    }
+
+    public function uploadProofFile(Request $request)
+    {
+        if ($request->hasFile('proofReadFile')) {
+            $file = $request->file('proofReadFile');
+            $filePath = 'proofread_by_proofreader/';
+            $filename = date('YmdHi') . $file->getClientOriginalName();
+
+            if (!file_exists(public_path($filePath))) {
+                mkdir(public_path($filePath), 0777, true);
+            }
+
+            $file->move($filePath, $filename);
+
+            TemporaryFile::create([
+                'filename' => $filename
+            ]);
+
+            return $filename;
+        }
+
+        return null;
+    }
+
+    public function submitAssignProofReadTranslator(Request $request)
+    {
+
+        // dd($request->all());
+        if ($request->contractor_id) {
+            // $due_date = Carbon::now()->addDays(7);
+            $contractorOrder = ContractorOrder::updateOrCreate(
+                ['order_id' => $request->order_id],
+                [
+                    'order_id' => $request->order_id,
+                    'contractor_id' => $request->contractor_id,
+                    'is_accepted' => ContractorOrderEnum::PENDING,
+                    'translator_adjust_note' => $request->translator_adjust_note,
+                    'translator_paid' => $request->translator_paid,
+                    'translation_type' => $request->translation_type,
+                    'total_words' => $request->total_words,
+                    'total_payment' => $request->total_payment,
+                    'rate' => $request->rate,
+                    'translation_due_date' => $request->translation_due_date,
+                    'translation_unit' => $request->t_unit,
+                    'message' => $request->message
+                ]
+            );
+            $order = Order::find($request->order_id);
+            $order->translation_sent = 1;
+            $order->save();
+            // $contractorOrder->save();
+            $contractor = Contractor::where('id', $request->contractor_id)->firstOrFail();
+            Mail::to($contractor->email)->send(new EmailContractor($contractorOrder));
+        }
+        //Proof Read Assignment
+        if ($request->p_contractor_id) {
+            if (!$request->proofReadFile) {
+                $proof_read_file = '';
+            } else {
+                $proof_read_file = $request->proofReadFile;
+            }
+
+            $proofReaderOrder = ProofReaderOrders::updateOrCreate(
+                ['order_id' => $request->order_id],
+                // Search array
+                [
+                    // Update or create array
+                    'contractor_id' => $request->contractor_id,
+                    'is_accepted' => ContractorOrderEnum::PENDING,
+                    'rate' => $request->p_rate,
+                    'total_payment' => $request->p_total_payment,
+                    'translation_status' => TranslationStatusEnum::PENDING,
+                    'file_name' => $proof_read_file,
+                    'proof_read_due_date' => $request->proof_read_due_date,
+                    'proofread_type' => $request->proofread_type,
+                    'p_adjust' => $request->p_adjust
+                ]
+            );
+            $order = Order::find($request->order_id);
+
+            $order->proofread_sent = 1; //change status to 1 *asigned
+            $order->save();
+
+            $contractor = Contractor::where('id', $request->p_contractor_id)->firstOrFail();
+            if (env("IS_DEV") == 1) {
+                Mail::to($contractor->email)->send(new mailToProofReader($order, $proofReaderOrder, 'New Request! | Proof Read ', env("ADMIN_EMAIL_DEV")));
+            } else {
+                Mail::to($contractor->email)->send(new mailToProofReader($order, $proofReaderOrder, 'New Request! | Proof Read ', env("ADMIN_EMAIL")));
+            }
+        }
     }
 
     public function updateInterpretation(Request $request, $id)

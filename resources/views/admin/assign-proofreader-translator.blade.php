@@ -2,13 +2,11 @@
 
 @section('content')
     <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
-    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
-    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+
     <script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js"></script>
     <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js">
-    </script>
     <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+
 
     <div class="intro-y col-span-12 mt-4">
         <!-- BEGIN: Vertical Form -->
@@ -33,13 +31,12 @@
                                 aria-selected="false">Proofreader</button>
                         </li>
                     </ul>
-                    <div class="tab-content mt-5">
-
-                        <div id="translator" class="tab-pane leading-relaxed active" role="tabpanel"
-                            aria-labelledby="translator-tab">
-                            <form action="{{ route('assign-proofread-translator-submit') }}" method="post">
-                                @csrf
-                                @method('POST')
+                    <form action="{{ route('assign-proofread-translator-submit') }}" method="post">
+                        @csrf
+                        @method('POST')
+                        <div class="tab-content mt-5">
+                            <div id="translator" class="tab-pane leading-relaxed active" role="tabpanel"
+                                aria-labelledby="translator-tab">
                                 <div class="intro-x mt-4">
                                     <input type="hidden" name="order_id" value="{{ $order->id }}">
                                     <div class="mt-1">
@@ -94,7 +91,6 @@
                                     <label for="t_adjust_note">T. Adjust Note</label>
                                     <textarea id="t_adjust_note" name="translator_adjust_note"
                                         class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4" placeholder="P. Adjust Note">{{ $cOrder->translator_adjust_note }}</textarea>
-                                    <br>
                                     <label for="amount" class="mt-2 mb-2">Paid</label>
                                     <select data-placeholder="Enter Translation Type" required name="translator_paid"
                                         class="tom-select w-full">
@@ -102,20 +98,15 @@
                                         <option value="1">Yes</option>
                                         <option value="0">No</option>
                                     </select>
+                                    <br>
                                     <label for="amount" class="mt-2 mb-4">Enter Message</label>
                                     <textarea type="number" id="message" name="message"
                                         class="intro-x login__input mt-2 mb-2 form-control px-4 block" rows="3" placeholder="Enter Message"
                                         value="{{ $cOrder->message }}"></textarea>
                                 </div>
-
-                                <input type="submit" class="btn btn-primary mt-5" id="submit_1" value="Send Email">
-                            </form>
-                        </div>
-                        <div id="proofreader" class="tab-pane leading-relaxed" role="tabpanel"
-                            aria-labelledby="proofreader-tab">
-                            <form action="{{ route('assign-proofread-translator-submit') }}" method="post">
-                                @csrf
-                                @method('POST')
+                            </div>
+                            <div id="proofreader" class="tab-pane leading-relaxed" role="tabpanel"
+                                aria-labelledby="proofreader-tab">
                                 <div class="intro-x mt-4">
                                     <div class="mt-1">
                                         <label for="amount" class="mt-2">Select Proofreader</label>
@@ -141,20 +132,23 @@
                                     <input type="number" step="0.001" required name="p_rate"
                                         class="intro-x login__input form-control px-4 block mt-1" placeholder="Enter Rate"
                                         value="">
+                                    <div class="mt-5">
+                                        <label for="">Enter Due Date</label>
+                                        <input type="date" name="proof_read_due_date"
+                                            class="intro-x login__input form-control py-3 px-4 block"
+                                            value="{{ $pOrder->proof_read_due_date }}" required>
+                                    </div>
                                     <br>
                                     <label for="amount" class="mt-4 mb-2">Enter ProofRead Type</label>
                                     <select data-placeholder="Enter ProofRead Type" required name="p_type"
                                         class="tom-select w-full">
-                                        <option value="-1" selected disabled> -- </option>
+                                        <option value="{{ $pOrder->proofread_type }}" selected>
+                                            {{ $pOrder->proofread_type ?? '-' }} </option>
                                         <option value="By Word">By Word</option>
-                                        <option value="By Page">By Page</option>
+                                        <option value="By Page">By Page</opation>
                                     </select>
                                     <br>
-                                    <label for="amount" class="mt-2">Enter Unit</label>
-                                    <input type="number" step="0.001" required name="p_unit"
-                                        class="intro-x login__input form-control px-4 block mt-1" placeholder="Enter Unit"
-                                        value="">
-                                    <br>
+
                                     <label for="amount" class="mt-2">Enter ProofRead Adjust ($)</label>
                                     <input type="number" step="0.001" required name="p_adjust"
                                         class="intro-x login__input form-control px-4 block mt-1"
@@ -168,54 +162,51 @@
                                     <label for="c_adjust_note">P. Adjust Note</label>
                                     <textarea id="p_adjust_note" name="p_adjust_note" class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4"
                                         placeholder="P. Adjust Note">{{ $pOrder->proof_read_adjust_note }}</textarea>
+                                    <br>
+                                    <label for="amount" class="mt-2 mb-2">Paid</label>
+                                    <select data-placeholder="Enter Translation Type" required name="proof_read_paid"
+                                        class="tom-select w-full">
+                                        @if ($pOrder->proof_read_paid != '')
+                                            <option value="{{ $pOrder->proof_read_paid }}" selected>
+                                                {{ $pOrder->proof_read_paid == 1 ? 'Yes' : 'No' }} </option>
+                                        @else
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        @endif
+                                    </select>
+                                    <br>
+                                    <label for="amount" class="mt-2 mb-4">Enter Message</label>
+                                    <textarea type="number" id="message" name="message"
+                                        class="intro-x login__input mt-2 mb-2 form-control px-4 block" rows="3" placeholder="Enter Message"
+                                        value="{{ $pOrder->message }}"></textarea>
+                                    <input type="file" id="multipleFiles" class="filepond mt-2" name="proofReadFile"
+                                        data-max-file-size="10MB" />
+                                    {{-- <div class="btn-group mt-4" role="group" aria-label="Basic example">
+                                        <button type="submit" id="uploadBtn" class="btn btn-primary">Upload Files for
+                                            Proof Read</button>
+                                    </div> --}}
+                                    {{-- <button type="submit" class="btn btn-success w-24">Submit</button> --}}
                                 </div>
-                                <input type="submit" class="btn btn-primary mt-5" id="submit_2" value="Send Email">
-                            </form>
+                            </div>
                         </div>
-                    </div>
+                        <input type="submit" class="btn btn-primary mt-5" id="submit_2" value="Assign">
+                    </form>
                 </div>
-                </form>
             </div>
         </div>
+    </div>
     </div>
 @endsection
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"
     integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-    crossorigin="anonymous"></script>
+
 
 <script>
-    FilePond.registerPlugin(
 
-        // encodes the file as base64 data
-        FilePondPluginFileEncode,
 
-        // validates the size of the file
-        FilePondPluginFileValidateSize,
+$(document).ready(function() {
 
-        // corrects mobile image orientation
-        FilePondPluginImageExifOrientation,
 
-        // previews dropped images
-        FilePondPluginImagePreview
-    );
-
-    // Select the file input and use create() to turn it into a pond
-    FilePond.create(
-        document.querySelector('.fp-translationFile')
-    );
-
-    FilePond.setOptions({
-        server: {
-            process: {
-                url: '/contractor/translationUpload',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-            }
-        }
-    });
-    $(document).ready(function() {
         var rate = 0;
 
         function calculateEstimatedPayment(words) {
@@ -257,5 +248,24 @@
             var estimated_payment = calculateEstimatedPayment(total_words);
             $('#total_payment').val(estimated_payment);
         });
+        //Filepond
+            FilePond.registerPlugin(
+                FilePondPluginFileEncode,
+                FilePondPluginFileValidateSize
+            );
+    
+            FilePond.create(
+                document.querySelector('#multipleFiles')
+            );
+    
+            FilePond.setOptions({
+                server: {
+                    url: '/admin/upload-proof',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                }
+            });
     });
+
 </script>

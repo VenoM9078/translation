@@ -288,6 +288,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/assign/{order}',[AdminController::class,'assignProofReadTranslator'])->name('assign-proofread-translator');
     Route::post('/assign', [AdminController::class, 'submitAssignProofReadTranslator'])->name('assign-proofread-translator-submit');
 
+    Route::post('/admin/upload-proof', [AdminController::class, 'uploadProofFile'])->name('admin-upload-proof-read-file');
+
 });
 
 Route::middleware(['web', 'auth', 'verified'])->group(function () {
