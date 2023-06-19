@@ -37,4 +37,26 @@ class ContractorOrder extends Model
     {
         return $this->hasOne('App\Models\ProofReaderOrders', 'id');
     }
+
+    public static function emptyModel()
+    {
+        $emptyModel = new self();
+
+        foreach ($emptyModel->getAttributes() as $key => $value) {
+            $emptyModel->{$key} = '';
+        }
+        $relationships = [
+            'contractor' => 'App\Models\Contractor',
+            'order' => 'App\Models\Order',
+            'proofReadOrder' => 'App\Models\ProofReaderOrders',
+        ];
+
+        foreach ($relationships as $relationship => $model) {
+            $emptyModel->{$relationship} = new $model();
+        }
+        foreach ($relationships as $relationship => $model) {
+            $emptyModel->{$relationship} = new $model();
+        }
+        return $emptyModel;
+    }
 }

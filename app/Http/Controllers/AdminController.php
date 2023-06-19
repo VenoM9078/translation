@@ -152,7 +152,16 @@ class AdminController extends Controller
     public function assignProofReadTranslator($order){
         $order = Order::find($order);
         $contractors = Contractor::all();
-        return view('admin.assign-proofreader-translator', compact('order', 'contractors'));
+        $cOrder = ContractorOrder::where('order_id',$order)->first();
+        if(!isset($cOrder)){
+            $cOrder = ContractorOrder::emptyModel();
+        }
+        $pOrder = ProofReaderOrders::where('order_id',$order)->first();
+        if(!isset($pOrder)){
+            $pOrder = ProofReaderOrders::emptyModel();
+        }
+        // dd($contractorOrder);
+        return view('admin.assign-proofreader-translator', compact('order', 'contractors','cOrder','pOrder'));
     }
 
     public function updateInterpretation(Request $request, $id)

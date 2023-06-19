@@ -36,4 +36,22 @@ class ProofReaderOrders extends Model
     {
         return $this->belongsTo('App\Models\ContractorOrder', 'contractor_order_id');
     }
+    public static function emptyModel()
+    {
+        $emptyModel = new self();
+
+        foreach ($emptyModel->getAttributes() as $key => $value) {
+            $emptyModel->{$key} = '';
+        }
+        $relationships = [
+            'contractor' => 'App\Models\Contractor',
+            'order' => 'App\Models\Order',
+            'contractorOrder' => 'App\Models\ContractorOrder'
+        ];
+
+        foreach ($relationships as $relationship => $model) {
+            $emptyModel->{$relationship} = new $model();
+        }
+        return $emptyModel;
+    }
 }
