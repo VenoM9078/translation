@@ -240,6 +240,12 @@
                                                     class="w-5 h-5 text-white mx-auto"></i>
                                             </a>
                                         </div>
+                                        <div class="text-center">
+                                            <a href="{{ route('assign-proofread-translator', $order->id) }}"
+                                                class="btn btn-secondary"><i data-lucide="edit"
+                                                    class="w-5 h-5 text-white mx-auto"></i>
+                                            </a>
+                                        </div>
                                         <div class="text-center"> <a href="javascript:;" data-tw-toggle="modal"
                                                 data-tw-target="#delete-modal-preview{{ $order->id }}"
                                                 class="btn btn-danger"><i data-lucide="trash-2"
@@ -391,7 +397,7 @@
                                     $order->translation_sent == 0)
                                     <a href="{{ route('view-assign-contractor', ['orderID' => $order->id]) }}"
                                         class="btn btn-pending mr-1">
-                                        <i data-lucide="mail" class="w-5 h-5 mr-2"></i>Assign To Translator
+                                        <i data-lucide="mail" class="w-5 h-5 mr-2"></i>Assign
                                     </a>
                                     @elseif (
                                     $order->invoiceSent == 1 &&
@@ -400,7 +406,7 @@
                                     $order->translation_sent == 1)
                                     <a href="{{ route('view-assign-contractor', ['orderID' => $order->id]) }}"
                                         class="btn btn-pending mr-1">
-                                        <i data-lucide="mail" class="w-5 h-5 mr-2"></i>Assign To Translator
+                                        <i data-lucide="mail" class="w-5 h-5 mr-2"></i>Assign
                                     </a>
                                     @elseif (
                                     $order->invoiceSent == 1 &&
@@ -444,12 +450,6 @@
                                     $order->paymentStatus == 1 &&
                                     $order->translation_status == 1 &&
                                     $order->proofread_status == 0)
-                                    {{-- <a href="{{ route('mailToProofReader', $order->id) }}"
-                                        class="btn btn-dark mr-1"><i data-lucide="mail" class="w-5 h-5 mr-2"></i>
-                                        Mail to Proofreader </a>
-                                    <a href="{{ route('mailOfCompletion', $order->id) }}"
-                                        class="btn btn-success mr-1"><i data-lucide="mail" class="w-5 h-5 mr-2"></i>
-                                        Send Translation to User </a> --}}
                                     <a href="{{ route('view-assign-proofreader', $order->id) }}"
                                         title="Assign Proof Reader" class="btn btn-dark mr-1">
                                         <i data-lucide="user" class="w-5 h-5 mr-2"></i>

@@ -149,6 +149,12 @@ class AdminController extends Controller
         return redirect()->back()->with('error', 'Interpretation not found.');
     }
 
+    public function assignProofReadTranslator($order){
+        $order = Order::find($order);
+        $contractors = Contractor::all();
+        return view('admin.assign-proofreader-translator', compact('order', 'contractors'));
+    }
+
     public function updateInterpretation(Request $request, $id)
     {
         $interpretation = Interpretation::find($id);

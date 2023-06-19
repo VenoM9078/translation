@@ -284,6 +284,10 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/register-contractor', [AdminController::class, 'viewRegisterContractor'])->name('register-contractor');
     Route::post('/register-contractor', [AdminController::class, 'registerContractor'])->name('submit-register-contractor');
 
+    //Assign proof-read and contractor
+    Route::get('/assign/{order}',[AdminController::class,'assignProofReadTranslator'])->name('assign-proofread-translator');
+    Route::post('/assign', [AdminController::class, 'submitAssignProofReadTranslator'])->name('assign-proofread-translator-submit');
+
 });
 
 Route::middleware(['web', 'auth', 'verified'])->group(function () {
