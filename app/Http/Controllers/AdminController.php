@@ -242,7 +242,7 @@ class AdminController extends Controller
                     'total_payment' => $request->p_total_payment ?? 0,
                     'translation_status' => TranslationStatusEnum::PENDING,
                     'file_name' => $proof_read_file,
-                    'proof_read_due_date' => $request->proof_read_due_date ,
+                    'proof_read_due_date' => $request->proof_read_due_date,
                     'proofread_type' => $request->p_type,
                     'proof_read_paid' => $request->proof_read_paid,
                     'p_adjust' => $request->p_adjust,
@@ -551,18 +551,27 @@ class AdminController extends Controller
 
         $worknumber = $currentTime;
 
-        // Create a new user
-        $newUser = User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make('password'), // Hash password for security
-        ]);
+        $verifyUser = User::where('email', $request->input('email'))->first();
+
+        $user = null;
+        if (!isset($verifyUser)) {
+
+            // Create a new user
+            $newUser = User::create([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => Hash::make('password'), // Hash password for security
+            ]);
+            $user = $newUser;
+        } else{
+            $user = $verifyUser;
+        }
 
         // Create a new translation order on behalf of the new user
         $data = [
             'language1' => $request->input('language1'),
             'language2' => $request->input('language2'),
-            'user_id' => $newUser->id,
+            'user_id' => $user->id,
             'worknumber' => $worknumber,
             'added_by_institute_user' => 0,
             'invoiceSent' => 1,
@@ -581,17 +590,17 @@ class AdminController extends Controller
                 $filename = $file;
                 OrderFiles::create([
                     'order_id' => $order->id,
-                    'user_id' => $newUser->id,
+                    'user_id' => $user->id,
                     'filename' => $filename
                 ]);
             }
 
             if (env("IS_DEV") == 1) {
-                Mail::mailer('dev')->to($newUser->email)->send(new OrderCreated($newUser, $order, "Flow Translate - Order Created", env("ADMIN_EMAIL_DEV")));
-                Mail::mailer('dev')->to('webpage@flowtranslate.com')->send(new adminOrderCreated($newUser, $order, "Flow Translate - New Order Created", env("ADMIN_EMAIL_DEV")));
+                Mail::mailer('dev')->to($user->email)->send(new OrderCreated($user, $order, "Flow Translate - Order Created", env("ADMIN_EMAIL_DEV")));
+                Mail::mailer('dev')->to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order, "Flow Translate - New Order Created", env("ADMIN_EMAIL_DEV")));
             } else {
-                Mail::mailer('clients')->to($newUser->email)->send(new OrderCreated($newUser, $order, "Flow Translate - Order Created", env("ADMIN_EMAIL")));
-                Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new adminOrderCreated($newUser, $order, "Flow Translate - New Order Created", env("ADMIN_EMAIL")));
+                Mail::mailer('clients')->to($user->email)->send(new OrderCreated($user, $order, "Flow Translate - Order Created", env("ADMIN_EMAIL")));
+                Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order, "Flow Translate - New Order Created", env("ADMIN_EMAIL")));
             }
 
             return redirect()->route('admin.pending')->with('message', 'Translation Order placed successfully!');

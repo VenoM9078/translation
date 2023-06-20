@@ -21,10 +21,10 @@
         <div class="block xl:grid grid-cols-2 gap-4">
             <!-- BEGIN: Login Info -->
             <div class="hidden xl:flex flex-col min-h-screen">
-                <a href="" class="-intro-x flex items-center pt-5">
+               <a href="{{route('/')}}" class="-intro-x flex items-center pt-5">
                     <img class="w-6" src="{{ url('dist/images/logo.svg') }}">
-                    <span class="text-white text-lg ml-3"> FlowTranslate </span>
-                </a>
+                    <span class="text-white text-lg ml-3"> FlowTranslate Homepage </span>
+               </a>
                 <div class="my-auto">
                     <img class="-intro-x w-1/2 -mt-16" src="{{ url('dist/images/illustration.svg') }}">
                     <div class="-intro-x text-white font-medium text-4xl leading-tight mt-10">
