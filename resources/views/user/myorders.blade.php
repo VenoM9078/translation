@@ -47,7 +47,7 @@
                                             <td class="whitespace-nowrap">{{ $order->language2 }}</td>
                                             <td class="whitespace-nowrap">
                                                 <a title="Download Original Document"
-                                                    href="{{ route('downloadFiles', $order->id) }}"
+                                                    href="{{ route('user.downloadFiles', $order->id) }}"
                                                     class="btn btn-warning mr-1">
                                                     <i data-lucide="download" class="w-5 h-5"></i>
                                                 </a>
@@ -58,7 +58,7 @@
                                             <td>
                                                 @if (isset($order->contractorOrder) && $order->contractorOrder->file_name != '')
                                                     <a class="btn" title="Download Translation"
-                                                        href="{{ route('download-translation-file', $order->id) }}">
+                                                        href="{{ route('user.download-translation-file', $order->id) }}">
                                                         <i data-lucide="download" class="w-5 h-5"></i>
                                                     </a>
                                                 @else

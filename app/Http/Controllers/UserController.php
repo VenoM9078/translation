@@ -77,7 +77,27 @@ class UserController extends Controller
 
     }
 
+    public function downloadTranslationFile($id)
+    {
+        //select only file_name;
+        $filePath = '/translations_by_contractors/' . ContractorOrder::where(['order_id' => $id])->firstOrFail()->file_name;
+        $file = "";
 
+        if (public_path() . file_exists($filePath)) {
+            $file = public_path($filePath);
+        }
+        $zip = new ZipArchive;
+        $zipName = date('YmdHi') . $id . '.zip';
+
+        if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
+            $relativeNameInZipFile = basename($file);
+            // dd($file, $relativeNameInZipFile);
+            $zip->addFile($file, $relativeNameInZipFile);
+
+            $zip->close();
+        }
+        return response()->download($file);
+    }
     public function uploadImage(Request $request)
     {
         if ($request->hasFile('transFiles')) {
@@ -449,6 +469,36 @@ class UserController extends Controller
         return response()->download(public_path('translated/' . $orderFiles));
     }
 
+    public function downloadFiles(Order $order)
+    {
+        $orderFiles = $order->files;
+        $fileArr = [];
+
+        foreach ($orderFiles as $orderFile) {
+            if (file_exists(public_path('documents/' . $orderFile->filename))) {
+                $fileArr[] = public_path('documents/' . $orderFile->filename);
+            }
+        }
+
+        $zip = new ZipArchive;
+
+        $zipName = date('YmdHi') . $order->id . '.zip';
+        // dd($zip->open(public_path($zipName), ZipArchive::CREATE) === TRUE);
+        if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
+
+            $files = $fileArr; //passing the above array
+
+            foreach ($files as $key => $value) {
+                $relativeNameInZipFile = basename($value);
+                // dd($relativeNameInZipFile);
+                $zip->addFile($value, $relativeNameInZipFile);
+            }
+
+            $zip->close();
+        }
+
+        return response()->download(public_path('compressed/' . $zipName));
+    }
 
 
 

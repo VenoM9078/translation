@@ -296,7 +296,8 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
 
     Route::put('/user/update-profile/{id}', [UserController::class, 'updateProfile'])->name('user.updateProfile');
     Route::put('user/{id}/update-institute', [UserController::class, 'updateInstitute'])->name('user.updateInstitute');
-
+    Route::get('/user/downloadFiles/{order}', [UserController::class, 'downloadFiles'])->name('user.downloadFiles');
+    Route::get('/user/download-translation-file/{orderID}', [UserController::class, 'downloadTranslationFile'])->name('user.download-translation-file');
 
     Route::resource('user', UserController::class);
     Route::get('newOrder', [UserController::class, 'newOrder'])->name('newOrder');
