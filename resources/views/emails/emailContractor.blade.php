@@ -2,9 +2,11 @@
 # Hello!
 
 You have been offered a translation job. Please find the details below:
-Total Words: <span style="font-weight: bold">{{ $data['total_words'] }}</span><br>
+Translation Type: <span style="font-weight: bold">{{ $data['translation_type'] }}</span><br>
+Translation Unit: <span style="font-weight: bold">{{ $data['translator_unit'] }}</span><br>
 Total Payment: <span style="font-weight: bold">${{ $data['total_payment'] }}</span><br>
 Rate: <span style="font-weight: bold">${{ $data['rate'] }}</span><br>
+Translator Adjust Note: <span style="">{{ $data['translator_adjust_note'] }}</span><br>
 
 <table style="width: 100%; border: none;">
     <tr>
@@ -18,7 +20,6 @@ Rate: <span style="font-weight: bold">${{ $data['rate'] }}</span><br>
         </td>
     </tr>
 </table>
-
 Thanks,<br>
 {{ config('app.name') }}
 @endcomponent

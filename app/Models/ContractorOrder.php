@@ -20,7 +20,10 @@ class ContractorOrder extends Model
         'message',
         'translation_due_date',
         'translation_type',
-        'translator_adjust_note'
+        'translator_adjust_note',
+        'translator_adjust',
+        'translator_unit',
+        'translator_paid',
     ];
 
     public function contractor()

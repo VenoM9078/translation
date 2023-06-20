@@ -17,7 +17,13 @@
                 </h2>
             </div>
             <div id="vertical-form" class="p-5">
-
+                @if (isset($message))
+                    <div class="alert alert-success mt-3 mb-3">
+                        <ul>
+                            <li>{{ $message }}</li>
+                        </ul>
+                    </div>
+                @endif
                 <div class="container mt-8">
                     <ul class="nav nav-boxed-tabs" role="tablist">
                         <li id="translator-tab" class="nav-item flex-1" role="presentation">
@@ -35,16 +41,20 @@
                         @csrf
                         @method('POST')
                         <div class="tab-content mt-5">
+                            {{-- Translator Tab --}}
                             <div id="translator" class="tab-pane leading-relaxed active" role="tabpanel"
                                 aria-labelledby="translator-tab">
                                 <div class="intro-x mt-4">
                                     <input type="hidden" name="order_id" value="{{ $order->id }}">
                                     <div class="mt-1">
                                         <label for="amount" class="mt-2">Select Translator</label>
-                                        <select data-placeholder="Select A Contractor" id="contractor_select" required
+                                        <select data-placeholder="Select A Contractor" id="contractor_select"
                                             name="contractor_id" class="tom-select w-full">
-                                            <option value="-1" selected disabled>--</option>
                                             @foreach ($contractors as $contractor)
+                                                @if ($contractor->id == $cOrder->contractor_id)
+                                                    <option value="{{ $contractor->id }}" selected>{{ $contractor->name }}
+                                                    </option>
+                                                @endif
                                                 <option value="{{ $contractor->id }}">{{ $contractor->name }}
                                                     (${{ $contractor->translation_rate }} / hour)
                                                 </option>
@@ -57,6 +67,11 @@
                                         class="intro-x login__input form-control px-4 block" placeholder="Enter Total Words"
                                         value="">
                                     <br> --}}
+                                    <label for="amount" class="mt-2">Enter Translator Adjust ($)</label>
+                                    <input type="number" step="0.001" name="t_adjust"
+                                        class="intro-x login__input form-control px-4 block mt-1"
+                                        placeholder="Enter Adjust Rate" value="{{ $cOrder->translator_adjust }}">
+                                    <br>
                                     <label for="amount" class="mt-2">Total Payment</label>
                                     <input type="number" id="total_payment" readonly name="total_payment"
                                         class="intro-x login__input form-control px-4 block"
@@ -66,7 +81,7 @@
                                         <label for="">Enter Due Date</label>
                                         <input type="date" name="translation_due_date"
                                             class="intro-x login__input form-control py-3 px-4 block"
-                                            value="{{ $cOrder->translation_due_date }}" required>
+                                            value="{{ $cOrder->translation_due_date }}">
                                     </div>
                                     <br>
                                     <label for="amount" class="mt-2">Enter Rate</label>
@@ -76,25 +91,30 @@
                                     <br>
 
                                     <label for="amount" class="mt-2 mb-2">Enter Translation Type</label>
-                                    <select data-placeholder="Enter Translation Type" required name="translation_type"
+                                    <select data-placeholder="Enter Translation Type" name="translation_type"
                                         class="tom-select w-full">
-                                        <option value="-1" selected disabled> -- </option>
+                                        <option value="{{ $cOrder->translation_type }}" selected>
+                                            {{ $cOrder->translation_type ?? '--' }} </option>
                                         <option value="By Word">By Word</option>
                                         <option value="By Page">By Page</option>
                                     </select>
                                     <br>
                                     <label for="amount" class="mt-2">Enter Unit</label>
                                     <input type="number" name="t_unit" step="0.001"
-                                        class="mb-3 intro-x login__input form-control px-4 block mt-1 d-none" id="rate"
+                                        class="mb-3 intro-x login__input form-control px-4 block mt-1 d-none" id="unit"
                                         value="" placeholder="Enter Unit" value="{{ $cOrder->translator_unit }}">
                                     <br>
                                     <label for="t_adjust_note">T. Adjust Note</label>
                                     <textarea id="t_adjust_note" name="translator_adjust_note"
                                         class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4" placeholder="P. Adjust Note">{{ $cOrder->translator_adjust_note }}</textarea>
                                     <label for="amount" class="mt-2 mb-2">Paid</label>
-                                    <select data-placeholder="Enter Translation Type" required name="translator_paid"
+                                    <select data-placeholder="Enter Translation Type" name="translator_paid"
                                         class="tom-select w-full">
-                                        <option value="" selected disabled> -- </option>
+                                        @if ($cOrder->translator_paid)
+                                            <option value="{{ $cOrder->translator_paid }}" selected>
+                                                {{ $cOrder->translator_paid == 1 ? 'Yes' : 'No' }}
+                                        @endif
+                                        </option>
                                         <option value="1">Yes</option>
                                         <option value="0">No</option>
                                     </select>
@@ -102,18 +122,19 @@
                                     <label for="amount" class="mt-2 mb-4">Enter Message</label>
                                     <textarea type="number" id="message" name="message"
                                         class="intro-x login__input mt-2 mb-2 form-control px-4 block" rows="3" placeholder="Enter Message"
-                                        value="{{ $cOrder->message }}"></textarea>
+                                        value="{{ $cOrder->message }}">{{ $cOrder->message }}</textarea>
                                 </div>
                             </div>
+                            {{-- Proof Reader Tab --}}
                             <div id="proofreader" class="tab-pane leading-relaxed" role="tabpanel"
                                 aria-labelledby="proofreader-tab">
                                 <div class="intro-x mt-4">
                                     <div class="mt-1">
                                         <label for="amount" class="mt-2">Select Proofreader</label>
-                                        <select data-placeholder="Select A Contractor" required name="p_contractor_id"
+                                        <select data-placeholder="Select A Contractor" name="p_contractor_id"
                                             class="tom-select w-full">
-                                            <option value="{{ $cOrder->id }}" selected>
-                                                {{ $cOrder->contractor->name }} </option>
+                                            <option value="{{ $pOrder->contractor_id }}" selected>
+                                                {{ $pOrder->contractor->name }} </option>
                                             @foreach ($contractors as $contractor)
                                                 <option value="{{ $contractor->id }}">{{ $contractor->name }}
                                                     (${{ $contractor->translation_rate }} / hour)
@@ -124,23 +145,23 @@
                                     <br>
                                     <input type="hidden" name="order_id" value="{{ $order->id }}">
                                     <label for="amount" class="mt-4">Enter Fee</label>
-                                    <input type="number" step="0.001" required name="p_total_payment"
+                                    <input type="number" step="0.001" name="p_total_payment"
                                         class="intro-x login__input form-control px-4 block"
                                         placeholder="Enter Total Payment" value="{{ $pOrder->total_payment }}">
                                     <br>
                                     <label for="amount" class="mt-2">Enter Rate</label>
-                                    <input type="number" step="0.001" required name="p_rate"
+                                    <input type="number" step="0.001" name="p_rate"
                                         class="intro-x login__input form-control px-4 block mt-1" placeholder="Enter Rate"
-                                        value="">
+                                        value="{{ $pOrder->p_rate }}">
                                     <div class="mt-5">
                                         <label for="">Enter Due Date</label>
                                         <input type="date" name="proof_read_due_date"
                                             class="intro-x login__input form-control py-3 px-4 block"
-                                            value="{{ $pOrder->proof_read_due_date }}" required>
+                                            value="{{ $pOrder->proof_read_due_date }}">
                                     </div>
                                     <br>
                                     <label for="amount" class="mt-4 mb-2">Enter ProofRead Type</label>
-                                    <select data-placeholder="Enter ProofRead Type" required name="p_type"
+                                    <select data-placeholder="Enter ProofRead Type" name="p_type"
                                         class="tom-select w-full">
                                         <option value="{{ $pOrder->proofread_type }}" selected>
                                             {{ $pOrder->proofread_type ?? '-' }} </option>
@@ -150,21 +171,21 @@
                                     <br>
 
                                     <label for="amount" class="mt-2">Enter ProofRead Adjust ($)</label>
-                                    <input type="number" step="0.001" required name="p_adjust"
+                                    <input type="number" step="0.001" name="p_adjust"
                                         class="intro-x login__input form-control px-4 block mt-1"
-                                        placeholder="Enter Adjust Rate" value="">
+                                        placeholder="Enter Adjust Rate" value="{{ $pOrder->p_adjust }}">
                                     <br>
                                     <label for="amount" class="mt-2">Enter Unit</label>
-                                    <input type="number" step="0.001" required name="p_unit"
+                                    <input type="number" step="0.001" name="p_unit"
                                         class="intro-x login__input form-control px-4 block mt-1" placeholder="Enter Rate"
-                                        value="">
+                                        value="{{ $pOrder->p_unit }}">
                                     <br>
                                     <label for="c_adjust_note">P. Adjust Note</label>
                                     <textarea id="p_adjust_note" name="p_adjust_note" class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4"
                                         placeholder="P. Adjust Note">{{ $pOrder->proof_read_adjust_note }}</textarea>
                                     <br>
                                     <label for="amount" class="mt-2 mb-2">Paid</label>
-                                    <select data-placeholder="Enter Translation Type" required name="proof_read_paid"
+                                    <select data-placeholder="Enter Translation Type" name="proof_read_paid"
                                         class="tom-select w-full">
                                         @if ($pOrder->proof_read_paid != '')
                                             <option value="{{ $pOrder->proof_read_paid }}" selected>
@@ -176,9 +197,9 @@
                                     </select>
                                     <br>
                                     <label for="amount" class="mt-2 mb-4">Enter Message</label>
-                                    <textarea type="number" id="message" name="message"
+                                    <textarea type="number" id="message" name="p_message"
                                         class="intro-x login__input mt-2 mb-2 form-control px-4 block" rows="3" placeholder="Enter Message"
-                                        value="{{ $pOrder->message }}"></textarea>
+                                        value="{{ $pOrder->message }}">{{ $pOrder->message }}</textarea>
                                     <input type="file" id="multipleFiles" class="filepond mt-2" name="proofReadFile"
                                         data-max-file-size="10MB" />
                                     {{-- <div class="btn-group mt-4" role="group" aria-label="Basic example">
@@ -202,9 +223,7 @@
 
 
 <script>
-
-
-$(document).ready(function() {
+    $(document).ready(function() {
 
 
         var rate = 0;
@@ -224,7 +243,7 @@ $(document).ready(function() {
                 },
                 success: function(data) {
                     rate = data.translation_rate;
-                    var total_words = $("#total_words").val();
+                    var total_words = $("#unit").val();
                     //if total words is empty then set total payment to 0
                     if (total_words == "") {
                         total_words = 0;
@@ -243,29 +262,28 @@ $(document).ready(function() {
             $('#total_payment').val(estimated_payment);
         });
 
-        $("#total_words").change(function() {
+        $("#unit").change(function() {
             var total_words = $(this).val();
             var estimated_payment = calculateEstimatedPayment(total_words);
             $('#total_payment').val(estimated_payment);
         });
         //Filepond
-            FilePond.registerPlugin(
-                FilePondPluginFileEncode,
-                FilePondPluginFileValidateSize
-            );
-    
-            FilePond.create(
-                document.querySelector('#multipleFiles')
-            );
-    
-            FilePond.setOptions({
-                server: {
-                    url: '/admin/upload-proof',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
-                }
-            });
-    });
+        FilePond.registerPlugin(
+            FilePondPluginFileEncode,
+            FilePondPluginFileValidateSize
+        );
 
+        FilePond.create(
+            document.querySelector('#multipleFiles')
+        );
+
+        FilePond.setOptions({
+            server: {
+                url: '/admin/upload-proof',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            }
+        });
+    });
 </script>

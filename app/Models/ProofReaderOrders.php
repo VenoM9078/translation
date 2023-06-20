@@ -21,7 +21,10 @@ class ProofReaderOrders extends Model
         'proofread_type',
         'proof_read_due_date',
         'proof_read_paid',
-        'proof_read_adjust_note'
+        'proof_read_adjust_note',
+        'p_unit',
+        'p_adjust',
+        'message'
     ];
 
     public function contractor()

@@ -153,11 +153,13 @@ class AdminController extends Controller
     {
         $order = Order::find($order);
         $contractors = Contractor::all();
-        $cOrder = ContractorOrder::where('order_id', $order)->first();
+        $cOrder = ContractorOrder::where('order_id', $order->id)->first();
+        // dd($cOrder);
+
         if (!isset($cOrder)) {
             $cOrder = ContractorOrder::emptyModel();
         }
-        $pOrder = ProofReaderOrders::where('order_id', $order)->first();
+        $pOrder = ProofReaderOrders::where('order_id', $order->id)->first();
         if (!isset($pOrder)) {
             $pOrder = ProofReaderOrders::emptyModel();
         }
@@ -193,7 +195,6 @@ class AdminController extends Controller
 
         // dd($request->all());
         if ($request->contractor_id) {
-            // $due_date = Carbon::now()->addDays(7);
             $contractorOrder = ContractorOrder::updateOrCreate(
                 ['order_id' => $request->order_id],
                 [
@@ -207,10 +208,12 @@ class AdminController extends Controller
                     'total_payment' => $request->total_payment,
                     'rate' => $request->rate,
                     'translation_due_date' => $request->translation_due_date,
-                    'translation_unit' => $request->t_unit,
-                    'message' => $request->message
+                    'translator_unit' => $request->t_unit,
+                    'message' => $request->message,
+                    'translator_adjust' => $request->t_adjust
                 ]
             );
+
             $order = Order::find($request->order_id);
             $order->translation_sent = 1;
             $order->save();
@@ -219,6 +222,7 @@ class AdminController extends Controller
             Mail::to($contractor->email)->send(new EmailContractor($contractorOrder));
         }
         //Proof Read Assignment
+
         if ($request->p_contractor_id) {
             if (!$request->proofReadFile) {
                 $proof_read_file = '';
@@ -231,15 +235,20 @@ class AdminController extends Controller
                 // Search array
                 [
                     // Update or create array
-                    'contractor_id' => $request->contractor_id,
+                    'contractor_order_id' => $contractorOrder->id ?? -1,
+                    'contractor_id' => $request->p_contractor_id,
                     'is_accepted' => ContractorOrderEnum::PENDING,
-                    'rate' => $request->p_rate,
-                    'total_payment' => $request->p_total_payment,
+                    'rate' => $request->p_rate ?? 0,
+                    'total_payment' => $request->p_total_payment ?? 0,
                     'translation_status' => TranslationStatusEnum::PENDING,
                     'file_name' => $proof_read_file,
-                    'proof_read_due_date' => $request->proof_read_due_date,
-                    'proofread_type' => $request->proofread_type,
-                    'p_adjust' => $request->p_adjust
+                    'proof_read_due_date' => $request->proof_read_due_date ,
+                    'proofread_type' => $request->p_type,
+                    'proof_read_paid' => $request->proof_read_paid,
+                    'p_adjust' => $request->p_adjust,
+                    'proof_read_adjust_note' => $request->p_adjust_note,
+                    'p_unit' => $request->p_unit,
+                    'message' => $request->p_message
                 ]
             );
             $order = Order::find($request->order_id);
@@ -254,6 +263,7 @@ class AdminController extends Controller
                 Mail::to($contractor->email)->send(new mailToProofReader($order, $proofReaderOrder, 'New Request! | Proof Read ', env("ADMIN_EMAIL")));
             }
         }
+        return redirect()->back()->with('message', 'Assigned Successfully!');
     }
 
     public function updateInterpretation(Request $request, $id)
