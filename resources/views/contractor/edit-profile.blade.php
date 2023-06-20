@@ -121,6 +121,7 @@
                                                     @endif
                                                 @endforeach
                                                 <option value="Afrikaans">Afrikaans</option>
+                                                <option value="Spanish">Spanish</option>
                                                 <option value="Albanian">Albanian</option>
                                                 <option value="Amharic">Amharic</option>
                                                 <option value="Arabic">Arabic</option>
@@ -244,6 +245,7 @@
                                                     @endif
                                                 @endforeach
                                                 <option value="Afrikaans">Afrikaans</option>
+                                                <option value="Spanish">Spanish</option>
                                                 <option value="Albanian">Albanian</option>
                                                 <option value="Amharic">Amharic</option>
                                                 <option value="Arabic">Arabic</option>

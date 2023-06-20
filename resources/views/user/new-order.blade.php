@@ -41,6 +41,7 @@
                                     <option value="Source Language" disabled selected>Source Language
                                     </option>
                                     <option value="Afrikaans">Afrikaans</option>
+                                    <option value="Spanish">Spanish</option>
                                     <option value="Albanian">Albanian</option>
                                     <option value="Amharic">Amharic</option>
                                     <option value="Arabic">Arabic</option>
@@ -144,6 +145,7 @@
                                     data-placeholder="Target Language" class="tom-select w-full mt-4">
                                     <option value="Target Language" disabled selected>Target Language</option>
                                     <option value="Afrikaans">Afrikaans</option>
+                                    <option value="Spanish">Spanish</option>
                                     <option value="Albanian">Albanian</option>
                                     <option value="Amharic">Amharic</option>
                                     <option value="Arabic">Arabic</option>

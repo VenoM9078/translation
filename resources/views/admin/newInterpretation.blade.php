@@ -51,6 +51,7 @@
                                             <select name="language" data-placeholder="Select a language"
                                                 class="tom-select w-full">
                                                 <option value="Afrikaans">Afrikaans</option>
+                                                <option value="Spanish">Spanish</option>
                                                 <option value="Albanian">Albanian</option>
                                                 <option value="Amharic">Amharic</option>
                                                 <option value="Arabic">Arabic</option>

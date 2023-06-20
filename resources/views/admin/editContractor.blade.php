@@ -71,6 +71,7 @@
                                         <option value="Basque">Basque</option>
                                         <option value="Belarusian">Belarusian</option>
                                         <option value="Bengali">Bengali</option>
+                                        <option value="Spanish">Spanish</option>
                                         <option value="Bosnian">Bosnian</option>
                                         <option value="Breton">Breton</option>
                                         <option value="Bulgarian">Bulgarian</option>
@@ -180,6 +181,7 @@
                                         @endif
                                         @endforeach
                                         <option value="Afrikaans">Afrikaans</option>
+                                        <option value="Spanish">Spanish</option>
                                         <option value="Albanian">Albanian</option>
                                         <option value="Amharic">Amharic</option>
                                         <option value="Arabic">Arabic</option>
@@ -308,6 +310,7 @@
                                         <option value="Azerbaijani">Azerbaijani</option>
                                         <option value="Basque">Basque</option>
                                         <option value="Belarusian">Belarusian</option>
+                                        <option value="Spanish">Spanish</option>
                                         <option value="Bengali">Bengali</option>
                                         <option value="Bosnian">Bosnian</option>
                                         <option value="Breton">Breton</option>
