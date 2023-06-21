@@ -138,6 +138,11 @@ class AdminController extends Controller
         return view('admin.view-contractor-info', compact('contractor', 'languages'));
     }
 
+    public function viewInterpretationDetails($id){
+        $interpretation = Interpretation::where('id',$id)->firstOrFail();
+        return view ('admin.view-interpretation',compact('interpretation'));
+    }
+
     public function editInterpretation($id)
     {
         $interpretation = Interpretation::find($id);
@@ -269,10 +274,11 @@ class AdminController extends Controller
     public function updateInterpretation(Request $request, $id)
     {
         $interpretation = Interpretation::find($id);
-
+        $oldInt = $interpretation;
         if ($interpretation) {
             // Validation can be added as per your requirements.
             $interpretation->update($request->all());
+            // dd($oldInt,$interpretation);
             return redirect()->route('admin.ongoingInterpretations')->with('success', 'Interpretation updated successfully.');
         }
 

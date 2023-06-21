@@ -61,6 +61,13 @@
             </h2>
         </div>
         {{-- DropDown --}}
+       @if (isset($success))
+        <div class="alert alert-success mt-3 mb-3">
+            <ul>
+                <li>{{ $success }}</li>
+            </ul>
+        </div>
+        @endif  
         <div class="flex justify-end gap-4">
             <div class="dropdown-container relative inline-block my-2">
                 <button id="dropdownBgHoverButton" data-dropdown-toggle="dropdownBgHover"
@@ -180,6 +187,9 @@
                                                 <div class="flex gap-1">
                                                     <a href="{{ route('admin.interpretation.edit', $interpretation->id) }}"
                                                         class="btn btn-warning"><i data-lucide="edit"
+                                                            class="w-5 h-5 text-white mx-auto"></i></a>
+                                                    <a href="{{ route('view-interpretation-details', $interpretation->id) }}"
+                                                        class="btn btn-secondary"><i data-lucide="view"
                                                             class="w-5 h-5 text-white mx-auto"></i></a>
                                                     <button type="submit" class="btn btn-danger bg-red-600 text-black">
                                                         <div>

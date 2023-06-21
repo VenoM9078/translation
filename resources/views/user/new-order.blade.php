@@ -280,8 +280,7 @@
 
                             <div class="btn-group mt-5" role="group" aria-label="Basic example">
 
-                                <button type="submit" id="uploadBtn" class="btn btn-primary">Upload Files for
-                                    Translation</button>
+                                <button type="submit" id="uploadBtn" class="btn btn-primary">Submit</button>
                             </div>
 
                         </form>

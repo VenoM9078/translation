@@ -28,8 +28,6 @@
                                     <th class="whitespace-nowrap">Name</th>
                                     <th class="whitespace-nowrap">Email</th>
 
-                                    <th class="whitespace-nowrap">Case Manager</th>
-                                    <th class="whitespace-nowrap">Access Code</th>
                                     <th class="whitespace-nowrap">Order Worknumber</th>
                                     <th class="whitespace-nowrap">User Email</th>
                                     <th class="whitespace-nowrap">Payment Status</th>
@@ -41,22 +39,9 @@
                             <tbody>
                                 @foreach ($invoices as $invoice)
                                     <tr>
-                                        <td class="whitespace-nowrap">{{ $invoice->order->user->name }}</td>
-                                        <td class="whitespace-nowrap">{{ $invoice->order->user->email }}</td>
-
-                                        @if ($invoice->order->casemanager == null && $invoice->order->access_code == '')
-                                            <td class="whitespace-nowrap">N/A</td>
-                                            <td class="whitespace-nowrap">N/A</td>
-                                        @elseif($invoice->order->casemanager == null && $invoice->order->access_code != '')
-                                            <td class="whitespace-nowrap">N/A</td>
-                                            <td class="whitespace-nowrap">{{ $invoice->order->access_code }}</td>
-                                        @elseif($invoice->order->access_code == '' && $invoice->order->casemanager != null)
-                                            <td class="whitespace-nowrap">{{ $invoice->order->casemanager }}</td>
-                                            <td class="whitespace-nowrap">N/A</td>
-                                        @else
-                                            <td class="whitespace-nowrap">{{ $invoice->order->casemanager }}</td>
-                                            <td class="whitespace-nowrap">{{ $invoice->order->access_code }}</td>
-                                        @endif
+                                        @if(isset($invoice->order))
+                                        <td class="whitespace-nowrap">{{ $invoice->order->user->name ?? 'N/A' }}</td>
+                                        <td class="whitespace-nowrap">{{ $invoice->order->user->email ?? 'N/A' }}</td>
 
                                         <td class="whitespace-nowrap">{{ $invoice->order->worknumber }}</td>
                                         <td class="whitespace-nowrap">{{ $invoice->order->user->email }}</td>
@@ -127,6 +112,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        @endif
 
                                     </tr>
                                 @endforeach

@@ -32,30 +32,31 @@
                                         class="intro-x login__input form-control py-3 px-4 block"
                                         value="{{ $interpretation->interpretationDate }}" required>
                                 </div>
+                                <div class="flex mt-2 mb-2 gap-2">
+                                    <div class="w-full">
+                                        <label for="">Enter Start Time</label>
+                                        <input type="time" name="start_time"
+                                            class="intro-x login__input form-control py-3 px-4 block"
+                                            value="{{ $interpretation->start_time }}" required>
+                                    </div>
 
-                                <div class="mt-5">
-                                    <label for="">Enter Start Time</label>
-                                    <input type="time" name="start_time"
-                                        class="intro-x login__input form-control py-3 px-4 block"
-                                        value="{{ $interpretation->start_time }}" required>
+                                    <div class="w-full">
+                                        <label for="">Enter End Time</label>
+                                        <input type="time" name="end_time"
+                                            class="intro-x login__input form-control py-3 px-4 block"
+                                            value="{{ $interpretation->end_time }}" required>
+                                    </div>
                                 </div>
 
                                 <div class="mt-5">
-                                    <label for="">Enter End Time</label>
-                                    <input type="time" name="end_time"
-                                        class="intro-x login__input form-control py-3 px-4 block"
-                                        value="{{ $interpretation->end_time }}" required>
-                                </div>
-
-                                <div class="mt-5">
-                                    <label for="">Select Language</label>
+                                    <label for="">Select Location</label>
                                     <input type="text" name="location"
                                         class="intro-x login__input form-control py-3 px-4 block"
                                         value="{{ $interpretation->location }}" required>
                                 </div>
 
                                 <div class="mt-5">
-                                    <label for="">Enter Link/Address</label>
+                                    <label for="">Enter Language</label>
                                     <select name="language" data-placeholder="Select a language" class="tom-select w-full">
                                         <option value="{{ $interpretation->language }}" selected>
                                             {{ $interpretation->language }}</option>

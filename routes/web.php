@@ -290,6 +290,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
 
     Route::post('/admin/upload-proof', [AdminController::class, 'uploadProofFile'])->name('admin-upload-proof-read-file');
 
+    Route::get('/view-interpretation/{id}',[AdminController::class,'viewInterpretationDetails'])->name('view-interpretation-details');
+
 });
 
 Route::middleware(['web', 'auth', 'verified'])->group(function () {
