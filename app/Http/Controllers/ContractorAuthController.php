@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ContractorOrderEnum;
+use App\Enums\LogActionsEnum;
 use App\Enums\OrderStatusEnum;
 use App\Enums\TranslationStatusEnum;
+use App\Helpers\HelperClass;
 use App\Mail\ContractorNotifyAdmin;
 use App\Mail\InterpretationCancellation;
 use App\Mail\InterpretationReportToAdmin;
@@ -493,6 +495,13 @@ class ContractorAuthController extends Controller
         $contractorOrder->is_accepted = ContractorOrderEnum::ACCEPTED;
         $contractorOrder->save();
 
+        HelperClass::storeContractorLog(null,LogActionsEnum::NOTADMIN,$contractorOrder->order_id,$contractorOrder->contractor_id,
+        "Contractor",
+        0,
+        "Translator",
+        LogActionsEnum::ACCEPTTRANSLATION,
+        0,0,1);
+
         $contractorName = Auth::guard('contractor')->user()->name;
         $admins = Admin::all(['email']);
 
@@ -555,6 +564,17 @@ class ContractorAuthController extends Controller
         $order = Order::find($contractorOrder->order_id);
         $order->translation_sent = 0;
         $order->save();
+
+        HelperClass::storeContractorLog(
+            null, LogActionsEnum::NOTADMIN,$contractorOrder->order_id, $contractorOrder->contractor_id,
+            "Contractor",
+            0,
+            "Translator",
+            LogActionsEnum::DECLINETRANSLATION,
+            0,
+            0,
+            ContractorOrderEnum::DECLINED
+        );
         //only select emails of admins from the query
         $contractorName = Auth::guard('contractor')->user()->name;
         $admins = Admin::all(['email']);
@@ -636,8 +656,20 @@ class ContractorAuthController extends Controller
 
         //fetch order with the order_id, then update the orders table column translationStatus to 1
         $order = Order::find($contractorOrder->order_id);
+        $old_translation_status = $order->translation_status;
         $order->translation_status = 1;
         $order->save();
+
+        HelperClass::storeContractorLog(
+            null,LogActionsEnum::NOTADMIN, $contractorOrder->order_id, $contractorOrder->contractor_id,
+            "Contractor",
+            0,
+            "Translator",
+            LogActionsEnum::UPLOADTRANSLATION,
+            $old_translation_status,
+            $order->translation_status,
+            1
+        );
 
         $contractorName = Auth::guard('contractor')->user()->name;
         $admins = Admin::all(['email']);

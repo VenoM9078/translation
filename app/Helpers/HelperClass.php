@@ -1,6 +1,10 @@
 <?php
 namespace App\Helpers;
 
+use App\Models\ContractorLog;
+use App\Models\Order;
+use App\Models\OrderLog;
+
 class HelperClass
 {
     public static function convertDateToCurrentTimeZone($date, $ip)
@@ -21,8 +25,27 @@ class HelperClass
         return $carbonTime->timezone($timezone)->format('h:m:s');
     }
 
-    public static function storeLog()
-    {
+
+    public static function storeOrderLog(
+        $is_admin = null,
+        $user,
+        $order_id,
+        $model_name,
+        $user_type,
+        $action,
+        $old_translation_status = null,
+        $new_translation_status = null,
+        $old_payment_status = null,
+        $new_payment_status = null,
+        $old_translation_sent_status = null,
+        $new_translation_sent_status = null,
+        $old_proofread_sent_status = null,
+        $new_proofread_sent_status = null,
+        $old_order_completed_status = null,
+        $new_order_completed_status = null
+    ) {
+
+
 
         /*
         2023-06-10 22:02 - Yuan - Created Order
@@ -36,6 +59,63 @@ class HelperClass
         2023-06-20 22:03 - Silvia - Paid Interpreter (to be implemented in phase 3)
         */
 
+        $orderLog = new OrderLog();
+        $orderLog->is_admin = $is_admin;
+        $orderLog->user_id = $user;
+        $orderLog->order_id = $order_id;
+        $orderLog->user_type = $user_type;
+        $orderLog->model_name = $model_name;
+        $orderLog->action = $action;
+        $orderLog->old_translation_status = $old_translation_status;
+        $orderLog->new_translation_status = $new_translation_status;
+        $orderLog->old_payment_status = $old_payment_status;
+        $orderLog->new_payment_status = $new_payment_status;
+        $orderLog->old_translation_sent_status = $old_translation_sent_status;
+        $orderLog->new_translation_sent_status = $new_translation_sent_status;
+        $orderLog->old_proofread_sent_status = $old_proofread_sent_status;
+        $orderLog->new_proofread_sent_status = $new_proofread_sent_status;
+        $orderLog->old_order_completed_status = $old_order_completed_status;
+        $orderLog->new_order_completed_status = $new_order_completed_status;
+        $orderLog->save();
+
+    }
+
+    public static function storeContractorLog(
+        $user=null,
+        $is_admin = null,
+        $order_id,
+        $contractor_id,
+        $model_name,
+        $user_type,
+        $contractor_type,
+        $action,
+        $old_translation_status = null,
+        $new_translation_status = null,
+        $is_accepted = null,
+        $old_proof_read_sent_status = null,
+        $new_proof_read_sent_status = null,
+        $new_interpretation_sent_status = null,
+        $old_interpretation_sent_status = null,
+    ) {
+        $contractorLog = new ContractorLog();
+        // $contractorLog->user_id = $user;
+        $contractorLog->contractor_id = $contractor_id;
+        $contractorLog->is_admin = $is_admin;
+        $contractorLog->user_type = $user_type;
+        $contractorLog->order_id = $order_id;
+        $contractorLog->contractor_type = $contractor_type;
+        $contractorLog->model_name = $model_name;
+        $contractorLog->action = $action;
+        $contractorLog->old_translation_status = $old_translation_status;
+        $contractorLog->new_translation_status = $new_translation_status;
+        $contractorLog->is_accepted = $is_accepted;
+
+        $contractorLog->old_proof_read_sent_status = $old_proof_read_sent_status;
+        $contractorLog->new_proof_read_sent_status = $new_proof_read_sent_status;
+
+        $contractorLog->new_interpretation_sent_status = $new_interpretation_sent_status;
+        $contractorLog->old_interpretation_sent_status = $old_interpretation_sent_status;
+        $contractorLog->save();
     }
 }
 

@@ -98,4 +98,8 @@ class Order extends Model
     {
         return $this->hasOne('App\Models\ProofReaderOrders', 'order_id', 'id');
     }
+
+    public function orderLogs(){
+        return $this->hasMany('App\Models\OrderLog','order_id','id');
+    }
 }

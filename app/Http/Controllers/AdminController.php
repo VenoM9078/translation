@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ContractorOrderEnum;
+use App\Enums\LogActionsEnum;
 use App\Enums\TranslationStatusEnum;
+use App\Helpers\HelperClass;
 use App\Mail\AdminNewInterpretation;
 use App\Mail\adminOrderCreated;
 use App\Mail\EmailContractor;
@@ -30,6 +32,7 @@ use App\Models\Institute;
 use App\Models\InstituteMembers;
 use App\Models\ProofReaderOrders;
 use App\Models\VerifyContractor;
+use Auth;
 use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
@@ -222,6 +225,17 @@ class AdminController extends Controller
             $order = Order::find($request->order_id);
             $order->translation_sent = 1;
             $order->save();
+
+            HelperClass::storeContractorLog(
+                Auth::user()->id, LogActionsEnum::ISADMIN, $order->id, $request->contractor_id,
+                "Contractor",
+                0,
+                "Translator",
+                LogActionsEnum::ASSIGNEDTRANSLATOR,
+                0,
+                1,
+                0
+            );
             // $contractorOrder->save();
             $contractor = Contractor::where('id', $request->contractor_id)->firstOrFail();
             Mail::to($contractor->email)->send(new EmailContractor($contractorOrder));
@@ -261,6 +275,16 @@ class AdminController extends Controller
             $order->proofread_sent = 1; //change status to 1 *asigned
             $order->save();
 
+            HelperClass::storeContractorLog(
+                Auth::user()->id, LogActionsEnum::ISADMIN, $order->id, $request->contractor_id,
+                "Contractor",
+                0,
+                "Proof Reader",
+                LogActionsEnum::ASSIGNEDPROOFREADER,
+                0,
+                0,
+                0,0,1
+            );
             $contractor = Contractor::where('id', $request->p_contractor_id)->firstOrFail();
             if (env("IS_DEV") == 1) {
                 Mail::to($contractor->email)->send(new mailToProofReader($order, $proofReaderOrder, 'New Request! | Proof Read ', env("ADMIN_EMAIL_DEV")));
@@ -888,6 +912,17 @@ class AdminController extends Controller
         $order->translation_sent = 1;
         $order->save();
         $contractorOrder->save();
+
+        HelperClass::storeContractorLog(
+            Auth::user()->id, LogActionsEnum::ISADMIN, $order->id, $request->contractor_id,
+            "Contractor",
+            0,
+            "Translator",
+            LogActionsEnum::ASSIGNEDTRANSLATOR,
+            0,
+            1,
+            0
+        );
         // $data = $request->all();
         $contractor = Contractor::where('id', $contractorOrder['contractor_id'])->firstOrFail();
         Mail::to($contractor->email)->send(new EmailContractor($contractorOrder));

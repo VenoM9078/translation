@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\LogActionsEnum;
+use App\Helpers\HelperClass;
 use App\Mail\AdminInterpretationPaymentReceived;
 use App\Mail\AdminNewInterpretation;
 use App\Mail\adminOrderCreated;
@@ -203,9 +205,16 @@ class UserController extends Controller
             ];
         }
 
-        // dd($data);
+
+        //Store Order Log
         $order = Order::create($data);
 
+        HelperClass::storeOrderLog(LogActionsEnum::NOTADMIN,$userID,
+        $order->id,
+        "Order",
+        Auth::user()->role_id,
+        LogActionsEnum::NEWORDER,
+        0,0,0,$paymentStatus,0,0,0,0,0,0);
 
         if ($request->transFiles) {
 
