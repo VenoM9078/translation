@@ -209,6 +209,10 @@ class UserController extends Controller
         //Store Order Log
         $order = Order::create($data);
 
+        if ($request->input("isPayNow") == "on") {
+            HelperClass::storeInvoiceLogs($userID,0,$order->id,"Invoice","Individual User","Invoice Sent",1);
+        }
+
         HelperClass::storeOrderLog(LogActionsEnum::NOTADMIN,$userID,
         $order->id,
         "Order",
@@ -361,6 +365,7 @@ class UserController extends Controller
         $interpretation->wantQuote = 3;
         $interpretation->invoiceSent = 1;
 
+        HelperClass::storeInvoiceLogs(Auth::user()->id, 0, null, "Invoice", "Individual User", "Invoice Sent", 1,$interpretation_id);
 
         $interpretation->save();
 
@@ -745,6 +750,10 @@ class UserController extends Controller
         $interpretation->message = $request->message;
 
         $interpretation->save();
+        
+        if($invoiceSent == 1){
+            HelperClass::storeInvoiceLogs(auth()->id(), 0,null, "Invoice", "Individual User", "Invoice Sent", 1,$interpretation->id);
+        }
 
         if (env("IS_DEV") == 1) {
             Mail::to('webpage@flowtranslate.com')->send(new AdminNewInterpretation(auth()->user(), $interpretation, "Flow Translate - New Interpretation Request", env("ADMIN_EMAIL_DEV")));

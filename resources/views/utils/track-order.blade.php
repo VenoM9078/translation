@@ -53,12 +53,30 @@
                         {{-- Order Created  --}}
                         @case(1)
                             @if (isset($order->orderLogs) && count($order->orderLogs) > 0)
-                                {{ $order->orderLogs[0]->created_at->format('y-m-d h:m:s') }} -
-                                {{ $order->orderLogs[0]->user->name }} {{ $order->orderLogs[0]->action }}
+                                <div class="row">
+                                    {{ $order->orderLogs[0]->created_at->format('y-m-d h:m:s') }} -
+                                    {{ $order->orderLogs[0]->user->name }} {{ $order->orderLogs[0]->action }}
+                                </div>
                             @endif
                         @break
 
                         @case(2)
+                        @break
+
+                        @case(4)
+                            @if (isset($order->contractorLogs) && count($order->contractorLogs) > 0)
+                                @foreach ($order->contractorLogs as $contractorLog)
+                                    <div class="row">
+                                        {{ $contractorLog->created_at->format('y-m-d h:m:s') }} -
+                                        @if ($contractorLog->is_admin == 1 && $contractorLog->contractor_type == 'Translator')
+                                            {{-- @dd($contractorLog) --}}
+                                            {{ $contractorLog->admin->name }} {{ $contractorLog->action }}
+                                        @elseif ($contractorLog->is_admin == 0 && $contractorLog->contractor_type == 'Translator')
+                                            {{ $contractorLog->action }}
+                                        @endif
+                                    </div>
+                                @endforeach
+                            @endif
                         @break
 
                         @default

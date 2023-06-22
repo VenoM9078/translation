@@ -7,7 +7,6 @@
     <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
     <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
 
-
     <div class="intro-y col-span-12 mt-4">
         <!-- BEGIN: Vertical Form -->
         <div class="intro-y box">
@@ -37,13 +36,15 @@
                                 aria-selected="false">Proofreader</button>
                         </li>
                     </ul>
-                    <form action="{{ route('assign-proofread-translator-submit') }}" method="post">
-                        @csrf
-                        @method('POST')
-                        <div class="tab-content mt-5">
-                            {{-- Translator Tab --}}
-                            <div id="translator" class="tab-pane leading-relaxed active" role="tabpanel"
-                                aria-labelledby="translator-tab">
+
+                    <div class="tab-content mt-5">
+                        {{-- Translator Tab --}}
+                        <div id="translator" class="tab-pane leading-relaxed active" role="tabpanel"
+                            aria-labelledby="translator-tab">
+                            <form action="{{ route('assign-proofread-translator-submit') }}" method="post">
+                                @csrf
+                                @method('POST')
+                                <input type="text" name="admin_id" value="{{Auth::user()->id}}" hidden id="">
                                 <div class="intro-x mt-4">
                                     <input type="hidden" name="order_id" value="{{ $order->id }}">
                                     <div class="mt-1">
@@ -124,10 +125,16 @@
                                         class="intro-x login__input mt-2 mb-2 form-control px-4 block" rows="3" placeholder="Enter Message"
                                         value="{{ $cOrder->message }}">{{ $cOrder->message }}</textarea>
                                 </div>
-                            </div>
-                            {{-- Proof Reader Tab --}}
-                            <div id="proofreader" class="tab-pane leading-relaxed" role="tabpanel"
-                                aria-labelledby="proofreader-tab">
+                                <input type="submit" class="btn btn-primary mt-5" id="submit_2" value="Assign">
+                            </form>
+                        </div>
+                        {{-- Proof Reader Tab --}}
+                        <div id="proofreader" class="tab-pane leading-relaxed" role="tabpanel"
+                            aria-labelledby="proofreader-tab">
+                            <form action="{{ route('assign-proofread-translator-submit') }}" method="post">
+                                @csrf
+                                @method('POST')
+                                <input type="text" name="admin_id" value="{{Auth::user()->id}}" hidden id="">
                                 <div class="intro-x mt-4">
                                     <div class="mt-1">
                                         <label for="amount" class="mt-2">Select Proofreader</label>
@@ -208,10 +215,10 @@
                                     </div> --}}
                                     {{-- <button type="submit" class="btn btn-success w-24">Submit</button> --}}
                                 </div>
-                            </div>
+                                <input type="submit" class="btn btn-primary mt-5" id="submit_2" value="Assign">
+                            </form>
                         </div>
-                        <input type="submit" class="btn btn-primary mt-5" id="submit_2" value="Assign">
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>

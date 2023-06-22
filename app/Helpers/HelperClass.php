@@ -2,6 +2,7 @@
 namespace App\Helpers;
 
 use App\Models\ContractorLog;
+use App\Models\InvoiceLogs;
 use App\Models\Order;
 use App\Models\OrderLog;
 
@@ -81,7 +82,7 @@ class HelperClass
     }
 
     public static function storeContractorLog(
-        $user=null,
+        $user = null,
         $is_admin = null,
         $order_id,
         $contractor_id,
@@ -98,7 +99,7 @@ class HelperClass
         $old_interpretation_sent_status = null,
     ) {
         $contractorLog = new ContractorLog();
-        // $contractorLog->user_id = $user;
+        $contractorLog->user_id = $user; //admin id
         $contractorLog->contractor_id = $contractor_id;
         $contractorLog->is_admin = $is_admin;
         $contractorLog->user_type = $user_type;
@@ -116,6 +117,28 @@ class HelperClass
         $contractorLog->new_interpretation_sent_status = $new_interpretation_sent_status;
         $contractorLog->old_interpretation_sent_status = $old_interpretation_sent_status;
         $contractorLog->save();
+    }
+
+    public static function storeInvoiceLogs(
+        $user = null,
+        $is_admin = null,
+        $order_id = null,
+        $model_name,
+        $user_type,
+        $action,
+        $invoice_sent = null,
+        $interpretation_id = null
+    ) {
+
+        $invoiceLog = new InvoiceLogs();
+        $invoiceLog->user_id = $user;
+        $invoiceLog->is_admin= $is_admin;
+        $invoiceLog->user_id = $user;
+        $invoiceLog->order_id = $order_id;
+        $invoiceLog->user_type = $user_type;
+        $invoiceLog->action = $action;
+        $invoiceLog->invoice_sent = $invoice_sent;
+        $invoiceLog->interpretation_id = $interpretation_id;
     }
 }
 

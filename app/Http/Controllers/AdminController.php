@@ -227,7 +227,7 @@ class AdminController extends Controller
             $order->save();
 
             HelperClass::storeContractorLog(
-                Auth::user()->id, LogActionsEnum::ISADMIN, $order->id, $request->contractor_id,
+                $request->admin_id, LogActionsEnum::ISADMIN, $order->id, $request->contractor_id,
                 "Contractor",
                 0,
                 "Translator",
@@ -276,7 +276,7 @@ class AdminController extends Controller
             $order->save();
 
             HelperClass::storeContractorLog(
-                Auth::user()->id, LogActionsEnum::ISADMIN, $order->id, $request->contractor_id,
+                $request->admin_id, LogActionsEnum::ISADMIN, $order->id, $request->p_contractor_id,
                 "Contractor",
                 0,
                 "Proof Reader",
@@ -545,6 +545,10 @@ class AdminController extends Controller
         $interpretation->message = $request->message;
 
         $interpretation->save();
+
+        HelperClass::storeInvoiceLogs(Auth::user()->id, 1, null, "Invoice", "Admin", "Invoice Sent", 1,$interpretation->id);
+
+
 
         if (env("IS_DEV") == 1) {
             Mail::to('webpage@flowtranslate.com')->send(new AdminNewInterpretation($newUser, $interpretation, "Flow Translate - New Interpretation Request", env("ADMIN_EMAIL_DEV")));

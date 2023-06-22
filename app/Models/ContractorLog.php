@@ -25,4 +25,8 @@ class ContractorLog extends Model
         'new_interpretation_sent_status',
         'old_interpretation_sent_status'
     ];
+
+    public function admin(){
+        return $this->belongsTo('App\Models\Admin','user_id','id');
+    }
 }
