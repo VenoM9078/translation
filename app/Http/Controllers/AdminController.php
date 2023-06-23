@@ -555,7 +555,8 @@ class AdminController extends Controller
 
         $interpretation->save();
 
-        // HelperClass::storeContractorLog( $user->id)
+        HelperClass::storeContractorLog( $user->id,LogActionsEnum::ISADMIN,0,0,"Interpretation","Admin","Interpreter",
+        LogActionsEnum::ASSIGNEDINTERPRETER,null,null,0,null,null,0,0);
         HelperClass::storeInvoiceLogs(Auth::user()->id, 1, null, "Invoice", "Admin", "Invoice Sent", 1,$interpretation->id);
 
 
