@@ -210,7 +210,7 @@ class UserController extends Controller
         $order = Order::create($data);
 
         if ($request->input("isPayNow") == "on") {
-            HelperClass::storeInvoiceLogs($userID,0,$order->id,"Invoice","Individual User","Invoice Sent",1);
+            HelperClass::storeInvoiceLogs($userID,0,$order->id,"Invoice","Individual User",LogActionsEnum::INVOICESENT,1);
         }
 
         HelperClass::storeOrderLog(LogActionsEnum::NOTADMIN,$userID,

@@ -60,9 +60,17 @@
                             @endif
                         @break
 
+                        {{-- Invoice --}}
                         @case(2)
+                            @if (isset($order->invoiceLogs) && count($order->invoiceLogs) > 0)
+                                <div class="row">
+                                    {{ $order->invoiceLogs[0]->created_at->format('y-m-d h:m:s') }} -
+                                    {{ $order->invoiceLogs[0]->user->name }} {{ $order->invoiceLogs[0]->action }}
+                                </div>
+                            @endif
                         @break
 
+                        {{-- Translator --}}
                         @case(4)
                             @if (isset($order->contractorLogs) && count($order->contractorLogs) > 0)
                                 @foreach ($order->contractorLogs as $contractorLog)

@@ -514,17 +514,26 @@ class AdminController extends Controller
 
         $worknumber = $currentTime;
 
+           $verifyUser = User::where('email', $request->input('email'))->first();
+
+        $user = null;
+        if (!isset($verifyUser)) {
         // Create a new user
-        $newUser = User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make('password'), // Hash password for security
-        ]);
+            $newUser = User::create([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => Hash::make('password'), // Hash password for security
+            ]);
+                $user = $newUser;
+        } else {
+                $user = $verifyUser;
+        }
+
 
         $interpretation = new Interpretation();
         $interpretation->worknumber = $worknumber;
 
-        $interpretation->user_id = $newUser->id; // Add the newly created user's ID
+        $interpretation->user_id = $user->id; // Add the newly created user's ID
         $interpretation->language = $request->language;
         $interpretation->interpretationDate = $request->interpretationDate;
         $interpretation->start_time = $request->start_time;
@@ -546,16 +555,17 @@ class AdminController extends Controller
 
         $interpretation->save();
 
+        // HelperClass::storeContractorLog( $user->id)
         HelperClass::storeInvoiceLogs(Auth::user()->id, 1, null, "Invoice", "Admin", "Invoice Sent", 1,$interpretation->id);
 
 
 
         if (env("IS_DEV") == 1) {
-            Mail::to('webpage@flowtranslate.com')->send(new AdminNewInterpretation($newUser, $interpretation, "Flow Translate - New Interpretation Request", env("ADMIN_EMAIL_DEV")));
-            Mail::to($newUser->email)->send(new UserNewInterpretation($newUser, $interpretation, "Flow Translate - Your Interpretation Request", env("ADMIN_EMAIL_DEV")));
+            Mail::to('webpage@flowtranslate.com')->send(new AdminNewInterpretation($user, $interpretation, "Flow Translate - New Interpretation Request", env("ADMIN_EMAIL_DEV")));
+            Mail::to($user->email)->send(new UserNewInterpretation($user, $interpretation, "Flow Translate - Your Interpretation Request", env("ADMIN_EMAIL_DEV")));
         } else {
-            Mail::to('webpage@flowtranslate.com')->send(new AdminNewInterpretation($newUser, $interpretation, "Flow Translate - New Interpretation Request", env("ADMIN_EMAIL")));
-            Mail::to($newUser->email)->send(new UserNewInterpretation($newUser, $interpretation, "Flow Translate - Your Interpretation Request", env("ADMIN_EMAIL")));
+            Mail::to('webpage@flowtranslate.com')->send(new AdminNewInterpretation($user, $interpretation, "Flow Translate - New Interpretation Request", env("ADMIN_EMAIL")));
+            Mail::to($user->email)->send(new UserNewInterpretation($user, $interpretation, "Flow Translate - Your Interpretation Request", env("ADMIN_EMAIL")));
         }
         return redirect()->route('admin.ongoingInterpretations')
             ->with('message', 'Interpretation request submitted successfully.');
@@ -628,6 +638,19 @@ class AdminController extends Controller
                     'filename' => $filename
                 ]);
             }
+
+            HelperClass::storeOrderLog(
+                LogActionsEnum::ISADMIN,
+                $user->id,
+                $order->id,
+                "Order",
+                Auth::user()->role_id,
+                LogActionsEnum::NEWORDER,
+                0, 0,  0,  1, 0, 0,  0, 0, 0, 0
+            );
+
+            HelperClass::storeInvoiceLogs($user->id, LogActionsEnum::ISADMIN, $order->id, "Invoice", "Admin", LogActionsEnum::INVOICESENT, 1);
+
 
             if (env("IS_DEV") == 1) {
                 Mail::mailer('dev')->to($user->email)->send(new OrderCreated($user, $order, "Flow Translate - Order Created", env("ADMIN_EMAIL_DEV")));

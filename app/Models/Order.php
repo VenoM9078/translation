@@ -108,4 +108,9 @@ class Order extends Model
         return $this->hasMany('App\Models\ContractorLog', 'order_id', 'id');
     }
 
+    public function invoiceLogs()
+    {
+        return $this->hasMany('App\Models\InvoiceLog', 'order_id', 'id');
+    }
+
 }
