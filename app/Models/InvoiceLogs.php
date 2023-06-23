@@ -19,4 +19,9 @@ class InvoiceLogs extends Model
 
         'invoice_sent'
     ];
+
+    public function admin()
+    {
+        return $this->belongsTo('App\Models\Admin', 'user_id', 'id');
+    }
 }

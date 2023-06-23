@@ -110,7 +110,7 @@ class Order extends Model
 
     public function invoiceLogs()
     {
-        return $this->hasMany('App\Models\InvoiceLog', 'order_id', 'id');
+        return $this->hasMany('App\Models\InvoiceLogs', 'order_id', 'id');
     }
 
 }

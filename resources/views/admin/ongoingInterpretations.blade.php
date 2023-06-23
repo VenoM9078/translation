@@ -226,8 +226,7 @@
                                                             $interpretation->interpreter_completed == 0)
                                                         <a href="{{ route('view-assign-interpreter', $interpretation->id) }}"
                                                             class="btn btn-pending mr-1">
-                                                            <i data-lucide="mail" class="w-4 h-4 mr-2"></i>Assign To
-                                                            Interpreter
+                                                            <i data-lucide="mail" class="w-4 h-4 mr-2"></i>Assign
                                                         </a>
                                                     @elseif (
                                                         $interpretation->wantQuote == 0 &&
@@ -237,8 +236,7 @@
                                                             $interpretation->interpreter_completed == 0)
                                                         <a href="{{ route('view-assign-interpreter', $interpretation->id) }}"
                                                             class="btn btn-pending mr-1">
-                                                            <i data-lucide="mail" class="w-4 h-4 mr-2"></i>Assign To
-                                                            Interpreter
+                                                            <i data-lucide="mail" class="w-4 h-4 mr-2"></i>Assign
                                                         </a>
                                                     @elseif (
                                                         $interpretation->wantQuote == 0 &&
@@ -262,8 +260,7 @@
                                                             $interpretation->interpreter_completed == 0)
                                                         <a href="{{ route('view-assign-interpreter', $interpretation->id) }}"
                                                             class="btn btn-pending mr-1">
-                                                            <i data-lucide="mail" class="w-4 h-4 mr-2"></i>Assign To
-                                                            Interpreter
+                                                            <i data-lucide="mail" class="w-4 h-4 mr-2"></i>Assign
                                                         </a>
                                                     @elseif (
                                                         $interpretation->wantQuote == 3 &&
@@ -272,7 +269,7 @@
                                                             $interpretation->interpreter_completed == 0)
                                                         <a href="{{ route('view-re-assign-interpreter', $interpretation->id) }}"
                                                             class="btn btn-warning mr-1  ">Re-Assign
-                                                            Interpreter</a>
+                                                            </a>
                                                     @elseif (
                                                         $interpretation->wantQuote == 3 &&
                                                             $interpretation->paymentStatus == 1 &&

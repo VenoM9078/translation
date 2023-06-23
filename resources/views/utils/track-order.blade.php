@@ -63,10 +63,16 @@
                         {{-- Invoice --}}
                         @case(2)
                             @if (isset($order->invoiceLogs) && count($order->invoiceLogs) > 0)
+                                @foreach ($order->invoiceLogs as $invoiceLog)
                                 <div class="row">
-                                    {{ $order->invoiceLogs[0]->created_at->format('y-m-d h:m:s') }} -
-                                    {{ $order->invoiceLogs[0]->user->name }} {{ $order->invoiceLogs[0]->action }}
+                                    {{ $invoiceLog->created_at->format('y-m-d h:m:s') }} -
+                                     @if ($invoiceLog->is_admin == 0 )
+                                    {{ $invoiceLog->user->name }} {{ $invoiceLog->action }}
+                                    @elseif($invoiceLog->is_admin == 1)
+                                    {{ $invoiceLog->admin->name }} {{ $invoiceLog->action }}
+                                    @endif
                                 </div>
+                                @endforeach
                             @endif
                         @break
 
@@ -80,6 +86,23 @@
                                             {{-- @dd($contractorLog) --}}
                                             {{ $contractorLog->admin->name }} {{ $contractorLog->action }}
                                         @elseif ($contractorLog->is_admin == 0 && $contractorLog->contractor_type == 'Translator')
+                                            {{ $contractorLog->action }}
+                                        @endif
+                                    </div>
+                                @endforeach
+                            @endif
+                        @break
+
+                        {{-- Proof Read --}}
+                        @case(5)
+                            @if (isset($order->contractorLogs) && count($order->contractorLogs) > 0)
+                                @foreach ($order->contractorLogs as $contractorLog)
+                                    <div class="row">
+                                        {{ $contractorLog->created_at->format('y-m-d h:m:s') }} -
+                                        @if ($contractorLog->is_admin == 1 && $contractorLog->contractor_type == 'Proof Reader')
+                                            {{-- @dd($contractorLog) --}}
+                                            {{ $contractorLog->admin->name }} {{ $contractorLog->action }}
+                                        @elseif ($contractorLog->is_admin == 0 && $contractorLog->contractor_type == 'Proof Reader')
                                             {{ $contractorLog->action }}
                                         @endif
                                     </div>

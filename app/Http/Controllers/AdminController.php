@@ -557,7 +557,7 @@ class AdminController extends Controller
 
         HelperClass::storeContractorLog( $user->id,LogActionsEnum::ISADMIN,0,0,"Interpretation","Admin","Interpreter",
         LogActionsEnum::ASSIGNEDINTERPRETER,null,null,0,null,null,0,0);
-        HelperClass::storeInvoiceLogs(Auth::user()->id, 1, null, "Invoice", "Admin", "Invoice Sent", 1,$interpretation->id);
+        HelperClass::storeInvoiceLogs(Auth::user()->id, 1, null, "Invoice", "Admin", "Sent Invoice", 1,$interpretation->id);
 
 
 
@@ -852,6 +852,7 @@ class AdminController extends Controller
 
         $contractorInterpretation->save();
 
+        HelperClass::storeContractorLog(Auth::user()->id,LogActionsEnum::ISADMIN,null,$request->contractor_id,"Interpretation","Admin","Interpreter",LogActionsEnum::ASSIGNEDINTERPRETER,0,0,0,0,0,0,0, $request->interpretation_id);
         $contractor = $contractorInterpretation->contractor;
 
         Mail::to($contractor->email)->send(new InformContractorOfRequest($contractorInterpretation));

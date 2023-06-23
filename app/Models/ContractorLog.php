@@ -23,7 +23,8 @@ class ContractorLog extends Model
         'old_proof_read_sent_status',
         'new_proof_read_sent_status',
         'new_interpretation_sent_status',
-        'old_interpretation_sent_status'
+        'old_interpretation_sent_status',
+        'interpretation_id'
     ];
 
     public function admin(){

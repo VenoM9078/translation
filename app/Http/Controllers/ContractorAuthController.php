@@ -239,6 +239,8 @@ class ContractorAuthController extends Controller
 
         $interpretation->save();
 
+        HelperClass::storeContractorLog(Auth::user()->id, LogActionsEnum::NOTADMIN, null, $contractor->id, "Interpretation", "Interpreter", "Interpreter", LogActionsEnum::ACCEPTINTERPRETATION, 0, 0, LogActionsEnum::ACCEPTINTERPRETATIONNUMBER, 0, 0, 0, 0,$interpretation->id);
+
         Mail::to('webpage@flowtranslate.com')->send(new NotifyAdminOfContractorAction($contractor, 'accepted', $contractorInterpretation->interpretation));
 
         return redirect()->back()->with('message', 'You have successfully accepted the interpretation request.');
@@ -251,6 +253,8 @@ class ContractorAuthController extends Controller
         // Get the associated contractor before deleting the request
         $contractor = $contractorInterpretation->contractor;
         $interpretation = $contractorInterpretation->interpretation;
+
+        HelperClass::storeContractorLog(Auth::user()->id, LogActionsEnum::NOTADMIN, null, $contractor->id, "Interpretation", "Interpreter", "Interpreter", LogActionsEnum::DECLINEINTERPRETATION, 0, 0, LogActionsEnum::DECLINEINTERPRETATIONNUMBER, 0, 0, 0, 0, $interpretation->id);
 
         $contractorInterpretation->delete();
 

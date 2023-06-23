@@ -97,6 +97,7 @@ class HelperClass
         $new_proof_read_sent_status = null,
         $new_interpretation_sent_status = null,
         $old_interpretation_sent_status = null,
+        $interpretation_id = null
     ) {
         $contractorLog = new ContractorLog();
         $contractorLog->user_id = $user; //admin id
@@ -116,6 +117,8 @@ class HelperClass
 
         $contractorLog->new_interpretation_sent_status = $new_interpretation_sent_status;
         $contractorLog->old_interpretation_sent_status = $old_interpretation_sent_status;
+
+        $contractorLog->interpretation_id = $interpretation_id;
         $contractorLog->save();
     }
 
@@ -139,6 +142,8 @@ class HelperClass
         $invoiceLog->action = $action;
         $invoiceLog->invoice_sent = $invoice_sent;
         $invoiceLog->interpretation_id = $interpretation_id;
+        $invoiceLog->save();
+
     }
 }
 

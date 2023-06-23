@@ -55,4 +55,13 @@ class Interpretation extends Model
     {
         return $this->belongsTo('App\Models\Contractor', 'contractor_id');
     }
+
+    public function invoiceLogs()
+    {
+        return $this->hasMany('App\Models\InvoiceLogs', 'interpretation_id', 'id');
+    }
+    public function contractorLogs()
+    {
+        return $this->hasMany('App\Models\ContractorLog', 'interpretation_id', 'id');
+    }
 }

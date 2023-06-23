@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\LogActionsEnum;
+use App\Helpers\HelperClass;
 use App\Mail\invoiceSent;
 use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\User;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -78,6 +81,8 @@ class InvoiceController extends Controller
             Order::where('id', $order_id)->update(['orderStatus' => 'Payment Pending']);
             Order::where('id', $order_id)->update(['amount' => $invoice->amount]);
             $userMail = $user->email;
+
+            HelperClass::storeInvoiceLogs(Auth::user()->id, LogActionsEnum::ISADMIN, $order_id, "Invoice", "Admin", LogActionsEnum::INVOICESENT, LogActionsEnum::INVOICESENTNUMBER, null);
 
             if(env("IS_DEV") == 1){
                 Mail::mailer('dev')->to($userMail)->send(new invoiceSent($user, $order, $invoice, "Flow Translate - New Invoice", env("ADMIN_EMAIL_DEV")));

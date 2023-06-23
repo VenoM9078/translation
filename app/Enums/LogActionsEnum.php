@@ -13,7 +13,12 @@ abstract class LogActionsEnum
     const SENTQUOTE = "Sent Quote";
 
     const INVOICESENT  = "Sent Invoice";
+    const INVOICESENTNUMBER = 1;
     const ACCEPTTRANSLATION = "Accepted Translation Request";
+    const ACCEPTINTERPRETATION = "Accepted Interpretation Request";
+    const DECLINEINTERPRETATION = "Declined Interpretation Request";
+    const ACCEPTINTERPRETATIONNUMBER = 1;
+    const DECLINEINTERPRETATIONNUMBER = 2;
     const DECLINETRANSLATION = "Declined Translation Request";
     const UPLOADTRANSLATION = "Uploaded Translated Document";
 }

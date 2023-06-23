@@ -365,7 +365,7 @@ class UserController extends Controller
         $interpretation->wantQuote = 3;
         $interpretation->invoiceSent = 1;
 
-        HelperClass::storeInvoiceLogs(Auth::user()->id, 0, null, "Invoice", "Individual User", "Invoice Sent", 1,$interpretation_id);
+        HelperClass::storeInvoiceLogs(Auth::user()->id, 0, null, "Invoice", "Individual User", LogActionsEnum::INVOICESENT, 1,$interpretation_id);
 
         $interpretation->save();
 
@@ -752,7 +752,7 @@ class UserController extends Controller
         $interpretation->save();
         
         if($invoiceSent == 1){
-            HelperClass::storeInvoiceLogs(auth()->id(), 0,null, "Invoice", "Individual User", "Invoice Sent", 1,$interpretation->id);
+            HelperClass::storeInvoiceLogs(auth()->id(), 0,null, "Invoice", "Individual User", "Sent Invoice", 1,$interpretation->id);
         }
 
         if (env("IS_DEV") == 1) {
