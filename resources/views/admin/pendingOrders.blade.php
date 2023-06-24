@@ -281,9 +281,9 @@
                                                             <div class="text-3xl mt-5">Track Order</div>
                                                         </div>
                                                         <div class="intro-y box py-10 mt-5">
-                                                            @include('utils.track-order', [
+                                                            {{-- @include('utils.track-order', [
                                                                 'order' => $order,
-                                                            ])
+                                                            ]) --}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -470,11 +470,10 @@
                                         <td class="whitespace-nowrap badge badge-success">{{ $order->orderStatus }}</td>
                                         @if ($order->message)
                                             <td class="whitespace-nowrap">
-                                              <a href="javascript:;" data-tw-toggle="modal"
-                                              data-tw-target="#note-modal-preview{{$order->id}}"
-                                              >
-                                              <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
-                                              </a>
+                                                <a href="javascript:;" data-tw-toggle="modal"
+                                                    data-tw-target="#note-modal-preview{{ $order->id }}">
+                                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                                </a>
                                             </td>
                                         @else
                                             <td class="whitespace-nowrap">-</td>
@@ -672,12 +671,6 @@
                         columns: ':gt(1)'
                     }
                 },
-                {
-                    extend: 'pdf',
-                    exportOptions: {
-                        columns: ':gt(1)'
-                    }
-                },
             ],
             scrollX: true,
             scrollCollapse: true,
@@ -685,7 +678,7 @@
             fixedColumns: {
                 left: 1,
             },
-            pageLength: 5
+            pageLength: 10
         });
 
         $.fn.dataTable.ext.search.push(
@@ -804,6 +797,14 @@
             $('#dropdownListGroup').toggle();
         });
         // });
+
+        $('.btn.btn-success').on('click', function() {
+            var orderId = $(this).data('tw-target').replace('#track-modal-preview', '');
+
+            $.get('/order/' + orderId + '/track', function(data) {
+                $('.intro-y.box.py-10.mt-5').html(data);
+            });
+        });
     </script>
     {{-- <script>
     $(document).ready( function () {

@@ -292,6 +292,10 @@ Route::group(['middleware' => ['auth:admin']], function () {
 
     Route::get('/view-interpretation/{id}',[AdminController::class,'viewInterpretationDetails'])->name('view-interpretation-details');
 
+
+    // Track Order
+    Route::get('/order/{id}/track', [AdminController::class, 'trackOrder']);
+    Route::get('/interpretation/{id}/track', [AdminController::class, 'trackInterpretation']);
 });
 
 Route::middleware(['web', 'auth', 'verified'])->group(function () {

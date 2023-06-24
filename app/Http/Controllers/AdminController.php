@@ -295,6 +295,17 @@ class AdminController extends Controller
         return redirect()->back()->with('message', 'Assigned Successfully!');
     }
 
+    public function trackOrder($id)
+    {
+        $order = Order::findOrFail($id);
+        return view('utils.track-order', ['order' => $order]);
+    }
+
+    public function trackInterpretation($id)
+    {
+        $interpretation = Interpretation::findOrFail($id);
+        return view('utils.track-interpretation', ['interpretation' => $interpretation]);
+    }
     public function updateInterpretation(Request $request, $id)
     {
         $interpretation = Interpretation::find($id);

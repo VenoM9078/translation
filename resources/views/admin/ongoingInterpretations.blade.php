@@ -448,9 +448,9 @@
                                                             <div class="text-3xl mt-5">Track Order</div>
                                                         </div>
                                                         <div class="intro-y box py-10 mt-5">
-                                                            @include('utils.track-interpretation', [
+                                                            {{-- @include('utils.track-interpretation', [
                                                                 'order' => $interpretation,
-                                                            ])
+                                                            ]) --}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -505,12 +505,6 @@
                     },
                     {
                         extend: 'excel',
-                        exportOptions: {
-                            columns: ':gt(1)'
-                        }
-                    },
-                    {
-                        extend: 'pdf',
                         exportOptions: {
                             columns: ':gt(1)'
                         }
@@ -632,6 +626,14 @@
             $("#dropdownBgHoverButtonGroup").click(function() {
                 $('#dropdownListGroup').toggle();
             });
+
+            $('.btn.btn-success').on('click', function() {
+            var interpretationId = $(this).data('tw-target').replace('#track-modal-preview', '');
+
+            $.get('/interpretation/' + interpretationId + '/track', function(data) {
+                $('.intro-y.box.py-10.mt-5').html(data);
+            });
+        });
         // });
     </script>
 @endsection
