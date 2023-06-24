@@ -240,9 +240,15 @@
                                                 </a>
                                             </div>
                                             <div>
+                                                @if(isset($translation->contractor->contractorOrders) && count($translation->contractor->contractorOrders) > 0 )
                                                 <a href="{{ route('contractor.download-translation-file', $translation->contractor->contractorOrders[0]->id) }}"
                                                     class="btn btn-success">Download Translated Document
                                                 </a>
+                                                @else
+                                                <a href="{{ route('contractor.download-translated-file-by-admin', $translation->id) }}"
+                                                    class="btn btn-success">Download Translated Document
+                                                </a>
+                                                @endif
                                             </div>
                                             {{-- incomplete condition --}}
                                             @if ($translation->order->proofread_status != 1)

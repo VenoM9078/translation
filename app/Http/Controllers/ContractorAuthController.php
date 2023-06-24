@@ -204,10 +204,18 @@ class ContractorAuthController extends Controller
 
         $contractorProofReader->save();
         $contractorObj = Contractor::findOrFail($contractorProofReader->contractor_id);
+        $admins = Admin::all();
+        HelperClass::storeContractorLog(Auth::user()->id, LogActionsEnum::NOTADMIN, null, $contractorProofReader->contractor_id, "ProofRead", "ProofReader", "Proof Reader", LogActionsEnum::ACCEPTPROOFREAD, 0, 0, LogActionsEnum::ACCEPTEDNUMBER, 0, 0, 0, 0);
 
-        Mail::to('webpage@flowtranslate.com')->send(new NotifyAdminProofRead($contractorObj, 'accepted', $contractorProofReader));
+        if(env('IS_DEV') != 1){
+            Mail::to('webpage@flowtranslate.com')->send(new NotifyAdminProofRead($contractorObj, 'accepted', $contractorProofReader));
+        } else {
+            foreach($admins as $admin){
+                Mail::to($admin->email)->send(new NotifyAdminProofRead($contractorObj, 'accepted', $contractorProofReader));
+            }
+        }
 
-        return redirect()->back()->with('message', 'You have successfully accepted the proof read request.');
+        return redirect()->route('contractor.proof-read')->with('message', 'You have successfully accepted the proof read request.');
     }
 
     public function denyProofReadRequest($id)
@@ -217,9 +225,17 @@ class ContractorAuthController extends Controller
         //clear the proof read values
         $contractorObj = Contractor::find($contractorProofReader->contractor_id);
         $contractorProofReader->delete();
+        $admins = Admin::all();
 
-        Mail::to('webpage@flowtranslate.com')->send(new NotifyAdminProofRead($contractorObj, 'denied', $contractorProofReader));
+        HelperClass::storeContractorLog(Auth::user()->id, LogActionsEnum::NOTADMIN, null, $contractorProofReader->contractor_id, "ProofRead", "ProofReader", "ProofReader", LogActionsEnum::DECLINEPROOFREAD, 0, 0, LogActionsEnum::DECLINENUMBER,0,0,0,0);
 
+        if(env('IS_DEV') != 1){
+            Mail::to('webpage@flowtranslate.com')->send(new NotifyAdminProofRead($contractorObj, 'denied', $contractorProofReader));
+        } else {
+            foreach ($admins as $admin) {
+                Mail::to($admin->email)->send(new NotifyAdminProofRead($contractorObj, 'accepted', $contractorProofReader));
+            }
+        }
         return redirect()->back()->with('message', 'You have successfully denied the interpretation request.');
     }
     public function acceptInterpretationRequest($id)
@@ -559,6 +575,30 @@ class ContractorAuthController extends Controller
         }
         return response()->download($file);
     }
+
+
+    public function downloadTranslationFileByAdmin($id)
+    {
+        //select only file_name;
+        $filePath = '/translations_by_contractors/' . ProofReaderOrders::where(['id' => $id])->firstOrFail()->file_uploaded_by_admin;
+        $file = "";
+        // dd($filePath,$id);
+        if (public_path() . file_exists($filePath)) {
+            $file = public_path($filePath);
+        }
+        $zip = new ZipArchive;
+        $zipName = date('YmdHi') . $id . '.zip';
+
+        if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
+            $relativeNameInZipFile = basename($file);
+            // dd($file, $relativeNameInZipFile);
+            $zip->addFile($file, $relativeNameInZipFile);
+
+            $zip->close();
+        }
+        return response()->download($file);
+    }
+
     public function declineTranslation($contractor_order_id)
     {
         $contractorOrder = ContractorOrder::find($contractor_order_id);
@@ -776,9 +816,7 @@ class ContractorAuthController extends Controller
             ->where('contractor_id', auth()->guard('contractor')->user()->id)
             // ->where('is_accepted', 1) // assuming 0 represents "accepted"
             // ->where('translation_status', TranslationStatusEnum::PENDING)
-            ->whereHas('contractorOrder', function ($query) {
-                $query->where('is_accepted', ContractorOrderEnum::ACCEPTED);
-            })
+        
             ->orderBy('created_at', 'desc')
             ->get();
         // dd($proofReadData);
@@ -908,6 +946,19 @@ class ContractorAuthController extends Controller
         // $order->completed = OrderStatusEnum::COMPLETED;
         // $order->orderStatus = "Completed";
         $order->save();
+
+        HelperClass::storeContractorLog(
+            null, LogActionsEnum::NOTADMIN, $order->id, $proofReaderOrders->contractor_id,
+            "Contractor",
+            0,
+            "Proof Reader",
+            LogActionsEnum::UPLOADPROOFREAD,
+            0,
+            0,
+            1,
+            0,
+            1 //Completed Proof Read Status
+        );
 
         $contractor = $proofReaderOrders->contractor;
         $contractorName = $contractor->name;

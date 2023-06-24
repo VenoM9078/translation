@@ -16,4 +16,9 @@ class OrderLog extends Model
         return $this->belongsTo('App\Models\User', 'user_id')->withDefault();
     }
 
+    public function admin()
+    {
+        return $this->belongsTo('App\Models\Admin', 'user_id')->withDefault();
+    }
+
 }

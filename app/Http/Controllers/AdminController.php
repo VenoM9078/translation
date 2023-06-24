@@ -198,6 +198,37 @@ class AdminController extends Controller
         return null;
     }
 
+    public function uploadTranslationFile(Request $request)
+    {
+        $filename = '';
+        if ($request->hasFile('translationFile')) {
+            $file = $request->file('translationFile');
+            $filePath = 'translations_by_contractors/';
+
+            // dd($file);
+
+            $filename = date('YmdHi') . $file->getClientOriginalName();
+            // $folder = uniqid() . '-' . now()->timestamp;
+            // $file->move(public_path('documents'), $filename);
+            //if the path does not exist, create it
+
+            if (!file_exists(public_path($filePath))) {
+                mkdir(public_path($filePath), 0777, true);
+                $file->move($filePath, $filename);
+            } else {
+                $file->move($filePath, $filename);
+            }
+
+            TemporaryFile::create([
+                'filename' => $filename
+            ]);
+        }
+
+        return $filename;
+        // return response()->json(['filename' => $filename], 200);
+
+    }
+
     public function submitAssignProofReadTranslator(Request $request)
     {
 
@@ -248,7 +279,6 @@ class AdminController extends Controller
             } else {
                 $proof_read_file = $request->proofReadFile;
             }
-
             $proofReaderOrder = ProofReaderOrders::updateOrCreate(
                 ['order_id' => $request->order_id],
                 // Search array
@@ -260,7 +290,8 @@ class AdminController extends Controller
                     'rate' => $request->p_rate ?? 0,
                     'total_payment' => $request->p_total_payment ?? 0,
                     'translation_status' => TranslationStatusEnum::PENDING,
-                    'file_name' => $proof_read_file,
+                    'file_name' => null,
+                    'file_uploaded_by_admin'=>$request->translationFile,
                     'proof_read_due_date' => $request->proof_read_due_date,
                     'proofread_type' => $request->p_type,
                     'proof_read_paid' => $request->proof_read_paid,
@@ -672,7 +703,7 @@ class AdminController extends Controller
 
             if (env("IS_DEV") == 1) {
                 Mail::mailer('dev')->to($user->email)->send(new OrderCreated($user, $order, "Flow Translate - Order Created", env("ADMIN_EMAIL_DEV")));
-                Mail::mailer('dev')->to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order, "Flow Translate - New Order Created", env("ADMIN_EMAIL_DEV")));
+                Mail::mailer('dev')->to(env('ADMIN_EMAIL_DEV'))->send(new adminOrderCreated($user, $order, "Flow Translate - New Order Created", env("ADMIN_EMAIL_DEV")));
             } else {
                 Mail::mailer('clients')->to($user->email)->send(new OrderCreated($user, $order, "Flow Translate - Order Created", env("ADMIN_EMAIL")));
                 Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order, "Flow Translate - New Order Created", env("ADMIN_EMAIL")));
@@ -986,6 +1017,7 @@ class AdminController extends Controller
             ->orderByDesc('created_at')
             // ->where('id',34)
             ->get();
+
         // dd($orders);
         // dd($orders[0]->invoice);
         return view('admin.pendingOrders', compact('orders'));
@@ -1634,6 +1666,9 @@ class AdminController extends Controller
         Order::where('id', $order_id)->update(['orderStatus' => 'Completed']);
         Order::where('id', $order_id)->update(['completed' => 1]);
 
+        HelperClass::storeOrderLog(1,Auth::user()->id,$order_id,"Order","Admin",
+        LogActionsEnum::ORDERCOMPLETED,0,1,0,1,0,0,0,1,0,1);
+
         if (env("IS_DEV") == 1) {
             Mail::mailer('dev')->to($email)->send(new mailOfCompletion($order, $zipName2, $emailTitle, env("ADMIN_EMAIL_DEV")));
         } else {
@@ -1659,7 +1694,7 @@ class AdminController extends Controller
 
         // Mail::mailer('clients')->to($userMail)->send(new invoiceSent($user, $order, $doesInvoiceExist[0], "Flow Translate - New Invoice", "noiznixon98@gmail.com"));
         // Mail::to($email)->send(new mailOfCompletion($order, $zipName2));
-        return redirect()->route('completedOrders');
+    return redirect()->route('admin.pending');
     }
 
     public function show($id)

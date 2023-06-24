@@ -225,6 +225,7 @@
                             </thead>
 
                             <tbody>
+                                {{-- @dd($orders) --}}
                                 @foreach ($orders as $order)
                                     {{-- @dd($order->proofread_status) --}}
 
@@ -267,7 +268,27 @@
                                                         class="btn btn-danger"><i data-lucide="trash-2"
                                                             class="w-5 h-5 text-white mx-auto"></i></a>
                                                 </div> <!-- END: Modal Toggle -->
-
+                                                <div class="text-center">
+                                                    @if (
+                                                        $order->invoiceSent == 1 &&
+                                                            $order->paymentStatus == 1 &&
+                                                            $order->translation_status == 1 &&
+                                                            $order->proofread_status == 1)
+                                                        <a href="{{ route('mailOfCompletion', $order->id) }}"
+                                                            class="btn btn-success mr-1"><i data-lucide="send"
+                                                                class="w-5 h-5 mr-2"></i>
+                                                            Mark Completed </a>
+                                                    @elseif (
+                                                        $order->invoiceSent == 1 &&
+                                                            $order->paymentStatus == 1 &&
+                                                            $order->translation_status == 1 &&
+                                                            $order->proofread_status == 1)
+                                                        <a href="{{ route('mailOfCompletion', $order->id) }}"
+                                                            class="btn btn-success mr-1"><i data-lucide="send"
+                                                                class="w-5 h-5 mr-2"></i>
+                                                            Mark Completed</a>
+                                                    @endif
+                                                </div>
 
                                             </div>
                                         </td>
@@ -656,162 +677,151 @@
     <script type="text/javascript" language="javascript"
         src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
     <script>
-        // $(document).ready(function() {
-        var table = $('#ordersTable').DataTable({
-            dom: 'Bfrtip',
-            buttons: [{
-                    extend: 'csv',
-                    exportOptions: {
-                        columns: ':gt(1)'
-                    }
-                },
-                {
-                    extend: 'excel',
-                    exportOptions: {
-                        columns: ':gt(1)'
-                    }
-                },
-            ],
-            scrollX: true,
-            scrollCollapse: true,
-            paging: true,
-            fixedColumns: {
-                left: 1,
-            },
-            pageLength: 10
-        });
+        $(document).ready(function() {
+            var table = $('#ordersTable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [{
+                        extend: 'csv',
+                        exportOptions: {
+                            columns: ':gt(1)'
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: ':gt(1)'
+                        }
+                    },
+                ],
+                scrollX: true,
+                scrollCollapse: true,
+                paging: true,
+                pageLength: 10
+            });
 
-        $.fn.dataTable.ext.search.push(
-            function(settings, data, dataIndex) {
-                var isPendingChecked = $('#checkbox-status-pending').is(':checked');
-                var isCompletedChecked = $('#checkbox-status-completed').is(':checked');
-                var isCancelledChecked = $('#checkbox-status-cancelled').is(':checked');
-                var isInvoicePendingChecked = $('#checkbox-status-invoice-pending').is(':checked');
+            $.fn.dataTable.ext.search.push(
+                function(settings, data, dataIndex) {
+                    var isPendingChecked = $('#checkbox-status-pending').is(':checked');
+                    var isCompletedChecked = $('#checkbox-status-completed').is(':checked');
+                    var isCancelledChecked = $('#checkbox-status-cancelled').is(':checked');
+                    var isInvoicePendingChecked = $('#checkbox-status-invoice-pending').is(':checked');
 
-                if (isPendingChecked && data[4] == 'Translation Pending') {
-                    return true;
-                } else if (isCompletedChecked && data[4] == 'Completed') {
-                    return true;
-                } else if (isCancelledChecked && data[4] == 'Cancelled') {
-                    return true;
-                } else if (isInvoicePendingChecked && data[4] == 'Invoice Pending') {
-                    return true;
+                    if (isPendingChecked && data[4] == 'Translation Pending') {
+                        return true;
+                    } else if (isCompletedChecked && data[4] == 'Completed') {
+                        return true;
+                    } else if (isCancelledChecked && data[4] == 'Cancelled') {
+                        return true;
+                    } else if (isInvoicePendingChecked && data[4] == 'Invoice Pending') {
+                        return true;
+                    }
+
+
+                    return false;
                 }
+            );
 
+            $('.status-filter').on('change', function() {
+                table.draw();
+            });
 
-                return false;
+            table.on('draw.dt', function() {
+                // Define the columns to be sticky
+                var stickyColumns = [0, 1];
+
+                var leftPosition = 0;
+
+                // Loop through the columns
+                for (var i = 0; i < stickyColumns.length; i++) {
+                    var column = table.column(stickyColumns[i]);
+
+                    // Add the CSS class to the header and cells
+                    $(column.header()).addClass('sticky-column-' + (i + 1));
+                    $(column.nodes()).addClass('sticky-column-' + (i + 1));
+
+                    // Calculate the width of the column
+                    // var columnWidth = $(column.nodes()).outerWidth();
+                    var columnWidth = $('.sticky-column-' + (i + 1)).first().outerWidth();
+                    // Set the left position of the column
+                    $('.sticky-column-' + (i + 1)).css({
+                        left: leftPosition + "px",
+                        zIndex: 1000
+                    });
+
+                    // Update the left position for the next column
+                    leftPosition += columnWidth;
+                }
+            }).draw();
+
+            // Generate a checkbox for each column in the dropdown
+            table.columns().every(function() {
+                var column = this;
+
+                var checkbox = $(
+                    '<li><div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600"><input checked id="checkbox-item-' +
+                    column.index() +
+                    '" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500 toggle-vis" data-column="' +
+                    column.index() + '"><label for="checkbox-item-' + column.index() +
+                    '" class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">' +
+                    $(column.header()).text() + '</label></div></li>');
+                checkbox.appendTo('#dropdownList ul');
+            });
+
+            $("#dropdownBgHoverButtonStatus").click(function() {
+                $('#dropdownListStatus').toggle();
+            });
+
+            // Hide/show the column when its checkbox is toggled
+            $('input.toggle-vis').on('change', function(e) {
+                e.preventDefault();
+                var column = table.column($(this).attr('data-column'));
+                column.visible(!column.visible());
+            });
+
+            // Toggle dropdown visibility for column filter
+            $("#dropdownBgHoverButton").click(function() {
+                $('#dropdownList').toggle();
+            });
+
+            var groups = {
+                'User Info': [2, 3],
+                'Order Info': [4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                'Translator Info': [14, 15, 18, 19, 20, 21, 22, 23, 24],
+                'ProofRead Info': [16, 17, 25, 26, 27, 28, 29]
             }
-        );
 
-        $('.status-filter').on('change', function() {
-            table.draw();
-        });
+            for (var groupName in groups) {
+                var checkbox = $(
+                    '<li><div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600"><input checked id="checkbox-group-item-' +
+                    groupName +
+                    '" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 toggle-vis-group" data-group="' +
+                    groupName + '"><label for="checkbox-group-item-' + groupName +
+                    '" class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">' +
+                    groupName + '</label></div></li>');
+                checkbox.appendTo('#dropdownListGroup ul');
+            }
 
-        table.on('draw.dt', function() {
-            // Define the columns to be sticky
-            var stickyColumns = [0, 1];
-
-            var leftPosition = 0;
-
-            // Loop through the columns
-            for (var i = 0; i < stickyColumns.length; i++) {
-                var column = table.column(stickyColumns[i]);
-
-                // Add the CSS class to the header and cells
-                $(column.header()).addClass('sticky-column-' + (i + 1));
-                $(column.nodes()).addClass('sticky-column-' + (i + 1));
-
-                // Calculate the width of the column
-                // var columnWidth = $(column.nodes()).outerWidth();
-                var columnWidth = $('.sticky-column-' + (i + 1)).first().outerWidth();
-                // Set the left position of the column
-                $('.sticky-column-' + (i + 1)).css({
-                    left: leftPosition + "px",
-                    zIndex: 1000
+            $('input.toggle-vis-group').on('change', function(e) {
+                e.preventDefault();
+                var group = $(this).attr('data-group');
+                var visible = $(this).is(':checked');
+                groups[group].forEach(function(index) {
+                    table.column(index).visible(visible);
                 });
+            });
 
-                // Update the left position for the next column
-                leftPosition += columnWidth;
-            }
-        }).draw();
-
-        // Generate a checkbox for each column in the dropdown
-        table.columns().every(function() {
-            var column = this;
-
-            var checkbox = $(
-                '<li><div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600"><input checked id="checkbox-item-' +
-                column.index() +
-                '" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500 toggle-vis" data-column="' +
-                column.index() + '"><label for="checkbox-item-' + column.index() +
-                '" class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">' +
-                $(column.header()).text() + '</label></div></li>');
-            checkbox.appendTo('#dropdownList ul');
-        });
-
-        $("#dropdownBgHoverButtonStatus").click(function() {
-            $('#dropdownListStatus').toggle();
-        });
-
-        // Hide/show the column when its checkbox is toggled
-        $('input.toggle-vis').on('change', function(e) {
-            e.preventDefault();
-            var column = table.column($(this).attr('data-column'));
-            column.visible(!column.visible());
-        });
-
-        // Toggle dropdown visibility for column filter
-        $("#dropdownBgHoverButton").click(function() {
-            $('#dropdownList').toggle();
-        });
-
-        var groups = {
-            'User Info': [2, 3],
-            'Order Info': [4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-            'Translator Info': [14, 15, 18, 19, 20, 21, 22, 23, 24],
-            'ProofRead Info': [16, 17, 25, 26, 27, 28, 29]
-        }
-
-        for (var groupName in groups) {
-            var checkbox = $(
-                '<li><div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600"><input checked id="checkbox-group-item-' +
-                groupName +
-                '" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 toggle-vis-group" data-group="' +
-                groupName + '"><label for="checkbox-group-item-' + groupName +
-                '" class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">' +
-                groupName + '</label></div></li>');
-            checkbox.appendTo('#dropdownListGroup ul');
-        }
-
-        $('input.toggle-vis-group').on('change', function(e) {
-            e.preventDefault();
-            var group = $(this).attr('data-group');
-            var visible = $(this).is(':checked');
-            groups[group].forEach(function(index) {
-                table.column(index).visible(visible);
+            // Toggle dropdown visibility for group filter
+            $("#dropdownBgHoverButtonGroup").click(function() {
+                $('#dropdownListGroup').toggle();
             });
         });
 
-        // Toggle dropdown visibility for group filter
-        $("#dropdownBgHoverButtonGroup").click(function() {
-            $('#dropdownListGroup').toggle();
-        });
-        // });
-
         $('.btn.btn-success').on('click', function() {
             var orderId = $(this).data('tw-target').replace('#track-modal-preview', '');
-
+            console.log("Clicked Track ",orderId);
             $.get('/order/' + orderId + '/track', function(data) {
                 $('.intro-y.box.py-10.mt-5').html(data);
             });
         });
     </script>
-    {{-- <script>
-    $(document).ready( function () {
-            $('#pendingOrders').DataTable({
-                info: false,
-                paging: false
-            });
-        } );
-</script> --}}
 @endsection

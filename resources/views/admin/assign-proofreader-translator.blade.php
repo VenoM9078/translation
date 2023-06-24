@@ -207,7 +207,7 @@
                                     <textarea type="number" id="message" name="p_message"
                                         class="intro-x login__input mt-2 mb-2 form-control px-4 block" rows="3" placeholder="Enter Message"
                                         value="{{ $pOrder->message }}">{{ $pOrder->message }}</textarea>
-                                    <input type="file" id="multipleFiles" class="filepond mt-2" name="proofReadFile"
+                                    <input type="file" id="multipleFiles" class="filepond mt-2" name="translationFile"
                                         data-max-file-size="10MB" />
                                     {{-- <div class="btn-group mt-4" role="group" aria-label="Basic example">
                                         <button type="submit" id="uploadBtn" class="btn btn-primary">Upload Files for
@@ -286,7 +286,7 @@
 
         FilePond.setOptions({
             server: {
-                url: '/admin/upload-proof',
+                url: '/upload-translation',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 }

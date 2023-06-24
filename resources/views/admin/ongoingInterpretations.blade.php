@@ -43,12 +43,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
         crossorigin="anonymous"></script>
- 
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css"> 
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
 
-        {{-- <link href="https://cdn.datatables.net/v/bs5/dt-1.13.4/b-2.3.6/b-html5-2.3.6/datatables.min.css" rel="stylesheet"/> --}}
-         {{-- <link   href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css"/> --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
+
+    {{-- <link href="https://cdn.datatables.net/v/bs5/dt-1.13.4/b-2.3.6/b-html5-2.3.6/datatables.min.css" rel="stylesheet"/> --}}
+    {{-- <link   href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css"/> --}}
     <!-- Buttons CSS -->
     {{-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css" /> --}}
     <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4 mb-4">
@@ -61,13 +61,13 @@
             </h2>
         </div>
         {{-- DropDown --}}
-       @if (isset($success))
-        <div class="alert alert-success mt-3 mb-3">
-            <ul>
-                <li>{{ $success }}</li>
-            </ul>
-        </div>
-        @endif  
+        @if (isset($success))
+            <div class="alert alert-success mt-3 mb-3">
+                <ul>
+                    <li>{{ $success }}</li>
+                </ul>
+            </div>
+        @endif
         <div class="flex justify-end gap-4">
             <div class="dropdown-container relative inline-block my-2">
                 <button id="dropdownBgHoverButton" data-dropdown-toggle="dropdownBgHover"
@@ -150,8 +150,8 @@
                                 <thead>
                                     <tr>
                                         <th class="whitespace-nowrap text-center sticky-column-1">Possible Action</th>
-                                        <th style="display:none"
-                                            class="whitespace-nowrap w-40 px-12 sticky-column-1">Status</th>
+                                        <th style="display:none" class="whitespace-nowrap w-40 px-12 sticky-column-1">Status
+                                        </th>
                                         <th class="whitespace-nowrap text-center" style="display: none">Interpretation
                                             Status</th>
                                         <th class="whitespace-nowrap text-center">WO#</th>
@@ -226,7 +226,8 @@
                                                             $interpretation->interpreter_completed == 0)
                                                         <a href="{{ route('view-assign-interpreter', $interpretation->id) }}"
                                                             class="btn btn-pending mr-1" title="Assign">
-                                                          <i data-lucide="user-plus" class="w-5 h-5 text-white mx-auto"></i>
+                                                            <i data-lucide="user-plus"
+                                                                class="w-5 h-5 text-white mx-auto"></i>
                                                         </a>
                                                     @elseif (
                                                         $interpretation->wantQuote == 0 &&
@@ -236,7 +237,8 @@
                                                             $interpretation->interpreter_completed == 0)
                                                         <a href="{{ route('view-assign-interpreter', $interpretation->id) }}"
                                                             class="btn btn-pending mr-1" title="Assign">
-                                                             <i data-lucide="user-plus" class="w-5 h-5 text-white mx-auto"></i>
+                                                            <i data-lucide="user-plus"
+                                                                class="w-5 h-5 text-white mx-auto"></i>
                                                         </a>
                                                     @elseif (
                                                         $interpretation->wantQuote == 0 &&
@@ -259,8 +261,9 @@
                                                             $interpretation->interpreter_id === null &&
                                                             $interpretation->interpreter_completed == 0)
                                                         <a href="{{ route('view-assign-interpreter', $interpretation->id) }}"
-                                                            class="btn btn-pending mr-1" title="Assign"> 
-                                                            <i data-lucide="user-plus" class="w-5 h-5 text-white mx-auto"></i>
+                                                            class="btn btn-pending mr-1" title="Assign">
+                                                            <i data-lucide="user-plus"
+                                                                class="w-5 h-5 text-white mx-auto"></i>
                                                         </a>
                                                     @elseif (
                                                         $interpretation->wantQuote == 3 &&
@@ -269,7 +272,7 @@
                                                             $interpretation->interpreter_completed == 0)
                                                         <a href="{{ route('view-re-assign-interpreter', $interpretation->id) }}"
                                                             class="btn btn-warning mr-1  ">Re-Assign
-                                                            </a>
+                                                        </a>
                                                     @elseif (
                                                         $interpretation->wantQuote == 3 &&
                                                             $interpretation->paymentStatus == 1 &&
@@ -476,28 +479,32 @@
     {{-- <script src="https://code.jquery.com/jquery-3.6.0.js"
     
     integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script> --}}
-      {{-- <script src="https://cdn.datatables.net/v/bs5/dt-1.13.4/b-2.3.6/b-html5-2.3.6/datatables.min.js"></script> --}}
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.4/b-2.3.6/b-html5-2.3.6/datatables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
     <!-- HTML5 and print buttons -->
     <!-- Buttons -->
- 
-<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
-<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
-<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
-    {{-- <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script> --}}
-   
-    <script>
-  
 
-        // $(document).ready(function() {
+    <script type="text/javascript" language="javascript"
+        src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
+    {{-- <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script> --}}
+
+    <script>
+        $(document).ready(function() {
             var table = $('#myinterpretationsTable').DataTable({
                 dom: 'Bfrtip',
-                buttons: [
-                    {
+                buttons: [{
                         extend: 'csv',
                         exportOptions: {
                             columns: ':gt(1)'
@@ -513,7 +520,7 @@
                 ordering: true,
                 info: true,
                 paging: true,
-                pageLength: 10,
+                pageLength: 4,
             });
             console.log("table", table);
 
@@ -627,13 +634,13 @@
                 $('#dropdownListGroup').toggle();
             });
 
-            $('.btn.btn-success').on('click', function() {
+        });
+        $('.btn.btn-success').on('click', function() {
             var interpretationId = $(this).data('tw-target').replace('#track-modal-preview', '');
-
+            console.log("Clicked Track", interpretationId);
             $.get('/interpretation/' + interpretationId + '/track', function(data) {
                 $('.intro-y.box.py-10.mt-5').html(data);
             });
         });
-        // });
     </script>
 @endsection

@@ -21,5 +21,13 @@ abstract class LogActionsEnum
     const DECLINEINTERPRETATIONNUMBER = 2;
     const DECLINETRANSLATION = "Declined Translation Request";
     const UPLOADTRANSLATION = "Uploaded Translated Document";
+    const UPLOADPROOFREAD = "Uploaded Proof Read Document";
+    const ACCEPTPROOFREAD = "Accepted Proof Read Request";
+    const DECLINEPROOFREAD = "Declined Proof Read Request";
+
+    const ORDERCOMPLETED = "Completed Order";
+    const ACCEPTEDNUMBER = 1;
+    const DECLINENUMBER = 2;
+
 }
 ?>

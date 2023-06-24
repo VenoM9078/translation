@@ -51,9 +51,9 @@
                             </div>
                             <div class="intro-x mt-4">
                                 <div id="existing-user-select" class="w-full mb-4">
-                                    <select name="email_existing" required aria-placeholder="Source Language"
-                                        data-placeholder="Source Language" class="tom-select w-full">
-                                        <option value="Source Language" disabled selected>Select Existing User
+                                    <select name="email_existing" required aria-placeholder="Select Existing User"
+                                        data-placeholder="Select Existing User" class="tom-select w-full">
+                                        <option value="Select Existing User" disabled selected>Select Existing User
                                         </option>
                                         @foreach (\App\Models\User::all() as $user)
                                             <option value="{{ $user->email }}">{{ $user->name }} - {{ $user->email }}

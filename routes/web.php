@@ -158,6 +158,9 @@ Route::group(['middleware' => ['auth:contractor', 'contractor.verified']], funct
     Route::get('/contractor/download-translation-file/{orderID}', [ContractorAuthController::class, 'downloadTranslationFile'])->name('contractor.download-translation-file');
     //create route for downloading proofread file
 
+    
+    Route::get('/contractor/download-translation-file-admin/{id}',[ContractorAuthController::class,'downloadTranslationFileByAdmin'])->name('contractor.download-translated-file-by-admin');
+
     Route::post('/contractor/report-submission', [ContractorAuthController::class, 'reportSubmission'])->name('contractor.report-submission');
 
     //create two routes, get and post. for submitting proof reader translations 
@@ -296,6 +299,9 @@ Route::group(['middleware' => ['auth:admin']], function () {
     // Track Order
     Route::get('/order/{id}/track', [AdminController::class, 'trackOrder']);
     Route::get('/interpretation/{id}/track', [AdminController::class, 'trackInterpretation']);
+
+    Route::post('/upload-translation', [AdminController::class, 'uploadTranslationFile'])->name('upload-translation');
+
 });
 
 Route::middleware(['web', 'auth', 'verified'])->group(function () {

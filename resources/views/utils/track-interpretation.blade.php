@@ -4,11 +4,14 @@
     @endphp
     @php
         $prevStatus = '';
-        foreach ($steps as $index => &$step) {
+        $tempSteps = $steps;
+        
+        foreach ($steps as $index => $step) {
             if ($step['status'] == 'success') {
                 $prevStatus = 'success';
             } elseif ($prevStatus == 'success' && $step['status'] == '') {
                 $step['status'] = 'warning';
+                $tempSteps[$index]['status'] = 'warning';
                 $prevStatus = 'warning';
             } else {
                 $prevStatus = '';
@@ -16,13 +19,15 @@
         }
     @endphp
 
-    @foreach ($steps as $index => &$step)
-        @if ($step['status'] == 'success' && isset($steps[$index + 1]))
+    {{-- @dd($steps) --}}
+    @foreach ($tempSteps as $index => $step)
+        {{-- @if ($step['status'] == 'success' && isset($steps[$index + 1]))
             @php
                 // $nextIndex = $index + 1;
                 $steps['status'] = 'warning';
             @endphp
-        @endif
+        @endif --}}
+        {{-- @dd($tempSteps) --}}
         <div class="intro-x flex items-center mt-5">
             <button
                 class="w-10 h-10 rounded-full btn 
