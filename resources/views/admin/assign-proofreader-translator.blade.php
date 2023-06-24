@@ -103,7 +103,7 @@
                                     <label for="amount" class="mt-2">Enter Unit</label>
                                     <input type="number" name="t_unit" step="0.001"
                                         class="mb-3 intro-x login__input form-control px-4 block mt-1 d-none" id="unit"
-                                        value="" placeholder="Enter Unit" value="{{ $cOrder->translator_unit }}">
+                                          placeholder="Enter Unit" value="{{ $cOrder->translator_unit }}">
                                     <br>
                                     <label for="t_adjust_note">T. Adjust Note</label>
                                     <textarea id="t_adjust_note" name="translator_adjust_note"
@@ -159,7 +159,7 @@
                                     <label for="amount" class="mt-2">Enter Rate</label>
                                     <input type="number" step="0.001" name="p_rate"
                                         class="intro-x login__input form-control px-4 block mt-1" placeholder="Enter Rate"
-                                        value="{{ $pOrder->p_rate }}">
+                                        value="{{ $pOrder->rate }}">
                                     <div class="mt-5">
                                         <label for="">Enter Due Date</label>
                                         <input type="date" name="proof_read_due_date"

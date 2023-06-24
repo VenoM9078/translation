@@ -28,20 +28,46 @@
 
         <div class="intro-y box">
             <div id="vertical-form" class="p-5">
+
                 <div class="preview">
                     <div>
                         <form action="{{ route('admin.submitNewTranslationOrder') }}" accept-charset="utf-8" method="post"
                             enctype="multipart/form-data">
                             @csrf
                             @method('POST')
+                            <div>
+                                <label>Select User</label>
+                                <div class="form-check mt-2">
+                                    <input id="radio-switch-1" class="form-check-input" type="radio"
+                                        name="vertical_radio_button" value="vertical-radio-existing"
+                                        onchange="toggleFields()" checked>
+                                    <label class="form-check-label" for="radio-switch-1">Existing</label>
+                                </div>
+                                <div class="form-check mt-2">
+                                    <input id="radio-switch-2" class="form-check-input" type="radio"
+                                        name="vertical_radio_button" value="vertical-radio-new" onchange="toggleFields()">
+                                    <label class="form-check-label" for="radio-switch-2">New</label>
+                                </div>
+                            </div>
                             <div class="intro-x mt-4">
-                                <div class="flex gap-2 mb-4">
-                                    <div class="w-1/2">
+                                <div id="existing-user-select" class="w-full mb-4">
+                                    <select name="email_existing" required aria-placeholder="Source Language"
+                                        data-placeholder="Source Language" class="tom-select w-full">
+                                        <option value="Source Language" disabled selected>Select Existing User
+                                        </option>
+                                        @foreach (\App\Models\User::all() as $user)
+                                            <option value="{{ $user->email }}">{{ $user->name }} - {{ $user->email }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div id="new-user-fields" class="flex gap-2 mb-4" style="display: none;">
+                                    <div class="w-full">
                                         <label for="change-password-form-1" class="form-label">Full Name</label>
                                         <input id="change-password-form-1" type="text" class="form-control w-full"
                                             name="name" placeholder="Enter Customer's Full Name">
                                     </div>
-                                    <div class="w-1/2">
+                                    <div class="w-full">
                                         <label for="change-password-form-2" class="form-label">Email</label>
                                         <input id="change-password-form-2" name="email" type="email"
                                             class="form-control w-full" placeholder="Enter Customer's Email Address">
@@ -341,5 +367,20 @@
                 $("#uploadBtn").html("Uploading...");
             });
         });
+
+        function toggleFields() {
+            var existingUserSelect = document.getElementById("existing-user-select");
+            var newUserFields = document.getElementById("new-user-fields");
+
+            if (document.getElementById("radio-switch-1").checked) {
+                existingUserSelect.style.display = "block";
+                 
+                newUserFields.style.display = "none";
+            } else {
+                existingUserSelect.style.display = "none";
+                newUserFields.style.display = "flex";
+                
+            }
+        }
     </script>
 @endsection

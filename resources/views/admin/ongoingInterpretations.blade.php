@@ -150,7 +150,7 @@
                                 <thead>
                                     <tr>
                                         <th class="whitespace-nowrap text-center sticky-column-1">Possible Action</th>
-                                        <th style="width: 41.0469px;padding-left: 40px;padding-right: 40px;"
+                                        <th style="display:none"
                                             class="whitespace-nowrap w-40 px-12 sticky-column-1">Status</th>
                                         <th class="whitespace-nowrap text-center" style="display: none">Interpretation
                                             Status</th>
@@ -225,8 +225,8 @@
                                                             $interpretation->interpreter_id === null &&
                                                             $interpretation->interpreter_completed == 0)
                                                         <a href="{{ route('view-assign-interpreter', $interpretation->id) }}"
-                                                            class="btn btn-pending mr-1">
-                                                            <i data-lucide="mail" class="w-4 h-4 mr-2"></i>Assign
+                                                            class="btn btn-pending mr-1" title="Assign">
+                                                          <i data-lucide="user-plus" class="w-5 h-5 text-white mx-auto"></i>
                                                         </a>
                                                     @elseif (
                                                         $interpretation->wantQuote == 0 &&
@@ -235,8 +235,8 @@
                                                             $interpretation->interpreter_id !== null &&
                                                             $interpretation->interpreter_completed == 0)
                                                         <a href="{{ route('view-assign-interpreter', $interpretation->id) }}"
-                                                            class="btn btn-pending mr-1">
-                                                            <i data-lucide="mail" class="w-4 h-4 mr-2"></i>Assign
+                                                            class="btn btn-pending mr-1" title="Assign">
+                                                             <i data-lucide="user-plus" class="w-5 h-5 text-white mx-auto"></i>
                                                         </a>
                                                     @elseif (
                                                         $interpretation->wantQuote == 0 &&
@@ -259,8 +259,8 @@
                                                             $interpretation->interpreter_id === null &&
                                                             $interpretation->interpreter_completed == 0)
                                                         <a href="{{ route('view-assign-interpreter', $interpretation->id) }}"
-                                                            class="btn btn-pending mr-1">
-                                                            <i data-lucide="mail" class="w-4 h-4 mr-2"></i>Assign
+                                                            class="btn btn-pending mr-1" title="Assign"> 
+                                                            <i data-lucide="user-plus" class="w-5 h-5 text-white mx-auto"></i>
                                                         </a>
                                                     @elseif (
                                                         $interpretation->wantQuote == 3 &&
@@ -281,7 +281,7 @@
 
                                                 </div>
                                             </td>
-                                            <td class="whitespace-nowrap w-40">
+                                            <td class="whitespace-nowrap w-40" style="display: none">
                                                 @if ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 0 && $interpretation->paymentStatus == 0)
                                                     <div class="progress h-4">
                                                         <div class="progress-bar w-1/4" role="progressbar"

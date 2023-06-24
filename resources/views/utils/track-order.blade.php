@@ -76,6 +76,8 @@
                             @endif
                         @break
 
+                        @case(3)
+                        @break
                         {{-- Translator --}}
                         @case(4)
                             @if (isset($order->contractorLogs) && count($order->contractorLogs) > 0)

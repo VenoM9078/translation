@@ -117,7 +117,7 @@
                         <div class="w-full">
                             <label for="order-form-18" class="form-label">Proofread Status</label>
                             <input id="order-form-18" type="text" class="form-control" disabled
-                                value="{{ $order->proofread_status == 1 ? 'Yes' : 'No' }}">
+                                value="{{ $order->proofread_status == 1 ? 'Completed' : 'Incomplete' }}">
                         </div>
                     </div>
                     <div class="flex mt-2 mb-2 gap-2">

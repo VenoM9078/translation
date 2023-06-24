@@ -229,7 +229,7 @@ class AdminController extends Controller
             HelperClass::storeContractorLog(
                 $request->admin_id, LogActionsEnum::ISADMIN, $order->id, $request->contractor_id,
                 "Contractor",
-                0,
+                "Admin",
                 "Translator",
                 LogActionsEnum::ASSIGNEDTRANSLATOR,
                 0,
@@ -595,8 +595,13 @@ class AdminController extends Controller
         }
 
         $worknumber = $currentTime;
+        $vertical_radio_button = $request->input('vertical_radio_button');
+        if($vertical_radio_button == "vertical-radio-existing"){
+            $verifyUser = User::where('email',$request->input('email_existing'))->first();
+        } else {
+            $verifyUser = User::where('email', $request->input('email'))->first();
+        }
 
-        $verifyUser = User::where('email', $request->input('email'))->first();
 
         $user = null;
         if (!isset($verifyUser)) {
@@ -618,6 +623,7 @@ class AdminController extends Controller
             'language2' => $request->input('language2'),
             'user_id' => $user->id,
             'worknumber' => $worknumber,
+            'orderStatus' => 'Invoice Sent',
             'added_by_institute_user' => 0,
             'invoiceSent' => 1,
             'paymentStatus' => 1,
