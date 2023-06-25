@@ -8,7 +8,7 @@
             [
                 'number' => 5,
                 'text' => 'Proof Reader Assigned',
-                'status' => ($order->invoiceSent == 1 && ($order->paymentStatus == 2 || $order->paymentStatus == 1) && $order->translation_status == 1 && $order->proofread_status) == 1 ? 'success' : '',
+                'status' => $order->invoiceSent == 1 && ($order->paymentStatus == 2 || $order->paymentStatus == 1) && $order->proofread_status == 1 ? 'success' : '',
             ],
             ['number' => 6, 'text' => 'Order Completed', 'status' => $order->translation_status == 1 && $order->orderStatus == 'Completed' ? 'success' : ''],
         ];
@@ -37,25 +37,25 @@
             @endphp
         @endif --}}
         <div class="intro-x flex items-center mt-5">
-            <button
-                class="w-10 h-10 rounded-full btn 
-            @if ($step['status'] == 'success') btn-success
-            @elseif ($step['status'] == 'warning')
-                btn-warning
-            @else
-                text-slate-500 bg-slate-100 dark:bg-darkmode-400 dark:border-darkmode-400 @endif">
-                {{ $step['number'] }}
-            </button>
+            {{-- <button --}}
+            {{-- class="w-10 h-10 rounded-full btn  --}}
+            {{-- @if ($step['status'] == 'success') btn-success --}}
+            {{-- @elseif ($step['status'] == 'warning') --}}
+            {{-- btn-warning --}}
+            {{-- @else --}}
+            {{-- text-slate-500 bg-slate-100 dark:bg-darkmode-400 dark:border-darkmode-400 @endif"> --}}
+            {{-- {{ $step['number'] }} --}}
+            {{-- </button> --}}
             <div
                 class="text-base
             @if ($step['status'] == 'success' || $step['status'] == 'warning') text-slate-600 dark:text-slate-500 @endif ml-3">
-                {{ $step['text'] }}
+                {{-- {{ $step['text'] }} --}}
                 <div>
                     @switch($step['number'])
                         {{-- Order Created  --}}
                         @case(1)
                             @if (isset($order->orderLogs) && count($order->orderLogs) > 0)
-                                <hr>
+                                {{-- <hr> --}}
                                 <div class="row">
                                     @foreach ($order->orderLogs as $orderLog)
                                         @if ($orderLog->new_order_completed_status == 0)
@@ -74,7 +74,7 @@
                         {{-- Invoice --}}
                         @case(2)
                             @if (isset($order->invoiceLogs) && count($order->invoiceLogs) > 0)
-                                <hr>
+                                {{-- <hr> --}}
 
                                 @foreach ($order->invoiceLogs as $invoiceLog)
                                     <div class="row">
@@ -95,15 +95,17 @@
                         {{-- Translator --}}
                         @case(4)
                             @if (isset($order->contractorLogs) && count($order->contractorLogs) > 0)
-                                <hr>
+                                {{-- <hr> --}}
 
                                 @foreach ($order->contractorLogs as $contractorLog)
                                     <div class="row">
-                                        {{ $contractorLog->created_at->format('y-m-d h:m:s') }} -
                                         @if ($contractorLog->is_admin == 1 && $contractorLog->contractor_type == 'Translator')
+                                            {{ $contractorLog->created_at->format('y-m-d h:m:s') }} -
                                             {{-- @dd($contractorLog) --}}
                                             {{ $contractorLog->admin->name }} {{ $contractorLog->action }}
                                         @elseif ($contractorLog->is_admin == 0 && $contractorLog->contractor_type == 'Translator')
+                                            {{ $contractorLog->created_at->format('y-m-d h:m:s') }} -
+
                                             {{ $contractorLog->action }}
                                         @endif
                                     </div>
@@ -114,15 +116,16 @@
                         {{-- Proof Read --}}
                         @case(5)
                             @if (isset($order->contractorLogs) && count($order->contractorLogs) > 0)
-                                <hr>
+                                {{-- <hr> --}}
 
                                 @foreach ($order->contractorLogs as $contractorLog)
                                     <div class="row">
-                                        {{ $contractorLog->created_at->format('y-m-d h:m:s') }} -
                                         @if ($contractorLog->is_admin == 1 && $contractorLog->contractor_type == 'Proof Reader')
+                                            {{ $contractorLog->created_at->format('y-m-d h:m:s') }} -
                                             {{-- @dd($contractorLog) --}}
                                             {{ $contractorLog->admin->name }} {{ $contractorLog->action }}
                                         @elseif ($contractorLog->is_admin == 0 && $contractorLog->contractor_type == 'Proof Reader')
+                                            {{ $contractorLog->created_at->format('y-m-d h:m:s') }} -
                                             {{ $contractorLog->action }}
                                         @endif
                                     </div>
@@ -133,7 +136,7 @@
                         {{-- Order Completed --}}
                         @case(6)
                             @if (isset($order->orderLogs) && count($order->orderLogs) > 0)
-                                <hr>
+                                {{-- <hr> --}}
                                 <div class="row">
                                     @foreach ($order->orderLogs as $orderLog)
                                         @if ($orderLog->is_admin == 1 && $orderLog->new_order_completed_status == 1)

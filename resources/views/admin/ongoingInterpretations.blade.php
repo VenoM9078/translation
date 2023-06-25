@@ -441,7 +441,7 @@
                                                 {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($interpretation->created_at, request()->ip()) }}
                                             </td>
                                         </tr>
-                                        <div id="track-modal-preview{{ $interpretation->id }}" class="modal"
+                                        <div id="track-modal-preview{{ $interpretation->id }}" class="modal w-full"
                                             tabindex="-1" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
