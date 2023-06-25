@@ -278,6 +278,13 @@
                                                             class="btn btn-success mr-1"><i data-lucide="send"
                                                                 class="w-5 h-5 mr-2"></i>
                                                             Mark Completed </a>
+                                                    @elseif($order->want_quote == 1 && $order->translation_status == 0)
+                                                        <a href="{{ route('admin.showOrderSubmitQuote', $order->id) }}"
+                                                            class="btn btn-warning mr-1  ">Submit Quote</a>
+                                                    @elseif ($order->invoiceSent == 0 && $order->want_quote == 0)
+                                                        <a href="{{ route('invoice.customInvoice', $order->id) }}"
+                                                            class="btn btn-success mr-1"> <i data-lucide="calendar"
+                                                                class="w-5 h-5 mr-2"></i> Send Invoice</a>
                                                     @elseif (
                                                         $order->invoiceSent == 1 &&
                                                             $order->paymentStatus == 1 &&
@@ -818,7 +825,7 @@
 
         $('.btn.btn-success').on('click', function() {
             var orderId = $(this).data('tw-target').replace('#track-modal-preview', '');
-            console.log("Clicked Track ",orderId);
+            console.log("Clicked Track ", orderId);
             $.get('/order/' + orderId + '/track', function(data) {
                 $('.intro-y.box.py-10.mt-5').html(data);
             });
