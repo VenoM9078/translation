@@ -141,9 +141,10 @@ class AdminController extends Controller
         return view('admin.view-contractor-info', compact('contractor', 'languages'));
     }
 
-    public function viewInterpretationDetails($id){
-        $interpretation = Interpretation::where('id',$id)->firstOrFail();
-        return view ('admin.view-interpretation',compact('interpretation'));
+    public function viewInterpretationDetails($id)
+    {
+        $interpretation = Interpretation::where('id', $id)->firstOrFail();
+        return view('admin.view-interpretation', compact('interpretation'));
     }
 
     public function editInterpretation($id)
@@ -291,7 +292,7 @@ class AdminController extends Controller
                     'total_payment' => $request->p_total_payment ?? 0,
                     'translation_status' => TranslationStatusEnum::PENDING,
                     'file_name' => null,
-                    'file_uploaded_by_admin'=>$request->translationFile,
+                    'file_uploaded_by_admin' => $request->translationFile,
                     'proof_read_due_date' => $request->proof_read_due_date,
                     'proofread_type' => $request->p_type,
                     'proof_read_paid' => $request->proof_read_paid,
@@ -314,7 +315,9 @@ class AdminController extends Controller
                 LogActionsEnum::ASSIGNEDPROOFREADER,
                 0,
                 0,
-                0,0,1
+                0,
+                0,
+                1
             );
             $contractor = Contractor::where('id', $request->p_contractor_id)->firstOrFail();
             if (env("IS_DEV") == 1) {
@@ -555,7 +558,7 @@ class AdminController extends Controller
         }
 
         $worknumber = $currentTime;
-        
+
         $vertical_radio_button = $request->input('vertical_radio_button');
         if ($vertical_radio_button == "vertical-radio-existing") {
             $verifyUser = User::where('email', $request->input('email_existing'))->first();
@@ -565,15 +568,15 @@ class AdminController extends Controller
 
         $user = null;
         if (!isset($verifyUser)) {
-        // Create a new user
+            // Create a new user
             $newUser = User::create([
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
                 'password' => Hash::make('password'), // Hash password for security
             ]);
-                $user = $newUser;
+            $user = $newUser;
         } else {
-                $user = $verifyUser;
+            $user = $verifyUser;
         }
 
 
@@ -602,10 +605,48 @@ class AdminController extends Controller
 
         $interpretation->save();
 
+        //storing interpretation
+        HelperClass::storeOrderLog(
+            LogActionsEnum::ISADMIN, Auth::user()->id,
+            null,
+            "Interpretation",
+            "Admin", LogActionsEnum::CREATEDINTERPRETATION, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::PAYMENTINCOMPLETEDNUMBER, LogActionsEnum::PAIDINTERPRETATION, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            0,
+            0,
+            0,
+            0, LogActionsEnum::ISINTERPRETATION, LogActionsEnum::INCOMPLETEINTERPRETATION,$interpretation->id
+        );
+
+        //storing interpretation with paid status
+        HelperClass::storeOrderLog(
+            LogActionsEnum::ISADMIN, Auth::user()->id,
+            null,
+            "Interpretation",
+            "Admin", LogActionsEnum::PAYMENTCOMPLETED, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::PAYMENTINCOMPLETEDNUMBER, LogActionsEnum::PAIDINTERPRETATION, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            0,
+            0,
+            0,
+            0, LogActionsEnum::ISINTERPRETATION, LogActionsEnum::INCOMPLETEINTERPRETATION,$interpretation->id
+        );
+
         HelperClass::storeContractorLog(
-            Auth::user()->id,LogActionsEnum::ISADMIN,0,0,"Interpretation","Admin","Interpreter",
-        LogActionsEnum::ASSIGNEDINTERPRETER,null,null,0,null,null,0,0);
-        HelperClass::storeInvoiceLogs(Auth::user()->id, LogActionsEnum::ISADMIN, null, "Invoice", "Admin", "Sent Invoice", 1,$interpretation->id);
+            Auth::user()->id, LogActionsEnum::ISADMIN,
+            0,
+            0,
+            "Interpretation",
+            "Admin",
+            "Interpreter",
+            LogActionsEnum::ASSIGNEDINTERPRETER,
+            null,
+            null,
+            0,
+            null,
+            null,
+            0,
+            0
+        );
+        HelperClass::storeInvoiceLogs(Auth::user()->id, LogActionsEnum::ISADMIN, null, "Invoice", "Admin", "Sent Invoice", 1, $interpretation->id);
+
 
 
 
@@ -644,8 +685,8 @@ class AdminController extends Controller
 
         $worknumber = $currentTime;
         $vertical_radio_button = $request->input('vertical_radio_button');
-        if($vertical_radio_button == "vertical-radio-existing"){
-            $verifyUser = User::where('email',$request->input('email_existing'))->first();
+        if ($vertical_radio_button == "vertical-radio-existing") {
+            $verifyUser = User::where('email', $request->input('email_existing'))->first();
         } else {
             $verifyUser = User::where('email', $request->input('email'))->first();
         }
@@ -661,7 +702,7 @@ class AdminController extends Controller
                 'password' => Hash::make('password'), // Hash password for security
             ]);
             $user = $newUser;
-        } else{
+        } else {
             $user = $verifyUser;
         }
 
@@ -701,7 +742,16 @@ class AdminController extends Controller
                 "Order",
                 Auth::user()->role_id,
                 LogActionsEnum::NEWORDER,
-                0, 0,  0,  1, 0, 0,  0, 0, 0, 0
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
             );
 
             HelperClass::storeInvoiceLogs(Auth::user()->id, LogActionsEnum::ISADMIN, $order->id, "Invoice", "Admin", LogActionsEnum::INVOICESENT, 1);
@@ -714,7 +764,8 @@ class AdminController extends Controller
                 "Order",
                 Auth::user()->role_id,
                 LogActionsEnum::PAYMENTCOMPLETED,
-                0, //old translation
+                0,
+                //old translation
                 0, //new translation
                 LogActionsEnum::PAYMENTINCOMPLETEDNUMBER,
                 LogActionsEnum::PAYMENTCOMPLETEDNUMBER,
@@ -925,7 +976,7 @@ class AdminController extends Controller
 
         $contractorInterpretation->save();
 
-        HelperClass::storeContractorLog(Auth::user()->id,LogActionsEnum::ISADMIN,null,$request->contractor_id,"Interpretation","Admin","Interpreter",LogActionsEnum::ASSIGNEDINTERPRETER,0,0,0,0,0,0,0, $request->interpretation_id);
+        HelperClass::storeContractorLog(Auth::user()->id, LogActionsEnum::ISADMIN, null, $request->contractor_id, "Interpretation", "Admin", "Interpreter", LogActionsEnum::ASSIGNEDINTERPRETER, 0, 0, 0, 0, 0, 0, 0, $request->interpretation_id);
         $contractor = $contractorInterpretation->contractor;
 
         Mail::to($contractor->email)->send(new InformContractorOfRequest($contractorInterpretation));
@@ -1140,7 +1191,8 @@ class AdminController extends Controller
                 "Order",
                 Auth::user()->role_id,
                 LogActionsEnum::LATEPAYMENTCOMPLETED,
-                0, //old translation
+                0,
+                //old translation
                 0, //new translation
                 LogActionsEnum::PAYMENTINCOMPLETEDNUMBER,
                 LogActionsEnum::LATEPAYMENTCOMPLETEDNUMBER,
@@ -1151,7 +1203,7 @@ class AdminController extends Controller
                 0,
                 0
             );
-            
+
             return redirect()->back();
         } else if ($choice == 0) {
             $order->update(['paymentStatus' => 0, 'orderStatus' => 'Payment Pending', 'paymentLaterApproved' => 0]);
@@ -1709,8 +1761,23 @@ class AdminController extends Controller
         Order::where('id', $order_id)->update(['orderStatus' => 'Completed']);
         Order::where('id', $order_id)->update(['completed' => 1]);
 
-        HelperClass::storeOrderLog(1,Auth::user()->id,$order_id,"Order","Admin",
-        LogActionsEnum::ORDERCOMPLETED,0,1,0,1,0,0,0,1,0,1);
+        HelperClass::storeOrderLog(
+            1, Auth::user()->id,
+            $order_id,
+            "Order",
+            "Admin",
+            LogActionsEnum::ORDERCOMPLETED,
+            0,
+            1,
+            0,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+        );
 
         if (env("IS_DEV") == 1) {
             Mail::mailer('dev')->to($email)->send(new mailOfCompletion($order, $zipName2, $emailTitle, env("ADMIN_EMAIL_DEV")));
@@ -1737,7 +1804,7 @@ class AdminController extends Controller
 
         // Mail::mailer('clients')->to($userMail)->send(new invoiceSent($user, $order, $doesInvoiceExist[0], "Flow Translate - New Invoice", "noiznixon98@gmail.com"));
         // Mail::to($email)->send(new mailOfCompletion($order, $zipName2));
-    return redirect()->route('admin.pending');
+        return redirect()->route('admin.pending');
     }
 
     public function show($id)
@@ -1783,7 +1850,7 @@ class AdminController extends Controller
 
     public function ongoingInterpretations()
     {
-        $interpretations = Interpretation::orderByDesc('created_at')->get();
+        $interpretations = Interpretation::orderByDesc('id')->get();
         return view('admin.ongoingInterpretations', compact('interpretations'));
     }
 

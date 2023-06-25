@@ -64,4 +64,9 @@ class Interpretation extends Model
     {
         return $this->hasMany('App\Models\ContractorLog', 'interpretation_id', 'id');
     }
+
+    public function interpretationLogs()
+    {
+        return $this->hasMany('App\Models\OrderLog', 'interpretation_id', 'id');
+    }
 }

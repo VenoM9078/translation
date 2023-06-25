@@ -240,7 +240,8 @@ class UserController extends Controller
                 "Order",
                 Auth::user()->role_id,
                 LogActionsEnum::PAYMENTCOMPLETED,
-                0, //old translation
+                0,
+                //old translation
                 0, //new translation
                 LogActionsEnum::PAYMENTINCOMPLETEDNUMBER,
                 LogActionsEnum::PAYMENTCOMPLETEDNUMBER,
@@ -381,7 +382,8 @@ class UserController extends Controller
             "Order",
             Auth::user()->role_id,
             LogActionsEnum::PAYMENTCOMPLETED,
-            0, //old translation
+            0,
+            //old translation
             0, //new translation
             LogActionsEnum::PAYMENTINCOMPLETEDNUMBER,
             LogActionsEnum::PAYMENTCOMPLETEDNUMBER,
@@ -418,6 +420,17 @@ class UserController extends Controller
 
         HelperClass::storeInvoiceLogs(Auth::user()->id, 0, null, "Invoice", "Individual User", LogActionsEnum::INVOICESENT, 1, $interpretation_id);
 
+        HelperClass::storeOrderLog(
+            LogActionsEnum::NOTADMIN, Auth::user()->id,
+            null,
+            "Interpretation",
+            "User", LogActionsEnum::PAYMENTCOMPLETED, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::PAYMENTINCOMPLETEDNUMBER, LogActionsEnum::PAIDINTERPRETATION, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            0,
+            0,
+            0,
+            0, LogActionsEnum::ISINTERPRETATION, LogActionsEnum::INCOMPLETEINTERPRETATION, $interpretation->id
+        );
+        
         $interpretation->save();
 
         $email = $interpretation->user->email;
@@ -454,7 +467,8 @@ class UserController extends Controller
             "Order",
             Auth::user()->role_id,
             LogActionsEnum::WILLPAYLATE,
-            0, //old translation
+            0,
+            //old translation
             0, //new translation
             LogActionsEnum::PAYMENTINCOMPLETEDNUMBER,
             LogActionsEnum::WILLPAYLATENUMBER,
@@ -822,6 +836,31 @@ class UserController extends Controller
 
         if ($invoiceSent == 1) {
             HelperClass::storeInvoiceLogs(auth()->id(), 0, null, "Invoice", "Individual User", "Sent Invoice", 1, $interpretation->id);
+        }
+
+        HelperClass::storeOrderLog(
+            LogActionsEnum::NOTADMIN, Auth::user()->id,
+            null,
+            "Interpretation",
+            "User", LogActionsEnum::CREATEDINTERPRETATION, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::PAYMENTINCOMPLETEDNUMBER, LogActionsEnum::PAYMENTINCOMPLETEDNUMBER, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            0,
+            0,
+            0,
+            0, LogActionsEnum::ISINTERPRETATION, LogActionsEnum::INCOMPLETEINTERPRETATION,$interpretation->id
+        );
+
+        if (Auth::user()->role_id == 1 || Auth::user()->role_id == 2) {
+            //storing interpretation with paid status
+            HelperClass::storeOrderLog(
+                LogActionsEnum::NOTADMIN, Auth::user()->id,
+                null,
+                "Interpretation",
+                "Admin", LogActionsEnum::PAYMENTCOMPLETED, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::PAYMENTINCOMPLETEDNUMBER, LogActionsEnum::PAIDINTERPRETATION, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                0,
+                0,
+                0,
+                0, LogActionsEnum::ISINTERPRETATION, LogActionsEnum::INCOMPLETEINTERPRETATION,$interpretation->id
+            );
         }
 
         if (env("IS_DEV") == 1) {

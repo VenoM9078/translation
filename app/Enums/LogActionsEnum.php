@@ -39,5 +39,14 @@ abstract class LogActionsEnum
     const ACCEPTEDNUMBER = 1;
     const DECLINENUMBER = 2;
 
+    const CREATEDINTERPRETATION = "Created Interpretation";
+    const COMPLETEDINTERPRETATION = "Completed Interpretation";
+    const COMPLETEDINTERPRETATIONNUMBER = 1;
+    const PAIDINTERPRETATION = 1;
+    const LATEPAIDINTERPRETATION = 2;
+    const INCOMPLETEINTERPRETATION = 0;
+
+    const ISINTERPRETATION = 1;
+    const ZEROTRANSLATIONSTATUS = 0;
 }
 ?>

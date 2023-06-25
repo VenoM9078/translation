@@ -44,7 +44,10 @@ class HelperClass
         $old_proofread_sent_status = null,
         $new_proofread_sent_status = null,
         $old_order_completed_status = null,
-        $new_order_completed_status = null
+        $new_order_completed_status = null,
+        $is_interpretation = null,
+        $interpretation_status = null,
+        $interpretation_id = null
     ) {
 
 
@@ -78,6 +81,13 @@ class HelperClass
         $orderLog->new_proofread_sent_status = $new_proofread_sent_status;
         $orderLog->old_order_completed_status = $old_order_completed_status;
         $orderLog->new_order_completed_status = $new_order_completed_status;
+
+        //interpretation
+        if($is_interpretation != null){
+            $orderLog->interpretation_id = $interpretation_id;
+            $orderLog->is_interpretation = $is_interpretation;
+            $orderLog->interpretation_status = $interpretation_status;
+        }
         $orderLog->created_at = Carbon::now();
         
         $orderLog->save();
