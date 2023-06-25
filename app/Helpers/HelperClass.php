@@ -5,6 +5,7 @@ use App\Models\ContractorLog;
 use App\Models\InvoiceLogs;
 use App\Models\Order;
 use App\Models\OrderLog;
+use Carbon\Carbon;
 
 class HelperClass
 {
@@ -77,6 +78,8 @@ class HelperClass
         $orderLog->new_proofread_sent_status = $new_proofread_sent_status;
         $orderLog->old_order_completed_status = $old_order_completed_status;
         $orderLog->new_order_completed_status = $new_order_completed_status;
+        $orderLog->created_at = Carbon::now();
+        
         $orderLog->save();
 
     }
@@ -119,6 +122,8 @@ class HelperClass
         $contractorLog->old_interpretation_sent_status = $old_interpretation_sent_status;
 
         $contractorLog->interpretation_id = $interpretation_id;
+        $contractorLog->created_at = Carbon::now();
+
         $contractorLog->save();
     }
 
@@ -142,6 +147,7 @@ class HelperClass
         $invoiceLog->action = $action;
         $invoiceLog->invoice_sent = $invoice_sent;
         $invoiceLog->interpretation_id = $interpretation_id;
+        $invoiceLog->created_at = Carbon::now();
         $invoiceLog->save();
 
     }

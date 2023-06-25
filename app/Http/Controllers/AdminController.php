@@ -555,8 +555,13 @@ class AdminController extends Controller
         }
 
         $worknumber = $currentTime;
-
-           $verifyUser = User::where('email', $request->input('email'))->first();
+        
+        $vertical_radio_button = $request->input('vertical_radio_button');
+        if ($vertical_radio_button == "vertical-radio-existing") {
+            $verifyUser = User::where('email', $request->input('email_existing'))->first();
+        } else {
+            $verifyUser = User::where('email', $request->input('email'))->first();
+        }
 
         $user = null;
         if (!isset($verifyUser)) {
@@ -597,9 +602,10 @@ class AdminController extends Controller
 
         $interpretation->save();
 
-        HelperClass::storeContractorLog( $user->id,LogActionsEnum::ISADMIN,0,0,"Interpretation","Admin","Interpreter",
+        HelperClass::storeContractorLog(
+            Auth::user()->id,LogActionsEnum::ISADMIN,0,0,"Interpretation","Admin","Interpreter",
         LogActionsEnum::ASSIGNEDINTERPRETER,null,null,0,null,null,0,0);
-        HelperClass::storeInvoiceLogs(Auth::user()->id, 1, null, "Invoice", "Admin", "Sent Invoice", 1,$interpretation->id);
+        HelperClass::storeInvoiceLogs(Auth::user()->id, LogActionsEnum::ISADMIN, null, "Invoice", "Admin", "Sent Invoice", 1,$interpretation->id);
 
 
 
@@ -690,7 +696,7 @@ class AdminController extends Controller
 
             HelperClass::storeOrderLog(
                 LogActionsEnum::ISADMIN,
-                $user->id,
+                Auth::user()->id,
                 $order->id,
                 "Order",
                 Auth::user()->role_id,
@@ -698,8 +704,27 @@ class AdminController extends Controller
                 0, 0,  0,  1, 0, 0,  0, 0, 0, 0
             );
 
-            HelperClass::storeInvoiceLogs($user->id, LogActionsEnum::ISADMIN, $order->id, "Invoice", "Admin", LogActionsEnum::INVOICESENT, 1);
+            HelperClass::storeInvoiceLogs(Auth::user()->id, LogActionsEnum::ISADMIN, $order->id, "Invoice", "Admin", LogActionsEnum::INVOICESENT, 1);
 
+
+            HelperClass::storeOrderLog(
+                LogActionsEnum::ISADMIN,
+                Auth::user()->id,
+                $order->id,
+                "Order",
+                Auth::user()->role_id,
+                LogActionsEnum::PAYMENTCOMPLETED,
+                0, //old translation
+                0, //new translation
+                LogActionsEnum::PAYMENTINCOMPLETEDNUMBER,
+                LogActionsEnum::PAYMENTCOMPLETEDNUMBER,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            );
 
             if (env("IS_DEV") == 1) {
                 Mail::mailer('dev')->to($user->email)->send(new OrderCreated($user, $order, "Flow Translate - Order Created", env("ADMIN_EMAIL_DEV")));
@@ -1013,14 +1038,13 @@ class AdminController extends Controller
     }
     public function pendingOrders()
     {
-        $orders = Order::with(['contractorOrder.contractor'])
-            ->orderByDesc('created_at')
+        $pendingOrders = Order::
+            orderByDesc('created_at')
             // ->where('id',34)
             ->get();
-
         // dd($orders);
         // dd($orders[0]->invoice);
-        return view('admin.pendingOrders', compact('orders'));
+        return view('admin.pendingOrders', compact('pendingOrders'));
     }
 
     public function viewAssignProofReader($orderID)
@@ -1109,6 +1133,25 @@ class AdminController extends Controller
                 Mail::mailer('clients')->to($order->user->email)->send(new LatePaymentApproved("Flow Translate - Late Payment Approved", env("ADMIN_EMAIL")));
             }
 
+            HelperClass::storeOrderLog(
+                LogActionsEnum::ISADMIN,
+                Auth::user()->id,
+                $order->id,
+                "Order",
+                Auth::user()->role_id,
+                LogActionsEnum::LATEPAYMENTCOMPLETED,
+                0, //old translation
+                0, //new translation
+                LogActionsEnum::PAYMENTINCOMPLETEDNUMBER,
+                LogActionsEnum::LATEPAYMENTCOMPLETEDNUMBER,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            );
+            
             return redirect()->back();
         } else if ($choice == 0) {
             $order->update(['paymentStatus' => 0, 'orderStatus' => 'Payment Pending', 'paymentLaterApproved' => 0]);

@@ -13,12 +13,12 @@ class OrderLog extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\Models\User', 'user_id')->withDefault();
+        return $this->belongsTo('App\Models\User', 'user_id','id');
     }
 
     public function admin()
     {
-        return $this->belongsTo('App\Models\Admin', 'user_id')->withDefault();
+        return $this->belongsTo('App\Models\Admin', 'user_id','id');
     }
 
 }

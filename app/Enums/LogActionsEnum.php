@@ -26,6 +26,16 @@ abstract class LogActionsEnum
     const DECLINEPROOFREAD = "Declined Proof Read Request";
 
     const ORDERCOMPLETED = "Completed Order";
+    const PAYMENTCOMPLETED = "Completed Payment";
+    const
+    LATEPAYMENTCOMPLETED = "Completed Late Payment";
+    const WILLPAYLATE = "Will Pay Later";
+    const PAYMENTCOMPLETEDNUMBER = 1;
+    const LATEPAYMENTCOMPLETEDNUMBER = 2;
+
+    const WILLPAYLATENUMBER = 3;
+
+    const PAYMENTINCOMPLETEDNUMBER = 0;
     const ACCEPTEDNUMBER = 1;
     const DECLINENUMBER = 2;
 

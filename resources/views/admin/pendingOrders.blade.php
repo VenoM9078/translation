@@ -161,6 +161,16 @@
                     </li>
                     <li>
                         <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <input checked id="checkbox-status-invoice-completed" type="checkbox"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
+                                data-status="pending">
+                            <label for="checkbox-status-invoice-pending"
+                                class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Invoice
+                                Sent</label>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
                             <input checked id="checkbox-status-completed" type="checkbox"
                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
                                 data-status="completed">
@@ -225,10 +235,9 @@
                             </thead>
 
                             <tbody>
-                                {{-- @dd($orders) --}}
-                                @foreach ($orders as $order)
+                                {{-- @dd($pendingOrders) --}}
+                                @foreach ($pendingOrders as $order)
                                     {{-- @dd($order->proofread_status) --}}
-
                                     <tr>
                                         <td class="whitespace-nowrap">
                                             <div class="flex gap-1 items-center">
@@ -712,6 +721,7 @@
                     var isCompletedChecked = $('#checkbox-status-completed').is(':checked');
                     var isCancelledChecked = $('#checkbox-status-cancelled').is(':checked');
                     var isInvoicePendingChecked = $('#checkbox-status-invoice-pending').is(':checked');
+                    var isInvoiceCompletedChecked = $('#checkbox-status-invoice-completed').is(':checked');
 
                     if (isPendingChecked && data[4] == 'Translation Pending') {
                         return true;
@@ -720,6 +730,8 @@
                     } else if (isCancelledChecked && data[4] == 'Cancelled') {
                         return true;
                     } else if (isInvoicePendingChecked && data[4] == 'Invoice Pending') {
+                        return true;
+                    } else if (isInvoiceCompletedChecked && data[4] == 'Invoice Sent') {
                         return true;
                     }
 

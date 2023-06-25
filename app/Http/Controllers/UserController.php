@@ -210,16 +210,48 @@ class UserController extends Controller
         $order = Order::create($data);
 
         if ($request->input("isPayNow") == "on") {
-            HelperClass::storeInvoiceLogs($userID,0,$order->id,"Invoice","Individual User",LogActionsEnum::INVOICESENT,1);
+            HelperClass::storeInvoiceLogs($userID, 0, $order->id, "Invoice", "Individual User", LogActionsEnum::INVOICESENT, 1);
         }
 
-        HelperClass::storeOrderLog(LogActionsEnum::NOTADMIN,$userID,
-        $order->id,
-        "Order",
-        Auth::user()->role_id,
-        LogActionsEnum::NEWORDER,
-        0,0,0,$paymentStatus,0,0,0,0,0,0);
+        HelperClass::storeOrderLog(
+            LogActionsEnum::NOTADMIN,
+            $userID,
+            $order->id,
+            "Order",
+            Auth::user()->role_id,
+            LogActionsEnum::NEWORDER,
+            0,
+            0,
+            0,
+            $paymentStatus,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        );
 
+        if (Auth::user()->role_id == 1 || Auth::user()->role_id == 2) {
+            HelperClass::storeOrderLog(
+                LogActionsEnum::NOTADMIN,
+                Auth::user()->id,
+                $order->id,
+                "Order",
+                Auth::user()->role_id,
+                LogActionsEnum::PAYMENTCOMPLETED,
+                0, //old translation
+                0, //new translation
+                LogActionsEnum::PAYMENTINCOMPLETEDNUMBER,
+                LogActionsEnum::PAYMENTCOMPLETEDNUMBER,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            );
+        }
         if ($request->transFiles) {
 
             $files = $request->transFiles;
@@ -342,6 +374,25 @@ class UserController extends Controller
 
         $order->save();
 
+        HelperClass::storeOrderLog(
+            LogActionsEnum::NOTADMIN,
+            Auth::user()->id,
+            $order->id,
+            "Order",
+            Auth::user()->role_id,
+            LogActionsEnum::PAYMENTCOMPLETED,
+            0, //old translation
+            0, //new translation
+            LogActionsEnum::PAYMENTINCOMPLETEDNUMBER,
+            LogActionsEnum::PAYMENTCOMPLETEDNUMBER,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        );
+
         $email = $order->user->email;
 
         if (env("IS_DEV") == 1) {
@@ -365,7 +416,7 @@ class UserController extends Controller
         $interpretation->wantQuote = 3;
         $interpretation->invoiceSent = 1;
 
-        HelperClass::storeInvoiceLogs(Auth::user()->id, 0, null, "Invoice", "Individual User", LogActionsEnum::INVOICESENT, 1,$interpretation_id);
+        HelperClass::storeInvoiceLogs(Auth::user()->id, 0, null, "Invoice", "Individual User", LogActionsEnum::INVOICESENT, 1, $interpretation_id);
 
         $interpretation->save();
 
@@ -396,6 +447,24 @@ class UserController extends Controller
         // dd($code, $id);
         Order::where('id', $id)->update(['paymentStatus' => 3, 'payLaterCode' => $code]);
 
+        HelperClass::storeOrderLog(
+            LogActionsEnum::NOTADMIN,
+            Auth::user()->id,
+            $request->order_id,
+            "Order",
+            Auth::user()->role_id,
+            LogActionsEnum::WILLPAYLATE,
+            0, //old translation
+            0, //new translation
+            LogActionsEnum::PAYMENTINCOMPLETEDNUMBER,
+            LogActionsEnum::WILLPAYLATENUMBER,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        );
         return view('user.payLaterLanding');
     }
 
@@ -750,9 +819,9 @@ class UserController extends Controller
         $interpretation->message = $request->message;
 
         $interpretation->save();
-        
-        if($invoiceSent == 1){
-            HelperClass::storeInvoiceLogs(auth()->id(), 0,null, "Invoice", "Individual User", "Sent Invoice", 1,$interpretation->id);
+
+        if ($invoiceSent == 1) {
+            HelperClass::storeInvoiceLogs(auth()->id(), 0, null, "Invoice", "Individual User", "Sent Invoice", 1, $interpretation->id);
         }
 
         if (env("IS_DEV") == 1) {

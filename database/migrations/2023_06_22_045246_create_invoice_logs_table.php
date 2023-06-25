@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('action')->nullable();
             $table->string('model_name')->nullable();
             $table->integer('is_admin')->default(0);
-            $table->integer('interpretation_id')->nullable(0);
-            $table->integer('order_id')->nullable(0);
+            $table->integer('interpretation_id')->nullable();
+            $table->integer('order_id')->nullable();
             $table->integer('invoice_sent')->default(0);
             $table->timestamps();
         });
