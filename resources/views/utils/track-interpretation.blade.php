@@ -50,6 +50,13 @@
             {{-- </button> --}}
             <div class="text-base @if ($step['status'] == 'success' || $step['status'] == 'warning') text-slate-600 dark:text-slate-500 @endif ml-3">
                 {{-- {{ $step['text'] }} --}}
+                @if (isset($interpretation->interpretationLogs) && count($interpretation->interpretationLogs) < 1 && count($interpretation->contractorLogs) < 1 && count($interpretation->invoiceLogs) < 1 && count($interpretation->interpretationLogs) < 1)
+                    <div class="row text-center mx-auto">
+                        <h2>No Log Tracked For Interpretation.</h2>
+                    </div>
+                @break
+
+            @else
                 <div>
                     @switch($step['number'])
                         @case(0)
@@ -73,7 +80,7 @@
                                         @endif
                                     @endforeach
                                 @else
-                                    <h3>No Log Tracked For Interpretation</h3>
+                                   
                                 @endif
                             </div>
                         @break
@@ -149,11 +156,13 @@
                             @foreach ($interpretation->interpretationLogs as $orderLog)
                                 @if ($orderLog->interpretation_status == 1 && $orderLog->is_interpretation == 1)
                                     @if ($orderLog->is_admin == 0)
-                                        {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($orderLog->created_at, request()->ip()) }} -
+                                        {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($orderLog->created_at, request()->ip()) }}
+                                        -
                                         {{ $orderLog->user->name }} {{ $orderLog->action }}
                                         <br>
                                     @elseif($orderLog->is_admin == 1)
-                                        {{  App\Helpers\HelperClass::convertDateToCurrentTimeZone($orderLog->created_at, request()->ip()) }} -
+                                        {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($orderLog->created_at, request()->ip()) }}
+                                        -
                                         {{ $orderLog->admin->name }} {{ $orderLog->action }}
                                         <br>
                                     @endif
@@ -164,7 +173,8 @@
                         @default
                     @endswitch
                 </div>
-            </div>
+            @endif
         </div>
-    @endforeach
+    </div>
+@endforeach
 </div>
