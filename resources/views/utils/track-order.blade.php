@@ -59,11 +59,11 @@
                                         {{-- @dd($order->orderLogs) --}}
                                         @if ($orderLog->new_order_completed_status == 0 && $orderLog->new_payment_status == 0)
                                             @if ($orderLog->is_admin == 0)
-                                                {{ $orderLog->created_at->format('y-m-d h:m:s') }} -
+                                                {{App\Helpers\HelperClass::convertDateToCurrentTimeZone($orderLog->created_at, request()->ip())}} -
                                                 {{ $orderLog->user->name }} {{ $orderLog->action }}
                                                 <br>
                                             @elseif($orderLog->is_admin == 1 && $orderLog->action != \App\Enums\LogActionsEnum::PAYMENTCOMPLETED)
-                                                {{ $orderLog->created_at->format('y-m-d h:m:s') }} -
+                                                {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($orderLog->created_at, request()->ip()) }} -
                                                 {{ $orderLog->admin->name }} {{ $orderLog->action }}
                                                 <br>
                                             @endif
@@ -83,7 +83,7 @@
                                 @foreach ($order->invoiceLogs as $invoiceLog)
                                     <div class="row">
                                         @if ($invoiceLog->is_admin == 0)
-                                            {{ $invoiceLog->created_at->format('y-m-d h:m:s') }} -
+                                            {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($invoiceLog->created_at, request()->ip()) }} -
                                             {{ $invoiceLog->user->name }} {{ $invoiceLog->action }}
                                             <br>
                                             {{-- @elseif($invoiceLog->is_admin == 1) --}}
@@ -102,7 +102,7 @@
                                     @foreach ($order->orderLogs as $orderLog)
                                         @if ($orderLog->new_payment_status == 1)
                                             @if ($orderLog->is_admin == 0)
-                                                {{ $orderLog->created_at->format('y-m-d h:m:s') }} -
+                                                {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($orderLog->created_at, request()->ip()) }} -
                                                 {{ $orderLog->user->name }} {{ $orderLog->action }}
                                                 <br>
                                             @elseif($orderLog->is_admin == 1)
@@ -121,7 +121,7 @@
                                 @foreach ($order->contractorLogs as $contractorLog)
                                     <div class="row">
                                         @if ($contractorLog->is_admin == 1 && $contractorLog->contractor_type == 'Translator')
-                                            {{ $contractorLog->created_at->format('y-m-d h:m:s') }} -
+                                            {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($contractorLog->created_at, request()->ip()) }} -
                                             {{ $contractorLog->admin->name }} {{ $contractorLog->action }}
                                             <br>
                                         @elseif ($contractorLog->is_admin == 0 && $contractorLog->contractor_type == 'Translator')
@@ -140,11 +140,11 @@
                                 @foreach ($order->contractorLogs as $contractorLog)
                                     <div class="row">
                                         @if ($contractorLog->is_admin == 1 && $contractorLog->contractor_type == 'Proof Reader')
-                                            {{ $contractorLog->created_at->format('y-m-d h:m:s') }} -
+                                            {{  App\Helpers\HelperClass::convertDateToCurrentTimeZone($contractorLog->created_at, request()->ip()) }} -
                                             {{ $contractorLog->admin->name }} {{ $contractorLog->action }}
                                             <br>
                                         @elseif ($contractorLog->is_admin == 0 && $contractorLog->contractor_type == 'Proof Reader')
-                                            {{ $contractorLog->created_at->format('y-m-d h:m:s') }} -
+                                            {{  App\Helpers\HelperClass::convertDateToCurrentTimeZone($contractorLog->created_at, request()->ip()) }} -
                                             {{ $contractorLog->contractor->name }} {{ $contractorLog->action }}
                                             <br>
                                         @endif
@@ -159,7 +159,7 @@
                                 <div class="row">
                                     @foreach ($order->orderLogs as $orderLog)
                                         @if ($orderLog->is_admin == 1 && $orderLog->new_order_completed_status == 1)
-                                            {{ $orderLog->created_at->format('y-m-d h:m:s') }} -
+                                            {{App\Helpers\HelperClass::convertDateToCurrentTimeZone($orderLog->created_at, request()->ip())  }} -
                                             {{ $orderLog->admin->name }} {{ $orderLog->action }}
                                             <br>
                                         @endif
