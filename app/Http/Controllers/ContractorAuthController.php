@@ -534,7 +534,7 @@ class ContractorAuthController extends Controller
         $contractorOrder->save();
 
         HelperClass::storeContractorLog(
-            null, LogActionsEnum::NOTADMIN, $contractorOrder->order_id, $contractorOrder->contractor_id,
+            Auth::user()->id, LogActionsEnum::NOTADMIN, $contractorOrder->order_id, $contractorOrder->contractor_id,
             "Contractor",
             0,
             "Translator",
@@ -632,7 +632,7 @@ class ContractorAuthController extends Controller
         $order->save();
 
         HelperClass::storeContractorLog(
-            null, LogActionsEnum::NOTADMIN, $contractorOrder->order_id, $contractorOrder->contractor_id,
+            Auth::user()->id, LogActionsEnum::NOTADMIN, $contractorOrder->order_id, $contractorOrder->contractor_id,
             "Contractor",
             0,
             "Translator",
@@ -727,7 +727,7 @@ class ContractorAuthController extends Controller
         $order->save();
 
         HelperClass::storeContractorLog(
-            null, LogActionsEnum::NOTADMIN, $contractorOrder->order_id, $contractorOrder->contractor_id,
+            Auth::user()->id, LogActionsEnum::NOTADMIN, $contractorOrder->order_id, $contractorOrder->contractor_id,
             "Contractor",
             0,
             "Translator",
@@ -970,7 +970,7 @@ class ContractorAuthController extends Controller
         $order->save();
 
         HelperClass::storeContractorLog(
-            null, LogActionsEnum::NOTADMIN, $order->id, $proofReaderOrders->contractor_id,
+            Auth::user()->id, LogActionsEnum::NOTADMIN, $order->id, $proofReaderOrders->contractor_id,
             "Contractor",
             0,
             "Proof Reader",

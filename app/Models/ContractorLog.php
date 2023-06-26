@@ -30,4 +30,7 @@ class ContractorLog extends Model
     public function admin(){
         return $this->belongsTo('App\Models\Admin','user_id','id');
     }
+    public function contractor(){
+        return $this->belongsTo('App\Models\Contractor','contractor_id','id')->withDefault();
+    }
 }

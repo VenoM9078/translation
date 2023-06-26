@@ -501,28 +501,29 @@
     {{-- <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script> --}}
 
     <script>
+        // $(document).ready(function() {
+        var table = $('#myinterpretationsTable').DataTable({
+            dom: 'Bfrtip',
+            buttons: [{
+                    extend: 'csv',
+                    exportOptions: {
+                        columns: ':gt(1)'
+                    }
+                },
+                {
+                    extend: 'excel',
+                    exportOptions: {
+                        columns: ':gt(1)'
+                    }
+                },
+            ],
+            ordering: true,
+            info: true,
+            paging: true,
+            pageLength: 4,
+        });
+        console.log("table", table);
         $(document).ready(function() {
-            var table = $('#myinterpretationsTable').DataTable({
-                dom: 'Bfrtip',
-                buttons: [{
-                        extend: 'csv',
-                        exportOptions: {
-                            columns: ':gt(1)'
-                        }
-                    },
-                    {
-                        extend: 'excel',
-                        exportOptions: {
-                            columns: ':gt(1)'
-                        }
-                    },
-                ],
-                ordering: true,
-                info: true,
-                paging: true,
-                pageLength: 4,
-            });
-            console.log("table", table);
 
             $.fn.dataTable.ext.search.push(
                 function(settings, data, dataIndex) {

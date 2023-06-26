@@ -693,7 +693,7 @@
     <script type="text/javascript" language="javascript"
         src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
     <script>
-        $(document).ready(function() {
+        // $(document).ready(function() {
             var table = $('#ordersTable').DataTable({
                 dom: 'Bfrtip',
                 buttons: [{
@@ -714,7 +714,7 @@
                 paging: true,
                 pageLength: 10
             });
-
+        // });
             $.fn.dataTable.ext.search.push(
                 function(settings, data, dataIndex) {
                     var isPendingChecked = $('#checkbox-status-pending').is(':checked');
@@ -833,7 +833,7 @@
             $("#dropdownBgHoverButtonGroup").click(function() {
                 $('#dropdownListGroup').toggle();
             });
-        });
+        // });
 
         $('.btn.btn-success').on('click', function() {
             var orderId = $(this).data('tw-target').replace('#track-modal-preview', '');

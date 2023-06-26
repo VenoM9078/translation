@@ -40,13 +40,13 @@
         {{-- @dd($tempSteps) --}}
         <div class="intro-x flex items-center mt-5">
             {{-- <button --}}
-                {{-- class="w-10 h-10 rounded-full btn  --}}
+            {{-- class="w-10 h-10 rounded-full btn  --}}
             {{-- @if ($step['status'] == 'success') btn-success --}}
             {{-- @elseif ($step['status'] == 'warning') --}}
-                {{-- btn-warning --}}
+            {{-- btn-warning --}}
             {{-- @else --}}
-                {{-- text-slate-500 bg-slate-100 dark:bg-darkmode-400 dark:border-darkmode-400 @endif"> --}}
-                {{-- {{ $step['number'] }} --}}
+            {{-- text-slate-500 bg-slate-100 dark:bg-darkmode-400 dark:border-darkmode-400 @endif"> --}}
+            {{-- {{ $step['number'] }} --}}
             {{-- </button> --}}
             <div class="text-base @if ($step['status'] == 'success' || $step['status'] == 'warning') text-slate-600 dark:text-slate-500 @endif ml-3">
                 {{-- {{ $step['text'] }} --}}
@@ -54,18 +54,26 @@
                     @switch($step['number'])
                         @case(0)
                             <div class="row">
-                                @foreach ($interpretation->interpretationLogs as $orderLog)
-                                    {{-- @dd($order->orderLogs) --}}
-                                    @if ($orderLog->interpretation_status == 0 && $orderLog->is_interpretation == 1)
-                                        @if ($orderLog->is_admin == 0)
-                                            {{ $orderLog->created_at->format('y-m-d h:m:s') }} -
-                                            {{ $orderLog->user->name }} {{ $orderLog->action }}
-                                        @elseif($orderLog->is_admin == 1)
-                                            {{ $orderLog->created_at->format('y-m-d h:m:s') }} -
-                                            {{ $orderLog->admin->name }} {{ $orderLog->action }}
+                                @if (isset($order->orderLogs) && count($order->orderLogs) > 0)
+                                    @foreach ($interpretation->interpretationLogs as $orderLog)
+                                        {{-- @dd($order->orderLogs) --}}
+                                        @if ($orderLog->interpretation_status == 0 && $orderLog->is_interpretation == 1)
+                                            @if ($orderLog->is_admin == 0)
+                                                {{ $orderLog->created_at->format('y-m-d h:m:s') }} -
+                                                {{ $orderLog->user->name }} {{ $orderLog->action }}
+                                                <br>
+                                            @elseif($orderLog->is_admin == 1)
+                                                @if ($orderLog->action != \App\Enums\LogActionsEnum::INVOICESENT)
+                                                    {{ $orderLog->created_at->format('y-m-d h:m:s') }} -
+                                                    {{ $orderLog->admin->name }} {{ $orderLog->action }}
+                                                    <br>
+                                                @endif
+                                            @endif
                                         @endif
-                                    @endif
-                                @endforeach
+                                    @endforeach
+                                @else
+                                    <h3>No Log Tracked For Interpretation</h3>
+                                @endif
                             </div>
                         @break
 
@@ -77,9 +85,13 @@
                                         @if ($invoiceLog->is_admin == 0)
                                             {{ $invoiceLog->created_at->format('y-m-d h:m:s') }} -
                                             {{ $invoiceLog->user->name ?? '-' }} {{ $invoiceLog->action }}
+                                            <br>
                                         @elseif($invoiceLog->is_admin == 1)
-                                            {{ $invoiceLog->created_at->format('y-m-d h:m:s') }} -
-                                            {{ $invoiceLog->admin->name ?? '-' }} {{ $invoiceLog->action }}
+                                            @if ($invoiceLog->action != \App\Enums\LogActionsEnum::INVOICESENT)
+                                                {{ $invoiceLog->created_at->format('y-m-d h:m:s') }} -
+                                                {{ $invoiceLog->admin->name ?? '-' }} {{ $invoiceLog->action }}
+                                            @endif
+                                            <br>
                                         @endif
                                     </div>
                                 @endforeach
@@ -89,13 +101,19 @@
                         {{-- Payment --}}
                         @case(2)
                             @foreach ($interpretation->interpretationLogs as $orderLog)
-                                @if ($orderLog->is_admin == 0 && $orderLog->interpretation_status == 0 && $orderLog->is_interpretation == 1 && $orderLog->new_payment_status == 1)
+                                @if (
+                                    $orderLog->is_admin == 0 &&
+                                        $orderLog->interpretation_status == 0 &&
+                                        $orderLog->is_interpretation == 1 &&
+                                        $orderLog->new_payment_status == 1)
                                     @if ($orderLog->is_admin == 0)
                                         {{ $orderLog->created_at->format('y-m-d h:m:s') }} -
                                         {{ $orderLog->user->name }} {{ $orderLog->action }}
-                                    @elseif($orderLog->is_admin == 1)
-                                        {{ $orderLog->created_at->format('y-m-d h:m:s') }} -
-                                        {{ $orderLog->admin->name }} {{ $orderLog->action }}
+                                        <br>
+                                    {{-- @elseif($orderLog->is_admin == 1) --}}
+                                        {{-- {{ $orderLog->created_at->format('y-m-d h:m:s') }} - --}}
+                                        {{-- {{ $orderLog->admin->name }} {{ $orderLog->action }} --}}
+                                        {{-- <br> --}}
                                     @endif
                                 @endif
                             @endforeach
@@ -103,18 +121,17 @@
 
                         {{-- Translator --}}
                         @case(3)
-                            {{-- @if ($interpretation->id == 11)
-                        @dd($interpretation->contractorLogs)
-                        @endif --}}
                             @if (isset($interpretation->contractorLogs) && count($interpretation->contractorLogs) > 0)
                                 @foreach ($interpretation->contractorLogs as $contractorLog)
                                     <div class="row">
                                         @if ($contractorLog->is_admin == 1 && $contractorLog->contractor_type == 'Interpreter')
                                             {{ $contractorLog->created_at->format('y-m-d h:m:s') }} -
                                             {{ $contractorLog->admin->name ?? '-' }} {{ $contractorLog->action }}
+                                            <br>
                                         @elseif ($contractorLog->is_admin == 0 && $contractorLog->contractor_type == 'Interpreter')
                                             {{ $contractorLog->created_at->format('y-m-d h:m:s') }} -
-                                            {{ $contractorLog->action }}
+                                            {{ $contractorLog->contractor->name }} {{ $contractorLog->action }}
+                                            <br>
                                         @endif
                                     </div>
                                 @endforeach
@@ -128,9 +145,11 @@
                                     @if ($orderLog->is_admin == 0)
                                         {{ $orderLog->created_at->format('y-m-d h:m:s') }} -
                                         {{ $orderLog->user->name }} {{ $orderLog->action }}
+                                        <br>
                                     @elseif($orderLog->is_admin == 1)
                                         {{ $orderLog->created_at->format('y-m-d h:m:s') }} -
                                         {{ $orderLog->admin->name }} {{ $orderLog->action }}
+                                        <br>
                                     @endif
                                 @endif
                             @endforeach

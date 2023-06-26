@@ -259,7 +259,7 @@ class AdminController extends Controller
             $order->save();
 
             HelperClass::storeContractorLog(
-                $request->admin_id, LogActionsEnum::ISADMIN, $order->id, $request->contractor_id,
+                Auth::user()->id, LogActionsEnum::ISADMIN, $order->id, $request->contractor_id,
                 "Contractor",
                 "Admin",
                 "Translator",
@@ -308,7 +308,7 @@ class AdminController extends Controller
             $order->save();
 
             HelperClass::storeContractorLog(
-                $request->admin_id, LogActionsEnum::ISADMIN, $order->id, $request->p_contractor_id,
+                Auth::user()->id, LogActionsEnum::ISADMIN, $order->id, $request->p_contractor_id,
                 "Contractor",
                 0,
                 "Proof Reader",
