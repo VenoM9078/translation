@@ -141,7 +141,7 @@ Route::group(['middleware' => ['auth:contractor', 'contractor.verified']], funct
     Route::get('/contractor/downloadFiles/{order}', [ContractorAuthController::class, 'downloadFiles'])->name('contractor.downloadFiles');
 
     //Submit for approval
-    Route::post('/upload-translation', [ContractorAuthController::class, 'submitTranslationFile'])->name('contractor.upload-translation');
+    Route::post('/contractor/upload-translation', [ContractorAuthController::class, 'submitTranslationFile'])->name('contractor.upload-translation');
 
     Route::get('/accept-request/{id}', [ContractorAuthController::class, 'acceptInterpretationRequest'])->name('accept.request');
     Route::get('/deny-request/{id}', [ContractorAuthController::class, 'denyInterpretationRequest'])->name('deny.request');
