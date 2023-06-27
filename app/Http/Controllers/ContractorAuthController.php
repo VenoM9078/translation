@@ -223,7 +223,7 @@ class ContractorAuthController extends Controller
         $contractorProofReader->save();
         $contractorObj = Contractor::findOrFail($contractorProofReader->contractor_id);
         $admins = Admin::all();
-        HelperClass::storeContractorLog(Auth::user()->id, LogActionsEnum::NOTADMIN, null, $contractorProofReader->contractor_id, "ProofRead", "ProofReader", "Proof Reader", LogActionsEnum::ACCEPTPROOFREAD, 0, 0, LogActionsEnum::ACCEPTEDNUMBER, 0, 0, 0, 0);
+        HelperClass::storeContractorLog(Auth::user()->id, LogActionsEnum::NOTADMIN, $contractorProofReader->order_id, $contractorProofReader->contractor_id, "ProofRead", "ProofReader", "Proof Reader", LogActionsEnum::ACCEPTPROOFREAD, 0, 0, LogActionsEnum::ACCEPTEDNUMBER, 0, 0, 0, 0);
 
         if (env('IS_DEV') != 1) {
             Mail::to('webpage@flowtranslate.com')->send(new NotifyAdminProofRead($contractorObj, 'accepted', $contractorProofReader));
@@ -245,7 +245,7 @@ class ContractorAuthController extends Controller
         $contractorProofReader->delete();
         $admins = Admin::all();
 
-        HelperClass::storeContractorLog(Auth::user()->id, LogActionsEnum::NOTADMIN, null, $contractorProofReader->contractor_id, "ProofRead", "ProofReader", "ProofReader", LogActionsEnum::DECLINEPROOFREAD, 0, 0, LogActionsEnum::DECLINENUMBER, 0, 0, 0, 0);
+        HelperClass::storeContractorLog(Auth::user()->id, LogActionsEnum::NOTADMIN, $contractorProofReader->order_id, $contractorProofReader->contractor_id, "ProofRead", "ProofReader", "ProofReader", LogActionsEnum::DECLINEPROOFREAD, 0, 0, LogActionsEnum::DECLINENUMBER, 0, 0, 0, 0);
 
         if (env('IS_DEV') != 1) {
             Mail::to('webpage@flowtranslate.com')->send(new NotifyAdminProofRead($contractorObj, 'denied', $contractorProofReader));
