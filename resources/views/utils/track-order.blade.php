@@ -36,25 +36,27 @@
     $steps['status'] = 'warning';
     @endphp
     @endif --}}
-        <div class="intro-x flex items-center mt-5">
-            {{-- <button --}} {{-- class="w-10 h-10 rounded-full btn  --}}
-            {{-- @if ($step['status'] == 'success') btn-success --}}
-            {{-- @elseif ($step['status'] == 'warning') --}}
-            {{-- btn-warning --}}
-            {{-- @else --}}
-            {{-- text-slate-500 bg-slate-100 dark:bg-darkmode-400 dark:border-darkmode-400 @endif"> --}}
-            {{-- {{ $step['number'] }} --}}
-            {{-- </button> --}}
-            <div
-                class="text-base
+
+        {{-- <button --}} {{-- class="w-10 h-10 rounded-full btn  --}}
+        {{-- @if ($step['status'] == 'success') btn-success --}}
+        {{-- @elseif ($step['status'] == 'warning') --}}
+        {{-- btn-warning --}}
+        {{-- @else --}}
+        {{-- text-slate-500 bg-slate-100 dark:bg-darkmode-400 dark:border-darkmode-400 @endif"> --}}
+        {{-- {{ $step['number'] }} --}}
+        {{-- </button> --}}
+        <div
+            class="text-base
             @if ($step['status'] == 'success' || $step['status'] == 'warning') text-slate-600 dark:text-slate-500 @endif ml-3">
-                {{-- {{ $step['text'] }} --}}
-                @if (count($order->orderLogs) < 1 && count($order->contractorLogs) < 1 && count($order->invoiceLogs) < 1)
-                    <div class="row text-center mx-auto">
-                        <h2>No Log Tracked For Order.</h2>
-                    </div>
-                @break
-            @else
+            {{-- {{ $step['text'] }} --}}
+            @if (count($order->orderLogs) < 1 && count($order->contractorLogs) < 1 && count($order->invoiceLogs) < 1)
+                <div class="row text-center mx-auto">
+                    <h2>No Log Tracked For Order.</h2>
+                </div>
+            @break
+
+        @else
+            <div class="intro-x flex items-center mt-5">
                 <div>
                     @switch($step['number'])
                         {{-- Order Created --}}
@@ -78,7 +80,6 @@
                                         @endif
                                     @endforeach
                                 </div>
-
                             @endif
                         @break
 
@@ -183,8 +184,9 @@
                         @default
                     @endswitch
                 </div>
-            @endif
-        </div>
+            </div>
+        @endif
+
     </div>
 @endforeach
 </div>
