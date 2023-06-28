@@ -460,9 +460,9 @@
                                             <td class="whitespace-nowrap">{{ $interpretation->user->name }}</td>
                                             <td class="whitespace-nowrap">{{ $interpretation->interpretationDate }}</td>
                                             <td class="whitespace-nowrap">
-                                                {{ App\Helpers\HelperClass::convertTimeToCurrentTimeZone($interpretation->start_time, request()->ip()) }}
+                                                {{\Carbon\Carbon::parse($interpretation->start_time)->format('H:i')}}
                                                 -
-                                                {{ App\Helpers\HelperClass::convertTimeToCurrentTimeZone($interpretation->end_time, request()->ip()) }}
+                                                {{ \Carbon\Carbon::parse($interpretation->end_time)->format('H:i') }}
                                             </td>
                                             <td class="whitespace-nowrap">{{ $interpretation->language }}</td>
 

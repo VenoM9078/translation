@@ -7,8 +7,8 @@ Your interpretation request has been submitted successfully. Here are the detail
 
 **Language:** {{ $interpretation->language }}<br>
 **Date:** {{ $interpretation->interpretationDate }}<br>
-**Start Time:**  {{ App\Helpers\HelperClass::convertTimeToCurrentTimeZone($interpretation->start_time, request()->ip()) }}<br>
-**End Time:**  {{ App\Helpers\HelperClass::convertTimeToCurrentTimeZone($interpretation->end_time, request()->ip()) }}<br>
+**Start Time:**  {{ \Carbon\Carbon::parse($interpretation->start_time)->format('H:i') }}<br>
+**End Time:**  {{ \Carbon\Carbon::parse($interpretation->end_time)->format('H:i') }}<br>
 **Session Format:** {{ $interpretation->session_format }}<br>
 **Location:** {{ $interpretation->location }}<br>
 **Session Topics:** {{ $interpretation->session_topics }}<br>
