@@ -899,7 +899,15 @@ class UserController extends Controller
 
     public function viewInstituteInterpretations()
     {
-        $interpretations = Interpretation::all()->where('added_by_institute_user', 1);
+        $members = Auth::user()->institute_managed->members;
+        $user_ids = [];
+        foreach($members as $member){
+            if($member->id != Auth::user()->id){
+                $user_ids[] = $member->id;
+            }
+        }
+        $user_ids = array_unique($user_ids);
+        $interpretations = Interpretation::whereIn('user_id',$user_ids)->get();
         return view('user.institute.view-user-interpretations', compact('interpretations'));
     }
 }
