@@ -57,7 +57,7 @@ class InvoiceController extends Controller
         $validated = $request->validate([
             'description' => 'required|max:255',
             'docQuantity' => 'required',
-            'amount' => 'required|integer',
+            'amount' => 'required',
             'user_id' => 'required|integer',
             'order_id' => 'required|integer'
         ]);

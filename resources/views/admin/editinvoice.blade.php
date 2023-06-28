@@ -21,7 +21,7 @@
                         <input type="hidden" name="order_id" value="{{ $invoice->order_id }}">
                         <input type="text" name="description" class="intro-x login__input form-control py-3 px-4 block" value="{{ $invoice->description }}">
                         <input type="text" name="docQuantity" class="intro-x login__input form-control py-3 px-4 block mt-4" value="{{ $invoice->docQuantity }}">
-                        <input type="number" name="amount" class="intro-x login__input form-control py-3 px-4 block mt-4" value="{{ $invoice->amount }}">
+                        <input type="number" name="amount" step="0.0001" class="intro-x login__input form-control py-3 px-4 block mt-4" value="{{ $invoice->amount }}">
                         
                         
                     </div>
