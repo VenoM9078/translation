@@ -81,7 +81,7 @@
                                     <div class="w-full">
                                         <div class="mt-2">
                                             <label for="">Source Language</label>
-                                            <select name="language" data-placeholder="Select a language"
+                                            <select name="language1" data-placeholder="Select a language"
                                                 class="tom-select w-full">
                                                 <option value="{{ $order->language1 }}" selected>
                                                     {{ $order->language1 }}</option>
@@ -190,7 +190,7 @@
                                     <div class="w-full">
                                         <div class="mt-2">
                                             <label for="">Target Language</label>
-                                            <select name="language" data-placeholder="Select a language"
+                                            <select name="language2" data-placeholder="Select a language"
                                                 class="tom-select w-full">
                                                 <option value="{{ $order->language2 }}" selected>
                                                     {{ $order->language2 }}</option>
