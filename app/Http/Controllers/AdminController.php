@@ -1090,7 +1090,7 @@ class AdminController extends Controller
     public function pendingOrders()
     {
         $pendingOrders = Order::
-            orderByDesc('created_at')
+            orderByDesc('id')
             // ->where('id',34)
             ->get();
         // dd($orders);
