@@ -273,7 +273,7 @@
                                                 </div>
                                                 <div class="text-center">
                                                     <a href="{{ route('assign-proofread-translator', $order->id) }}"
-                                                        class="btn btn-secondary" title="Assign">
+                                                        class="btn bg-green-700" title="Assign">
                                                         <svg class="w-5 h-5 text-white mx-auto"
                                                             xmlns="http://www.w3.org/2000/svg" fill="none"
                                                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
