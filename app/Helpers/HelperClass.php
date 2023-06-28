@@ -6,27 +6,37 @@ use App\Models\InvoiceLogs;
 use App\Models\Order;
 use App\Models\OrderLog;
 use Carbon\Carbon;
+use Exception;
 
 class HelperClass
 {
     public static function convertDateToCurrentTimeZone($date, $ip)
     {
-        // dd($date);
-        $json = file_get_contents("http://ip-api.com/json/");
-        $data = json_decode($json);
-        $timezone = $data->timezone;
-        return $date->timezone($timezone);
+        try {
+            $json = file_get_contents("http://ip-api.com/json/{$ip}");
+            $data = json_decode($json);
+            $timezone = $data->timezone;
+            return $date->timezone($timezone);
+        } catch (Exception $e) {
+            return $date->format('Y-m-d h:m:s');
+            // If an error occurs, return the date in its original timezone
+        }
     }
 
     public static function convertTimeToCurrentTimeZone($time, $ip)
     {
-        $json = file_get_contents("http://ip-api.com/json/");
-        $data = json_decode($json);
-        $timezone = $data->timezone;
-        $carbonTime = \Carbon\Carbon::parse($time);
-        return $carbonTime->timezone($timezone)->format('h:m:s');
+        try {
+            $json = file_get_contents("http://ip-api.com/json/{$ip}");
+            $data = json_decode($json);
+            $timezone = $data->timezone;
+            $carbonTime = \Carbon\Carbon::parse($time);
+            return $carbonTime->timezone($timezone)->format('h:m:s');
+        } catch (\Exception $e) {
+            // If an error occurs (like a failure to connect to the API), return the time in the default time zone
+            $carbonTime = \Carbon\Carbon::parse($time);
+            return $carbonTime->format('h:m:s');
+        }
     }
-
 
     public static function storeOrderLog(
         $is_admin = null,
@@ -83,13 +93,13 @@ class HelperClass
         $orderLog->new_order_completed_status = $new_order_completed_status;
 
         //interpretation
-        if($is_interpretation != null){
+        if ($is_interpretation != null) {
             $orderLog->interpretation_id = $interpretation_id;
             $orderLog->is_interpretation = $is_interpretation;
             $orderLog->interpretation_status = $interpretation_status;
         }
         $orderLog->created_at = Carbon::now();
-        
+
         $orderLog->save();
 
     }
@@ -150,7 +160,7 @@ class HelperClass
 
         $invoiceLog = new InvoiceLogs();
         $invoiceLog->user_id = $user;
-        $invoiceLog->is_admin= $is_admin;
+        $invoiceLog->is_admin = $is_admin;
         $invoiceLog->user_id = $user;
         $invoiceLog->order_id = $order_id;
         $invoiceLog->user_type = $user_type;
