@@ -580,7 +580,7 @@
             ordering: true,
             info: true,
             paging: true,
-            pageLength: 4,
+            pageLength: 10,
         });
         console.log("table", table);
         $(document).ready(function() {
