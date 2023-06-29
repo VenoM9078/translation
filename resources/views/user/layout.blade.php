@@ -286,18 +286,18 @@
                                 <div class="side-menu__title"> Users & Requests </div>
                             </a>
                         </li>
-                        <li>
+                        {{-- <li>
                             <a href="{{ route('view-institute-orders') }}" class="side-menu">
                                 <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
                                 <div class="side-menu__title"> Orders </div>
                             </a>
-                        </li>
-                        <li>
+                        </li> --}}
+                        {{-- <li>
                             <a href="{{ route('view-institute-interpretations') }}" class="side-menu">
                                 <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
                                 <div class="side-menu__title"> Interpretations </div>
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </li>
                 @endif
