@@ -32,7 +32,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($user->interpretations as $interpretation)
+                                    @foreach ($interpretations as $interpretation)
                                         <tr>
                                             <td class="whitespace-nowrap">{{ $interpretation->worknumber }}</td>
                                             <td class="whitespace-nowrap">{{ $interpretation->interpretationDate }}</td>

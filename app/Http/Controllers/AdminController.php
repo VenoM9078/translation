@@ -614,7 +614,7 @@ class AdminController extends Controller
             0,
             0,
             0,
-            0, LogActionsEnum::ISINTERPRETATION, LogActionsEnum::INCOMPLETEINTERPRETATION,$interpretation->id
+            0, LogActionsEnum::ISINTERPRETATION, LogActionsEnum::INCOMPLETEINTERPRETATION, $interpretation->id
         );
 
         //storing interpretation with paid status
@@ -626,7 +626,7 @@ class AdminController extends Controller
             0,
             0,
             0,
-            0, LogActionsEnum::ISINTERPRETATION, LogActionsEnum::INCOMPLETEINTERPRETATION,$interpretation->id
+            0, LogActionsEnum::ISINTERPRETATION, LogActionsEnum::INCOMPLETEINTERPRETATION, $interpretation->id
         );
 
         HelperClass::storeContractorLog(
@@ -1022,6 +1022,19 @@ class AdminController extends Controller
         $order->want_quote = 2;
         $order->save();
 
+        HelperClass::storeOrderLog(
+            LogActionsEnum::ISADMIN, Auth::user()->id, $order->id,
+            "Order",
+            "Admin",
+            LogActionsEnum::QUOTESENT, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            0,
+            0,
+            null
+        );
         // Send the email to the user
         Mail::to($order->user->email)->send(new OrderQuoteSent($order));
         return redirect()->route('admin.pending')->with('message', 'Quote has been sent successfully');

@@ -64,7 +64,20 @@ class UserController extends Controller
     public function myinterpretations()
     {
         $user = Auth::user();
-        $interpretations = Interpretation::where('user_id', $user->id)->orderByDesc('created_at')->get();
+        if ($user->role_id == 0) {
+            $interpretations = Interpretation::where('user_id', $user->id)->orderByDesc('created_at')->get();
+
+        } else {
+            $members = Auth::user()->institute_managed->members;
+            $user_ids = [];
+            foreach ($members as $member) {
+                // if($member->id != Auth::user()->id){
+                $user_ids[] = $member->id;
+                // }
+            }
+            $user_ids = array_unique($user_ids);
+            $interpretations = Interpretation::whereIn('user_id', $user_ids)->get();
+        }
 
         return view('user.viewMyInterpretations', compact('user', 'interpretations'));
     }
@@ -325,10 +338,32 @@ class UserController extends Controller
     public function myorders()
     {
         $user = Auth::user();
-        $orders = Order::where('user_id', $user->id)->orderByDesc('created_at')->get();
-        $interpretations = Interpretation::where('user_id', $user->id)->orderByDesc('created_at')->get();
+        if ($user->role_id == 0) {
 
-        return view('user.myorders', compact('user', 'orders', 'interpretations'));
+            $orders = Order::where('user_id', $user->id)->orderByDesc('created_at')->get();
+            $interpretations = Interpretation::where('user_id', $user->id)->orderByDesc('created_at')->get();
+            return view('user.myorders', compact('user', 'orders'));
+
+        } else if ($user->role_id == 1 || $user->role_id == 2) {
+            // Get all the institutes managed by this user
+            $institutes = Institute::where('managed_by', $user->id)->get();
+            // dd($institutes);
+            // Collect all the user IDs associated with these institutes
+            $user_ids = [];
+            foreach ($institutes as $institute) {
+                $members = $institute->members()->get();
+                foreach ($members as $member) {
+                    $user_ids[] = $member->id;
+                }
+            }
+            $user_ids = array_unique($user_ids); // Remove duplicates
+            // dd($user_ids);
+            // Get all orders made by these users
+            $orders = Order::whereIn('user_id', $user_ids)->orderByDesc('created_at')->get();
+            // dd($orders);
+            return view('user.myorders', compact('user', 'orders'));
+        }
+
     }
 
 
@@ -430,7 +465,7 @@ class UserController extends Controller
             0,
             0, LogActionsEnum::ISINTERPRETATION, LogActionsEnum::INCOMPLETEINTERPRETATION, $interpretation->id
         );
-        
+
         $interpretation->save();
 
         $email = $interpretation->user->email;
@@ -846,7 +881,7 @@ class UserController extends Controller
             0,
             0,
             0,
-            0, LogActionsEnum::ISINTERPRETATION, LogActionsEnum::INCOMPLETEINTERPRETATION,$interpretation->id
+            0, LogActionsEnum::ISINTERPRETATION, LogActionsEnum::INCOMPLETEINTERPRETATION, $interpretation->id
         );
 
         if (Auth::user()->role_id == 1 || Auth::user()->role_id == 2) {
@@ -859,7 +894,7 @@ class UserController extends Controller
                 0,
                 0,
                 0,
-                0, LogActionsEnum::ISINTERPRETATION, LogActionsEnum::INCOMPLETEINTERPRETATION,$interpretation->id
+                0, LogActionsEnum::ISINTERPRETATION, LogActionsEnum::INCOMPLETEINTERPRETATION, $interpretation->id
             );
         }
 
@@ -901,13 +936,13 @@ class UserController extends Controller
     {
         $members = Auth::user()->institute_managed->members;
         $user_ids = [];
-        foreach($members as $member){
-            if($member->id != Auth::user()->id){
-                $user_ids[] = $member->id;
-            }
+        foreach ($members as $member) {
+            // if($member->id != Auth::user()->id){
+            $user_ids[] = $member->id;
+            // }
         }
         $user_ids = array_unique($user_ids);
-        $interpretations = Interpretation::whereIn('user_id',$user_ids)->get();
+        $interpretations = Interpretation::whereIn('user_id', $user_ids)->get();
         return view('user.institute.view-user-interpretations', compact('interpretations'));
     }
 }

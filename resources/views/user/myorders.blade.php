@@ -31,8 +31,8 @@
                                         <th class="whitespace-nowrap">Message</th>
                                         <th class="whitespace-nowrap">Type</th>
                                         <th class="whitespace-nowrap">Unit</th>
-                                        <th class="whitespace-nowrap">Order Status</th>
-                                        <th class="whitespace-nowrap">Payment Status</th>
+                                        <th class="whitespace-nowrap">Status</th>
+                                        {{-- <th class="whitespace-nowrap">Payment Status</th> --}}
 
                                         <th class="whitespace-nowrap">Created At</th>
                                         <th class="whitespace-nowrap">Possible Action</th>
@@ -40,7 +40,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($user->orders as $order)
+                                    @foreach ($orders as $order)
                                         <tr>
                                             <td class="whitespace-nowrap">{{ $order->worknumber }}</td>
                                             <td class="whitespace-nowrap">{{ $order->language1 }}</td>
@@ -79,7 +79,7 @@
                                             <td class="whitespace-nowrap">By Word</td>
                                             <td class="whitespace-nowrap">
                                                 {{ $order->unit ?? '-' }}</td>
-                                            @if ($order->paymentStatus == 1)
+                                            {{-- @if ($order->paymentStatus == 1)
                                                 <td class="whitespace-nowrap"><button
                                                         class="btn btn-rounded-success w-24 mr-1 mb-2">Paid</button>
                                                 </td>
@@ -95,65 +95,31 @@
                                                 <td class="whitespace-nowrap"><button
                                                         class="btn btn-rounded-pending w-24 mr-1 mb-2">Pending</button>
                                                 </td>
-                                            @endif
+                                            @endif --}}
                                             <td class="whitespace-nowrap">
-                                                @if ($order->invoiceSent == 0)
-                                                    <div class="progress h-6">
-                                                        <div class="progress-bar w-1/4" role="progressbar" aria-valuenow="0"
-                                                            aria-valuemin="0" aria-valuemax="100">0%
-                                                        </div>
+                                                @if ($order->want_quote == 0 && $order->translation_status == 0)
+                                                    <div class="w-full">
+                                                        Translation Requested
                                                     </div>
-                                                @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 2)
-                                                    <div class="progress h-6">
-                                                        <div class="progress-bar w-1/4" role="progressbar" aria-valuenow="0"
-                                                            aria-valuemin="0" aria-valuemax="100">35%
-                                                        </div>
+                                                @elseif ($order->want_quote == 1)
+                                                    <div class="w-full">
+                                                        Quote Requested
                                                     </div>
-                                                @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 3)
-                                                    <div class="progress h-6">
-                                                        <div class="progress-bar w-1/4" role="progressbar" aria-valuenow="0"
-                                                            aria-valuemin="0" aria-valuemax="100">25%
-                                                        </div>
+                                                @elseif($order->want_quote == 2)
+                                                    <div class="w-full">
+                                                        Quote Ready
                                                     </div>
-                                                @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 0 && $order->is_evidence == 1)
-                                                    <div class="progress h-6">
-                                                        <div class="progress-bar w-1/4" role="progressbar" aria-valuenow="0"
-                                                            aria-valuemin="0" aria-valuemax="100">35%
-                                                        </div>
+                                                @elseif ($order->contractorOrder->is_accepted == 1 && $order->translation_status == 0)
+                                                    <div class="w-full">
+                                                        Translation In Progress
                                                     </div>
-                                                @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 0)
-                                                    <div class="progress h-6">
-                                                        <div class="progress-bar w-1/4" role="progressbar" aria-valuenow="0"
-                                                            aria-valuemin="0" aria-valuemax="100">25%
-                                                        </div>
+                                                @elseif ($order->translation_status == \App\Enums\TranslationStatusEnum::COMPLETED)
+                                                    <div class="w-full">
+                                                        Translation Completed
                                                     </div>
-                                                @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 1 && $order->translation_status == 0)
-                                                    <div class="progress h-6">
-                                                        <div class="progress-bar w-2/4 bg-primary" role="progressbar"
-                                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">50%
-                                                        </div>
-                                                    </div>
-                                                @elseif (
-                                                    $order->invoiceSent == 1 &&
-                                                        $order->paymentStatus == 1 &&
-                                                        $order->translation_status == 1 &&
-                                                        $order->proofread_status == 0)
-                                                    <div class="progress h-6">
-                                                        <div class="progress-bar w-3/4 bg-pending" role="progressbar"
-                                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                                            75%
-                                                        </div>
-                                                    </div>
-                                                @elseif (
-                                                    $order->invoiceSent == 1 &&
-                                                        $order->paymentStatus == 1 &&
-                                                        $order->translation_status == 1 &&
-                                                        $order->proofread_status == 1)
-                                                    <div class="progress h-6">
-                                                        <div class="progress-bar w-4/4 bg-success" role="progressbar"
-                                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                                            100%
-                                                        </div>
+                                                @elseif ($order->orderStatus == 'Cancelled')
+                                                    <div class="w-full">
+                                                        Cancelled
                                                     </div>
                                                 @endif
 

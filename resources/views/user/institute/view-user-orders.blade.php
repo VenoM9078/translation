@@ -31,7 +31,7 @@
                                         <th class="whitespace-nowrap">Translated Document</th>
                                         <th class="whitespace-nowrap">Message</th>
                                         <th class="whitespace-nowrap">Type</th>
-                                        <th class="whitespace-nowrap">Order Status</th>
+                                        <th class="whitespace-nowrap">Status</th>
                                         <th>Created At</th>
                                         <th class="whitespace-nowrap">Possible Action</th>
                                     </tr>

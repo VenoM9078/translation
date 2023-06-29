@@ -32,7 +32,7 @@ abstract class LogActionsEnum
     const WILLPAYLATE = "Will Pay Later";
     const PAYMENTCOMPLETEDNUMBER = 1;
     const LATEPAYMENTCOMPLETEDNUMBER = 2;
-
+    const QUOTESENT = "Sent Quote";
     const WILLPAYLATENUMBER = 3;
 
     const PAYMENTINCOMPLETEDNUMBER = 0;

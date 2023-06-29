@@ -859,6 +859,7 @@
             ],
             scrollX: true,
             scrollCollapse: true,
+            ordering:false,
             paging: true,
             pageLength: 10
         });
