@@ -31,12 +31,20 @@
                                         <th class="whitespace-nowrap">Message</th>
                                         <th class="whitespace-nowrap">Type</th>
                                         <th class="whitespace-nowrap">Unit</th>
+                                        <th class="whitespace-nowrap">
+                                            C. Rate ($/W or $/P)
+                                        </th>
+                                        <th class="whitespace-nowrap">C. Adjust
+                                            ($)
+                                        </th>
+                                        <th class="whitespace-nowrap">C. Fee
+                                            ($)
+                                        </th>
+                                        <th class="whitespace-nowrap">C. Adjust Note</th>
+                                        <th class="whitespace-nowrap">C.Paid</th>
                                         <th class="whitespace-nowrap">Status</th>
-                                        {{-- <th class="whitespace-nowrap">Payment Status</th> --}}
-
                                         <th class="whitespace-nowrap">Created At</th>
                                         <th class="whitespace-nowrap">Possible Action</th>
-
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -79,23 +87,14 @@
                                             <td class="whitespace-nowrap">By Word</td>
                                             <td class="whitespace-nowrap">
                                                 {{ $order->unit ?? '-' }}</td>
-                                            {{-- @if ($order->paymentStatus == 1)
-                                                <td class="whitespace-nowrap"><button
-                                                        class="btn btn-rounded-success w-24 mr-1 mb-2">Paid</button>
-                                                </td>
-                                            @elseif($order->paymentStatus == 2)
-                                                <td class="whitespace-nowrap"><button
-                                                        class="btn btn-rounded-warning w-28 mr-1 mb-2">Payment
-                                                        Later</button></td>
-                                            @elseif($order->paymentStatus == 3)
-                                                <td class="whitespace-nowrap"><button
-                                                        class="btn btn-rounded-warning w-32 mr-1 mb-2">Request
-                                                        Pending</button></td>
-                                            @else
-                                                <td class="whitespace-nowrap"><button
-                                                        class="btn btn-rounded-pending w-24 mr-1 mb-2">Pending</button>
-                                                </td>
-                                            @endif --}}
+                                            <td class="whitespace-nowrap">${{ $order->c_rate }}</td>
+                                            <td class="whitespace-nowrap">${{ $order->c_adjust }}</td>
+                                            <td class="whitespace-nowrap">{{ $order->c_fee }}</td>
+                                            <td title="{{ $order->c_adjust_note ?? '-' }}"><i data-lucide="message-square"
+                                                    class="w-100 h-5"> </i>
+                                            </td>
+                                            <td class="whitespace-nowrap">{{ $order->c_paid }}</td>
+
                                             <td class="whitespace-nowrap">
                                                 @if ($order->want_quote == 0 && $order->translation_status == 0)
                                                     <div class="w-full">
@@ -121,6 +120,10 @@
                                                     <div class="w-full">
                                                         Cancelled
                                                     </div>
+                                                @else
+                                                    <div class="w-full">
+                                                        -
+                                                    </div>
                                                 @endif
 
                                             </td>
@@ -128,6 +131,7 @@
                                                 {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($order->created_at, request()->ip()) }}
                                             </td>
                                             <td class="whitespace-nowrap">
+                                                
                                                 @if ($order->invoiceSent == 0)
                                                     <button class="btn btn-warning mr-1 mb-2"> Waiting for Invoice <i
                                                             data-loading-icon="three-dots" data-color="ffffff"
@@ -206,11 +210,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    @else
+                                                    -
                                                 @endif
-
                                             </td>
-
-
                                         </tr>
                                         <!-- BEGIN: Modal Content -->
                                         <div id="note-modal-preview{{ $order->id }}" class="modal" tabindex="-1"
