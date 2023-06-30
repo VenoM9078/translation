@@ -48,7 +48,8 @@ class Order extends Model
         'c_adjust_note',
         'c_paid',
         'due_date',
-        'unit'
+        'unit',
+        'is_order_quote_accepted'
     ];
 
     public function files()

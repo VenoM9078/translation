@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\LogActionsEnum;
+use App\Enums\OrderStatusEnum;
 use App\Helpers\HelperClass;
 use App\Mail\AdminInterpretationPaymentReceived;
 use App\Mail\AdminNewInterpretation;
@@ -11,6 +12,7 @@ use App\Mail\AdminPaymentReceived;
 use App\Mail\CustomerPaymentReceived;
 use App\Mail\InstituteRequestAccepted;
 use App\Mail\InstituteRequestDeclined;
+use App\Mail\OrderQuoteSent;
 use App\Models\Contractor;
 use App\Models\Institute;
 use App\Models\InstituteMembers;
@@ -446,6 +448,40 @@ class UserController extends Controller
         return redirect()->back()->with('error', 'Interpretation not found.');
     }
 
+    public function approveQuote($id)
+    {
+        $order = Order::where('id',$id)->first();
+        $order->is_order_quote_accepted = OrderStatusEnum::QUOTEACCEPTED;
+        $order->want_quote = 2;
+        $order->save();
+        HelperClass::storeOrderLog(
+            LogActionsEnum::NOTADMIN,
+            Auth::user()->id,
+            $order->id,
+            "Order",
+            "User",
+            LogActionsEnum::QUOTEAPPROVED,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            0,
+            0,
+            null
+        );
+        // Send the email to the user
+        Mail::to($order->user->email)->send(new OrderQuoteSent($order));
+        return redirect()->route('myorders');
+    }
+    public function disapproveQuote($id){
+
+    }
     public function myorders()
     {
         $user = Auth::user();
