@@ -156,7 +156,7 @@
                                                             </div>
                                                         @endif
 
-                                                        @if (Auth::user()->role_id == 2)
+                                                        @if (Auth::user()->role_id == 2 || Auth::user()->role_id == 0)
                                                             @if (isset($order->is_order_quote_accepted) && $order->is_order_quote_accepted == 0 && $order->want_quote == 1)
                                                                 <div class="flex gap-2">
                                                                     <div>

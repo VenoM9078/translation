@@ -21,10 +21,12 @@ class NotifyAdminQuote extends Mailable
     public $data;
     public $status;
     public $statusMessage;
-     public function __construct($data,$status)
+    public $fromEmail;
+     public function __construct($data,$status,$from)
     {
         $this->data = $data;
         $this->status = $status;
+        $this->fromEmail=  $from;
     }
     public function build()
     {

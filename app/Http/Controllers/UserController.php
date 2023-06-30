@@ -479,8 +479,13 @@ class UserController extends Controller
         );
         // Send the email to the user
         $admins = Admin::all();
+        if (env("IS_DEV") == 1) {
+            $fromEmail = env("ADMIN_EMAIL_DEV");
+        } else {
+            $fromEmail = env("ADMIN_EMAIL");
+        }
         foreach ($admins as $admin) {
-            Mail::to($admin->email)->send(new NotifyAdminQuote($order, 1));
+            Mail::to($admin->email)->send(new NotifyAdminQuote($order, 1, $fromEmail));
         }
         Mail::to($order->user->email)->send(new OrderQuoteSent($order));
         return redirect()->route('myorders');

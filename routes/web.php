@@ -323,8 +323,8 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
     Route::post('cancel-interpretation', [UserController::class, 'cancelInterpretation'])->name('cancelInterpretation');
 
 
-    Route::post('/user/quote/{id}/accept',[UserController::class,'approveQuote'])->name('user.approve-quote');
-    Route::post('/user/quote/{id}/reject', [UserController::class, 'disapproveQuote'])->name('user.disapprove-quote');
+    Route::get('/user/quote/{id}/accept',[UserController::class,'approveQuote'])->name('user.approve-quote');
+    Route::get('/user/quote/{id}/reject', [UserController::class, 'disapproveQuote'])->name('user.disapprove-quote');
 
     Route::get('/edit-order/{orderID}', [UserController::class, 'viewEditOrder'])->name('view-edit-order');
     Route::post('/edit-order/save', [UserController::class, 'editOrder'])->name('admin.edit-order');
