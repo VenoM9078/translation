@@ -11,6 +11,7 @@ use App\Mail\AdminPaymentReceived;
 use App\Mail\CustomerPaymentReceived;
 use App\Mail\InstituteRequestAccepted;
 use App\Mail\InstituteRequestDeclined;
+use App\Models\Contractor;
 use App\Models\Institute;
 use App\Models\InstituteMembers;
 use Carbon\Carbon;
@@ -348,6 +349,101 @@ class UserController extends Controller
 
     public function cancelOrder(Request $request)
     {
+        $orderId = $request->input('order_id');
+
+        // Fetch the order using the ID
+        $order = Order::find($orderId);
+
+        // Check if the order exists
+        if ($order) {
+            // Update the is_cancelled column to 1
+            $order->is_cancelled = !$order->is_cancelled;
+            $order->save();
+
+            // Redirect back with a success message
+            return back()->with('success', 'Order cancelled successfully.');
+        }
+
+        // Redirect back with an error message if the order doesn't exist
+        return back()->with('error', 'Order not found.');
+    }
+
+    public function cancelInterpretation(Request $request)
+    {
+        $interpretationId = $request->input('interpretation_id');
+
+        // Fetch the interpretation using the ID
+        $interpretation = Interpretation::find($interpretationId);
+
+        // Check if the interpretation exists
+        if ($interpretation) {
+            // Update the is_cancelled column to 1
+            $interpretation->is_cancelled = !$interpretation->is_cancelled;
+            $interpretation->save();
+
+            // Redirect back with a success message
+            return back()->with('success', 'Interpretation cancelled successfully.');
+        }
+
+        // Redirect back with an error message if the interpretation doesn't exist
+        return back()->with('error', 'Interpretation not found.');
+    }
+
+    public function updateInterpretation(Request $request, $id)
+    {
+        $interpretation = Interpretation::find($id);
+        $oldInt = $interpretation;
+        if ($interpretation) {
+            // Validation can be added as per your requirements.
+            $interpretation->update($request->all());
+            // dd($oldInt,$interpretation);
+            return redirect()->route('myinterpretations')->with('success', 'Interpretation updated successfully.');
+        }
+
+        return redirect()->route('myinterpretations')->with('error', 'Interpretation not found.');
+    }
+
+    public function editOrder(Request $request)
+    {
+
+        $order = Order::where('id', $request->order_id)->first();
+
+        $order->language1 = $request->input('language1');
+        $order->language2 = $request->input('language2');
+
+        // new fields
+        $order->c_type = $request->input('c_type');
+        $order->c_unit = $request->input('c_unit');
+        $order->c_rate = $request->input('c_rate');
+        $order->c_adjust = $request->input('c_adjust');
+        $order->c_fee = $request->input('c_fee');
+        $order->unit = $request->input('unit');
+        $order->c_adjust_note = $request->input('c_adjust_note');
+        $order->c_paid = $request->input('c_paid');
+        $order->due_date = Carbon::now()->addDays(7);
+        $order->save();
+        // dd($order);
+
+        return redirect()->route('myorders');
+    }
+
+    public function viewEditOrder($orderID)
+    {
+        $order = Order::find($orderID);
+        // dd($order);
+        $contractors = Contractor::all();
+        return view('user.edit-order', compact('order', 'contractors'));
+    }
+
+    public function editInterpretation($id)
+    {
+        $interpretation = Interpretation::find($id);
+
+        if ($interpretation) {
+            return view('user.editInterpretation', ['interpretation' => $interpretation]);
+        }
+
+        return redirect()->back()->with('error', 'Interpretation not found.');
     }
 
     public function myorders()

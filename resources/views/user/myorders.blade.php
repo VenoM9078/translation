@@ -54,6 +54,7 @@
                             <tbody>
                                 @foreach ($orders as $order)
                                 <tr>
+                                    @if($order->is_cancelled == 0)
                                     <td class="whitespace-nowrap">
                                         <div class="flex gap-1 items-center">
                                             <div class="text-center mb-2 mr-1">
@@ -68,18 +69,6 @@
 
                                                 </a>
                                             </div>
-                                            <div class="text-center mb-2 mr-1">
-                                                <a href="{{ route('copy-order', $order->id) }}"
-                                                    class="btn btn-pending"><svg
-                                                        class="w-4 h-4 text-white dark:text-white" aria-hidden="true"
-                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                        viewBox="0 0 16 20">
-                                                        <path stroke="currentColor" stroke-linecap="round"
-                                                            stroke-linejoin="round" stroke-width="2"
-                                                            d="M2 5a1 1 0 0 0-1 1v12a.969.969 0 0 0 .933 1h8.1a1 1 0 0 0 1-1.033M10 1v4a1 1 0 0 1-1 1H5m10-4v12a.97.97 0 0 1-.933 1H5.933A.97.97 0 0 1 5 14V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 9.828 1h4.239A.97.97 0 0 1 15 2Z" />
-                                                    </svg></a>
-                                            </div>
-                                            {{-- Track --}}
                                             <div class="text-center mb-2 mr-1"> <a href="javascript:;"
                                                     data-tw-toggle="modal"
                                                     data-tw-target="#track-modal-preview{{ $order->id }}" title="Track"
@@ -111,16 +100,55 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div> <!-- END: Modal Content -->
+                                            </div>
+                                            @if($order->contractorOrder == null && $order->proofReaderOrder == null)
+                                            <div class="text-center mb-2 mr-1">
+                                                <form action="{{ route('cancelOrder') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                                    <button type="submit" class="btn btn-danger">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                            viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"
+                                                            class="w-5 h-5">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            @endif
+                                            @if (Auth::user()->role_id == 2)
+                                            {{-- Edit --}}
+                                            <div class="text-center mb-2 mr-1">
+                                                <a href="{{ route('view-edit-order', $order->id) }}"
+                                                    class="btn btn-warning" title="Edit">
+                                                    <svg class="w-5 h-5 text-white mx-auto"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                                    </svg>
+
+                                                </a>
+                                            </div>
+                                            @endif
+                                            {{-- Copy --}}
+                                            @if (Auth::user()->role_id == 1 && Auth::user()->role_id == 2)
                                             <div class="text-center mb-2 mr-1">
                                                 <a href="{{ route('copy-order', $order->id) }}"
-                                                    class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg"
-                                                        fill="none" viewBox="0 0 24 24" stroke-width="2.5"
-                                                        stroke="currentColor" class="w-4 h-4">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    class="btn btn-pending"><svg
+                                                        class="w-4 h-4 text-white dark:text-white" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 16 20">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-linejoin="round" stroke-width="2"
+                                                            d="M2 5a1 1 0 0 0-1 1v12a.969.969 0 0 0 .933 1h8.1a1 1 0 0 0 1-1.033M10 1v4a1 1 0 0 1-1 1H5m10-4v12a.97.97 0 0 1-.933 1H5.933A.97.97 0 0 1 5 14V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 9.828 1h4.239A.97.97 0 0 1 15 2Z" />
                                                     </svg></a>
                                             </div>
+                                            @endif
+
+
                                             @if ($order->invoiceSent == 0 && Auth::user()->role_id != 2)
                                             <button class="btn btn-warning mr-1 mb-2"> Waiting for Invoice <i
                                                     data-loading-icon="three-dots" data-color="ffffff"
@@ -205,9 +233,33 @@
                                             -
                                             @endif
                                     </td>
+                                    @elseif($order->is_cancelled == 1)
+                                    <td class="whitespace-nowrap" style="font-weight: bold;">
+                                        <div class="flex justify-between gap-6 mx-auto items-center">
+                                            <span>Order Cancelled</span>
+                                            @if($order->contractorOrder == null && $order->proofReaderOrder == null)
+                                            <div class="text-center">
+                                                <form action="{{ route('cancelOrder') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                                    <button type="submit" class="btn btn-danger">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                            class="w-5 h-5">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            @endif
+                                        </div>
+
+                                    </td>
+                                    @endif
                                     <td class="whitespace-nowrap">{{ $order->worknumber }}</td>
                                     @if (Auth::user()->role_id == 2)
-                                    <td class="whitespace-nowrap">{{ $order->user->name }}</td>
+                                    <td class="whitespace-nowrap">{{ $order->user->email }}</td>
                                     @endif
                                     <td class="whitespace-nowrap">{{ $order->language1 }}</td>
                                     <td class="whitespace-nowrap">{{ $order->language2 }}</td>
@@ -272,9 +324,33 @@
                                     <td class="whitespace-nowrap">${{ $order->c_rate }}</td>
                                     <td class="whitespace-nowrap">${{ $order->c_adjust }}</td>
                                     <td class="whitespace-nowrap">{{ $order->c_fee }}</td>
-                                    <td title="{{ $order->c_adjust_note ?? '-' }}"><i data-lucide="message-square"
-                                            class="w-100 h-5"> </i>
+                                    {{-- Quote --}}
+                                    <td class="whitespace-nowrap">
+                                        <a href="javascript:;" data-tw-toggle="modal"
+                                            data-tw-target="#c-note-modal-preview{{ $order->id }}">
+                                            <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                        </a>
                                     </td>
+                                    <!-- BEGIN: Modal Content -->
+                                    <div id="c-note-modal-preview{{ $order->id }}" class="modal" tabindex="-1"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-body p-0">
+                                                    <div class="p-5 text-center"> <i data-lucide="bookmark"
+                                                            class="w-16 h-16 text-info mx-auto mt-3"></i>
+                                                        <div class="text-3xl mt-5 mb-2">Order C. Note</div>
+                                                        <div class="w-full text-left">
+                                                            <label for="order-form-21" class="form-label">Quote
+                                                                Message:</label>
+                                                            <textarea id="order-form-2" type="text" class="form-control"
+                                                                disabled>{{ $order->c_adjust_note }}</textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> <!-- END: Modal Content -->
                                     <td class="whitespace-nowrap">{{ $order->c_paid == 1 ? 'Yes' : 'No' }}
                                     </td>
 

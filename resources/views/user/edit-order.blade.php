@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('user.layout')
 
 @section('content')
     <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
@@ -388,7 +388,7 @@
                                     </div>
 
                                 </div>
-                                <div class="w-full">
+                                 <div class="w-full">
                                     <label for="order-form-21" class="form-label">Message</label>
                                     <textarea id="order-form-21" type="text" class="form-control" disabled
                                         value="{{ $order->message }}">{{ $order->message }}</textarea>
