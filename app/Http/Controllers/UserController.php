@@ -452,7 +452,7 @@ class UserController extends Controller
 
     public function approveQuote($id)
     {
-        $order = Order::where('id',$id)->first();
+        $order = Order::where('id', $id)->first();
         $order->is_order_quote_accepted = OrderStatusEnum::QUOTEACCEPTED;
         $order->want_quote = 2;
         $order->save();
@@ -479,13 +479,14 @@ class UserController extends Controller
         );
         // Send the email to the user
         $admins = Admin::all();
-        foreach($admins as $admin){
-            Mail::to($admin->email)->send(new NotifyAdminQuote($order,1));
+        foreach ($admins as $admin) {
+            Mail::to($admin->email)->send(new NotifyAdminQuote($order, 1));
         }
         Mail::to($order->user->email)->send(new OrderQuoteSent($order));
         return redirect()->route('myorders');
     }
-    public function disapproveQuote($id){
+    public function disapproveQuote($id)
+    {
         $order = Order::where('id', $id)->first();
         $order->is_order_quote_accepted = OrderStatusEnum::QUOTEREJECTED;
         $order->want_quote = 1;
@@ -514,13 +515,13 @@ class UserController extends Controller
         // Send the email to the user
         $admins = Admin::all();
         $fromEmail = "";
-        if(env("IS_DEV") == 1){
+        if (env("IS_DEV") == 1) {
             $fromEmail = env("ADMIN_EMAIL_DEV");
         } else {
             $fromEmail = env("ADMIN_EMAIL");
         }
         foreach ($admins as $admin) {
-            Mail::to($admin->email)->send(new NotifyAdminQuote($order, 0,$fromEmail));
+            Mail::to($admin->email)->send(new NotifyAdminQuote($order, 0, $fromEmail));
         }
         Mail::to($order->user->email)->send(new OrderQuoteSent($order));
         return redirect()->route('myorders');
@@ -528,15 +529,14 @@ class UserController extends Controller
     public function myorders()
     {
         $user = Auth::user();
-        if ($user->role_id == 0) {
+        if ($user->role_id == 0 || $user->role_id == 1) {
 
             $orders = Order::where('user_id', $user->id)->orderByDesc('created_at')->get();
             $interpretations = Interpretation::where('user_id', $user->id)->orderByDesc('created_at')->get();
             return view('user.myorders', compact('user', 'orders'));
-        } else if ($user->role_id == 1 || $user->role_id == 2) {
+        } else if ($user->role_id == 2) {
             // Get all the institutes managed by this user
             $institutes = Institute::where('managed_by', $user->id)->get();
-            // dd($institutes);
             // Collect all the user IDs associated with these institutes
             $user_ids = [];
             foreach ($institutes as $institute) {

@@ -1,4 +1,4 @@
-<div class="px-5 sm:px-20">
+<div class="px-5">
     @php
         $steps = [
             ['number' => 1, 'text' => 'Order Created', 'status' => 'success'],
@@ -139,64 +139,59 @@
                                             </div>
                                         </div>
                                     @endif
-                        </div>
+                                @endforeach
+                            @endif
+                        @break
+
+                        {{-- Proof Read --}}
+                        @case(5)
+                            @if (isset($order->contractorLogs) && count($order->contractorLogs) > 0)
+                                @foreach ($order->contractorLogs as $contractorLog)
+                                    @if ($contractorLog->is_admin == 1 && $contractorLog->contractor_type == 'Proof Reader')
+                                        <div class="intro-x flex items-center mt-5">
+                                            <div class="row">
+                                                {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($contractorLog->created_at, request()->ip()) }}
+                                                -
+                                                {{ $contractorLog->admin->name }} {{ $contractorLog->action }}
+                                                <br>
+                                            </div>
+                                        </div>
+                                    @elseif ($contractorLog->is_admin == 0 && $contractorLog->contractor_type == 'Proof Reader')
+                                        <div class="intro-x flex items-center mt-5">
+                                            <div class="row">
+                                                {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($contractorLog->created_at, request()->ip()) }}
+                                                -
+                                                {{ $contractorLog->contractor->name }} {{ $contractorLog->action }}
+                                                <br>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            @endif
+                        @break
+
+                        {{-- Order Completed --}}
+                        @case(6)
+                            @if (isset($order->orderLogs) && count($order->orderLogs) > 0)
+                                @foreach ($order->orderLogs as $orderLog)
+                                    @if ($orderLog->is_admin == 1 && $orderLog->new_order_completed_status == 1)
+                                        <div class="intro-x flex items-center mt-5">
+                                            <div class="row">
+                                                {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($orderLog->created_at, request()->ip()) }}
+                                                -
+                                                {{ $orderLog->admin->name }} {{ $orderLog->action }}
+                                                <br>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            @endif
+                        @break
+
+                        @default
+                    @endswitch
                 </div>
-        @endforeach
-        @endif
-    @break
-
-    {{-- Proof Read --}}
-    @case(5)
-        @if (isset($order->contractorLogs) && count($order->contractorLogs) > 0)
-            @foreach ($order->contractorLogs as $contractorLog)
-                @if ($contractorLog->is_admin == 1 && $contractorLog->contractor_type == 'Proof Reader')
-                    <div class="intro-x flex items-center mt-5">
-                        <div class="row">
-                            {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($contractorLog->created_at, request()->ip()) }}
-                            -
-                            {{ $contractorLog->admin->name }} {{ $contractorLog->action }}
-                            <br>
-                        </div>
-                    </div>
-                @elseif ($contractorLog->is_admin == 0 && $contractorLog->contractor_type == 'Proof Reader')
-                    <div class="intro-x flex items-center mt-5">
-                        <div class="row">
-                            {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($contractorLog->created_at, request()->ip()) }}
-                            -
-                            {{ $contractorLog->contractor->name }} {{ $contractorLog->action }}
-                            <br>
-                        </div>
-                    </div>
-                @endif
-    </div>
-    </div>
-    </div>
-    @endforeach
-    @endif
-@break
-
-{{-- Order Completed --}}
-@case(6)
-    @if (isset($order->orderLogs) && count($order->orderLogs) > 0)
-        @foreach ($order->orderLogs as $orderLog)
-            @if ($orderLog->is_admin == 1 && $orderLog->new_order_completed_status == 1)
-                <div class="intro-x flex items-center mt-5">
-                    <div class="row">
-                        {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($orderLog->created_at, request()->ip()) }}
-                        -
-                        {{ $orderLog->admin->name }} {{ $orderLog->action }}
-                        <br>
-                    </div>
-                </div>
-            @endif
-        @endforeach
-    @endif
-@break
-
-@default
-@endswitch
-</div>
-</div>
+        </div>
 @endif
 
 </div>
