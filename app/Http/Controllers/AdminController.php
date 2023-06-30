@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\ContractorOrderEnum;
 use App\Enums\LogActionsEnum;
+use App\Enums\OrderStatusEnum;
 use App\Enums\TranslationStatusEnum;
 use App\Helpers\HelperClass;
 use App\Mail\AdminNewInterpretation;
@@ -1054,7 +1055,7 @@ class AdminController extends Controller
         $order = Order::find($request->order_id);
         $order->quote_price = $request->quote_price;
         $order->quote_description = $request->quote_description;
-        $order->want_quote = 2;
+        $order->is_order_quote_accepted = OrderStatusEnum::QUOTEPENDING;
         $order->save();
 
         HelperClass::storeOrderLog(

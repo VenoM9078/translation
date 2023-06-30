@@ -12,7 +12,7 @@ abstract class LogActionsEnum
     const ASSIGNEDPROOFREADER = "Assigned Proof Reader";
     const SENTQUOTE = "Sent Quote";
 
-    const INVOICESENT  = "Sent Invoice";
+    const INVOICESENT = "Sent Invoice";
     const INVOICESENTNUMBER = 1;
     const ACCEPTTRANSLATION = "Accepted Translation Request";
     const ACCEPTINTERPRETATION = "Accepted Interpretation Request";
@@ -28,7 +28,7 @@ abstract class LogActionsEnum
     const ORDERCOMPLETED = "Completed Order";
     const PAYMENTCOMPLETED = "Completed Payment";
     const
-    LATEPAYMENTCOMPLETED = "Completed Late Payment";
+        LATEPAYMENTCOMPLETED = "Completed Late Payment";
     const WILLPAYLATE = "Will Pay Later";
     const PAYMENTCOMPLETEDNUMBER = 1;
     const LATEPAYMENTCOMPLETEDNUMBER = 2;
@@ -38,6 +38,8 @@ abstract class LogActionsEnum
     const PAYMENTINCOMPLETEDNUMBER = 0;
     const ACCEPTEDNUMBER = 1;
     const DECLINENUMBER = 2;
+    const QUOTEAPPROVED = "Approved Quote";
+    const QUOTEDISAPPROVED = "Disapproved Quote";
 
     const CREATEDINTERPRETATION = "Created Interpretation";
     const COMPLETEDINTERPRETATION = "Completed Interpretation";

@@ -320,6 +320,9 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
     Route::get('/user/interpretation/{id}/edit', [UserController::class, 'editInterpretation'])->name('admin.interpretation.edit');
     Route::put('/user/interpretation/{id}', [UserController::class, 'updateInterpretation'])->name('admin.interpretation.update');
 
+    Route::post('/user/quote/{id}/accept',[UserController::class,'approveQuote'])->name('user.approve-quote');
+    Route::post('/user/quote/{id}/reject', [UserController::class, 'disapproveQuote'])->name('user.disapprove-quote');
+
     Route::get('/edit-order/{orderID}', [UserController::class, 'viewEditOrder'])->name('view-edit-order');
     Route::post('/edit-order/save', [UserController::class, 'editOrder'])->name('admin.edit-order');
 
