@@ -12,7 +12,9 @@ use App\Mail\AdminPaymentReceived;
 use App\Mail\CustomerPaymentReceived;
 use App\Mail\InstituteRequestAccepted;
 use App\Mail\InstituteRequestDeclined;
+use App\Mail\NotifyAdminQuote;
 use App\Mail\OrderQuoteSent;
+use App\Models\Admin;
 use App\Models\Contractor;
 use App\Models\Institute;
 use App\Models\InstituteMembers;
@@ -476,11 +478,52 @@ class UserController extends Controller
             null
         );
         // Send the email to the user
+        $admins = Admin::all();
+        foreach($admins as $admin){
+            Mail::to($admin->email)->send(new NotifyAdminQuote($order,1));
+        }
         Mail::to($order->user->email)->send(new OrderQuoteSent($order));
         return redirect()->route('myorders');
     }
     public function disapproveQuote($id){
-
+        $order = Order::where('id', $id)->first();
+        $order->is_order_quote_accepted = OrderStatusEnum::QUOTEREJECTED;
+        $order->want_quote = 1;
+        $order->save();
+        HelperClass::storeOrderLog(
+            LogActionsEnum::NOTADMIN,
+            Auth::user()->id,
+            $order->id,
+            "Order",
+            "User",
+            LogActionsEnum::QUOTEDISAPPROVED,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            0,
+            0,
+            null
+        );
+        // Send the email to the user
+        $admins = Admin::all();
+        $fromEmail = "";
+        if(env("IS_DEV") == 1){
+            $fromEmail = env("ADMIN_EMAIL_DEV");
+        } else {
+            $fromEmail = env("ADMIN_EMAIL");
+        }
+        foreach ($admins as $admin) {
+            Mail::to($admin->email)->send(new NotifyAdminQuote($order, 0,$fromEmail));
+        }
+        Mail::to($order->user->email)->send(new OrderQuoteSent($order));
+        return redirect()->route('myorders');
     }
     public function myorders()
     {
