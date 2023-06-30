@@ -51,7 +51,7 @@
                                 @foreach ($order->orderLogs as $orderLog)
                                     {{-- @dd($order->orderLogs) --}}
                                     @if ($orderLog->new_order_completed_status == 0)
-                                        @if ($orderLog->is_admin == 0)
+                                        @if ($orderLog->is_admin == 0  && $orderLog->action != \App\Enums\LogActionsEnum::PAYMENTCOMPLETED)
                                             <div class="intro-x flex items-center mt-5">
                                                 <div class="row">
                                                     {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($orderLog->created_at, request()->ip()) }}
