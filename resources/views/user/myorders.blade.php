@@ -4,7 +4,7 @@
     <div class="col-span-12 mt-8">
         <div class="intro-y flex items-center h-10">
             <h2 class="text-lg font-medium truncate mr-5 mb-5">
-                My Translation Orders
+                Translation Orders
             </h2>
         </div>
 
@@ -81,9 +81,31 @@
                                                     -
                                                 @endif
                                             </td>
-                                            <td title="{{ $order->message }}"><i data-lucide="message-square"
-                                                    class="w-100 h-5"> </i>
+                                            <td class="whitespace-nowrap">
+                                                <a href="javascript:;" data-tw-toggle="modal"
+                                                    data-tw-target="#order-message-modal-preview{{ $order->id }}">
+                                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                                </a>
                                             </td>
+                                            <!-- BEGIN: Modal Content -->
+                                            <div id="order-message-modal-preview{{ $order->id }}" class="modal"
+                                                tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body p-0">
+                                                            <div class="p-5 text-center"> <i data-lucide="bookmark"
+                                                                    class="w-16 h-16 text-info mx-auto mt-3"></i>
+                                                                <div class="text-3xl mt-5 mb-2">Order Message</div>
+                                                                <div class="w-full text-left">
+                                                                    <label for="order-form-21" class="form-label">
+                                                                        Message:</label>
+                                                                    <textarea id="order-form-21" type="text" class="form-control" disabled>{{ $order->message }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- END: Modal Content -->
                                             <td class="whitespace-nowrap">By Word</td>
                                             <td class="whitespace-nowrap">
                                                 {{ $order->unit ?? '-' }}</td>
@@ -93,7 +115,7 @@
                                             <td title="{{ $order->c_adjust_note ?? '-' }}"><i data-lucide="message-square"
                                                     class="w-100 h-5"> </i>
                                             </td>
-                                            <td class="whitespace-nowrap">{{ $order->c_paid }}</td>
+                                            <td class="whitespace-nowrap">{{ $order->c_paid == 1 ? 'Yes' : 'No' }}</td>
 
                                             <td class="whitespace-nowrap">
                                                 @if ($order->want_quote == 0 && $order->translation_status == 0)
