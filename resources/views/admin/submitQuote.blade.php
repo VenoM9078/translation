@@ -26,7 +26,7 @@
                             <input type="hidden" name="interpretation_id" value="{{ $interpretation->id }}">
                             <div>
                                 <label for="">Enter a Quote</label>
-                                <input type="number" name="quote_price"
+                                <input type="number" name="quote_price" step="0.0001"
                                     class="intro-x login__input form-control py-3 px-4 block" required
                                     placeholder="Enter a Quote in Dollars i.e 150">
                             </div>

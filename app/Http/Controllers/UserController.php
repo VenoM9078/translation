@@ -345,6 +345,11 @@ class UserController extends Controller
 
         return view('viewPayment', compact('order'));
     }
+
+    public function cancelOrder(Request $request)
+    {
+    }
+
     public function myorders()
     {
         $user = Auth::user();

@@ -318,6 +318,8 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
     Route::get('/view-interpretation/{id}', [UserController::class, 'viewInterpretationDetails'])->name('view-interpretation-details');
     Route::get('/copy-interpretation/{id}', [UserController::class, 'copyInterpretationDetails'])->name('copy-interpretation-details');
 
+    Route::post('cancel-order', [UserController::class, 'cancelOrder'])->name('cancelOrder');
+
 
     Route::put('/user/update-profile/{id}', [UserController::class, 'updateProfile'])->name('user.updateProfile');
     Route::put('user/{id}/update-institute', [UserController::class, 'updateInstitute'])->name('user.updateInstitute');

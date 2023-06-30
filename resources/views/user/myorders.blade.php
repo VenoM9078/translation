@@ -112,6 +112,15 @@
                                                     </div>
                                                 </div>
                                             </div> <!-- END: Modal Content -->
+                                            <div class="text-center mb-2 mr-1">
+                                                <a href="{{ route('copy-order', $order->id) }}"
+                                                    class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                                                        stroke="currentColor" class="w-4 h-4">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg></a>
+                                            </div>
                                             @if ($order->invoiceSent == 0 && Auth::user()->role_id != 2)
                                             <button class="btn btn-warning mr-1 mb-2"> Waiting for Invoice <i
                                                     data-loading-icon="three-dots" data-color="ffffff"
