@@ -198,7 +198,7 @@
                                     </td>
                                     <td class="whitespace-nowrap">{{ $order->worknumber }}</td>
                                     @if (Auth::user()->role_id == 2)
-                                    <td class="whitespace-nowrap">{{ $order->user->email }}</td>
+                                    <td class="whitespace-nowrap">{{ $order->user->name }}</td>
                                     @endif
                                     <td class="whitespace-nowrap">{{ $order->language1 }}</td>
                                     <td class="whitespace-nowrap">{{ $order->language2 }}</td>

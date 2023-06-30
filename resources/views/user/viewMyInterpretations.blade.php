@@ -68,7 +68,7 @@
 
                                             <div class="text-center mb-2 mr-1">
                                                 <a href="{{ route('view-interpretation-details', $interpretation->id) }}"
-                                                    class="btn btn-secondary"><svg class="w-5 h-5 text-black mx-auto"
+                                                    class="btn btn-primary"><svg class="w-5 h-5 text-black mx-auto"
                                                         xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                         class="w-6 h-6">
@@ -196,7 +196,7 @@
                     </div>
                     <td class="whitespace-nowrap">{{ $interpretation->worknumber }}</td>
                     @if (Auth::user()->role_id == 2)
-                    <td class="whitespace-nowrap">{{ $interpretation->user->email }}</td>
+                    <td class="whitespace-nowrap">{{ $interpretation->user->name }}</td>
                     @endif
                     <td class="whitespace-nowrap">{{ $interpretation->interpretationDate }}</td>
                     <td class="whitespace-nowrap">
