@@ -66,12 +66,17 @@ class UserController extends Controller
         $interpretation = Interpretation::where('id', $id)->firstOrFail();
         return view('user.view-interpretation', compact('interpretation'));
     }
+
+    public function copyInterpretationDetails($id)
+    {
+        $interpretation = Interpretation::where('id', $id)->firstOrFail();
+        return view('user.copy-interpretation', compact('interpretation'));
+    }
     public function myinterpretations()
     {
         $user = Auth::user();
         if ($user->role_id == 0) {
             $interpretations = Interpretation::where('user_id', $user->id)->orderByDesc('created_at')->get();
-
         } else {
             $members = Auth::user()->institute_managed->members;
             $user_ids = [];
@@ -348,7 +353,6 @@ class UserController extends Controller
             $orders = Order::where('user_id', $user->id)->orderByDesc('created_at')->get();
             $interpretations = Interpretation::where('user_id', $user->id)->orderByDesc('created_at')->get();
             return view('user.myorders', compact('user', 'orders'));
-
         } else if ($user->role_id == 1 || $user->role_id == 2) {
             // Get all the institutes managed by this user
             $institutes = Institute::where('managed_by', $user->id)->get();
@@ -368,7 +372,6 @@ class UserController extends Controller
             // dd($orders);
             return view('user.myorders', compact('user', 'orders'));
         }
-
     }
 
 
@@ -471,14 +474,25 @@ class UserController extends Controller
         HelperClass::storeInvoiceLogs(Auth::user()->id, 0, null, "Invoice", "Individual User", LogActionsEnum::INVOICESENT, 1, $interpretation_id);
 
         HelperClass::storeOrderLog(
-            LogActionsEnum::NOTADMIN, Auth::user()->id,
+            LogActionsEnum::NOTADMIN,
+            Auth::user()->id,
             null,
             "Interpretation",
-            "User", LogActionsEnum::PAYMENTCOMPLETED, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::PAYMENTINCOMPLETEDNUMBER, LogActionsEnum::PAIDINTERPRETATION, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            "User",
+            LogActionsEnum::PAYMENTCOMPLETED,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::PAYMENTINCOMPLETEDNUMBER,
+            LogActionsEnum::PAIDINTERPRETATION,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
             0,
             0,
             0,
-            0, LogActionsEnum::ISINTERPRETATION, LogActionsEnum::INCOMPLETEINTERPRETATION, $interpretation->id
+            0,
+            LogActionsEnum::ISINTERPRETATION,
+            LogActionsEnum::INCOMPLETEINTERPRETATION,
+            $interpretation->id
         );
 
         $interpretation->save();
@@ -660,6 +674,13 @@ class UserController extends Controller
         $order = $orders = Order::with(['contractorOrder.contractor'])->where('id', $id)
             ->firstOrFail();
         return view('user.show-order', compact('order'));
+    }
+
+    public function copyOrderDetails($id)
+    {
+        $order = $orders = Order::with(['contractorOrder.contractor'])->where('id', $id)
+            ->firstOrFail();
+        return view('user.copy-order', compact('order'));
     }
 
     /**
@@ -891,27 +912,49 @@ class UserController extends Controller
         }
 
         HelperClass::storeOrderLog(
-            LogActionsEnum::NOTADMIN, Auth::user()->id,
+            LogActionsEnum::NOTADMIN,
+            Auth::user()->id,
             null,
             "Interpretation",
-            "User", LogActionsEnum::CREATEDINTERPRETATION, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::PAYMENTINCOMPLETEDNUMBER, LogActionsEnum::PAYMENTINCOMPLETEDNUMBER, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            "User",
+            LogActionsEnum::CREATEDINTERPRETATION,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::PAYMENTINCOMPLETEDNUMBER,
+            LogActionsEnum::PAYMENTINCOMPLETEDNUMBER,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
             0,
             0,
             0,
-            0, LogActionsEnum::ISINTERPRETATION, LogActionsEnum::INCOMPLETEINTERPRETATION, $interpretation->id
+            0,
+            LogActionsEnum::ISINTERPRETATION,
+            LogActionsEnum::INCOMPLETEINTERPRETATION,
+            $interpretation->id
         );
 
         if (Auth::user()->role_id == 1 || Auth::user()->role_id == 2) {
             //storing interpretation with paid status
             HelperClass::storeOrderLog(
-                LogActionsEnum::NOTADMIN, Auth::user()->id,
+                LogActionsEnum::NOTADMIN,
+                Auth::user()->id,
                 null,
                 "Interpretation",
-                "Admin", LogActionsEnum::PAYMENTCOMPLETED, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::PAYMENTINCOMPLETEDNUMBER, LogActionsEnum::PAIDINTERPRETATION, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                "Admin",
+                LogActionsEnum::PAYMENTCOMPLETED,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::PAYMENTINCOMPLETEDNUMBER,
+                LogActionsEnum::PAIDINTERPRETATION,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
                 0,
                 0,
                 0,
-                0, LogActionsEnum::ISINTERPRETATION, LogActionsEnum::INCOMPLETEINTERPRETATION, $interpretation->id
+                0,
+                LogActionsEnum::ISINTERPRETATION,
+                LogActionsEnum::INCOMPLETEINTERPRETATION,
+                $interpretation->id
             );
         }
 

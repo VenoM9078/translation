@@ -158,8 +158,8 @@ Route::group(['middleware' => ['auth:contractor', 'contractor.verified']], funct
     Route::get('/contractor/download-translation-file/{orderID}', [ContractorAuthController::class, 'downloadTranslationFile'])->name('contractor.download-translation-file');
     //create route for downloading proofread file
 
-    
-    Route::get('/contractor/download-translation-file-admin/{id}',[ContractorAuthController::class,'downloadTranslationFileByAdmin'])->name('contractor.download-translated-file-by-admin');
+
+    Route::get('/contractor/download-translation-file-admin/{id}', [ContractorAuthController::class, 'downloadTranslationFileByAdmin'])->name('contractor.download-translated-file-by-admin');
 
     Route::post('/contractor/report-submission', [ContractorAuthController::class, 'reportSubmission'])->name('contractor.report-submission');
 
@@ -280,20 +280,21 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/institute/admin/{id}/decline', [AdminController::class, 'declineInstituteAdmin'])->name('institute-admin-decline');
 
     //Register User
-    Route::get('/register-user',[AdminController::class,'viewRegisterUser'])->name('register-user');
-    Route::post('/register-user',[AdminController::class,'registerUser'])->name('submit-register-user');
+    Route::get('/register-user', [AdminController::class, 'viewRegisterUser'])->name('register-user');
+    Route::post('/register-user', [AdminController::class, 'registerUser'])->name('submit-register-user');
 
     //Register Contractor
     Route::get('/register-contractor', [AdminController::class, 'viewRegisterContractor'])->name('register-contractor');
     Route::post('/register-contractor', [AdminController::class, 'registerContractor'])->name('submit-register-contractor');
 
     //Assign proof-read and contractor
-    Route::get('/assign/{order}',[AdminController::class,'assignProofReadTranslator'])->name('assign-proofread-translator');
+    Route::get('/assign/{order}', [AdminController::class, 'assignProofReadTranslator'])->name('assign-proofread-translator');
     Route::post('/assign', [AdminController::class, 'submitAssignProofReadTranslator'])->name('assign-proofread-translator-submit');
 
     Route::post('/admin/upload-proof', [AdminController::class, 'uploadProofFile'])->name('admin-upload-proof-read-file');
 
-    Route::get('/view-interpretation/{id}',[AdminController::class,'viewInterpretationDetails'])->name('view-interpretation-details');
+    Route::get('/view-interpretation/{id}', [AdminController::class, 'viewInterpretationDetails'])->name('view-interpretation-details');
+    Route::get('/copy-interpretation/{id}', [AdminController::class, 'copyInterpretationDetails'])->name('copy-interpretation-details');
 
 
     // Track Order
@@ -301,7 +302,6 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/interpretation/{id}/track', [AdminController::class, 'trackInterpretation']);
 
     Route::post('/upload-translation', [AdminController::class, 'uploadTranslationFile'])->name('upload-translation');
-
 });
 
 Route::middleware(['web', 'auth', 'verified'])->group(function () {
@@ -313,7 +313,10 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
 
     // Order management
     Route::get('user/orders/{id}', [UserController::class, 'show'])->name('show-order');
+    Route::get('user/copy-order/{id}', [UserController::class, 'copyOrderDetails'])->name('copy-order');
+
     Route::get('/view-interpretation/{id}', [UserController::class, 'viewInterpretationDetails'])->name('view-interpretation-details');
+    Route::get('/copy-interpretation/{id}', [UserController::class, 'copyInterpretationDetails'])->name('copy-interpretation-details');
 
 
     Route::put('/user/update-profile/{id}', [UserController::class, 'updateProfile'])->name('user.updateProfile');

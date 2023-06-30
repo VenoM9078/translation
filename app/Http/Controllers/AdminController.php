@@ -147,6 +147,12 @@ class AdminController extends Controller
         return view('admin.view-interpretation', compact('interpretation'));
     }
 
+    public function copyInterpretationDetails($id)
+    {
+        $interpretation = Interpretation::where('id', $id)->firstOrFail();
+        return view('admin.view-interpretation', compact('interpretation'));
+    }
+
     public function editInterpretation($id)
     {
         $interpretation = Interpretation::find($id);
@@ -259,7 +265,10 @@ class AdminController extends Controller
             $order->save();
 
             HelperClass::storeContractorLog(
-                Auth::user()->id, LogActionsEnum::ISADMIN, $order->id, $request->contractor_id,
+                Auth::user()->id,
+                LogActionsEnum::ISADMIN,
+                $order->id,
+                $request->contractor_id,
                 "Contractor",
                 "Admin",
                 "Translator",
@@ -308,7 +317,10 @@ class AdminController extends Controller
             $order->save();
 
             HelperClass::storeContractorLog(
-                Auth::user()->id, LogActionsEnum::ISADMIN, $order->id, $request->p_contractor_id,
+                Auth::user()->id,
+                LogActionsEnum::ISADMIN,
+                $order->id,
+                $request->p_contractor_id,
                 "Contractor",
                 0,
                 "Proof Reader",
@@ -607,30 +619,53 @@ class AdminController extends Controller
 
         //storing interpretation
         HelperClass::storeOrderLog(
-            LogActionsEnum::ISADMIN, Auth::user()->id,
+            LogActionsEnum::ISADMIN,
+            Auth::user()->id,
             null,
             "Interpretation",
-            "Admin", LogActionsEnum::CREATEDINTERPRETATION, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::PAYMENTINCOMPLETEDNUMBER, LogActionsEnum::PAIDINTERPRETATION, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            "Admin",
+            LogActionsEnum::CREATEDINTERPRETATION,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::PAYMENTINCOMPLETEDNUMBER,
+            LogActionsEnum::PAIDINTERPRETATION,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
             0,
             0,
             0,
-            0, LogActionsEnum::ISINTERPRETATION, LogActionsEnum::INCOMPLETEINTERPRETATION, $interpretation->id
+            0,
+            LogActionsEnum::ISINTERPRETATION,
+            LogActionsEnum::INCOMPLETEINTERPRETATION,
+            $interpretation->id
         );
 
         //storing interpretation with paid status
         HelperClass::storeOrderLog(
-            LogActionsEnum::ISADMIN, Auth::user()->id,
+            LogActionsEnum::ISADMIN,
+            Auth::user()->id,
             null,
             "Interpretation",
-            "Admin", LogActionsEnum::PAYMENTCOMPLETED, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::PAYMENTINCOMPLETEDNUMBER, LogActionsEnum::PAIDINTERPRETATION, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            "Admin",
+            LogActionsEnum::PAYMENTCOMPLETED,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::PAYMENTINCOMPLETEDNUMBER,
+            LogActionsEnum::PAIDINTERPRETATION,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
             0,
             0,
             0,
-            0, LogActionsEnum::ISINTERPRETATION, LogActionsEnum::INCOMPLETEINTERPRETATION, $interpretation->id
+            0,
+            LogActionsEnum::ISINTERPRETATION,
+            LogActionsEnum::INCOMPLETEINTERPRETATION,
+            $interpretation->id
         );
 
         HelperClass::storeContractorLog(
-            Auth::user()->id, LogActionsEnum::ISADMIN,
+            Auth::user()->id,
+            LogActionsEnum::ISADMIN,
             0,
             0,
             "Interpretation",
@@ -1023,14 +1058,22 @@ class AdminController extends Controller
         $order->save();
 
         HelperClass::storeOrderLog(
-            LogActionsEnum::ISADMIN, Auth::user()->id, $order->id,
+            LogActionsEnum::ISADMIN,
+            Auth::user()->id,
+            $order->id,
             "Order",
             "Admin",
-            LogActionsEnum::QUOTESENT, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS,
-            LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS,
-            LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS,
-            LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS,
-            LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::QUOTESENT,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
             0,
             0,
             null
@@ -1080,7 +1123,10 @@ class AdminController extends Controller
         $contractorOrder->save();
 
         HelperClass::storeContractorLog(
-            Auth::user()->id, LogActionsEnum::ISADMIN, $order->id, $request->contractor_id,
+            Auth::user()->id,
+            LogActionsEnum::ISADMIN,
+            $order->id,
+            $request->contractor_id,
             "Contractor",
             0,
             "Translator",
@@ -1102,8 +1148,7 @@ class AdminController extends Controller
     }
     public function pendingOrders()
     {
-        $pendingOrders = Order::
-            orderByDesc('id')
+        $pendingOrders = Order::orderByDesc('id')
             // ->where('id',34)
             ->get();
         // dd($orders);
@@ -1775,7 +1820,8 @@ class AdminController extends Controller
         Order::where('id', $order_id)->update(['completed' => 1]);
 
         HelperClass::storeOrderLog(
-            1, Auth::user()->id,
+            1,
+            Auth::user()->id,
             $order_id,
             "Order",
             "Admin",
