@@ -57,12 +57,12 @@
                                 </td>
                                 <td class="border-b dark:border-darkmode-400">
                                     <div class="font-medium whitespace-nowrap">
-                                        {{ App\Helpers\HelperClass::convertTimeToCurrentTimeZone($interpretation->start_time, request()->ip()) }}
+                                        {{ App\Helpers\HelperClass::onlyShowHoursMinutes($interpretation->start_time) }}
                                     </div>
                                 </td>
                                 <td class="border-b dark:border-darkmode-400">
                                     <div class="font-medium whitespace-nowrap">
-                                        {{ App\Helpers\HelperClass::convertTimeToCurrentTimeZone($interpretation->end_time, request()->ip()) }}
+                                        {{ App\Helpers\HelperClass::onlyShowHoursMinutes($interpretation->end_time) }}
                                     </div>
                                 </td>
                                 <td class="border-b dark:border-darkmode-400">

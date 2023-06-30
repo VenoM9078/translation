@@ -5,9 +5,9 @@ A new interpretation request has been submitted by **{{ $user->name }}** ({{ $us
 
 **Language:** {{ $interpretation->language }}<br>
 **Date:** {{ $interpretation->interpretationDate }}<br>
-**Start Time:** {{ App\Helpers\HelperClass::convertTimeToCurrentTimeZone($interpretation->start_time,request()->ip()) }}
+**Start Time:** {{\App\Helpers\HelperClass::onlyShowHoursMinutes($interpretation->start_time) }}
 <br>
-**End Time:** {{ App\Helpers\HelperClass::convertTimeToCurrentTimeZone($interpretation->end_time,request()->ip()) }}<br>
+**End Time:** {{ \App\Helpers\HelperClass::onlyShowHoursMinutes($interpretation->end_time) }}<br>
 **Session Format:** {{ $interpretation->session_format }}<br>
 **Location:** {{ $interpretation->location }}<br>
 **Session Topics:** {{ $interpretation->session_topics }}<br>

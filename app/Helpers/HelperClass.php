@@ -6,6 +6,7 @@ use App\Models\InvoiceLogs;
 use App\Models\Order;
 use App\Models\OrderLog;
 use Carbon\Carbon;
+use DateTime;
 use Exception;
 
 class HelperClass
@@ -22,6 +23,11 @@ class HelperClass
             // If an error occurs, return the date in its original timezone
         }
     }
+
+    public static function onlyShowHoursMinutes($time){
+        $dateTime = new DateTime($time);
+        return $dateTime->format('H:i');
+    } 
 
     public static function convertTimeToCurrentTimeZone($time, $ip)
     {

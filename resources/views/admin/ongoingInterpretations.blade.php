@@ -460,9 +460,9 @@
                                             <td class="whitespace-nowrap">{{ $interpretation->user->name }}</td>
                                             <td class="whitespace-nowrap">{{ $interpretation->interpretationDate }}</td>
                                             <td class="whitespace-nowrap">
-                                                {{\Carbon\Carbon::parse($interpretation->start_time)->format('H:i')}}
+                                                {{ \App\Helpers\HelperClass::onlyShowHoursMinutes($interpretation->start_time) }}
                                                 -
-                                                {{ \Carbon\Carbon::parse($interpretation->end_time)->format('H:i') }}
+                                                {{ \App\Helpers\HelperClass::onlyShowHoursMinutes($interpretation->end_time) }}
                                             </td>
                                             <td class="whitespace-nowrap">{{ $interpretation->language }}</td>
 
@@ -470,12 +470,60 @@
                                             <td class="whitespace-nowrap">{{ $interpretation->location }}</td>
                                             <td class="whitespace-nowrap">{{ $interpretation->session_topics ?? '-' }}
                                             </td>
-                                            <td title="{{ $interpretation->quote_description }}"><i
-                                                    data-lucide="message-square" class="w-100 h-5"> </i>
+                                            <td class="whitespace-nowrap">
+                                                <a href="javascript:;" data-tw-toggle="modal"
+                                                    data-tw-target="#message-modal-preview{{ $interpretation->id }}">
+                                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                                </a>
                                             </td>
+                                            <!-- BEGIN: Modal Content -->
+                                            <div id="message-modal-preview{{ $interpretation->id }}" class="modal"
+                                                tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body p-0">
+                                                            <div class="p-5 text-center"> <i data-lucide="bookmark"
+                                                                    class="w-16 h-16 text-info mx-auto mt-3"></i>
+                                                                <div class="text-3xl mt-5 mb-2">Interpretation Quote
+                                                                </div>
+                                                                <div class="w-full text-left">
+                                                                    <label for="order-form-21" class="form-label">
+                                                                        Message:</label>
+                                                                    <textarea id="order-form-21" type="text" class="form-control" disabled>{{ $interpretation->quote_description }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- END: Modal Content -->
                                             <td class="whitespace-nowrap">{{ $interpretation->interpreter->name ?? '-' }}
                                             </td>
-                                            <td class="whitespace-nowrap">{{ $interpretation->message }}</td>
+                                            <td class="whitespace-nowrap">
+                                                <a href="javascript:;" data-tw-toggle="modal"
+                                                    data-tw-target="#message2-modal-preview{{ $interpretation->id }}">
+                                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                                </a>
+                                            </td>
+                                            <!-- BEGIN: Modal Content -->
+                                            <div id="message2-modal-preview{{ $interpretation->id }}" class="modal"
+                                                tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body p-0">
+                                                            <div class="p-5 text-center"> <i data-lucide="bookmark"
+                                                                    class="w-16 h-16 text-info mx-auto mt-3"></i>
+                                                                <div class="text-3xl mt-5 mb-2">Interpretation Message
+                                                                </div>
+                                                                <div class="w-full text-left">
+                                                                    <label for="order-form-21" class="form-label">
+                                                                        Message:</label>
+                                                                    <textarea id="order-form-21" type="text" class="form-control" disabled>{{ $interpretation->message }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- END: Modal Content -->
 
 
                                             <td class="whitespace-nowrap">
@@ -577,7 +625,7 @@
                     }
                 },
             ],
-            ordering: true,
+            ordering: false,
             info: true,
             paging: true,
             pageLength: 10,

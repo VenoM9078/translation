@@ -37,9 +37,9 @@
                                             <td class="whitespace-nowrap">{{ $interpretation->worknumber }}</td>
                                             <td class="whitespace-nowrap">{{ $interpretation->interpretationDate }}</td>
                                             <td class="whitespace-nowrap">
-                                                {{ App\Helpers\HelperClass::convertTimeToCurrentTimeZone($interpretation->start_time, request()->ip()) }}
+                                                {{ App\Helpers\HelperClass::onlyShowHoursMinutes($interpretation->start_time) }}
                                                 -
-                                                {{ App\Helpers\HelperClass::convertTimeToCurrentTimeZone($interpretation->end_time, request()->ip()) }}
+                                                {{ App\Helpers\HelperClass::onlyShowHoursMinutes($interpretation->end_time) }}
                                             </td>
                                             <td class="whitespace-nowrap">{{ $interpretation->language }}</td>
                                             {{-- Session Format --}}
@@ -49,14 +49,58 @@
                                             {{-- Session Title --}}
                                             <td class="whitespace-nowrap">{{ $interpretation->session_topics }}</td>
                                             {{-- Quote --}}
-                                            <td title="{{ $interpretation->quote() ?? '-' }}"><i
-                                                    data-lucide="message-square" class="w-100 h-5"> </i>
+                                            <td class="whitespace-nowrap">
+                                                <a href="javascript:;" data-tw-toggle="modal"
+                                                    data-tw-target="#note-modal-preview{{ $interpretation->id }}">
+                                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                                </a>
                                             </td>
+                                            <!-- BEGIN: Modal Content -->
+                                            <div id="note-modal-preview{{ $interpretation->id }}" class="modal"
+                                                tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body p-0">
+                                                            <div class="p-5 text-center"> <i data-lucide="bookmark"
+                                                                    class="w-16 h-16 text-info mx-auto mt-3"></i>
+                                                                <div class="text-3xl mt-5 mb-2">Interpretation Note</div>
+                                                                <div class="w-full text-left">
+                                                                    <label for="order-form-21" class="form-label">Quote
+                                                                        Message:</label>
+                                                                    <textarea id="order-form-21" type="text" class="form-control" disabled>{{ $interpretation->quote_description }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- END: Modal Content -->
                                             <td class="whitespace-nowrap">{{ $interpretation->interpreter->name ?? '-' }}
                                             </td>
-                                            <td title="{{ $interpretation->message }}"><i data-lucide="message-square"
-                                                    class="w-100 h-5"> </i>
+                                            <td class="whitespace-nowrap">
+                                                <a href="javascript:;" data-tw-toggle="modal"
+                                                    data-tw-target="#message-modal-preview{{ $interpretation->id }}">
+                                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                                </a>
                                             </td>
+                                            <!-- BEGIN: Modal Content -->
+                                            <div id="message-modal-preview{{ $interpretation->id }}" class="modal"
+                                                tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body p-0">
+                                                            <div class="p-5 text-center"> <i data-lucide="bookmark"
+                                                                    class="w-16 h-16 text-info mx-auto mt-3"></i>
+                                                                <div class="text-3xl mt-5 mb-2">Interpretation Message</div>
+                                                                <div class="w-full text-left">
+                                                                    <label for="order-form-21" class="form-label">
+                                                                        Message:</label>
+                                                                    <textarea id="order-form-21" type="text" class="form-control" disabled>{{ $interpretation->message }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- END: Modal Content -->
 
                                             <td class="whitespace-nowrap">
                                                 {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($interpretation->created_at, request()->ip()) }}

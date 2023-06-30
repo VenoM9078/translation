@@ -44,14 +44,14 @@
                                 <label>Enter Estimated Payment</label><br>
                                 <small>Session Duration: {{((int)$interpretation->end_time -
                                     (int)$interpretation->start_time)}} hour(s)</small>
-                                <input id="estimated_payment" type="number" required name="estimated_payment"
+                                <input id="estimated_payment" step="0.0001" type="number" required name="estimated_payment"
                                     class="intro-x login__input form-control py-3 px-4 block mt-1"
                                     placeholder="Enter Estimated Payment (in dollars)" value="0">
                             </div>
 
                             <div class="mt-3 mb-3">
                                 <label>Change Per Hour Rate</label>
-                                <input id="per_hour_rate" type="number" required name="per_hour_rate"
+                                <input id="per_hour_rate" step="0.0001" type="number" required name="per_hour_rate"
                                     class="intro-x login__input form-control py-3 px-4 block mt-1"
                                     placeholder="(Optional)" value="">
                             </div>

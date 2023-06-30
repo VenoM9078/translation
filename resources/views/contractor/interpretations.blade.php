@@ -158,10 +158,10 @@
                                             <td class="whitespace-nowrap">
                                                 {{ $interpretation->interpretation->interpretationDate }}</td>
                                             <td class="whitespace-nowrap">
-                                                {{ App\Helpers\HelperClass::convertTimeToCurrentTimeZone($interpretation->start_time, request()->ip()) }}
+                                                {{ \App\Helpers\HelperClass::onlyShowHoursMinutes($interpretation->start_time) }}
                                             </td>
                                             <td class="whitespace-nowrap">
-                                                {{ App\Helpers\HelperClass::convertTimeToCurrentTimeZone($interpretation->end_time, request()->ip()) }}
+                                                {{ \App\Helpers\HelperClass::onlyShowHoursMinutes($interpretation->end_time) }}
                                             </td>
                                             <td class="whitespace-nowrap">
                                                 {{ $interpretation->interpretation->session_format }}

@@ -6,7 +6,7 @@ We are pleased to inform you that your requested task with work number {{ $inter
 completed.
 
 The interpretation was performed by {{ $interpretation->interpreter->name }} at {{ $interpretation->interpretationDate
-}} from {{ App\Helpers\HelperClass::convertTimeToCurrentTimeZone($interpretation->start_time, request()->ip()) }} to {{  App\Helpers\HelperClass::convertTimeToCurrentTimeZone($interpretation->end_time, request()->ip()) }}.
+}} from {{ \App\Helpers\HelperClass::onlyShowHoursMinutes($interpretation->start_time) }} to {{  \App\Helpers\HelperClass::onlyShowHoursMinutes($interpretation->end_time) }}.
 
 Thank you for using our service.
 
