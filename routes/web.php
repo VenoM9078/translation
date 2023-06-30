@@ -306,6 +306,16 @@ Route::group(['middleware' => ['auth:admin']], function () {
 
 Route::middleware(['web', 'auth', 'verified'])->group(function () {
 
+
+    // Track Order
+    Route::get('/order/{id}/track', [AdminController::class, 'trackOrder']);
+    Route::get('/interpretation/{id}/track', [AdminController::class, 'trackInterpretation']);
+
+    // Order management
+    Route::get('user/orders/{id}', [UserController::class, 'show'])->name('show-order');
+    Route::get('/view-interpretation/{id}', [UserController::class, 'viewInterpretationDetails'])->name('view-interpretation-details');
+
+
     Route::put('/user/update-profile/{id}', [UserController::class, 'updateProfile'])->name('user.updateProfile');
     Route::put('user/{id}/update-institute', [UserController::class, 'updateInstitute'])->name('user.updateInstitute');
     Route::get('/user/downloadFiles/{order}', [UserController::class, 'downloadFiles'])->name('user.downloadFiles');

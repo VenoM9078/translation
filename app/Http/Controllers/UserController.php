@@ -61,6 +61,11 @@ class UserController extends Controller
         return view('user.newInterpretation');
     }
 
+    public function viewInterpretationDetails($id)
+    {
+        $interpretation = Interpretation::where('id', $id)->firstOrFail();
+        return view('user.view-interpretation', compact('interpretation'));
+    }
     public function myinterpretations()
     {
         $user = Auth::user();
@@ -381,7 +386,17 @@ class UserController extends Controller
         return view('user.allinvoices', compact('user', 'invoices'));
     }
 
+    public function trackOrder($id)
+    {
+        $order = Order::findOrFail($id);
+        return view('utils.track-order', ['order' => $order]);
+    }
 
+    public function trackInterpretation($id)
+    {
+        $interpretation = Interpretation::findOrFail($id);
+        return view('utils.track-interpretation', ['interpretation' => $interpretation]);
+    }
 
     public function viewProgress($id)
     {
@@ -642,7 +657,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $order = $orders = Order::with(['contractorOrder.contractor'])->where('id', $id)
+            ->firstOrFail();
+        return view('user.show-order', compact('order'));
     }
 
     /**
