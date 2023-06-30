@@ -19,7 +19,7 @@ class HelperClass
             $timezone = $data->timezone;
             return $date->timezone($timezone);
         } catch (Exception $e) {
-            return $date->format('Y-m-d h:m:s');
+            return $date->format('Y-m-d h:i:s');
             // If an error occurs, return the date in its original timezone
         }
     }
@@ -40,7 +40,7 @@ class HelperClass
         } catch (\Exception $e) {
             // If an error occurs (like a failure to connect to the API), return the time in the default time zone
             $carbonTime = \Carbon\Carbon::parse($time);
-            return $carbonTime->format('h:m:s');
+            return $carbonTime->format('h:i:s');
         }
     }
 

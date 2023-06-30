@@ -459,7 +459,7 @@
         $(document).on('click', '.btn.btn-success', function() {
             var interpretationId = $(this).data('tw-target').replace('#track-modal-preview', '');
             console.log("Clicked Track", interpretationId);
-            $.get('/interpretation/' + interpretationId + '/track', function(data) {
+            $.get('/user/interpretation/' + interpretationId + '/track', function(data) {
                 $('.intro-y.box.py-10.mt-5').html(data);
             });
         });

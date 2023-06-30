@@ -156,24 +156,20 @@
                                                             </div>
                                                         @endif
 
+                                                        @if (Auth::user()->role_id == 2)
+                                                            @if (isset($order->is_order_quote_accepted) && $order->is_order_quote_accepted == 0 && $order->want_quote == 1)
+                                                                <div class="flex gap-2">
+                                                                    <div>
+                                                                        <div class="text-center mb-2 mr-1"> <a
+                                                                                href="javascript:;" data-tw-toggle="modal"
+                                                                                data-tw-target="#translation-modal-accept-{{ $key }}"
+                                                                                class="btn btn-success">Awaiting
+                                                                                Approval</a>
+                                                                        </div>
+                                                                    </div>
 
-                                                        @if (isset($order->is_order_quote_accepted) && $order->is_order_quote_accepted == 0 && $order->want_quote == 1)
-                                                            <div class="flex gap-2">
-                                                                <div>
-                                                                    <div class="text-center"> <a href="javascript:;"
-                                                                            data-tw-toggle="modal"
-                                                                            data-tw-target="#translation-modal-accept-{{ $key }}"
-                                                                            class="btn btn-success">Accept</a>
-                                                                    </div>
                                                                 </div>
-                                                                <div>
-                                                                    <div class="text-center"> <a href="javascript:;"
-                                                                            data-tw-toggle="modal"
-                                                                            data-tw-target="#translation-modal-reject-{{ $key }}"
-                                                                            class="btn btn-danger">Reject</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                            @endif
                                                         @endif
 
                                                         <div id="translation-modal-accept-{{ $key }}"
@@ -210,7 +206,10 @@
                                                                             style="text-align: center;margin: auto !important;width: 100%;position: relative;justify-content: center;">
                                                                             <a href="{{ route('user.approve-quote', $order->id) }}"
                                                                                 class="btn btn-success text-white w-24 mr-1 self-center">
-                                                                                I'm Sure</a>
+                                                                                Approve</a>
+                                                                            <a href="{{ route('user.disapprove-quote', $order->id) }}"
+                                                                                class="btn btn-danger w-24 mr-1 self-center">
+                                                                                Disapprove</a>
                                                                             <button type="button" data-tw-dismiss="modal"
                                                                                 class="btn btn-outline-secondary w-24 mr-1">Cancel</button>
                                                                         </div>
@@ -541,7 +540,7 @@
         $(document).on('click', '.btn.btn-success', function() {
             var orderId = $(this).data('tw-target').replace('#track-modal-preview', '');
             console.log("Clicked Track ", orderId);
-            $.get('/order/' + orderId + '/track', function(data) {
+            $.get('/user/order/' + orderId + '/track', function(data) {
                 $('.intro-y.box.py-10.mt-5').html(data);
             });
         });

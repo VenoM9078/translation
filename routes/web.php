@@ -308,8 +308,8 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
 
 
     // Track Order
-    Route::get('/order/{id}/track', [AdminController::class, 'trackOrder']);
-    Route::get('/interpretation/{id}/track', [AdminController::class, 'trackInterpretation']);
+    Route::get('/user/order/{id}/track', [AdminController::class, 'trackOrder']);
+    Route::get('/user/interpretation/{id}/track', [AdminController::class, 'trackInterpretation']);
 
     // Order management
     Route::get('user/orders/{id}', [UserController::class, 'show'])->name('show-order');
