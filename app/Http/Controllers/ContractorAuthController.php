@@ -911,11 +911,12 @@ class ContractorAuthController extends Controller
             auth()->guard('contractor')->attempt(['email' => $request->email, 'password' => $request->password])
         ) {
             $contractor = auth()->guard('contractor')->user();
-            // dd($contractor->verified);
+            // dd($contractor);
             if ($contractor->verified != 1) {
                 // auth()->logout();
                 return redirect()->route('contractor.verification.notice');
             } else {
+                Auth::guard('contractor')->login($contractor);
                 return redirect()->intended(url('/contractor/dashboard'));
             }
         } else {

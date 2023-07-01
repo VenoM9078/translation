@@ -1910,7 +1910,7 @@ class AdminController extends Controller
 
     public function ongoingInterpretations()
     {
-        $interpretations = Interpretation::orderByDesc('id')->get();
+        $interpretations = Interpretation::orderByDesc('id')->paginate(10);
         return view('admin.ongoingInterpretations', compact('interpretations'));
     }
 

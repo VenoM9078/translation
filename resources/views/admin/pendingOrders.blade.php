@@ -815,7 +815,7 @@
 
 
                     </div>
-                    <div class="container m-2 text-right">
+                    <div class="container m-2 flex justify-end">
                         {{ $pendingOrders->links() }}
                     </div>
                 </div>

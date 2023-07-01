@@ -150,7 +150,7 @@
                                 <thead>
                                     <tr>
                                         <th class="whitespace-nowrap text-center sticky-column-1">Possible Action</th>
-                                        <th style="display:none" class="whitespace-nowrap w-40 px-12 sticky-column-1">Status
+                                        <th class="whitespace-nowrap w-40 px-12 sticky-column-1">Status
                                         </th>
                                         <th class="whitespace-nowrap text-center" style="display: none">Interpretation
                                             Status</th>
@@ -344,103 +344,10 @@
 
                                                 </div>
                                             </td>
-                                            <td class="whitespace-nowrap w-40" style="display: none">
-                                                @if ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 0 && $interpretation->paymentStatus == 0)
-                                                    <div class="progress h-4">
-                                                        <div class="progress-bar w-1/4" role="progressbar"
-                                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%
-                                                        </div>
-                                                    </div>
-                                                @elseif ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 1 && $interpretation->paymentStatus == 0)
-                                                    <div class="progress h-4">
-                                                        <div class="progress-bar w-1/4" role="progressbar"
-                                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%
-                                                        </div>
-                                                    </div>
-                                                @elseif (
-                                                    $interpretation->wantQuote == 0 &&
-                                                        $interpretation->invoiceSent == 1 &&
-                                                        $interpretation->paymentStatus == 1 &&
-                                                        $interpretation->interpreter_id === null &&
-                                                        $interpretation->interpreter_completed == 0)
-                                                    <div class="progress h-4">
-                                                        <div class="progress-bar w-2/4 bg-primary" role="progressbar"
-                                                            aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%
-                                                        </div>
-                                                    </div>
-                                                @elseif (
-                                                    $interpretation->wantQuote == 0 &&
-                                                        $interpretation->invoiceSent == 1 &&
-                                                        $interpretation->paymentStatus == 1 &&
-                                                        $interpretation->interpreter_id !== null &&
-                                                        $interpretation->interpreter_completed == 0)
-                                                    <div class="progress h-4">
-                                                        <div class="progress-bar w-3/4 bg-pending" role="progressbar"
-                                                            aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%
-                                                        </div>
-                                                    </div>
-                                                @elseif (
-                                                    $interpretation->wantQuote == 0 &&
-                                                        $interpretation->invoiceSent == 1 &&
-                                                        $interpretation->paymentStatus == 1 &&
-                                                        $interpretation->interpreter_id !== null &&
-                                                        $interpretation->interpreter_completed == 1)
-                                                    <div class="progress h-4">
-                                                        <div class="progress-bar w-full bg-success" role="progressbar"
-                                                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                                                            100%
-                                                        </div>
-                                                    </div>
-                                                @elseif ($interpretation->wantQuote == 1)
-                                                    <div class="progress h-4">
-                                                        <div class="progress-bar w-1/4" role="progressbar"
-                                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%
-                                                        </div>
-                                                    </div>
-                                                @elseif ($interpretation->wantQuote == 2 && $interpretation->paymentStatus == 0)
-                                                    <div class="progress h-4">
-                                                        <div class="progress-bar w-1/2 bg-warning" role="progressbar"
-                                                            aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%
-                                                        </div>
-                                                    </div>
-                                                @elseif ($interpretation->wantQuote == 2 && $interpretation->paymentStatus == 1)
-                                                    <div class="progress h-4">
-                                                        <div class="progress-bar w-3/4 bg-primary" role="progressbar"
-                                                            aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%
-                                                        </div>
-                                                    </div>
-                                                @elseif (
-                                                    $interpretation->wantQuote == 3 &&
-                                                        $interpretation->paymentStatus == 1 &&
-                                                        $interpretation->interpreter_id === null &&
-                                                        $interpretation->interpreter_completed == 0)
-                                                    <div class="progress h-4">
-                                                        <div class="progress-bar w-3/4 bg-primary" role="progressbar"
-                                                            aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%
-                                                        </div>
-                                                    </div>
-                                                @elseif (
-                                                    $interpretation->wantQuote == 3 &&
-                                                        $interpretation->paymentStatus == 1 &&
-                                                        $interpretation->interpreter_id !== null &&
-                                                        $interpretation->interpreter_completed == 0)
-                                                    <div class="progress h-4">
-                                                        <div class="progress-bar w-3/4 bg-pending" role="progressbar"
-                                                            aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%
-                                                        </div>
-                                                    </div>
-                                                @elseif (
-                                                    $interpretation->wantQuote == 3 &&
-                                                        $interpretation->paymentStatus == 1 &&
-                                                        $interpretation->interpreter_id !== null &&
-                                                        $interpretation->interpreter_completed == 1)
-                                                    <div class="progress h-4">
-                                                        <div class="progress-bar w-full bg-success" role="progressbar"
-                                                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                                                            100%
-                                                        </div>
-                                                    </div>
-                                                @endif
+                                            <td class="whitespace-nowrap w-40">
+                                                @include('utils.interpretation-status-column', [
+                                                    'interpretation' => $interpretation,
+                                                ])
                                             </td>
                                             {{-- @dd($interpretation->user->institute) --}}
                                             <td class="whitespace-nowrap" style="display: none">
@@ -572,7 +479,9 @@
                             </table>
                         </div>
 
-
+                        <div class="container m-2 flex justify-end">
+                            {{ $interpretations->links() }}
+                        </div>
 
                     </div>
                 </div>
@@ -626,9 +535,8 @@
                 },
             ],
             ordering: false,
-            info: true,
-            paging: true,
-            pageLength: 10,
+            info: false,
+            paging: false,
         });
         console.log("table", table);
         $(document).ready(function() {
