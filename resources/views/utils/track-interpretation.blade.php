@@ -64,7 +64,7 @@
                                 @if (isset($interpretation->interpretationLogs) && count($interpretation->interpretationLogs) > 0)
                                     @foreach ($interpretation->interpretationLogs as $orderLog)
                                         @if ($orderLog->interpretation_status == 0 && $orderLog->is_interpretation == 1)
-                                            @if ($orderLog->is_admin == 0)
+                                            @if ($orderLog->is_admin == 0 && ($orderLog->action != \App\Enums\LogActionsEnum::PAYMENTCOMPLETED))
                                                 {{ $orderLog->created_at }} -
                                                 {{ $orderLog->user->name }} {{ $orderLog->action }}
                                                 <br>
