@@ -76,7 +76,7 @@
             <div class="w-full btn btn-warning">
                 Payment Required
             </div>
-        @elseif(($order->paymentStatus == 1 || $order->paymentStatus == 2) && $order->translation_status == 0)
+        @elseif(($order->paymentStatus == 1 || $order->paymentStatus == 2) && $order->translation_status == 0 && !isset($order->contractorOrder))
             <div class="w-full btn btn-success">
                 Paid
             </div>
