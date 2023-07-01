@@ -39,7 +39,9 @@
         --}}
     {{-- Translation pending/not completed --}}
     @if ($order->translation_status == 0)
-        @if ($order->want_quote == 0 && ($order->user->role_id == 1 || $order->user->role_id == 2))
+        @if ($order->want_quote == 0 && ($order->user->role_id == 1 || $order->user->role_id == 2) 
+        && !isset($order->contractorOrder)
+        )
             <div class="w-full btn btn-warning">
                 Translation Requested
             </div>
