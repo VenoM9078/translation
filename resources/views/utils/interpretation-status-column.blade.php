@@ -1,34 +1,104 @@
 @if (Auth::user()->getTable() != 'admins')
     {{-- Status for Users --}}
-    @if ($interpretation->wantQuote == 0 && $interpretation->translation_status == 0)
+    @if (
+        $interpretation->added_by_institute_user == 1 &&
+            $interpretation->interpreter_id === null &&
+            $interpretation->interpreter_completed == 0)
         <div class="w-full btn btn-warning">
-            Interpretation Requested
+            Waiting for Interpreter
         </div>
-    @elseif ($interpretation->wantQuote == 1)
+    @elseif (
+        $interpretation->added_by_institute_user == 1 &&
+            $interpretation->interpreter_id != null &&
+            $interpretation->interpreter_completed == 0)
         <div class="w-full btn btn-warning">
-            Quote Requested
+
+            Interpreter Confirmed
         </div>
-    @elseif($interpretation->wantQuote == 2)
+    @elseif (
+        $interpretation->added_by_institute_user == 1 &&
+            $interpretation->interpreter_id != null &&
+            $interpretation->interpreter_completed == 1)
         <div class="w-full btn btn-success">
-            Quote Ready
-        </div>
-    @elseif (isset($interpretation->contractorOrder) &&
-            $interpretation->contractorOrder->is_accepted == 1 &&
-            $interpretation->translation_status == 0)
-        <div class="w-full btn btn-warning">
-            Interpretation In Progress
-        </div>
-    @elseif ($interpretation->translation_status == \App\Enums\TranslationStatusEnum::COMPLETED)
-        <div class="w-full btn btn-success">
+
             Interpretation Completed
         </div>
-    @elseif ($interpretation->orderStatus == 'Cancelled')
-        <div class="w-full btn btn-danger">
-            Cancelled
+    @elseif ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 0 && $interpretation->paymentStatus == 0)
+        <div class="w-full btn btn-warning">
+
+            Payment Required
         </div>
-    @else
-        <div class="w-full">
-            -
+    @elseif ($interpretation->wantQuote == 0 && $interpretation->invoiceSent == 1 && $interpretation->paymentStatus == 0)
+        <div class="w-full btn btn-warning">
+
+            Waiting for Payment
+        </div>
+    @elseif (
+        $interpretation->wantQuote == 3 &&
+            $interpretation->invoiceSent == 1 &&
+            $interpretation->paymentStatus == 1 &&
+            $interpretation->interpreter_id === null &&
+            $interpretation->interpreter_completed == 0)
+        <div class="w-full btn btn-success">
+
+            Payment Confirmed
+        </div>
+    @elseif (
+        $interpretation->wantQuote == 3 &&
+            $interpretation->invoiceSent == 1 &&
+            $interpretation->paymentStatus == 1 &&
+            $interpretation->interpreter_id !== null &&
+            $interpretation->interpreter_completed == 0)
+        <div class="w-full btn btn-success">
+
+            Interpreter Confirmed
+        </div>
+    @elseif (
+        $interpretation->wantQuote == 3 &&
+            $interpretation->invoiceSent == 1 &&
+            $interpretation->paymentStatus == 1 &&
+            $interpretation->interpreter_id !== null &&
+            $interpretation->interpreter_completed == 1)
+        <div class="w-full btn btn-success">
+
+            Interpretation Completed
+        </div>
+    @elseif ($interpretation->wantQuote == 1)
+        <div class="w-full btn btn-success">
+
+            Quote Requested
+        </div>
+    @elseif ($interpretation->wantQuote == 2)
+        <div class="w-full btn btn-warning">
+
+            Quote Ready
+        </div>
+    @elseif (
+        $interpretation->wantQuote == 3 &&
+            $interpretation->paymentStatus == 1 &&
+            $interpretation->interpreter_id === null &&
+            $interpretation->interpreter_completed == 0)
+        <div class="w-full btn btn-success">
+
+            Payment Confirmed
+        </div>
+    @elseif (
+        $interpretation->wantQuote == 3 &&
+            $interpretation->paymentStatus == 1 &&
+            $interpretation->interpreter_id !== null &&
+            $interpretation->interpreter_completed == 0)
+        <div class="w-full btn btn-success">
+
+            Interpreter Confirmed
+        </div>
+    @elseif (
+        $interpretation->wantQuote == 3 &&
+            $interpretation->paymentStatus == 1 &&
+            $interpretation->interpreter_id !== null &&
+            $interpretation->interpreter_completed == 1)
+        <div class="w-full btn btn-success">
+
+            Interpretation Completed
         </div>
     @endif
 @else
@@ -92,8 +162,8 @@
                 Interpreter Confirmed
             </div>
         @elseif(
-            ($interpretation->paymentStatus == 1 ||
-                $interpretation->paymentStatus == 2) && $interpretation->interpreter_completed == 0)
+            ($interpretation->paymentStatus == 1 || $interpretation->paymentStatus == 2) &&
+                $interpretation->interpreter_completed == 0)
             <div class="w-full btn btn-success">
                 Paid
             </div>
