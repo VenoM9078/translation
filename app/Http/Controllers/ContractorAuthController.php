@@ -242,7 +242,8 @@ class ContractorAuthController extends Controller
         $contractorProofReader = ProofReaderOrders::findOrFail($id);
         //clear the proof read values
         $contractorObj = Contractor::find($contractorProofReader->contractor_id);
-        $contractorProofReader->delete();
+        $contractorProofReader->is_accepted = ContractorOrderEnum::DECLINED;
+        $contractorProofReader->save();
         $admins = Admin::all();
 
         HelperClass::storeContractorLog(Auth::user()->id, LogActionsEnum::NOTADMIN, $contractorProofReader->order_id, $contractorProofReader->contractor_id, "ProofRead", "ProofReader", "ProofReader", LogActionsEnum::DECLINEPROOFREAD, 0, 0, LogActionsEnum::DECLINENUMBER, 0, 0, 0, 0);

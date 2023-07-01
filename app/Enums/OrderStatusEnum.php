@@ -9,5 +9,6 @@ abstract class OrderStatusEnum
     const QUOTEACCEPTED = 1;
     const QUOTEREJECTED = 2;
     const QUOTEPENDING = 0;
+
 }
 ?>

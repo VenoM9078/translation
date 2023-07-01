@@ -163,8 +163,7 @@
                                                                         <div class="text-center mb-2 mr-1"> <a
                                                                                 href="javascript:;" data-tw-toggle="modal"
                                                                                 data-tw-target="#translation-modal-accept-{{ $key }}"
-                                                                                class="btn btn-success">Awaiting
-                                                                                Approval</a>
+                                                                                class="btn btn-success">View Quote</a>
                                                                         </div>
                                                                     </div>
 
@@ -201,9 +200,22 @@
                                                                                 request and notify the user of your
                                                                                 agreement!
                                                                             </div>
+                                                                            <div class="w-full text-left">
+                                                                                <label for="order-form-21"
+                                                                                    class="form-label">
+                                                                                    Quote Price ($):</label>
+                                                                                <input id="order-form-21" type="text"
+                                                                                    class="form-control" disabled
+                                                                                    value="{{ $order->quote_price }}" />
+                                                                                <label for="order-form-21"
+                                                                                    class="form-label">
+                                                                                    Quote Description:</label>
+                                                                                <textarea id="order-form-21" type="text" class="form-control" disabled>{{ $order->quote_description }}</textarea>
+                                                                            </div>
                                                                         </div>
                                                                         <div class="px-5 pb-8 text-center inline-flex items-stretch"
                                                                             style="text-align: center;margin: auto !important;width: 100%;position: relative;justify-content: center;">
+
                                                                             <a href="{{ route('user.approve-quote', $order->id) }}"
                                                                                 class="btn btn-success text-white w-24 mr-1 self-center">
                                                                                 Approve</a>
@@ -247,11 +259,16 @@
                                                                 </div>
                                                             </div>
                                                         </div> <!-- END: Modal Content -->
-                                                        @if ($order->invoiceSent == 0 && Auth::user()->role_id != 2)
+                                                        @if ($order->invoiceSent == 0 && Auth::user()->role_id != 2 && 1 == 2)
                                                             <button class="btn btn-warning mr-1 mb-2"> Waiting for Invoice
                                                                 <i data-loading-icon="three-dots" data-color="ffffff"
                                                                     class="w-4 h-4 ml-2"></i> </button>
-                                                        @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 0 && $order->is_evidence == 1 && Auth::user()->role_id != 2)
+                                                        @elseif (
+                                                            $order->invoiceSent == 1 &&
+                                                                $order->paymentStatus == 0 &&
+                                                                $order->is_evidence == 1 &&
+                                                                Auth::user()->role_id != 2 &&
+                                                                1 == 2)
                                                             <button class="btn btn-warning mr-1 mb-2"> Processing Payment
                                                                 Proof
                                                                 <i data-loading-icon="three-dots" data-color="ffffff"
@@ -260,8 +277,6 @@
                                                             @if ($order->invoice != null)
                                                                 <a href="{{ route('viewInvoice', $order->invoice->id) }}"
                                                                     class="btn btn-warning mr-1 mb-2"> View Invoice </a>
-                                                            @else
-                                                                <span>No Invoice</span>
                                                             @endif
                                                         @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 3 && Auth::user()->role_id != 2)
                                                             <button class="btn btn-pending mr-1 mb-2"> Waiting for Deferred
@@ -269,12 +284,12 @@
                                                                 Approval
                                                                 <i data-loading-icon="three-dots" data-color="1a202c"
                                                                     class="w-4 h-4 ml-2"></i> </button>
-                                                        @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 2)
+                                                        @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 2 && 1 == 2)
                                                             <button class="btn btn-primary mr-1 mb-2"> Waiting for
                                                                 Translation
                                                                 <i data-loading-icon="three-dots" data-color="1a202c"
                                                                     class="w-4 h-4 ml-2"></i> </button>
-                                                        @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 1 && $order->translation_status == 0)
+                                                        @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 1 && $order->translation_status == 0 && 1 == 2)
                                                             <button class="btn btn-primary mr-1 mb-2"> Waiting for
                                                                 Translation
                                                                 <i data-loading-icon="three-dots" data-color="1a202c"
@@ -283,7 +298,8 @@
                                                             $order->invoiceSent == 1 &&
                                                                 $order->paymentStatus == 1 &&
                                                                 $order->translation_status == 1 &&
-                                                                $order->proofread_status == 0)
+                                                                $order->proofread_status == 0 &&
+                                                                1 == 2)
                                                             <button class="btn btn-pending mr-1 mb-2"> Waiting for
                                                                 Proofreading
                                                                 <i data-loading-icon="three-dots" data-color="1a202c"
@@ -456,35 +472,7 @@
                                             </td>
 
                                             <td class="whitespace-nowrap">
-                                                @if ($order->want_quote == 0 && $order->translation_status == 0)
-                                                    <div class="w-full">
-                                                        Translation Requested
-                                                    </div>
-                                                @elseif ($order->want_quote == 1)
-                                                    <div class="w-full">
-                                                        Quote Requested
-                                                    </div>
-                                                @elseif($order->want_quote == 2)
-                                                    <div class="w-full">
-                                                        Quote Ready
-                                                    </div>
-                                                @elseif ($order->contractorOrder->is_accepted == 1 && $order->translation_status == 0)
-                                                    <div class="w-full">
-                                                        Translation In Progress
-                                                    </div>
-                                                @elseif ($order->translation_status == \App\Enums\TranslationStatusEnum::COMPLETED)
-                                                    <div class="w-full">
-                                                        Translation Completed
-                                                    </div>
-                                                @elseif ($order->orderStatus == 'Cancelled')
-                                                    <div class="w-full">
-                                                        Cancelled
-                                                    </div>
-                                                @else
-                                                    <div class="w-full">
-                                                        -
-                                                    </div>
-                                                @endif
+                                                @include('utils.order-status-column', ['order' => $order])
 
                                             </td>
                                             <td class="whitespace-nowrap">

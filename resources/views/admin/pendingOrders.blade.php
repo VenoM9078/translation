@@ -176,7 +176,7 @@
                                     <th class="whitespace-nowrap sticky-column-1">Actions</th>
                                     <th class="whitespace-nowrap sticky-column-2 " style="display: none">Next Step</th>
                                     <th class="whitespace-nowrap">Name</th>
-                                    <th class="whitespace-nowrap">Email</th>
+                                    <th class="whitespace-nowrap" style="display: none">Email</th>
                                     <th class="whitespace-nowrap">Order Status</th>
                                     <th class="whitespace-nowrap">Order Note</th>
                                     <th class="whitespace-nowrap">Institute</th>
@@ -316,7 +316,7 @@
                                                     @elseif($order->want_quote == 1 && $order->translation_status == 0)
                                                         <a href="{{ route('admin.showOrderSubmitQuote', $order->id) }}"
                                                             class="btn btn-warning mr-1  ">Submit Quote</a>
-                                                    @elseif ($order->invoiceSent == 0 && $order->want_quote == 0)
+                                                    @elseif ($order->invoiceSent == 0 && $order->is_order_quote_accepted == 1 && $order->user->role_id == 0)
                                                         <a href="{{ route('invoice.customInvoice', $order->id) }}"
                                                             class="btn btn-success mr-1">
                                                             <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg"
@@ -587,7 +587,7 @@
                                                 <a href="{{ route('rejectEvidence', $order->id) }}"
                                                     class="btn btn-danger mr-1">
                                                     <i data-lucide="thumbs-down" class="w-5 h-5"></i></a>
-                                            @elseif ($order->want_quote == 2)
+                                            @elseif ($order->want_quote == 2 && 1 == 2)
                                                 <button class="btn btn-warning mr-1  ">Waiting for Payment
                                                     <svg class="w-4 h-4 ml-2" aria-hidden="true"
                                                         class="inline w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300"
@@ -601,7 +601,7 @@
                                                             fill="currentFill" />
                                                     </svg>
                                                 </button>
-                                            @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 0)
+                                            @elseif ($order->invoiceSent == 1 && $order->paymentStatus == 0 && 1 == 2)
                                                 <button class="btn btn-warning mr-1"> Waiting for Payment
                                                     <svg class="w-4 h-4 ml-2" aria-hidden="true"
                                                         class="inline w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300"
@@ -636,8 +636,11 @@
                                             @endif
                                         </td>
                                         <td class="whitespace-nowrap">{{ $order->user->name }}</td>
-                                        <td class="whitespace-nowrap">{{ $order->user->email }}</td>
-                                        <td class="whitespace-nowrap badge badge-success">{{ $order->orderStatus }}</td>
+                                        <td class="whitespace-nowrap" style="display: none">{{ $order->user->email }}
+                                        </td>
+                                        <td class="whitespace-nowrap badge badge-success">
+                                            @include('utils.order-status-column', ['order' => $order])
+                                        </td>
                                         @if ($order->message)
                                             <td class="whitespace-nowrap">
                                                 <a href="javascript:;" data-tw-toggle="modal"
@@ -812,6 +815,9 @@
 
 
                     </div>
+                    <div class="container m-2 text-right">
+                        {{ $pendingOrders->links() }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -843,7 +849,7 @@
     <script>
         // $(document).ready(function() {
         var table = $('#ordersTable').DataTable({
-            dom: 'Bfrtip',
+            dom: 'Bfrti',
             buttons: [{
                     extend: 'csv',
                     exportOptions: {
@@ -859,9 +865,10 @@
             ],
             scrollX: true,
             scrollCollapse: true,
-            ordering:false,
-            paging: true,
-            pageLength: 10
+            ordering: false,
+            info:false,
+            paging: false,
+            lengthChange: false,
         });
         // });
         $.fn.dataTable.ext.search.push(

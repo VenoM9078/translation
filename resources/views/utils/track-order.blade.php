@@ -31,11 +31,7 @@
 
     @foreach ($tempSteps as $index => $step)
         <div class="row p-2">
-
-            <div
-                class="text-base
-            @if ($step['status'] == 'success' || $step['status'] == 'warning') text-slate-600 dark:text-slate-500 @endif ml-3">
-                {{-- {{ $step['text'] }} --}}
+            <div class="text-base text-slate-600 ml-3">
                 @if (count($order->orderLogs) < 1 && count($order->contractorLogs) < 1 && count($order->invoiceLogs) < 1)
                     <div class="row text-center mx-auto">
                         <h2>No Log Tracked For Order.</h2>
@@ -51,8 +47,8 @@
                                 @foreach ($order->orderLogs as $orderLog)
                                     {{-- @dd($order->orderLogs) --}}
                                     @if ($orderLog->new_order_completed_status == 0)
-                                        @if ($orderLog->is_admin == 0  && $orderLog->action != \App\Enums\LogActionsEnum::PAYMENTCOMPLETED)
-                                            <div class="intro-x flex items-center mt-5">
+                                        @if ($orderLog->is_admin == 0 && $orderLog->action != \App\Enums\LogActionsEnum::PAYMENTCOMPLETED)
+                                            <div class="intro-x flex items-center mt-5 order-created">
                                                 <div class="row">
                                                     {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($orderLog->created_at, request()->ip()) }}
                                                     -
@@ -61,7 +57,7 @@
                                                 </div>
                                             </div>
                                         @elseif($orderLog->is_admin == 1 && $orderLog->action != \App\Enums\LogActionsEnum::PAYMENTCOMPLETED)
-                                            <div class="intro-x flex items-center mt-5">
+                                            <div class="intro-x flex items-center mt-5 order-created">
                                                 <div class="row">
                                                     {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($orderLog->created_at, request()->ip()) }}
                                                     -
@@ -80,11 +76,21 @@
                             @if (isset($order->invoiceLogs) && count($order->invoiceLogs) > 0)
                                 @foreach ($order->invoiceLogs as $invoiceLog)
                                     @if ($invoiceLog->is_admin == 0)
-                                        <div class="intro-x flex items-center mt-5">
+                                        <div class="intro-x flex items-center mt-5 invoice-created">
                                             <div class="row">
                                                 {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($invoiceLog->created_at, request()->ip()) }}
                                                 -
                                                 {{ $invoiceLog->user->name }} {{ $invoiceLog->action }}
+                                                <br>
+
+                                            </div>
+                                        </div>
+                                    @elseif($invoiceLog->is_admin == 1)
+                                        <div class="intro-x flex items-center mt-5 invoice-created">
+                                            <div class="row">
+                                                {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($invoiceLog->created_at, request()->ip()) }}
+                                                -
+                                                {{ $invoiceLog->admin->name }} {{ $invoiceLog->action }}
                                                 <br>
 
                                             </div>
@@ -98,8 +104,8 @@
                             @if (isset($order->orderLogs) && count($order->orderLogs) > 0)
                                 @foreach ($order->orderLogs as $orderLog)
                                     @if ($orderLog->new_payment_status == 1)
-                                        @if ($orderLog->is_admin == 0)
-                                            <div class="intro-x flex items-center mt-5">
+                                        @if ($orderLog->is_admin == 0 && Auth::user()->role_id == 0 && $orderLog->action != \App\Enums\LogActionsEnum::NEWORDER)
+                                            <div class="intro-x flex items-center mt-5 payment-completed">
                                                 <div class="row">
                                                     {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($orderLog->created_at, request()->ip()) }}
                                                     -
@@ -121,7 +127,7 @@
                             @if (isset($order->contractorLogs) && count($order->contractorLogs) > 0)
                                 @foreach ($order->contractorLogs as $contractorLog)
                                     @if ($contractorLog->is_admin == 1 && $contractorLog->contractor_type == 'Translator')
-                                        <div class="intro-x flex items-center mt-5">
+                                        <div class="intro-x flex items-center mt-5 translator">
                                             <div class="row">
                                                 {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($contractorLog->created_at, request()->ip()) }}
                                                 -
@@ -148,7 +154,7 @@
                             @if (isset($order->contractorLogs) && count($order->contractorLogs) > 0)
                                 @foreach ($order->contractorLogs as $contractorLog)
                                     @if ($contractorLog->is_admin == 1 && $contractorLog->contractor_type == 'Proof Reader')
-                                        <div class="intro-x flex items-center mt-5">
+                                        <div class="intro-x flex items-center mt-5 proof-reader">
                                             <div class="row">
                                                 {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($contractorLog->created_at, request()->ip()) }}
                                                 -
@@ -175,7 +181,7 @@
                             @if (isset($order->orderLogs) && count($order->orderLogs) > 0)
                                 @foreach ($order->orderLogs as $orderLog)
                                     @if ($orderLog->is_admin == 1 && $orderLog->new_order_completed_status == 1)
-                                        <div class="intro-x flex items-center mt-5">
+                                        <div class="intro-x flex items-center mt-5 order-completed">
                                             <div class="row">
                                                 {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($orderLog->created_at, request()->ip()) }}
                                                 -
@@ -191,9 +197,8 @@
                         @default
                     @endswitch
                 </div>
+            @endif
         </div>
-@endif
-
-</div>
+    </div>
 @endforeach
 </div>

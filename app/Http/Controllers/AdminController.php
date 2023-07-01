@@ -1149,9 +1149,9 @@ class AdminController extends Controller
     }
     public function pendingOrders()
     {
-        $pendingOrders = Order::orderByDesc('id')
+        $pendingOrders = Order::orderByDesc('id')->paginate(10);
             // ->where('id',34)
-            ->get();
+            // ->get();
         // dd($orders);
         // dd($orders[0]->invoice);
         return view('admin.pendingOrders', compact('pendingOrders'));

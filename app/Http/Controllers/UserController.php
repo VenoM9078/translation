@@ -282,6 +282,30 @@ class UserController extends Controller
                 0
             );
         }
+        if($request->input('want_quote') == "1") //wants quote
+        {
+            HelperClass::storeOrderLog(
+            LogActionsEnum::NOTADMIN,
+            Auth::user()->id,
+            $order->id,
+            "Order",
+            "User",
+            LogActionsEnum::QUOTEREQUESTED,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            0,
+            0,
+            null
+        );
+        }
         if ($request->transFiles) {
 
             $files = $request->transFiles;

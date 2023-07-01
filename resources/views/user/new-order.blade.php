@@ -247,11 +247,12 @@
                                 
                                 <textarea name="message" class="intro-x login__input form-control py-3 px-4 block mb-4 mt-4 h-30" required
                                     placeholder="Enter Description."></textarea>
-                                @if (Auth::user()->role_id == 0)
+                                @if (Auth::user()->role_id != 1)
+                                <label for="want_quote">Needs Quote?</label>
                                     <select name="want_quote" required class="form-control mt-3 mb-3" id="">
                                         <option value="">Needs Quote?</option>
                                         <option value="1">Yes</option>
-                                        <option value="0">No</option>
+                                        <option selected value="0">No</option>
                                     </select>
                                 @endif
                                 <input type="file" id="multipleFiles" class="filepond" name="transFiles[]" multiple

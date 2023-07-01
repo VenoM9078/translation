@@ -25,6 +25,7 @@ abstract class LogActionsEnum
     const ACCEPTPROOFREAD = "Accepted Proof Read Request";
     const DECLINEPROOFREAD = "Declined Proof Read Request";
 
+    const QUOTEREQUESTED = "Requested for Quote";
     const ORDERCOMPLETED = "Completed Order";
     const PAYMENTCOMPLETED = "Completed Payment";
     const
