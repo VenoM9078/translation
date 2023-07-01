@@ -124,7 +124,10 @@
                 <div class="w-full btn btn-success">
                     WO Completed
                 </div>
-            @elseif(isset($order->proofReaderOrder) && $order->proofread_sent == 1 && $order->orderStatus != 'Completed')
+            @elseif(isset($order->proofReaderOrder) &&
+                    $order->proofread_sent == 1 &&
+                    $order->orderStatus != 'Completed' &&
+                    $order->proofReaderOrder->file_name != null)
                 <div class="w-full btn btn-success">
                     ProofRead Completed
                 </div>
