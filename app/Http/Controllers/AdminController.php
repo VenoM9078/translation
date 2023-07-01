@@ -151,9 +151,8 @@ class AdminController extends Controller
     public function copyInterpretationDetails($id)
     {
         $interpretation = Interpretation::where('id', $id)->firstOrFail();
-        return view('admin.view-interpretation', compact('interpretation'));
+        return view('admin.copy-interpretation', compact('interpretation'));
     }
-
     public function editInterpretation($id)
     {
         $interpretation = Interpretation::find($id);
@@ -1049,6 +1048,49 @@ class AdminController extends Controller
         return view('admin.submitOrderQuote', compact('order'));
     }
 
+    public function cancelOrder(Request $request)
+    {
+        $orderId = $request->input('order_id');
+
+        // Fetch the order using the ID
+        $order = Order::find($orderId);
+
+        // Check if the order exists
+        if ($order) {
+            // Update the is_cancelled column to 1
+            $order->is_cancelled = !$order->is_cancelled;
+            $order->save();
+
+            // Redirect back with a success message
+            return back()->with('success', 'Order cancelled successfully.');
+        }
+
+        // Redirect back with an error message if the order doesn't exist
+        return back()->with('error', 'Order not found.');
+    }
+
+
+    public function cancelInterpretation(Request $request)
+    {
+        $interpretationId = $request->input('interpretation_id');
+
+        // Fetch the interpretation using the ID
+        $interpretation = Interpretation::find($interpretationId);
+
+        // Check if the interpretation exists
+        if ($interpretation) {
+            // Update the is_cancelled column to 1
+            $interpretation->is_cancelled = !$interpretation->is_cancelled;
+            $interpretation->save();
+
+            // Redirect back with a success message
+            return back()->with('success', 'Interpretation cancelled successfully.');
+        }
+
+        // Redirect back with an error message if the interpretation doesn't exist
+        return back()->with('error', 'Interpretation not found.');
+    }
+
     public function submitOrderQuote(Request $request)
     {
 
@@ -1150,8 +1192,8 @@ class AdminController extends Controller
     public function pendingOrders()
     {
         $pendingOrders = Order::orderByDesc('id')->paginate(10);
-            // ->where('id',34)
-            // ->get();
+        // ->where('id',34)
+        // ->get();
         // dd($orders);
         // dd($orders[0]->invoice);
         return view('admin.pendingOrders', compact('pendingOrders'));

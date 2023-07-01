@@ -178,6 +178,11 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('admin/pending', [AdminController::class, 'pendingOrders'])->name('admin.pending');
     Route::get('admin/paidOrders', [AdminController::class, 'paidOrders'])->name('admin.paidOrders');
 
+    Route::post('admin/cancel-order', [AdminController::class, 'cancelOrder'])->name('admin-cancelOrder');
+    Route::post('admin/cancel-interpretation', [AdminController::class, 'cancelInterpretation'])->name('admin-cancelInterpretation');
+    Route::get('/admin-copy-interpretation/{id}', [AdminController::class, 'copyInterpretationDetails'])->name('admin-copy-interpretation-details');
+
+
     Route::get('admin/new-translation-order', [AdminController::class, 'newTranslationOrder'])->name('admin.newTranslationOrder');
     Route::post('admin/new-translation-order', [AdminController::class, 'submitNewTranslationOrder'])->name('admin.submitNewTranslationOrder');
     Route::post('adminUploadTranslationImage', [AdminController::class, 'uploadTranslationImage'])->name('uploadTranslationImage');
@@ -294,7 +299,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::post('/admin/upload-proof', [AdminController::class, 'uploadProofFile'])->name('admin-upload-proof-read-file');
 
     Route::get('/view-interpretation/{id}', [AdminController::class, 'viewInterpretationDetails'])->name('view-interpretation-details');
-    Route::get('/copy-interpretation/{id}', [AdminController::class, 'copyInterpretationDetails'])->name('copy-interpretation-details');
+    // Route::get('/copy-interpretation/{id}', [AdminController::class, 'copyInterpretationDetails'])->name('copy-interpretation-details');
 
 
     // Track Order
@@ -323,7 +328,7 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
     Route::post('cancel-interpretation', [UserController::class, 'cancelInterpretation'])->name('cancelInterpretation');
 
 
-    Route::get('/user/quote/{id}/accept',[UserController::class,'approveQuote'])->name('user.approve-quote');
+    Route::get('/user/quote/{id}/accept', [UserController::class, 'approveQuote'])->name('user.approve-quote');
     Route::get('/user/quote/{id}/reject', [UserController::class, 'disapproveQuote'])->name('user.disapprove-quote');
 
     Route::get('/edit-order/{orderID}', [UserController::class, 'viewEditOrder'])->name('view-edit-order');
