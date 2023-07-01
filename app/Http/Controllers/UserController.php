@@ -16,6 +16,7 @@ use App\Mail\NotifyAdminQuote;
 use App\Mail\OrderQuoteSent;
 use App\Models\Admin;
 use App\Models\Contractor;
+use App\Models\ContractorOrder;
 use App\Models\Institute;
 use App\Models\InstituteMembers;
 use Carbon\Carbon;
