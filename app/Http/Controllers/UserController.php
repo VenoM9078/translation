@@ -81,7 +81,7 @@ class UserController extends Controller
     public function myinterpretations()
     {
         $user = Auth::user();
-        if ($user->role_id == 0) {
+        if ($user->role_id == 0 || $user->role_id == 1) {
             $interpretations = Interpretation::where('user_id', $user->id)->orderByDesc('created_at')->get();
         } else {
             $members = Auth::user()->institute_managed->members;
