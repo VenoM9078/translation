@@ -39,9 +39,10 @@
         --}}
     {{-- Translation pending/not completed --}}
     @if ($order->translation_status == 0)
-        @if ($order->want_quote == 0 && ($order->user->role_id == 1 || $order->user->role_id == 2) 
-        && !isset($order->contractorOrder)
-        )
+        @if (
+            $order->want_quote == 0 &&
+                ($order->user->role_id == 1 || $order->user->role_id == 2) &&
+                !isset($order->contractorOrder))
             <div class="w-full btn btn-warning">
                 Translation Requested
             </div>
@@ -76,7 +77,10 @@
             <div class="w-full btn btn-warning">
                 Payment Required
             </div>
-        @elseif(($order->paymentStatus == 1 || $order->paymentStatus == 2) && $order->translation_status == 0 && !isset($order->contractorOrder))
+        @elseif(
+            ($order->paymentStatus == 1 || $order->paymentStatus == 2) &&
+                $order->translation_status == 0 &&
+                !isset($order->contractorOrder))
             <div class="w-full btn btn-success">
                 Paid
             </div>
@@ -107,7 +111,8 @@
             </div>
         @elseif(isset($order->proofReaderOrder) &&
                 $order->proofReaderOrder->is_accepted == 1 &&
-                $order->proofread_status == \App\Enums\TranslationStatusEnum::COMPLETED)
+                $order->proofread_status == \App\Enums\TranslationStatusEnum::COMPLETED &&
+                $order->proofReaderOrder->file_name != null)
             <div class="w-full btn btn-success">
                 ProofRead Completed
             </div>
