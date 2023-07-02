@@ -205,6 +205,34 @@ class AdminController extends Controller
         return null;
     }
 
+    public function uploadQuote(Request $request)
+    {
+        $filename = '';
+        if ($request->hasFile('quoteFile')) {
+            $file = $request->file('quoteFile');
+            $filePath = 'quote-files/';
+
+            // dd($file);
+
+            $filename = date('YmdHi') . $file->getClientOriginalName();
+            // $folder = uniqid() . '-' . now()->timestamp;
+            // $file->move(public_path('documents'), $filename);
+            //if the path does not exist, create it
+
+            if (!file_exists(public_path($filePath))) {
+                mkdir(public_path($filePath), 0777, true);
+                $file->move($filePath, $filename);
+            } else {
+                $file->move($filePath, $filename);
+            }
+
+            TemporaryFile::create([
+                'filename' => $filename
+            ]);
+        }
+
+        return $filename;
+    }
     public function uploadTranslationFile(Request $request)
     {
         $filename = '';
@@ -1042,6 +1070,12 @@ class AdminController extends Controller
         return view('admin.submitQuote', compact('interpretation'));
     }
 
+    public function showUploadFinalDoc($id)
+    {
+        $order = Order::where('id', $id)->first();
+        return view('admin.final-doc-page', compact('order'));
+    }
+
     public function showOrderSubmitQuote($id)
     {
         $order = Order::findOrFail($id);
@@ -1061,6 +1095,27 @@ class AdminController extends Controller
             $order->is_cancelled = !$order->is_cancelled;
             $order->save();
 
+            HelperClass::storeOrderLog(
+                LogActionsEnum::ISADMIN,
+                Auth::user()->id,
+                $order->id,
+                "Order",
+                "Admin",
+                LogActionsEnum::CANCELLEDORDER,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                0,
+                0,
+                null
+            );
             // Redirect back with a success message
             return back()->with('success', 'Order cancelled successfully.');
         }
@@ -1083,6 +1138,27 @@ class AdminController extends Controller
             $interpretation->is_cancelled = !$interpretation->is_cancelled;
             $interpretation->save();
 
+            HelperClass::storeOrderLog(
+                LogActionsEnum::ISADMIN,
+                Auth::user()->id,
+                null,
+                "Interpretation",
+                "Admin",
+                LogActionsEnum::CANCELLEDINTERPRETATION,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                0,
+                0,
+                $interpretationId
+            );
             // Redirect back with a success message
             return back()->with('success', 'Interpretation cancelled successfully.');
         }
@@ -1097,6 +1173,9 @@ class AdminController extends Controller
         $order = Order::find($request->order_id);
         $order->quote_price = $request->quote_price;
         $order->quote_description = $request->quote_description;
+        if ($request->quoteFile) {
+            $order->quote_filename = $request->quoteFile;
+        }
         $order->is_order_quote_accepted = OrderStatusEnum::QUOTEPENDING;
         $order->save();
 
@@ -1335,6 +1414,53 @@ class AdminController extends Controller
         }
         return response()->download($file);
     }
+
+    public function downloadInterpretationQuoteFile($id)
+    {
+        //select only file_name;
+        $filePath = '/quote-files/' . Interpretation::where(['id' => $id])->firstOrFail()->quote_filename;
+        $file = "";
+        // $file = public_path() . '/uploads/' . $filePath;
+        // dd($filePath, file_exists($filePath));
+        if (public_path() . file_exists($filePath)) {
+            $file = public_path($filePath);
+        }
+        $zip = new ZipArchive;
+        $zipName = date('YmdHi') . $id . '.zip';
+
+        if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
+            $relativeNameInZipFile = basename($file);
+            // dd($file, $relativeNameInZipFile);
+            $zip->addFile($file, $relativeNameInZipFile);
+
+            $zip->close();
+        }
+        return response()->download($file);
+    }
+
+    public function downloadQuoteFile($id)
+    {
+        //select only file_name;
+        $filePath = '/quote-files/' . Order::where(['id' => $id])->firstOrFail()->quote_filename;
+        $file = "";
+        // $file = public_path() . '/uploads/' . $filePath;
+        // dd($filePath, file_exists($filePath));
+        if (public_path() . file_exists($filePath)) {
+            $file = public_path($filePath);
+        }
+        $zip = new ZipArchive;
+        $zipName = date('YmdHi') . $id . '.zip';
+
+        if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
+            $relativeNameInZipFile = basename($file);
+            // dd($file, $relativeNameInZipFile);
+            $zip->addFile($file, $relativeNameInZipFile);
+
+            $zip->close();
+        }
+        return response()->download($file);
+    }
+
     public function downloadFiles(Order $order)
     {
         $orderFiles = $order->files;
@@ -1772,6 +1898,129 @@ class AdminController extends Controller
         }
     }
 
+    public function submitFinalDoc(Request $request)
+    {
+        $validated = $request->validate([
+            'order_id' => 'required|integer',
+            'user_id' => 'required|integer',
+            'email' => 'email|required'
+        ]);
+        $order_id = $request->input('order_id');
+        $email = $request->input('email');
+        $emailTitle = $request->input('email_title');
+
+        $check = CompletedRequest::where([
+            'order_id' => $order_id,
+            'email' => $email
+        ]);
+
+        if ($check->exists()) {
+            $check->delete();
+        }
+
+        $order = Order::where('id', $order_id)->first();
+
+
+        if ($request->input('files')) {
+
+            $files = $request->input('files');
+
+            $fileArr2 = [];
+
+            foreach ($files as $file) {
+
+                $filename = $file;
+
+                // $file->move(public_path('documents'), $filename);
+                $fileArr2[] = public_path('documents/' . $filename);
+            }
+
+            if ($order->paymentStatus == 2) {
+                $pdf = app('dompdf.wrapper');
+                $invoice = Invoice::findOrFail($order->invoice->id);
+                // dd($invoice);
+                $data = [
+                    'data' => $invoice
+                ];
+                // dd($data['data']->description);
+                $pdf = $pdf->loadView('pdf.invoice-pdf', $data);
+                // dd($pdf);
+                $randomDigits = mt_rand(1111, 9999);
+                $fileName = "invoice_" . $randomDigits . ".pdf";
+                $path = public_path('documents/' . $fileName);
+                // $pdf->path_to_pdf = $path;
+                $pdf->save($path);
+
+
+                $fileArr2[] = $path;
+            }
+
+            $zip2 = new ZipArchive;
+
+            $zipName2 = 'completed_' . $order_id . '.zip';
+
+            if ($zip2->open(public_path('translated/' . $zipName2), ZipArchive::CREATE) === TRUE) {
+
+                $files = $fileArr2; //passing the above array
+                // dd($files);
+                foreach ($files as $key => $value) {
+                    $relativeNameInZipFile = basename($value);
+                    // dd($relativeNameInZipFile);
+                    $zip2->addFile($value, $relativeNameInZipFile);
+                }
+
+                $zip2->close();
+            }
+        }
+
+        $validated['completed_file'] = $zipName2;
+        if ($request->proofreader_id) {
+            $validated['proofreader_id'] = $request->proofreader_id;
+        } else {
+            $validated['proofreader_id'] = -1;
+        }
+
+        if ($request->translation_id) {
+            $validated['translation_id'] = $request->proofreader_id;
+        } else {
+            $validated['translation_id'] = -1;
+        }
+        $completedRequest = CompletedRequest::create($validated);
+
+        Order::where('id', $order_id)->update([
+            'orderStatus' => 'Completed',
+            'completed' => 1,
+            'translation_status' => TranslationStatusEnum::COMPLETED
+        ]);
+
+        HelperClass::storeOrderLog(
+            1,
+            Auth::user()->id,
+            $order_id,
+            "Order",
+            "Admin",
+            LogActionsEnum::ORDERCOMPLETED,
+            0,
+            1,
+            0,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+        );
+
+        if (env("IS_DEV") == 1) {
+            Mail::mailer('dev')->to($email)->send(new mailOfCompletion($order, $zipName2, $emailTitle, env("ADMIN_EMAIL_DEV")));
+        } else {
+            Mail::mailer('clients')->to($email)->send(new mailOfCompletion($order, $zipName2, $emailTitle, env("ADMIN_EMAIL")));
+        }
+        //Send Invoice
+        return redirect()->route('admin.pending');
+    }
+
     // Mail to User for Completion 🙌
 
     public function sendDocumentsToUser(Request $request)
@@ -1859,8 +2108,11 @@ class AdminController extends Controller
 
         $completedRequest = CompletedRequest::create($validated);
 
-        Order::where('id', $order_id)->update(['orderStatus' => 'Completed']);
-        Order::where('id', $order_id)->update(['completed' => 1]);
+        Order::where('id', $order_id)->update([
+            'orderStatus' => 'Completed',
+            'completed' => 1,
+            'translation_status' => TranslationStatusEnum::COMPLETED
+        ]);
 
         HelperClass::storeOrderLog(
             1,

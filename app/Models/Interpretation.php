@@ -27,7 +27,8 @@ class Interpretation extends Model
         'interpreter_completed',
         'feedback',
         'added_by_institute_user',
-        'message'
+        'message',
+        'quote_filename'
     ];
 
     public function user()

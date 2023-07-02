@@ -49,7 +49,8 @@ class Order extends Model
         'c_paid',
         'due_date',
         'unit',
-        'is_order_quote_accepted'
+        'is_order_quote_accepted',
+        'quote_filename'
     ];
 
     public function files()

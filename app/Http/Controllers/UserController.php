@@ -397,6 +397,30 @@ class UserController extends Controller
         return back()->with('error', 'Order not found.');
     }
 
+    public function downloadQuoteFile($id)
+    {
+        //select only file_name;
+        $filePath = '/quote-files/' . Order::where(['id' => $id])->firstOrFail()->quote_filename;
+        $file = "";
+        // $file = public_path() . '/uploads/' . $filePath;
+        // dd($filePath, file_exists($filePath));
+        if (public_path() . file_exists($filePath)) {
+            $file = public_path($filePath);
+        }
+        $zip = new ZipArchive;
+        $zipName = date('YmdHi') . $id . '.zip';
+
+        if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
+            $relativeNameInZipFile = basename($file);
+            // dd($file, $relativeNameInZipFile);
+            $zip->addFile($file, $relativeNameInZipFile);
+
+            $zip->close();
+        }
+        return response()->download($file);
+    }
+
+
     public function cancelInterpretation(Request $request)
     {
         $interpretationId = $request->input('interpretation_id');

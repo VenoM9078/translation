@@ -31,6 +31,9 @@ abstract class LogActionsEnum
     const
         LATEPAYMENTCOMPLETED = "Completed Late Payment";
     const WILLPAYLATE = "Will Pay Later";
+
+    const CANCELLEDINTERPRETATION = "Cancelled Interpretation";
+    const CANCELLEDORDER = "Cancelled Order";
     const PAYMENTCOMPLETEDNUMBER = 1;
     const LATEPAYMENTCOMPLETEDNUMBER = 2;
     const QUOTESENT = "Sent Quote";

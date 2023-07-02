@@ -20,3 +20,5 @@ yarn-error.log
 /public/compressed/
 /public/translated
 /public/evidence
+/public/quote-files
+/public/quote-files/

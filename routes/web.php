@@ -186,6 +186,13 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('admin/new-translation-order', [AdminController::class, 'newTranslationOrder'])->name('admin.newTranslationOrder');
     Route::post('admin/new-translation-order', [AdminController::class, 'submitNewTranslationOrder'])->name('admin.submitNewTranslationOrder');
     Route::post('adminUploadTranslationImage', [AdminController::class, 'uploadTranslationImage'])->name('uploadTranslationImage');
+    Route::post('admin/quote/upload', [AdminController::class, 'uploadQuote'])->name('uploadQuote');
+    Route::get('admin/quote/download/{id}', [AdminController::class, 'downloadQuoteFile'])->name('downloadQuote');
+
+    // Route::post('admin/int-quote/upload', [AdminController::class, 'uploadInterpretationQuote'])->name('uploadInterpretationQuote');
+    Route::get('admin/int-quote/download/{id}', [AdminController::class, 'downloadInterpretationQuoteFile'])->name('downloadInterpretationQuote');
+
+
 
     Route::get('admin/new-interpretation', [AdminController::class, 'newInterpretation'])->name('admin.newInterpretation');
     Route::post('admin/new-interpretation', [AdminController::class, 'submitNewInterpretation'])->name('admin.submitNewInterpretation');
@@ -215,7 +222,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/admin/editUser/{id}', [AdminController::class, 'editUser'])->name('admin.editUser');
     Route::delete('/admin/deleteUser/{id}', [AdminController::class, 'deleteUser'])->name('admin.deleteUser');
 
-
+    Route::get('/admin/upload-file/{id}',[AdminController::class,'showUploadFinalDoc'])->name('show-final-upload-page');
+    Route::post('/admin/upload-file/submit',[AdminController::class,'submitFinalDoc'])->name('admin.submit-final-doc');
     // Route::get('admin/interpretations', [AdminController::class, 'editInterpretations'])->name('admin.edit-interpretation');
 
     Route::get('admin/ongoing-interpretations', [AdminController::class, 'ongoingInterpretations'])->name('admin.ongoingInterpretations');
@@ -382,6 +390,8 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
 
     Route::get('downloadTranslatedForUser/{id}', [UserController::class, 'downloadTranslatedForUser'])->name('downloadTranslatedForUser');
     Route::post('submitFeedback', [UserController::class, 'submitFeedback'])->name('submitFeedback');
+
+    Route::get('user/quote/download/{id}', [UserController::class, 'downloadQuoteFile'])->name('user.downloadQuote');
 
     //Institute
 

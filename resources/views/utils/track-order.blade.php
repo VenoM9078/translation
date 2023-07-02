@@ -1,4 +1,4 @@
-<div class="px-5">
+<div class="">
     @php
         $steps = [
             ['number' => 1, 'text' => 'Order Created', 'status' => 'success'],
@@ -99,7 +99,7 @@
                                 @endforeach
                             @endif
                         @break
-
+                        {{-- Payment --}}
                         @case(3)
                             @if (isset($order->orderLogs) && count($order->orderLogs) > 0)
                                 @foreach ($order->orderLogs as $orderLog)
@@ -126,7 +126,7 @@
                         @case(4)
                             @if (isset($order->contractorLogs) && count($order->contractorLogs) > 0)
                                 @foreach ($order->contractorLogs as $contractorLog)
-                                    @if ($contractorLog->is_admin == 1 && $contractorLog->contractor_type == 'Translator')
+                                    @if ($contractorLog->is_admin == 1)
                                         <div class="intro-x flex items-center mt-5 translator">
                                             <div class="row">
                                                 {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($contractorLog->created_at, request()->ip()) }}
@@ -135,7 +135,7 @@
                                                 <br>
                                             </div>
                                         </div>
-                                    @elseif ($contractorLog->is_admin == 0 && $contractorLog->contractor_type == 'Translator')
+                                    @elseif ($contractorLog->is_admin == 0)
                                         <div class="intro-x flex items-center mt-5">
                                             <div class="row">
                                                 {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($contractorLog->created_at, request()->ip()) }}
@@ -149,7 +149,7 @@
                             @endif
                         @break
 
-                        {{-- Proof Read --}}
+                        {{-- Proof Read
                         @case(5)
                             @if (isset($order->contractorLogs) && count($order->contractorLogs) > 0)
                                 @foreach ($order->contractorLogs as $contractorLog)
@@ -174,7 +174,7 @@
                                     @endif
                                 @endforeach
                             @endif
-                        @break
+                        @break --}}
 
                         {{-- Order Completed --}}
                         @case(6)
