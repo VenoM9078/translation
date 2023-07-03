@@ -3,13 +3,13 @@
 
 Dear {{ $interpretation->user->name }},
 
-We have submitted a quote for your interpretation request. Please find the details below:
-
-**Quote Price:** {{ $interpretation->quote_price }}
-
-**Quote Description:** {!! nl2br(e($interpretation->quote_description)) !!}
-
-Please login to your account to review and accept the quote.
+We have submitted a quote for your interpretation request.
+@if($interpretation->quote_description != null)
+<br>
+**Quote Message:** {{$interpretation->quote_description}}
+<br>
+@endif
+Please login to your account to review it.
 
 Thanks,
 {{ config('app.name') }}

@@ -8,6 +8,7 @@
     <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
     <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js">
     </script>
+      <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
     <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
 <div class="col-span-12 mt-8">
     <div class="intro-y flex items-center h-10">
@@ -41,10 +42,10 @@
                             <div class="mt-5">
                                 <label for="">Enter Quote Description</label>
                                 <textarea name="quote_description"
-                                    class="intro-x login__input form-control py-3 px-4 block mt-4 h-30" required
+                                    class="intro-x login__input form-control py-3 px-4 block mt-4 h-30"
                                     placeholder="Enter Quote Description i.e mention what's included for the customer in this price."></textarea>
                             </div>
-                            <div class="mt-5">
+                            <div class="mt-5 mb-2">
                                 <label for="">Upload Quote PDF</label>
                                 <input type="file" accept=".pdf,.docx" id="multipleFiles" class="filepond" name="quoteFile"  data-max-file-size="20MB" data-max-files="15" />
                             </div>

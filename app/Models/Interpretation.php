@@ -28,7 +28,8 @@ class Interpretation extends Model
         'feedback',
         'added_by_institute_user',
         'message',
-        'quote_filename'
+        'quote_filename',
+        'is_quote_pending'
     ];
 
     public function user()

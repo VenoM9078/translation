@@ -44,7 +44,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($interpretations as $interpretation)
+                                    @foreach ($interpretations as $key => $interpretation)
                                         <tr>
                                             @if ($interpretation->is_cancelled == 0)
                                                 <td class="whitespace-nowrap">
@@ -143,6 +143,76 @@
                                                                 </form>
                                                             </div>
                                                         @endif
+                                                        @if (Auth::user()->role_id == 2 || Auth::user()->role_id == 0)
+                                                        @if (isset($interpretation->is_quote_pending) && $interpretation->is_quote_pending == 0 
+                                                        && $interpretation->wantQuote == 1)
+                                                            <div class="flex gap-2">
+                                                                <div>
+                                                                    <div class="text-center mb-2 mr-1"> <a
+                                                                            href="javascript:;" data-tw-toggle="modal"
+                                                                            data-tw-target="#translation-modal-accept-{{ $key }}"
+                                                                            class="btn btn-success">View Quote</a>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        @endif
+                                                    @endif
+
+                                                    <div id="translation-modal-accept-{{ $key }}" class="modal"
+                                                        tabindex="-1" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-body p-0">
+                                                                    <div class="p-5 text-center"><svg
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            width="24" height="24"
+                                                                            viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                                            icon-name="check-circle"
+                                                                            data-lucide="check-circle"
+                                                                            class="lucide lucide-check-circle w-16 h-16 text-success mx-auto mt-3">
+                                                                            <path d="M22 11.08V12a10 10 0 11-5.93-9.14">
+                                                                            </path>
+                                                                            <polyline points="22 4 12 14.01 9 11.01">
+                                                                            </polyline>
+                                                                        </svg>
+                                                                        <div class="text-3xl mt-5">Are you sure?</div>
+                                                                        <div class="text-slate-500 mt-2">Your action
+                                                                            will
+                                                                            advance
+                                                                            this
+                                                                            request and notify the user of your
+                                                                            agreement!
+                                                                        </div>
+                                                                        <div class="w-full text-left">
+                                                                            @if ($interpretation->quote_filename != null)
+                                                                                <div class="w-full text-center mt-2">
+                                                                                    <a class="btn btn-success border-indigo-600"
+                                                                                        title="Download Quote submitted by Admin"
+                                                                                        href="{{ route('downloadInterpretationQuote', $interpretation->id) }}">Download
+                                                                                        Quote File</a>
+                                                                                </div>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="px-5 pb-8 text-center inline-flex items-stretch"
+                                                                        style="text-align: center;margin: auto !important;width: 100%;position: relative;justify-content: center;">
+
+                                                                        <a href="{{ route('user.int-approve-quote', $interpretation->id) }}"
+                                                                            class="btn btn-success text-white w-24 mr-1 self-center">
+                                                                            Approve</a>
+                                                                        <a href="{{ route('user.int-disapprove-quote', $interpretation->id) }}"
+                                                                            class="btn btn-danger w-24 mr-1 self-center">
+                                                                            Disapprove</a>
+                                                                        <button type="button" data-tw-dismiss="modal"
+                                                                            class="btn btn-outline-secondary w-24 mr-1">Cancel</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div> <!-- END: Modal Content -->
                                                         @if (
                                                             $interpretation->added_by_institute_user == 1 &&
                                                                 $interpretation->interpreter_id === null &&

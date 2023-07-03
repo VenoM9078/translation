@@ -539,6 +539,48 @@ class UserController extends Controller
         Mail::to($order->user->email)->send(new OrderQuoteSent($order));
         return redirect()->route('myorders');
     }
+
+    public function approveIntQuote($id)
+    {
+        $interpretation = Interpretation::where('id', $id)->first();
+        $interpretation->is_quote_pending = OrderStatusEnum::QUOTEACCEPTED;
+        $interpretation->wantQuote = 2;
+        $interpretation->save();
+        HelperClass::storeOrderLog(
+            LogActionsEnum::NOTADMIN,
+            Auth::user()->id,
+            null,
+            "Interpretation",
+            "User",
+            LogActionsEnum::QUOTEAPPROVED,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ISINTERPRETATION,
+            0,
+            $id
+        );
+        // Send the email to the user
+        $admins = Admin::all();
+        if (env("IS_DEV") == 1) {
+            $fromEmail = env("ADMIN_EMAIL_DEV");
+        } else {
+            $fromEmail = env("ADMIN_EMAIL");
+        }
+        foreach ($admins as $admin) {
+            Mail::to($admin->email)->send(new NotifyAdminQuote($interpretation, 1, $fromEmail));
+        }
+        // Mail::to($interpretation->user->email)->send(new OrderQuoteSent($interpretation));
+        return redirect()->route('myorders');
+    }
+
     public function disapproveQuote($id)
     {
         $order = Order::where('id', $id)->first();
@@ -580,6 +622,72 @@ class UserController extends Controller
         Mail::to($order->user->email)->send(new OrderQuoteSent($order));
         return redirect()->route('myorders');
     }
+
+    public function disapproveIntQuote($id)
+    {
+        $interpretation = Interpretation::where('id', $id)->first();
+        $interpretation->is_quote_pending = OrderStatusEnum::QUOTEREJECTED;
+        $interpretation->wantQuote = 1;//back to pending
+        $interpretation->save();
+        HelperClass::storeOrderLog(
+            LogActionsEnum::NOTADMIN,
+            Auth::user()->id,
+            null,
+            "Interpretation",
+            "User",
+            LogActionsEnum::QUOTEDISAPPROVED,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ISINTERPRETATION,
+            0,
+            $id
+        );
+        // Send the email to the user
+        $admins = Admin::all();
+        if (env("IS_DEV") == 1) {
+            $fromEmail = env("ADMIN_EMAIL_DEV");
+        } else {
+            $fromEmail = env("ADMIN_EMAIL");
+        }
+        foreach ($admins as $admin) {
+            Mail::to($admin->email)->send(new NotifyAdminQuote($interpretation, 1, $fromEmail));
+        }
+        // Mail::to($interpretation->user->email)->send(new OrderQuoteSent($interpretation));
+        return redirect()->route('myorders');
+    }
+
+    public function downloadInterpretationQuoteFile($id)
+    {
+        //select only file_name;
+        $filePath = '/quote-files/' . Interpretation::where(['id' => $id])->firstOrFail()->quote_filename;
+        $file = "";
+        // $file = public_path() . '/uploads/' . $filePath;
+        // dd($filePath, file_exists($filePath));
+        if (public_path() . file_exists($filePath)) {
+            $file = public_path($filePath);
+        }
+        $zip = new ZipArchive;
+        $zipName = date('YmdHi') . $id . '.zip';
+
+        if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
+            $relativeNameInZipFile = basename($file);
+            // dd($file, $relativeNameInZipFile);
+            $zip->addFile($file, $relativeNameInZipFile);
+
+            $zip->close();
+        }
+        return response()->download($file);
+    }
+
+
     public function myorders()
     {
         $user = Auth::user();

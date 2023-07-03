@@ -339,6 +339,11 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
     Route::get('/user/quote/{id}/accept', [UserController::class, 'approveQuote'])->name('user.approve-quote');
     Route::get('/user/quote/{id}/reject', [UserController::class, 'disapproveQuote'])->name('user.disapprove-quote');
 
+    //interpretation
+    Route::get('/user/int-quote/{id}/accept', [UserController::class, 'approveIntQuote'])->name('user.int-approve-quote');
+    Route::get('/user/int-quote/{id}/reject', [UserController::class, 'disapproveIntQuote'])->name('user.int-disapprove-quote');
+
+
     Route::get('/edit-order/{orderID}', [UserController::class, 'viewEditOrder'])->name('view-edit-order');
     Route::post('/edit-order/save', [UserController::class, 'editOrder'])->name('admin.edit-order');
 
@@ -392,6 +397,7 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
     Route::post('submitFeedback', [UserController::class, 'submitFeedback'])->name('submitFeedback');
 
     Route::get('user/quote/download/{id}', [UserController::class, 'downloadQuoteFile'])->name('user.downloadQuote');
+    Route::get('admin/int-quote/download/{id}', [UserController::class, 'downloadInterpretationQuoteFile'])->name('downloadInterpretationQuote');
 
     //Institute
 

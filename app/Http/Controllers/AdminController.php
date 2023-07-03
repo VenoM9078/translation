@@ -1212,9 +1212,34 @@ class AdminController extends Controller
         $interpretation = Interpretation::find($request->interpretation_id);
         $interpretation->quote_price = $request->quote_price;
         $interpretation->quote_description = $request->quote_description;
-        $interpretation->wantQuote = 2;
+        if ($request->quoteFile) {
+            $interpretation->quote_filename = $request->quoteFile;
+        }
+        $interpretation->is_quote_pending = OrderStatusEnum::QUOTEPENDING;
+        // $interpretation->wantQuote = 2;
         $interpretation->save();
 
+        HelperClass::storeOrderLog(
+            LogActionsEnum::ISADMIN,
+            Auth::user()->id,
+            null,
+            "Interpretation",
+            "Admin",
+            LogActionsEnum::QUOTESENT,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            1,
+            0,
+            $request->interpretation_id
+        );
         // Send the email to the user
         Mail::to($interpretation->user->email)->send(new QuoteSent($interpretation));
 

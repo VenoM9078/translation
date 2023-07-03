@@ -135,7 +135,7 @@
             </div>
         @elseif(
             $interpretation->wantQuote == 2 &&
-                $interpretation->is_order_quote_accepted == \App\Enums\OrderStatusEnum::QUOTEACCEPTED &&
+                $interpretation->is_quote_pending == \App\Enums\OrderStatusEnum::QUOTEACCEPTED &&
                 !isset($interpretation->interpreter))
             {{-- 
                 " Approved" is set, when client approve the quote. 

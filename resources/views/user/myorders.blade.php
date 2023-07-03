@@ -371,7 +371,7 @@
                                                 </td>
                                             @endif
                                             <td>
-                                                @if ($order->completed == 1 && $order->completedRequest->completed_file != null)
+                                                @if ($order->completed == 1 && isset($order->completedRequest) && $order->completedRequest->completed_file != null)
                                                     <a class="btn" title="Download Translation"
                                                         href="{{ route('downloadTranslatedForUser', $order->id) }}">
                                                         <i data-lucide="download" class="w-5 h-5"></i>
