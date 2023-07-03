@@ -24,6 +24,7 @@ class ContractorOrder extends Model
         'translator_adjust',
         'translator_unit',
         'translator_paid',
+        'added_by_admin'
     ];
 
     public function contractor()

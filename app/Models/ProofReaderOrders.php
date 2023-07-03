@@ -25,7 +25,8 @@ class ProofReaderOrders extends Model
         'p_unit',
         'p_adjust',
         'message',
-        'file_uploaded_by_admin'
+        'file_uploaded_by_admin',
+        'added_by_admin'
     ];
 
     public function contractor()

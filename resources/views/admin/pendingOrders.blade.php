@@ -220,16 +220,11 @@
 
                             <tbody>
                                 {{-- @dd($pendingOrders) --}}
-                                @foreach ($pendingOrders as $order)
+                                @foreach ($pendingOrders as $key => $order)
                                     {{-- @dd($order->proofread_status) --}}
                                     <tr>
                                         <td class="whitespace-nowrap">
                                             <div class="flex gap-1 items-center">
-                                                {{-- <a href="javascript:;" data-trigger="click"
-                                            title="{{ $order->orderStatus }}" class="tooltip btn btn-primary mr-1">Show
-                                            Progress</a> --}}
-
-
 
                                                 <!-- BEGIN: Modal Toggle -->
                                                 <div class="text-center">
@@ -317,22 +312,24 @@
                                                     </div>
                                                 @endif
                                                 <div class="text-center">
-                                                    <a href="{{ route('show-final-upload-page', $order->id) }}"
-                                                        title="Upload Final Document" class="btn btn-secondary">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                            class="w-6 h-6">
+                                                    <a href="javascript:;" data-tw-toggle="modal"
+                                                        data-tw-target="#upload-modal-preview-{{ $key }}"
+                                                        class="btn btn-pending"> <svg xmlns="http://www.w3.org/2000/svg"
+                                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                            stroke="currentColor" class="w-6 h-6">
                                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                                 d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15" />
                                                         </svg>
-
                                                     </a>
-                                                </div>
-                                                <div class="text-center">
+                                                    {{-- Modal --}}
+                                                    @include('utils.order-upload-modal', [
+                                                        'key' => $key,
+                                                        'order' => $order,
+                                                    ])
                                                     @if (
                                                         $order->invoiceSent == 1 &&
                                                             ($order->paymentStatus == 1 || $order->paymentStatus == 2) &&
-                                                            $order->translation_status == 1 &&
+                                                        $order->translation_status == 1 &&
                                                             $order->proofread_status == 1)
                                                         <a href="{{ route('mailOfCompletion', $order->id) }}"
                                                             class="btn btn-success mr-1">
@@ -345,8 +342,7 @@
 
                                                             Mark Completed </a>
                                                     @elseif($order->want_quote == 1 && $order->translation_status == 0)
-                                                        <a href="{{ route('admin.showOrderSubmitQuote', $order->id) }}"
-                                                            class="btn btn-warning mr-1  ">Quote</a>
+
                                                     @elseif ($order->invoiceSent == 0 && $order->is_order_quote_accepted == 1 && $order->user->role_id == 0)
                                                         <a href="{{ route('invoice.customInvoice', $order->id) }}"
                                                             class="btn btn-success mr-1">
@@ -764,14 +760,13 @@
                                             </a>
                                         </td>
                                         <td class="whitespace-nowrap">
-                                            @if($order->completed == 1  && isset($order->completedRequest))
-                                                <a
-                                                    href="{{ route('downloadTranslatedFiles', $order->id) }}"
+                                            @if ($order->completed == 1 && isset($order->completedRequest))
+                                                <a href="{{ route('downloadTranslatedFiles', $order->id) }}"
                                                     title="Download Final Document" class="btn btn-warning mr-1">
 
-                                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                        class="w-6 h-6">
+                                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                        stroke="currentColor" class="w-6 h-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                                                     </svg>
