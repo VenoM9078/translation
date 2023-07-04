@@ -71,7 +71,7 @@
 
                             </div>
                         </div>
-                        <form action="{{ route('admin.edit-order') }}" accept-charset="utf-8" method="post"
+                        <form action="{{ route('admin.edit-order-save') }}" accept-charset="utf-8" method="post"
                             enctype="multipart/form-data">
                             @csrf
                             @method('POST')

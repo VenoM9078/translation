@@ -93,6 +93,159 @@ class AdminController extends Controller
         return view('admin.edit-order', compact('order', 'contractors'));
     }
 
+    public function submitTranslationFile(Request $request)
+    {
+        $uploadedFilePath = $request->input('translationFile');
+        if (!$request->input('translationFile')) {
+            return back()->with('message', 'Upload File!');
+        }
+        $existingTranslation = ContractorOrder::where('order_id', $request->order_id)->first();
+        if ($existingTranslation) {
+            $existingTranslation->file_name = $uploadedFilePath;
+            $existingTranslation->save();
+            HelperClass::storeContractorLog(
+                Auth::user()->id, LogActionsEnum::ISADMIN, $existingTranslation->order_id,
+                $existingTranslation->contractor_id,
+                "Admin",
+                0,
+                "Translator",
+                LogActionsEnum::UPLOADTRANSLATION,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                1,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS
+            );
+
+            return redirect()->route('admin.pending');
+
+        } else {
+
+            $contractorOrder = new ContractorOrder();
+            $contractorOrder->file_name = $uploadedFilePath;
+            $contractorOrder->added_by_admin = 1;
+            $contractorOrder->contractor_id = -1;
+            $contractorOrder->total_payment = -1;
+            $contractorOrder->is_accepted = 0;
+            $contractorOrder->total_words = 0;
+            $contractorOrder->rate = 0;
+            $contractorOrder->order_id = $request->order_id;
+            // $contractorOrder
+            // dd($contractorOrder);
+            // dd($contractorOrder);
+            $contractorOrder->save();
+            // $request->session()->forget('uploaded_translation_file');
+
+            //fetch order with the order_id, then update the orders table column translationStatus to 1
+            // $order = Order::find($contractorOrder->order_id);
+            // $old_translation_status = $order->translation_status;
+            // $order->translation_status = 1;
+            // $order->save();
+
+            HelperClass::storeContractorLog(
+                Auth::user()->id, LogActionsEnum::ISADMIN, $contractorOrder->order_id,
+                -1,
+                "Admin",
+                0,
+                "Translator",
+                LogActionsEnum::UPLOADTRANSLATION,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                1,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS
+            );
+
+            // $contractorName = Auth::guard('contractor')->user()->name;
+            // $admins = Admin::all(['email']);
+            // foreach ($admins as $admin) {
+            // Mail::to($admin->email)->send(new NotifyAdminTranslationSubmissionContractor($contractorName, $contractorOrder, $order));
+            // }
+            return redirect()->route('admin.pending');
+        }
+    }
+
+
+    public function showProofReadPage($id)
+    {
+        $order = Order::where('id', $id)->first();
+        return view('admin.submit-proof-read', compact('order'));
+    }
+
+    public function submitProofRead(Request $request)
+    {
+
+        if (!$request->proofReadFile) {
+            return back()->with('message', 'Upload File!');
+        }
+        $proofReaderOrders = ProofReaderOrders::find($request->order_id);
+        // dd($request->all());
+        // dd($proofReaderOrders);
+        if ($proofReaderOrders) {
+
+            $proofReaderOrders->translation_status = TranslationStatusEnum::ACCEPTED; //completed
+            $proofReaderOrders->file_name = $request->proofReadFile;
+            $proofReaderOrders->feedback = $request->feedback;
+            $proofReaderOrders->proof_read_due_date = Carbon::now()->addDays(7);
+            $proofReaderOrders->save();
+
+            $order = $proofReaderOrders->order;
+            $order->proofread_status = OrderStatusEnum::COMPLETED;
+            // $order->completed = OrderStatusEnum::COMPLETED;
+            // $order->orderStatus = "Completed";
+            $order->save();
+            HelperClass::storeContractorLog(
+                Auth::user()->id, LogActionsEnum::ISADMIN, $request->order_id, $proofReaderOrders->contractor_id,
+                "Contractor",
+                0,
+                "Proof Reader",
+                LogActionsEnum::UPLOADPROOFREAD,
+                0,
+                0,
+                1,
+                0,
+                1 //Completed Proof Read Status
+            );
+        } else {
+            $proofReaderOrders = new ProofReaderOrders();
+            $proofReaderOrders->added_by_admin = 1;
+            $proofReaderOrders->file_name = $request->proofReadFile;
+            $proofReaderOrders->contractor_order_id = -1;
+            $proofReaderOrders->contractor_id = -1;
+            $proofReaderOrders->rate = 0;
+            $proofReaderOrders->total_payment = 0;
+            $proofReaderOrders->translation_status = TranslationStatusEnum::ACCEPTED; //completed
+            $proofReaderOrders->message = $request->feedback;
+            $proofReaderOrders->order_id = $request->order_id;
+            $proofReaderOrders->save();
+
+            $order = Order::where('id', $request->order_id)->first();
+            $order->proofread_status = OrderStatusEnum::COMPLETED;
+            $order->save();
+
+            HelperClass::storeContractorLog(
+                Auth::user()->id, LogActionsEnum::ISADMIN, $request->order_id,
+                -1,
+                "Contractor",
+                0,
+                "Proof Reader",
+                LogActionsEnum::UPLOADPROOFREAD,
+                0,
+                0,
+                1,
+                0,
+                1 //Completed Proof Read Status
+            );
+        }
+
+        // $contractor = $proofReaderOrders->contractor;
+        // $contractorName = $contractor->name;
+        return redirect()->route('admin.pending');
+
+        // $admin = User::where('role', 'admin')->first();
+
+        // Mail::to($admin->email)->send(new NotifyAdminProofReadSubmissionContractor($contractorName, $contractorOrder));
+
+    }
+
     public function deleteInterpretation($id)
     {
         $interpretation = Interpretation::find($id);
@@ -264,7 +417,7 @@ class AdminController extends Controller
 
     }
 
-   
+
     public function submitAssignProofReadTranslator(Request $request)
     {
 
@@ -1901,6 +2054,12 @@ class AdminController extends Controller
         return view('admin.sendMailOfCompletion', compact('order'));
     }
 
+    public function showUploadTranslationFile($id)
+    {
+        $order = Order::where('id', $id)->first();
+        return view('admin.submit-translation-file', compact('order'));
+    }
+
     public function uploadImage(Request $request)
     {
         if ($request->hasFile('files')) {
@@ -1997,19 +2156,20 @@ class AdminController extends Controller
 
                 $zip2->close();
             }
+        } else {
+            return back()->with('message', 'Upload File!');
         }
 
         $validated['completed_file'] = $zipName2;
-        if ($request->proofreader_id) {
-            $validated['proofreader_id'] = $request->proofreader_id;
-        } else {
-            $validated['proofreader_id'] = -1;
-        }
-
-        if ($request->translation_id) {
-            $validated['translation_id'] = $request->proofreader_id;
+        if (isset($order->contractorOrder) && $order->contractorOrder->contractor_id != -1) {
+            $validated['translation_id'] = $order->contractorOrder->contractor_id;
         } else {
             $validated['translation_id'] = -1;
+        }
+        if (isset($order->proofReaderOrder) && $order->proofReaderOrder->contractor_id != -1) {
+            $validated['proofreader_id'] = $order->proofReaderOrder->contractor_id;
+        } else {
+            $validated['proofreader_id'] = -1;
         }
         $completedRequest = CompletedRequest::create($validated);
 

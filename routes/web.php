@@ -198,7 +198,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::post('admin/new-interpretation', [AdminController::class, 'submitNewInterpretation'])->name('admin.submitNewInterpretation');
 
     //view orders
-    Route::get('admin/orders/{id}', [AdminController::class, 'show'])->name('show-order');
+    Route::get('admin/orders/{id}', [AdminController::class, 'show'])->name('admin.show-order');
     Route::delete('/institute/{id}/delete', [AdminController::class, 'deleteInstitute'])->name('institute.delete');
 
 
@@ -282,8 +282,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::post('/assign-interpreter', [AdminController::class, 'assignInterpreter'])->name('assign-interpreter');
     // Route::post('/re-assign-interpreter', [AdminController::class, 'reAssignInterpreter'])->name('re-assign-interpreter');
     Route::get('/re-assign-interpreter/{interpreterID}', [AdminController::class, 'viewReAssignInterpreter'])->name('view-re-assign-interpreter');
-    Route::get('/edit-order/{orderID}', [AdminController::class, 'viewEditOrder'])->name('view-edit-order');
-    Route::post('/edit-order/save', [AdminController::class, 'editOrder'])->name('admin.edit-order');
+    Route::get('/admin/edit-order/{orderID}', [AdminController::class, 'viewEditOrder'])->name('admin.view-edit-order');
+    Route::post('/admin/edit-order/save', [AdminController::class, 'editOrder'])->name('admin.edit-order-save');
 
     Route::get('/download-proof-read-file/{orderID}', [AdminController::class, 'downloadProofReadFile'])->name('download-proof-read-file');
 
@@ -315,6 +315,14 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/interpretation/{id}/track', [AdminController::class, 'trackInterpretation']);
 
     Route::post('/upload-translation', [AdminController::class, 'uploadTranslationFile'])->name('upload-translation');
+
+    Route::get('/admin/upload-translation-file/{id}',[AdminController::class,'showUploadTranslationFile'])->name('admin.show-submit-translation-page');
+
+    Route::post('/admin/upload-translation-file/submit',[AdminController::class,'submitTranslationFile'])->name('admin.submit-translation-file');
+
+    Route::get('/admin/upload-proof/{id}',[AdminController::class,'showProofReadPage'])->name('admin.showProofReadSubmission');
+    Route::post('/admin/upload-proof', [AdminController::class, 'uploadProofFile'])->name('admin.upload-proof-read-file');
+    Route::post('/admin/upload-proof/submit',[AdminController::class,'submitProofRead'])->name('admin.submit-proof-read');
 });
 
 Route::middleware(['web', 'auth', 'verified'])->group(function () {

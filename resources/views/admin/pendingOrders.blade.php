@@ -228,7 +228,7 @@
 
                                                 <!-- BEGIN: Modal Toggle -->
                                                 <div class="text-center">
-                                                    <a href="{{ route('show-order', $order->id) }}"
+                                                    <a href="{{ route('admin.show-order', $order->id) }}"
                                                         class="btn btn-primary">
                                                         <svg class="w-5 h-5 text-white mx-auto"
                                                             xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -256,7 +256,7 @@
                                                     </a>
                                                 </div>
                                                 <div class="text-center">
-                                                    <a href="{{ route('view-edit-order', $order->id) }}"
+                                                    <a href="{{ route('admin.view-edit-order', $order->id) }}"
                                                         class="btn btn-warning" title="Edit">
                                                         <svg class="w-5 h-5 text-white mx-auto"
                                                             xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -778,7 +778,7 @@
                                         </td>
 
                                         {{-- @isset($order->contractorOrder) --}}
-                                        @if (isset($order->contractorOrder) &&
+                                        @if (isset($order->contractorOrder) && $order->contractorOrder->contractor != null &&
                                                 $order->contractorOrder->contractor->name != '' &&
                                                 $order->contractorOrder->is_accepted == 1)
                                             <td>{{ $order->contractorOrder->contractor->name }}</td>
@@ -795,7 +795,7 @@
                                         @else
                                             <td> </td>
                                         @endif
-                                        @if (isset($order->proofReaderOrder) &&
+                                        @if (isset($order->proofReaderOrder) && $order->proofReaderOrder->contractor != null &&
                                                 $order->proofReaderOrder->contractor->name != '' &&
                                                 $order->proofReaderOrder->is_accepted == 1)
                                             <td>{{ $order->proofReaderOrder->contractor->name }}</td>
@@ -827,7 +827,7 @@
                                         @else
                                             <td> </td>
                                         @endif
-                                        @if ($order->contractorOrder && $order->contractorOrder->is_accepted == 1)
+                                        @if ($order->contractorOrder && $order->contractorOrder->is_accepted == 1 && $order->contractorOrder->contractor != null)
                                             <td>${{ $order->contractorOrder->contractor->translation_rate }}</td>
                                             <td>${{ $order->contractorOrder->rate }}</td>
                                             <td>{{ $order->contractorOrder->total_words }}</td>

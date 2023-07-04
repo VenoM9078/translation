@@ -13,7 +13,7 @@
     <div class="col-span-12 mt-8">
         <div class="intro-y flex items-center h-10">
             <h2 class="text-lg font-medium truncate mr-5 mb-4">
-                Upload Translation File | {{$order}}
+                Upload Translation File | WO#: {{$order->worknumber}}
             </h2>
         </div>
 
@@ -28,13 +28,15 @@
                 <div class="preview">
                     <div class="row">
                         <div class="col-8">
-                            <form action="{{ route('admin.upload-translation') }}" method="post"
+                            <form action="{{ route('admin.submit-translation-file') }}" method="post"
                                 enctype="multipart/form-data" accept-charset="utf-8">
                                 @csrf
                                 @method('POST')
+                                <textarea name="message" id="" class="form-control" placeholder="Type message (optional)"></textarea>
                                 <input type="hidden" name="contractor_order_id" value="-1">
+                                <input type="hidden" name="order_id" value="{{$order->id}}">
                                 {{-- <div class="col-span-8 p-2 sm:col-span-12"> --}}
-                                <input type="file" id="fp-translationFile" required class="filepond mt-2 fp-translationFile"
+                                <input type="file" id="fp-translationFile" class="filepond mt-2 fp-translationFile"
                                     name="translationFile" multiple data-max-files="1" data-max-file-size="10MB" />
                                 <button type="submit" class="btn btn-success w-24">Submit</button>
                                 {{-- </div> --}}

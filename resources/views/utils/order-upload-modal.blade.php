@@ -13,8 +13,8 @@
                 {{-- Quote --}}
                 <ul class="">
                     <div class="flex justify-center items-center w-full gap-4">
-                        <li class="">
-                            <a href="{{ route('admin.showOrderSubmitQuote', $order->id) }}" class="mr-1">
+                        <a href="{{ route('admin.showOrderSubmitQuote', $order->id) }}" class="mr-1">
+                            <li class="">
                                 <label for="hosting-small"
                                     class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-300  dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 ">
                                     <div class="block">
@@ -27,13 +27,13 @@
                                             clip-rule="evenodd"></path>
                                     </svg>
                                 </label>
-                            </a>
-                        </li>
-                        <li class="">
-                            <a href="{{ route('show-final-upload-page', $order->id) }}" title="Upload Final Document"
-                                class="">
-                                <input type="radio" id="hosting-big" name="hosting" value="hosting-big"
-                                    class="hidden peer">
+                            </li>
+                        </a>
+                        <a href="{{ route('show-final-upload-page', $order->id) }}" title="Upload Final Document"
+                            >
+                            {{-- <input type="radio" id="hosting-big2" name="hosting" value="hosting-big" --}}
+                                {{-- class="hidden peer"> --}}
+                            <li class="">
                                 <label for="hosting-big"
                                     class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">
                                     <div class="block">
@@ -47,13 +47,13 @@
                                             clip-rule="evenodd"></path>
                                     </svg>
                                 </label>
-                            </a>
-                        </li>
+                            </li>
+                        </a>
                     </div>
                     <div class="flex justify-center mt-4  w-full gap-4 items-center">
-                        <li class="">
-                            <a href="{{ route('admin.showOrderSubmitQuote', $order->id) }}"
-                                title="Upload Translated Document" class="mr-1">
+                        <a href="{{ route('admin.show-submit-translation-page', $order->id) }}"
+                            title="Upload Translated Document" class="mr-1">
+                            <li class="">
                                 <label for="hosting-small"
                                     class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 ">
                                     <div class="block">
@@ -66,13 +66,13 @@
                                             clip-rule="evenodd"></path>
                                     </svg>
                                 </label>
-                            </a>
-                        </li>
-                        <li class="">
-                            <a href="{{ route('show-final-upload-page', $order->id) }}" title="Upload ProofRead Document"
-                                class="">
-                                <input type="radio" id="hosting-big" name="hosting" value="hosting-big"
-                                    class="hidden peer">
+                            </li>
+                        </a>
+                        <a href="{{ route('admin.showProofReadSubmission', $order->id) }}"
+                            title="Upload ProofRead Document">
+                            <li class="">
+                                {{-- <input type="radio" id="hosting-big" name="hosting" value="hosting-big" --}}
+                                    {{-- class="hidden peer"> --}}
                                 <label for="hosting-big"
                                     class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 ">
                                     <div class="block">
@@ -86,8 +86,8 @@
                                             clip-rule="evenodd"></path>
                                     </svg>
                                 </label>
-                            </a>
-                        </li>
+                            </li>
+                        </a>
                     </div>
                 </ul>
             </div> <!-- END: Modal Body -->
