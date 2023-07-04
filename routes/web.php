@@ -222,8 +222,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/admin/editUser/{id}', [AdminController::class, 'editUser'])->name('admin.editUser');
     Route::delete('/admin/deleteUser/{id}', [AdminController::class, 'deleteUser'])->name('admin.deleteUser');
 
-    Route::get('/admin/upload-file/{id}',[AdminController::class,'showUploadFinalDoc'])->name('show-final-upload-page');
-    Route::post('/admin/upload-file/submit',[AdminController::class,'submitFinalDoc'])->name('admin.submit-final-doc');
+    Route::get('/admin/upload-file/{id}', [AdminController::class, 'showUploadFinalDoc'])->name('show-final-upload-page');
+    Route::post('/admin/upload-file/submit', [AdminController::class, 'submitFinalDoc'])->name('admin.submit-final-doc');
     // Route::get('admin/interpretations', [AdminController::class, 'editInterpretations'])->name('admin.edit-interpretation');
 
     Route::get('admin/ongoing-interpretations', [AdminController::class, 'ongoingInterpretations'])->name('admin.ongoingInterpretations');
@@ -316,13 +316,13 @@ Route::group(['middleware' => ['auth:admin']], function () {
 
     Route::post('/upload-translation', [AdminController::class, 'uploadTranslationFile'])->name('upload-translation');
 
-    Route::get('/admin/upload-translation-file/{id}',[AdminController::class,'showUploadTranslationFile'])->name('admin.show-submit-translation-page');
+    Route::get('/admin/upload-translation-file/{id}', [AdminController::class, 'showUploadTranslationFile'])->name('admin.show-submit-translation-page');
 
-    Route::post('/admin/upload-translation-file/submit',[AdminController::class,'submitTranslationFile'])->name('admin.submit-translation-file');
+    Route::post('/admin/upload-translation-file/submit', [AdminController::class, 'submitTranslationFile'])->name('admin.submit-translation-file');
 
-    Route::get('/admin/upload-proof/{id}',[AdminController::class,'showProofReadPage'])->name('admin.showProofReadSubmission');
+    Route::get('/admin/upload-proof/{id}', [AdminController::class, 'showProofReadPage'])->name('admin.showProofReadSubmission');
     Route::post('/admin/upload-proof', [AdminController::class, 'uploadProofFile'])->name('admin.upload-proof-read-file');
-    Route::post('/admin/upload-proof/submit',[AdminController::class,'submitProofRead'])->name('admin.submit-proof-read');
+    Route::post('/admin/upload-proof/submit', [AdminController::class, 'submitProofRead'])->name('admin.submit-proof-read');
 });
 
 Route::middleware(['web', 'auth', 'verified'])->group(function () {
@@ -386,6 +386,10 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
     Route::post('processProof', [UserController::class, 'processProof'])->name('processProof');
     Route::get('thankyou/{id}', [UserController::class, 'updatePaymentStatus'])->name('thankyou');
     Route::get('view-quote-invoice/thank-you/{id}', [UserController::class, 'updateQuotePaymentStatus'])->name('quoteThankYou');
+
+    Route::post('user/proceed-to-pay-now', [UserController::class, 'proceedToPayNow'])->name('user.proceedToPayNow');
+
+    Route::get('user/pay-anytime/{id}', [UserController::class, 'showPayAnyTimePage'])->name('user.showPayAnyTimePage');
 
     Route::get('viewPayment/{id}', [UserController::class, 'viewPayment'])->name('viewPayment');
     Route::get(

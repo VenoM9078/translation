@@ -282,29 +282,29 @@ class UserController extends Controller
                 0
             );
         }
-        if($request->input('want_quote') == "1") //wants quote
+        if ($request->input('want_quote') == "1") //wants quote
         {
             HelperClass::storeOrderLog(
-            LogActionsEnum::NOTADMIN,
-            Auth::user()->id,
-            $order->id,
-            "Order",
-            "User",
-            LogActionsEnum::QUOTEREQUESTED,
-            LogActionsEnum::ZEROTRANSLATIONSTATUS,
-            LogActionsEnum::ZEROTRANSLATIONSTATUS,
-            LogActionsEnum::ZEROTRANSLATIONSTATUS,
-            LogActionsEnum::ZEROTRANSLATIONSTATUS,
-            LogActionsEnum::ZEROTRANSLATIONSTATUS,
-            LogActionsEnum::ZEROTRANSLATIONSTATUS,
-            LogActionsEnum::ZEROTRANSLATIONSTATUS,
-            LogActionsEnum::ZEROTRANSLATIONSTATUS,
-            LogActionsEnum::ZEROTRANSLATIONSTATUS,
-            LogActionsEnum::ZEROTRANSLATIONSTATUS,
-            0,
-            0,
-            null
-        );
+                LogActionsEnum::NOTADMIN,
+                Auth::user()->id,
+                $order->id,
+                "Order",
+                "User",
+                LogActionsEnum::QUOTEREQUESTED,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                LogActionsEnum::ZEROTRANSLATIONSTATUS,
+                0,
+                0,
+                null
+            );
         }
         if ($request->transFiles) {
 
@@ -355,7 +355,7 @@ class UserController extends Controller
                     ];
                     Invoice::create($data);
 
-                    return view('user.paymentInvoice', compact('order'));
+                    return view('user.enterPaymentAmount', compact('order'));
                 }
             }
 
@@ -367,6 +367,55 @@ class UserController extends Controller
         }
         return redirect()->back()->with('status', 'Attach Files!');
         // redirect()->back();
+    }
+
+    public function showPayAnyTimePage($id)
+    {
+        $order = Order::find($id);
+
+        return view('user.enterPaymentAmount', compact('order'));
+    }
+
+    public function proceedToPayAnyTime(Request $request)
+    {
+        // Retrieve the order_id and amount from the request
+        $order_id = $request->input('order_id');
+        $amount = $request->input('amount');
+
+        // Find the order with the given order_id
+        $order = Order::find($order_id);
+
+        // Check if the order was found
+        if (!$order) {
+            return redirect()->back()->with('message', 'Order not found');
+        }
+
+        // Redirect to a new page with the order passed to it
+        return view('user.payAnyTimeInvoice', compact('order', 'amount'));
+    }
+
+    public function proceedToPayNow(Request $request)
+    {
+        // Retrieve the order_id and amount from the request
+        $order_id = $request->input('order_id');
+        $amount = $request->input('amount');
+
+        // Find the order with the given order_id
+        $order = Order::find($order_id);
+
+        // Check if the order was found
+        if (!$order) {
+            return redirect()->back()->with('message', 'Order not found');
+        }
+
+        // Update the order's invoice with the given amount
+        // Assuming the order has a related invoice and the relationship is named 'invoice'
+        $invoice = $order->invoice;
+        $invoice->amount = $amount;
+        $invoice->save();
+
+        // Redirect to a new page with the order passed to it
+        return view('user.paymentInvoice', compact('order'));
     }
 
     public function viewPayment($orderid)
@@ -627,7 +676,7 @@ class UserController extends Controller
     {
         $interpretation = Interpretation::where('id', $id)->first();
         $interpretation->is_quote_pending = OrderStatusEnum::QUOTEREJECTED;
-        $interpretation->wantQuote = 1;//back to pending
+        $interpretation->wantQuote = 1; //back to pending
         $interpretation->save();
         HelperClass::storeOrderLog(
             LogActionsEnum::NOTADMIN,
