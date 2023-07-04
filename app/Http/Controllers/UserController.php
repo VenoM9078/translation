@@ -376,6 +376,13 @@ class UserController extends Controller
         return view('user.enterPaymentAmount', compact('order'));
     }
 
+    public function showPayAnyTimePageInterpretation($id)
+    {
+        $interpretation = Interpretation::find($id);
+
+        return view('user.enterPaymentAmountInterpretation', compact('interpretation'));
+    }
+
     public function proceedToPayAnyTime(Request $request)
     {
         // Retrieve the order_id and amount from the request
@@ -392,6 +399,24 @@ class UserController extends Controller
 
         // Redirect to a new page with the order passed to it
         return view('user.payAnyTimeInvoice', compact('order', 'amount'));
+    }
+
+    public function proceedToPayNowInterpretation(Request $request)
+    {
+        // Retrieve the order_id and amount from the request
+        $interpretation_id = $request->input('interpretation_id');
+        $amount = $request->input('amount');
+
+        // Find the order with the given order_id
+        $interpretation = Interpretation::find($interpretation_id);
+
+        // Check if the order was found
+        if (!$interpretation) {
+            return redirect()->back()->with('message', 'Interpretation not found');
+        }
+
+        // Redirect to a new page with the order passed to it
+        return view('user.interpretationPayAnyTime', compact('interpretation', 'amount'));
     }
 
     public function proceedToPayNow(Request $request)
@@ -417,6 +442,8 @@ class UserController extends Controller
         // Redirect to a new page with the order passed to it
         return view('user.paymentInvoice', compact('order'));
     }
+
+
 
     public function viewPayment($orderid)
     {

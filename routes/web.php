@@ -387,9 +387,14 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
     Route::get('thankyou/{id}', [UserController::class, 'updatePaymentStatus'])->name('thankyou');
     Route::get('view-quote-invoice/thank-you/{id}', [UserController::class, 'updateQuotePaymentStatus'])->name('quoteThankYou');
 
-    Route::post('user/proceed-to-pay-now', [UserController::class, 'proceedToPayNow'])->name('user.proceedToPayNow');
 
+    // Pay Any Time for Translation
+    Route::post('user/proceed-to-pay-now', [UserController::class, 'proceedToPayNow'])->name('user.proceedToPayNow');
     Route::get('user/pay-anytime/{id}', [UserController::class, 'showPayAnyTimePage'])->name('user.showPayAnyTimePage');
+
+    // Pay Any Time for Interpretation
+    Route::post('user/interpretation/proceed-to-pay-now', [UserController::class, 'proceedToPayNowInterpretation'])->name('user.proceedToPayNowInterpretation');
+    Route::get('user/interpretation/pay-anytime/{id}', [UserController::class, 'showPayAnyTimePageInterpretation'])->name('user.showPayAnyTimePageInterpretation');
 
     Route::get('viewPayment/{id}', [UserController::class, 'viewPayment'])->name('viewPayment');
     Route::get(
