@@ -68,6 +68,7 @@
 
                                                 </a>
                                             </div>
+                                            @if(Auth::user()->role_id == 0)
                                             <div class="text-center mb-2 mr-1">
                                                 <a href="{{ route('user.showPayAnyTimePage', $order->id) }}"
                                                     class="btn bg-orange-400">
@@ -79,6 +80,7 @@
                                                     </svg>
                                                 </a>
                                             </div>
+                                            @endif
                                             <div class="text-center mb-2 mr-1"> <a href="javascript:;"
                                                     data-tw-toggle="modal"
                                                     data-tw-target="#track-modal-preview{{ $order->id }}" title="Track"
