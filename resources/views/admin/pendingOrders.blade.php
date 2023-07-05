@@ -329,7 +329,7 @@
                                                     @if (
                                                         $order->invoiceSent == 1 &&
                                                             ($order->paymentStatus == 1 || $order->paymentStatus == 2) &&
-                                                        $order->translation_status == 1 &&
+                                                            $order->translation_status == 1 &&
                                                             $order->proofread_status == 1)
                                                         <a href="{{ route('mailOfCompletion', $order->id) }}"
                                                             class="btn btn-success mr-1">
@@ -458,7 +458,7 @@
                                                                 class="w-16 h-16 text-success mx-auto mt-3"></i>
                                                             <div class="text-3xl mt-5">Track Order</div>
                                                         </div>
-                                                        <div class="intro-y box py-10 mt-5 mx-auto">
+                                                        <div class="intro-y box py-5 mt-2 mx-auto">
                                                             <div class="loader text-center" role="status"
                                                                 id="order-loader-{{ $order->id }}"
                                                                 style="display: none">
@@ -778,7 +778,8 @@
                                         </td>
 
                                         {{-- @isset($order->contractorOrder) --}}
-                                        @if (isset($order->contractorOrder) && $order->contractorOrder->contractor != null &&
+                                        @if (isset($order->contractorOrder) &&
+                                                $order->contractorOrder->contractor != null &&
                                                 $order->contractorOrder->contractor->name != '' &&
                                                 $order->contractorOrder->is_accepted == 1)
                                             <td>{{ $order->contractorOrder->contractor->name }}</td>
@@ -795,7 +796,8 @@
                                         @else
                                             <td> </td>
                                         @endif
-                                        @if (isset($order->proofReaderOrder) && $order->proofReaderOrder->contractor != null &&
+                                        @if (isset($order->proofReaderOrder) &&
+                                                $order->proofReaderOrder->contractor != null &&
                                                 $order->proofReaderOrder->contractor->name != '' &&
                                                 $order->proofReaderOrder->is_accepted == 1)
                                             <td>{{ $order->proofReaderOrder->contractor->name }}</td>
@@ -803,13 +805,13 @@
                                             <td> </td>
                                         @endif
                                         @if (
-                                            (   $order->invoiceSent == 1 &&
+                                            ($order->invoiceSent == 1 &&
                                                 $order->paymentStatus == 2 &&
                                                 $order->translation_status == 1 &&
-                                                $order->proofread_status == 1) || 
-                                                (isset($order->proofReaderOrder) && $order->proofReaderOrder->added_by_admin == 1
-                                                && $order->proofReaderOrder->file_name != '')
-                                            )
+                                                $order->proofread_status == 1) ||
+                                                (isset($order->proofReaderOrder) &&
+                                                    $order->proofReaderOrder->added_by_admin == 1 &&
+                                                    $order->proofReaderOrder->file_name != ''))
                                             <td>
                                                 <a class="btn" title="Download ProofRead File"
                                                     href="{{ route('download-proof-read-file', $order->id) }}">
@@ -1080,7 +1082,7 @@
             $('#order-loader-' + orderId).show();
             $.get('/order/' + orderId + '/track', function(data) {
                 $('#order-loader-' + orderId).hide();
-                $('.intro-y.box.py-10.mt-5').html(data);
+                $('.intro-y.box.py-5.mt-2').html(data);
             });
         });
     </script>

@@ -16,189 +16,89 @@
     @php
         $prevStatus = '';
         $tempSteps = $steps;
-        foreach ($steps as $index => $step) {
-            if ($step['status'] == 'success') {
-                $prevStatus = 'success';
-            } elseif ($prevStatus == 'success' && $step['status'] == '') {
-                $step['status'] = 'warning';
-                $tempSteps[$index]['status'] = 'warning';
-                $prevStatus = 'warning';
-            } else {
-                $prevStatus = '';
-            }
-        }
+
+        $logsQuery1 = App\Models\OrderLog::query()
+            ->with(['user', 'admin'])
+            ->where('order_id', $order->id)
+            ->select('created_at', 'action', 'is_admin', 'user_id', 'new_order_completed_status', 'new_payment_status', DB::raw("'order' as log_type"), DB::raw('NULL as contractor_id'), DB::raw('NULL as invoice_sent'));
+        
+        $logsQuery2 = App\Models\InvoiceLogs::query()
+            ->with(['user', 'admin'])
+            ->where('order_id', $order->id)
+            ->select('created_at', 'action', 'is_admin', 'user_id', DB::raw('NULL as new_order_completed_status'), DB::raw('NULL as new_payment_status'), DB::raw("'invoice' as log_type"), DB::raw('NULL as contractor_id'), 'invoice_sent');
+        
+        $logsQuery3 = App\Models\ContractorLog::query()
+            ->with(['contractor', 'admin'])
+            ->where('order_id', $order->id)
+            ->select('created_at', 'action', 'is_admin', 'user_id', DB::raw('NULL as new_order_completed_status'), DB::raw('NULL as new_payment_status'), DB::raw("'contractor' as log_type"), 'contractor_id', DB::raw('NULL as invoice_sent'));
+        
+        $logsQuery = $logsQuery1->unionAll($logsQuery2)->unionAll($logsQuery3);
+        
+        $logs = DB::query()
+            ->fromSub($logsQuery, 'sub')
+            ->orderBy('created_at', 'asc')
+            ->get();
+        $tempSteps = $logs;
     @endphp
 
-    @foreach ($tempSteps as $index => $step)
-        <div class="row p-2">
-            <div class="text-base text-slate-600 ml-3">
-                @if (count($order->orderLogs) < 1 && count($order->contractorLogs) < 1 && count($order->invoiceLogs) < 1)
-                    <div class="row text-center mx-auto">
-                        <h2>No Log Tracked For Order.</h2>
-                    </div>
-                @break
+    @forelse ($logs as $log)
+        <div class="intro-x flex items-center justify-center mt-5 bg-gray-100 p-5 rounded-lg">
+            <div class="row flex items-center justify-center">
+                <span class="text-gray-900 font-semibold text-sm" style="font-size: 11px"> 
+                    {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($log->created_at, request()->ip()) }} |
+                </span>
 
-            @else
-                <div>
-                    @switch($step['number'])
-                        {{-- Order Created --}}
-                        @case(1)
-                            @if (isset($order->orderLogs) && count($order->orderLogs) > 0)
-                                @foreach ($order->orderLogs as $orderLog)
-                                    {{-- @dd($order->orderLogs) --}}
-                                    @if ($orderLog->new_order_completed_status == 0)
-                                        @if ($orderLog->is_admin == 0 && $orderLog->action != \App\Enums\LogActionsEnum::PAYMENTCOMPLETED)
-                                            <div class="intro-x flex items-center mt-5 order-created">
-                                                <div class="row">
-                                                    {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($orderLog->created_at, request()->ip()) }}
-                                                    -
-                                                    {{ $orderLog->user->name }} {{ $orderLog->action }}
-                                                    <br>
-                                                </div>
-                                            </div>
-                                        @elseif($orderLog->is_admin == 1 && $orderLog->action != \App\Enums\LogActionsEnum::PAYMENTCOMPLETED)
-                                            <div class="intro-x flex items-center mt-5 order-created">
-                                                <div class="row">
-                                                    {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($orderLog->created_at, request()->ip()) }}
-                                                    -
-                                                    {{ $orderLog->admin->name }} {{ $orderLog->action }}
-                                                    <br>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endif
-                                @endforeach
-                            @endif
-                        @break
-
-                        {{-- Invoice --}}
-                        @case(2)
-                            @if (isset($order->invoiceLogs) && count($order->invoiceLogs) > 0)
-                                @foreach ($order->invoiceLogs as $invoiceLog)
-                                    @if ($invoiceLog->is_admin == 0)
-                                        <div class="intro-x flex items-center mt-5 invoice-created">
-                                            <div class="row">
-                                                {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($invoiceLog->created_at, request()->ip()) }}
-                                                -
-                                                {{ $invoiceLog->user->name }} {{ $invoiceLog->action }}
-                                                <br>
-
-                                            </div>
-                                        </div>
-                                    @elseif($invoiceLog->is_admin == 1)
-                                        <div class="intro-x flex items-center mt-5 invoice-created">
-                                            <div class="row">
-                                                {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($invoiceLog->created_at, request()->ip()) }}
-                                                -
-                                                {{ $invoiceLog->admin->name }} {{ $invoiceLog->action }}
-                                                <br>
-
-                                            </div>
-                                        </div>
-                                    @endif
-                                @endforeach
-                            @endif
-                        @break
-                        {{-- Payment --}}
-                        @case(3)
-                            @if (isset($order->orderLogs) && count($order->orderLogs) > 0)
-                                @foreach ($order->orderLogs as $orderLog)
-                                    @if ($orderLog->new_payment_status == 1)
-                                        @if ($orderLog->is_admin == 0 && Auth::user()->role_id == 0 && $orderLog->action != \App\Enums\LogActionsEnum::NEWORDER)
-                                            <div class="intro-x flex items-center mt-5 payment-completed">
-                                                <div class="row">
-                                                    {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($orderLog->created_at, request()->ip()) }}
-                                                    -
-                                                    {{ $orderLog->user->name }} {{ $orderLog->action }}
-                                                    <br>
-                                                </div>
-                                            </div>
-                                        @elseif($orderLog->is_admin == 1)
-                                            {{-- {{ $orderLog->admin->name }} {{ $orderLog->action }} --}}
-                                            {{-- <br> --}}
-                                        @endif
-                                    @endif
-                                @endforeach
-                            @endif
-                        @break
-
-                        {{-- Translator --}}
-                        @case(4)
-                            @if (isset($order->contractorLogs) && count($order->contractorLogs) > 0)
-                                @foreach ($order->contractorLogs as $contractorLog)
-                                    @if ($contractorLog->is_admin == 1)
-                                        <div class="intro-x flex items-center mt-5 translator">
-                                            <div class="row">
-                                                {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($contractorLog->created_at, request()->ip()) }}
-                                                -
-                                                {{ $contractorLog->admin->name }} {{ $contractorLog->action }}
-                                                <br>
-                                            </div>
-                                        </div>
-                                    @elseif ($contractorLog->is_admin == 0)
-                                        <div class="intro-x flex items-center mt-5">
-                                            <div class="row">
-                                                {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($contractorLog->created_at, request()->ip()) }}
-                                                -
-                                                {{ $contractorLog->contractor->name }} {{ $contractorLog->action }}
-                                                <br>
-                                            </div>
-                                        </div>
-                                    @endif
-                                @endforeach
-                            @endif
-                        @break
-
-                        {{-- Proof Read
-                        @case(5)
-                            @if (isset($order->contractorLogs) && count($order->contractorLogs) > 0)
-                                @foreach ($order->contractorLogs as $contractorLog)
-                                    @if ($contractorLog->is_admin == 1 && $contractorLog->contractor_type == 'Proof Reader')
-                                        <div class="intro-x flex items-center mt-5 proof-reader">
-                                            <div class="row">
-                                                {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($contractorLog->created_at, request()->ip()) }}
-                                                -
-                                                {{ $contractorLog->admin->name }} {{ $contractorLog->action }}
-                                                <br>
-                                            </div>
-                                        </div>
-                                    @elseif ($contractorLog->is_admin == 0 && $contractorLog->contractor_type == 'Proof Reader')
-                                        <div class="intro-x flex items-center mt-5">
-                                            <div class="row">
-                                                {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($contractorLog->created_at, request()->ip()) }}
-                                                -
-                                                {{ $contractorLog->contractor->name }} {{ $contractorLog->action }}
-                                                <br>
-                                            </div>
-                                        </div>
-                                    @endif
-                                @endforeach
-                            @endif
-                        @break --}}
-
-                        {{-- Order Completed --}}
-                        @case(6)
-                            @if (isset($order->orderLogs) && count($order->orderLogs) > 0)
-                                @foreach ($order->orderLogs as $orderLog)
-                                    @if ($orderLog->is_admin == 1 && $orderLog->new_order_completed_status == 1)
-                                        <div class="intro-x flex items-center mt-5 order-completed">
-                                            <div class="row">
-                                                {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($orderLog->created_at, request()->ip()) }}
-                                                -
-                                                {{ $orderLog->admin->name }} {{ $orderLog->action }}
-                                                <br>
-                                            </div>
-                                        </div>
-                                    @endif
-                                @endforeach
-                            @endif
-                        @break
-
-                        @default
-                    @endswitch
-                </div>
-            @endif
+                @php
+                    $name = '';
+                @endphp
+                @if ($log->log_type === 'order')
+                    @if ($log->new_order_completed_status == 0)
+                        @if ($log->is_admin == 0 && $log->action != \App\Enums\LogActionsEnum::PAYMENTCOMPLETED)
+                            @php
+                                $user = App\Models\User::find($log->user_id);
+                                $name = $user ? $user->name : '';
+                            @endphp
+                        @elseif($log->is_admin == 1 && $log->action != \App\Enums\LogActionsEnum::PAYMENTCOMPLETED)
+                            @php
+                                $admin = App\Models\Admin::find($log->user_id);
+                                $name = $admin ? $admin->name : '';
+                            @endphp
+                        @endif
+                    @endif
+                @elseif ($log->log_type === 'invoice')
+                    @if ($log->is_admin == 0)
+                        @php
+                            $user = App\Models\User::find($log->user_id);
+                            $name = $user ? $user->name : '';
+                        @endphp
+                    @elseif($log->is_admin == 1)
+                        @php
+                            $admin = App\Models\Admin::find($log->user_id);
+                            $name = $admin ? $admin->name : '';
+                        @endphp
+                    @endif
+                @elseif ($log->log_type === 'contractor')
+                    @if ($log->is_admin == 1)
+                        @php
+                            $admin = App\Models\Admin::find($log->user_id);
+                            $name = $admin ? $admin->name : '';
+                        @endphp
+                    @elseif ($log->is_admin == 0)
+                        @php
+                            $contractor = App\Models\Contractor::find($log->contractor_id);
+                            $name = $contractor ? $contractor->name : '';
+                        @endphp
+                    @endif
+                @endif
+                <span class="ml-2 text-blue-500 font-semibold hover:bg-slate-300" style="font-size: 12px">
+                    {{ $name }} {{ $log->action }}
+                </span>
+                <br>
+            </div>
         </div>
-    </div>
-@endforeach
+    @empty
+        <div class="intro-x flex items-center justify-center mt-5 bg-gray-100 p-5 rounded-lg">
+            <span>No Logs Tracked</span>
+        </div>
+    @endempty
 </div>
