@@ -12,7 +12,7 @@
         <div class="intro-y box">
             <div class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
                 <h2 class="font-medium text-base mr-auto">
-                    Assigning Translator for {{ $order->user->name }}'s Translation Order
+                    Assigning Translator | WO#: {{ $order->worknumber }}
                 </h2>
             </div>
             <div id="vertical-form" class="p-5">
@@ -107,7 +107,7 @@
                                     <br>
                                     <label for="t_adjust_note">T. Adjust Note</label>
                                     <textarea id="t_adjust_note" name="translator_adjust_note"
-                                        class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4" placeholder="P. Adjust Note">{{ $cOrder->translator_adjust_note }}</textarea>
+                                        class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4" placeholder="T. Adjust Note">{{ $cOrder->translator_adjust_note }}</textarea>
                                     <label for="amount" class="mt-2 mb-2">Paid</label>
                                     <select data-placeholder="Enter Translation Type" name="translator_paid"
                                         class="tom-select w-full">
@@ -140,8 +140,8 @@
                                         <label for="amount" class="mt-2">Select Proofreader</label>
                                         <select data-placeholder="Select A Contractor" name="p_contractor_id"
                                             class="tom-select w-full">
-                                            <option value="{{ $pOrder->contractor_id }}" selected>
-                                                {{ $pOrder->contractor->name }} </option>
+                                            <option value="{{ $pOrder->contractor_id ?? '' }}" selected>
+                                                {{ $pOrder->contractor->name ?? '' }} </option>
                                             @foreach ($contractors as $contractor)
                                                 <option value="{{ $contractor->id }}">{{ $contractor->name }}
                                                     (${{ $contractor->translation_rate }} / hour)
@@ -153,7 +153,7 @@
                                     <input type="hidden" name="order_id" value="{{ $order->id }}">
                                     <label for="amount" class="mt-4">Enter Fee</label>
                                     <input type="number" step="0.001" name="p_total_payment"
-                                        class="intro-x login__input form-control px-4 block"
+                                        class="intro-x login__input form-control px-4 block" required
                                         placeholder="Enter Total Payment" value="{{ $pOrder->total_payment }}">
                                     <br>
                                     <label for="amount" class="mt-2">Enter Rate</label>

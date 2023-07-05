@@ -1,15 +1,15 @@
 @if (Auth::user()->getTable() != 'admins')
     {{-- Status for Users --}}
     @if ($order->is_cancelled == 0 && $order->completed == 0)
-        @if ($order->want_quote == 0 && $order->translation_status == 0)
+        @if ($order->want_quote == 0 && $order->translation_status == 0 && !isset($order->contractorOrder))
             <div class="w-full btn btn-warning">
                 Translation Requested
             </div>
-        @elseif ($order->want_quote == 1)
+        @elseif ($order->want_quote == 1 && !isset($order->contractorOrder))
             <div class="w-full btn btn-warning">
                 Quote Requested
             </div>
-        @elseif($order->want_quote == 2)
+        @elseif($order->want_quote == 2 && !isset($order->contractorOrder))
             <div class="w-full btn btn-success">
                 Quote Ready
             </div>
@@ -17,7 +17,7 @@
             <div class="w-full btn btn-warning">
                 Translation In Progress
             </div>
-        @elseif ($order->translation_status == \App\Enums\TranslationStatusEnum::COMPLETED)
+        @elseif ($order->translation_status == \App\Enums\TranslationStatusEnum::COMPLETED || (isset($order->contractorOrder) && $order->contractorOrder->added_by_admin == 1 && $order->contractorOrder->file_name != ''))
             <div class="w-full btn btn-success">
                 Translation Completed
             </div>

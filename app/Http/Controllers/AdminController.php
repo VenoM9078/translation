@@ -446,22 +446,25 @@ class AdminController extends Controller
             $order->translation_sent = 1;
             $order->save();
 
-            HelperClass::storeContractorLog(
-                Auth::user()->id,
-                LogActionsEnum::ISADMIN,
-                $order->id,
-                $request->contractor_id,
-                "Contractor",
-                "Admin",
-                "Translator",
-                LogActionsEnum::ASSIGNEDTRANSLATOR,
-                0,
-                1,
-                0
-            );
-            // $contractorOrder->save();
-            $contractor = Contractor::where('id', $request->contractor_id)->firstOrFail();
-            Mail::to($contractor->email)->send(new EmailContractor($contractorOrder));
+            if ($contractorOrder->contractor_id != $request->contractor_id) {
+
+                HelperClass::storeContractorLog(
+                    Auth::user()->id,
+                    LogActionsEnum::ISADMIN,
+                    $order->id,
+                    $request->contractor_id,
+                    "Contractor",
+                    "Admin",
+                    "Translator",
+                    LogActionsEnum::ASSIGNEDTRANSLATOR,
+                    0,
+                    1,
+                    0
+                );
+                // $contractorOrder->save();
+                $contractor = Contractor::where('id', $request->contractor_id)->firstOrFail();
+                Mail::to($contractor->email)->send(new EmailContractor($contractorOrder));
+            }
         }
         //Proof Read Assignment
 
@@ -497,27 +500,29 @@ class AdminController extends Controller
 
             $order->proofread_sent = 1; //change status to 1 *asigned
             $order->save();
+            if ($proofReaderOrder->contractor_id != $request->p_contractor_id) {
 
-            HelperClass::storeContractorLog(
-                Auth::user()->id,
-                LogActionsEnum::ISADMIN,
-                $order->id,
-                $request->p_contractor_id,
-                "Contractor",
-                0,
-                "Proof Reader",
-                LogActionsEnum::ASSIGNEDPROOFREADER,
-                0,
-                0,
-                0,
-                0,
-                1
-            );
-            $contractor = Contractor::where('id', $request->p_contractor_id)->firstOrFail();
-            if (env("IS_DEV") == 1) {
-                Mail::to($contractor->email)->send(new mailToProofReader($order, $proofReaderOrder, 'New Request! | Proof Read ', env("ADMIN_EMAIL_DEV")));
-            } else {
-                Mail::to($contractor->email)->send(new mailToProofReader($order, $proofReaderOrder, 'New Request! | Proof Read ', env("ADMIN_EMAIL")));
+                HelperClass::storeContractorLog(
+                    Auth::user()->id,
+                    LogActionsEnum::ISADMIN,
+                    $order->id,
+                    $request->p_contractor_id,
+                    "Contractor",
+                    0,
+                    "Proof Reader",
+                    LogActionsEnum::ASSIGNEDPROOFREADER,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1
+                );
+                $contractor = Contractor::where('id', $request->p_contractor_id)->firstOrFail();
+                if (env("IS_DEV") == 1) {
+                    Mail::to($contractor->email)->send(new mailToProofReader($order, $proofReaderOrder, 'New Request! | Proof Read ', env("ADMIN_EMAIL_DEV")));
+                } else {
+                    Mail::to($contractor->email)->send(new mailToProofReader($order, $proofReaderOrder, 'New Request! | Proof Read ', env("ADMIN_EMAIL")));
+                }
             }
         }
         return redirect()->back()->with('message', 'Assigned Successfully!');

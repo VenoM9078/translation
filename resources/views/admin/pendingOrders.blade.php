@@ -803,10 +803,13 @@
                                             <td> </td>
                                         @endif
                                         @if (
-                                            $order->invoiceSent == 1 &&
+                                            (   $order->invoiceSent == 1 &&
                                                 $order->paymentStatus == 2 &&
                                                 $order->translation_status == 1 &&
-                                                $order->proofread_status == 1)
+                                                $order->proofread_status == 1) || 
+                                                (isset($order->proofReaderOrder) && $order->proofReaderOrder->added_by_admin == 1
+                                                && $order->proofReaderOrder->file_name != '')
+                                            )
                                             <td>
                                                 <a class="btn" title="Download ProofRead File"
                                                     href="{{ route('download-proof-read-file', $order->id) }}">

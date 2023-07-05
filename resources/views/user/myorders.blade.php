@@ -492,7 +492,7 @@
                                                         <div class="w-full text-center">
                                                             <a class="btn btn-success border-indigo-600"
                                                                 title="Download Quote submitted by Admin"
-                                                                href="{{ route('downloadQuote', $order->id) }}">Download
+                                                                href="{{ route('user.downloadQuote', $order->id) }}">Download
                                                                 Quote File</a>
                                                         </div>
                                                         @endif

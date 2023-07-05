@@ -3,6 +3,8 @@
 use App\Http\Controllers\ContractorAuthController;
 use App\Mail\VerifyContractorMail;
 use App\Models\Contractor;
+use App\Models\VerifyContractor;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\AdminAuthController;
@@ -72,6 +74,20 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 Route::post('/email/contractor-verification-notification', function (Request $request) {
     $contractor = Contractor::where('id', $request->user()->id)->first();
+    if (!$contractor) {
+        return back()->with('error', 'Contractor not found!');
+    }
+
+    $verification = VerifyContractor::where('contractor_id', $contractor->id)->first();
+
+    if ($verification) {
+        $verification->expiry_time = Carbon::now()->addHours(2);
+        $verification->save();
+    } else {
+
+        return back()->with('error', 'Verification entry not found!');
+    }
+
     Mail::to($request->user()->email)->send(new VerifyContractorMail($contractor));
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth:contractor', 'throttle:6,1'])->name('contractor.verification.send');
