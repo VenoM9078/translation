@@ -104,7 +104,9 @@ class AdminController extends Controller
             $existingTranslation->file_name = $uploadedFilePath;
             $existingTranslation->save();
             HelperClass::storeContractorLog(
-                Auth::user()->id, LogActionsEnum::ISADMIN, $existingTranslation->order_id,
+                Auth::user()->id,
+                LogActionsEnum::ISADMIN,
+                $existingTranslation->order_id,
                 $existingTranslation->contractor_id,
                 "Admin",
                 0,
@@ -117,7 +119,6 @@ class AdminController extends Controller
             );
 
             return redirect()->route('admin.pending');
-
         } else {
 
             $contractorOrder = new ContractorOrder();
@@ -142,7 +143,9 @@ class AdminController extends Controller
             // $order->save();
 
             HelperClass::storeContractorLog(
-                Auth::user()->id, LogActionsEnum::ISADMIN, $contractorOrder->order_id,
+                Auth::user()->id,
+                LogActionsEnum::ISADMIN,
+                $contractorOrder->order_id,
                 -1,
                 "Admin",
                 0,
@@ -193,7 +196,10 @@ class AdminController extends Controller
             // $order->orderStatus = "Completed";
             $order->save();
             HelperClass::storeContractorLog(
-                Auth::user()->id, LogActionsEnum::ISADMIN, $request->order_id, $proofReaderOrders->contractor_id,
+                Auth::user()->id,
+                LogActionsEnum::ISADMIN,
+                $request->order_id,
+                $proofReaderOrders->contractor_id,
                 "Contractor",
                 0,
                 "Proof Reader",
@@ -222,7 +228,9 @@ class AdminController extends Controller
             $order->save();
 
             HelperClass::storeContractorLog(
-                Auth::user()->id, LogActionsEnum::ISADMIN, $request->order_id,
+                Auth::user()->id,
+                LogActionsEnum::ISADMIN,
+                $request->order_id,
                 -1,
                 "Contractor",
                 0,
@@ -1221,6 +1229,17 @@ class AdminController extends Controller
             return response()->json(['translation_rate' => 0]);
         }
     }
+
+    public function getProofreaderRate(Request $request)
+    {
+        if (isset($request->id) && $request->id != null) {
+            $contractor = Contractor::find($request->id);
+            return response()->json(['proofreader_rate' => $contractor->proofreader_rate]);
+        } else {
+            return response()->json(['proofreader_rate' => 0]);
+        }
+    }
+
 
     public function showSubmitQuote($id)
     {

@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::table('invoice_logs', function (Blueprint $table) {
             $table->integer('interpretation_id')->nullable()->change();
-            
         });
     }
 
@@ -27,8 +26,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('invoice_logs', function (Blueprint $table) {
-            $table->integer('interpretation_id')->nullable(false)->change();
-            
+            // $table->integer('interpretation_id')->nullable(false)->change();
+
         });
     }
 };

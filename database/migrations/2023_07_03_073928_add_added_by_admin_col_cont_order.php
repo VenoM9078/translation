@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('contractor_orders', function (Blueprint $table) {
-            //
+            $table->dropColumn('added_by_admin');
         });
     }
 };

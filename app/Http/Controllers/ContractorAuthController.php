@@ -137,21 +137,30 @@ class ContractorAuthController extends Controller
 
         //storing interpretation with paid status
         HelperClass::storeOrderLog(
-            LogActionsEnum::NOTADMIN, Auth::user()->id,
+            LogActionsEnum::NOTADMIN,
+            Auth::user()->id,
             null,
             "Interpretation",
-            "Contractor", LogActionsEnum::COMPLETEDINTERPRETATION, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::PAYMENTINCOMPLETEDNUMBER, LogActionsEnum::PAIDINTERPRETATION, LogActionsEnum::ZEROTRANSLATIONSTATUS, LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            "Contractor",
+            LogActionsEnum::COMPLETEDINTERPRETATION,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::PAYMENTINCOMPLETEDNUMBER,
+            LogActionsEnum::PAIDINTERPRETATION,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
+            LogActionsEnum::ZEROTRANSLATIONSTATUS,
             0,
             0,
             0,
-            0, LogActionsEnum::ISINTERPRETATION, LogActionsEnum::COMPLETEDINTERPRETATIONNUMBER
+            0,
+            LogActionsEnum::ISINTERPRETATION,
+            LogActionsEnum::COMPLETEDINTERPRETATIONNUMBER
         );
 
         $admins = Admin::all()->pluck('email');
         // Sending email to admin
         if (env("IS_DEV") == 1) {
             Mail::to(env('ADMIN_EMAIL_DEV'))->send(new InterpretationReportToAdmin($interpretation));
-
         } else {
             Mail::to('info@flowtranslate.com')->send(new InterpretationReportToAdmin($interpretation));
         }
@@ -310,16 +319,16 @@ class ContractorAuthController extends Controller
             'password' => 'required|string|min:6',
             'password2' => 'required|string|min:6|same:password',
         ], [
-                'name.required' => 'The name field is required.',
-                'name.max' => 'The name may not be greater than 255 characters.',
-                'email.required' => 'The email field is required.',
-                'email.max' => 'The email may not be greater than 255 characters.',
-                'password.required' => 'The password field is required.',
-                'password.min' => 'The password must be at least 6 characters.',
-                'password2.required' => 'The confirmation password field is required.',
-                'password2.same' => 'The confirmation password does not match.',
-                'password2.min' => 'The confirmation password must be at least 6 characters.',
-            ]);
+            'name.required' => 'The name field is required.',
+            'name.max' => 'The name may not be greater than 255 characters.',
+            'email.required' => 'The email field is required.',
+            'email.max' => 'The email may not be greater than 255 characters.',
+            'password.required' => 'The password field is required.',
+            'password.min' => 'The password must be at least 6 characters.',
+            'password2.required' => 'The confirmation password field is required.',
+            'password2.same' => 'The confirmation password does not match.',
+            'password2.min' => 'The confirmation password must be at least 6 characters.',
+        ]);
 
 
         $validated['password'] = bcrypt($validated['password']);
@@ -369,6 +378,8 @@ class ContractorAuthController extends Controller
             'token' => sha1(time()),
             'expiry_time' => Carbon::now()->addHours(2)
         ]);
+
+        // dd($verifyContractor);
 
         Mail::to($contractor->email)->send(new VerifyContractorMail($contractor));
 
@@ -535,7 +546,10 @@ class ContractorAuthController extends Controller
         $contractorOrder->save();
 
         HelperClass::storeContractorLog(
-            Auth::user()->id, LogActionsEnum::NOTADMIN, $contractorOrder->order_id, $contractorOrder->contractor_id,
+            Auth::user()->id,
+            LogActionsEnum::NOTADMIN,
+            $contractorOrder->order_id,
+            $contractorOrder->contractor_id,
             "Contractor",
             0,
             "Translator",
@@ -633,7 +647,10 @@ class ContractorAuthController extends Controller
         $order->save();
 
         HelperClass::storeContractorLog(
-            Auth::user()->id, LogActionsEnum::NOTADMIN, $contractorOrder->order_id, $contractorOrder->contractor_id,
+            Auth::user()->id,
+            LogActionsEnum::NOTADMIN,
+            $contractorOrder->order_id,
+            $contractorOrder->contractor_id,
             "Contractor",
             0,
             "Translator",
@@ -728,7 +745,10 @@ class ContractorAuthController extends Controller
         $order->save();
 
         HelperClass::storeContractorLog(
-            Auth::user()->id, LogActionsEnum::NOTADMIN, $contractorOrder->order_id, $contractorOrder->contractor_id,
+            Auth::user()->id,
+            LogActionsEnum::NOTADMIN,
+            $contractorOrder->order_id,
+            $contractorOrder->contractor_id,
             "Contractor",
             0,
             "Translator",
@@ -972,7 +992,10 @@ class ContractorAuthController extends Controller
         $order->save();
 
         HelperClass::storeContractorLog(
-            Auth::user()->id, LogActionsEnum::NOTADMIN, $order->id, $proofReaderOrders->contractor_id,
+            Auth::user()->id,
+            LogActionsEnum::NOTADMIN,
+            $order->id,
+            $proofReaderOrders->contractor_id,
             "Contractor",
             0,
             "Proof Reader",

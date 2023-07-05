@@ -229,6 +229,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
 
     Route::post('get-contractor-rate', [AdminController::class, 'getContractorRate'])->name('get.contractor.rate');
     Route::post('get-translator-rate', [AdminController::class, 'getTranslatorRate'])->name('get.translator.rate');
+    Route::post('get-proofreader-rate', [AdminController::class, 'getProofreaderRate'])->name('get.proofreader.rate');
 
     Route::get('/admin/interpretation/{id}/edit', [AdminController::class, 'editInterpretation'])->name('admin.interpretation.edit');
     Route::put('/admin/interpretation/{id}', [AdminController::class, 'updateInterpretation'])->name('admin.interpretation.update');

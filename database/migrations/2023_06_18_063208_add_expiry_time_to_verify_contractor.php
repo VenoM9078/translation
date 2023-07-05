@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('verify_contractors', function (Blueprint $table) {
-            $table->date('expiry_time')->nullable();
+            $table->dateTime('expiry_time')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('verify_contractors', function (Blueprint $table) {
-            //
+            $table->dropColumn('expiry_time');
         });
     }
 };

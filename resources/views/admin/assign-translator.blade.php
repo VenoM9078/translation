@@ -52,7 +52,8 @@
                             <label for="amount" class="mt-2 mb-2">Enter Translation Type</label>
                             <input type="text" name="translation_type"
                                 class="intro-x login__input form-control px-4 block mt-2 d-none" id="translation_type"
-                                value="" placeholder="Enter Translation Type (i.e Words, Page)" value="">
+                                value="" placeholder="Enter Translation Type (i.e Words, Page)"
+                                value="{{$order->contractorOrder->translation_type}}">
                         </div>
                         <input type="submit" class="btn btn-primary mt-5" value="Send Email">
                     </div>

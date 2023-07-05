@@ -13,9 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('proof_reader_orders', function (Blueprint $table) {
-            $table->integer('added_by_admin')->nullable();
-        });
+        DB::statement("ALTER TABLE verify_contractors MODIFY expiry_time TIMESTAMP");
     }
 
     /**
@@ -25,8 +23,5 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('proof_reader_orders', function (Blueprint $table) {
-            $table->dropColumn('added_by_admin');
-        });
     }
 };
