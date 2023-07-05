@@ -185,11 +185,14 @@
                                 <br>
                                 <label for="amount" class="mt-4 mb-2">Enter ProofRead Type</label>
                                 <select data-placeholder="Enter ProofRead Type" name="p_type" class="tom-select w-full">
+                                    @if($pOrder->proofread_type != null)
                                     <option value="{{ $pOrder->proofread_type }}" selected>
                                         {{ $pOrder->proofread_type ?? '-' }} </option>
+                                    @endif
                                     <option value="By Word">By Word</option>
                                     <option value="By Page">By Page</opation>
                                 </select>
+                                {{-- @dd($pOrder->proofread_type) --}}
                                 <br>
 
 
