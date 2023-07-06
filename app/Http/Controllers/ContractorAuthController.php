@@ -117,7 +117,7 @@ class ContractorAuthController extends Controller
 
     public function reportSubmission(Request $request)
     {
-        $interpretationReport = ContractorInterpretation::find($request->contractor_interpretation_id);
+        $interpretationReport = ContractorInterpretation::where('id',$request->contractor_interpretation_id)->first();
         $interpretationReport->feedback = $request->feedback;
         $interpretationReport->start_time_decided = $request->start_time_decided;
         $interpretationReport->end_time_decided = $request->end_time_decided;

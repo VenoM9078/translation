@@ -191,28 +191,30 @@
                                     <th class="whitespace-nowrap">C. Fee</th>
                                     <th class="whitespace-nowrap">C. Adjust Note</th>
                                     <th class="whitespace-nowrap">C. Paid</th>
-                                    <th class="whitespace-nowrap">Original Doc</th>
-                                    <th class="whitespace-nowrap">Final Doc</th>
-                                    <th class="whitespace-nowrap">Contractor Assigned</th>
-                                    <th class="whitespace-nowrap">Translation File</th>
-                                    <th class="whitespace-nowrap">ProofReader Assigned</th>
-                                    <th class="whitespace-nowrap">ProofRead File</th>
-                                    <th class="whitespace-nowrap">Translation Rate ($/W or $/P)</th>
-                                    <th class="whitespace-nowrap">Translation Adjusted Rate ($)</th>
-                                    <th class="whitespace-nowrap">Total Words</th>
+                                    <th class="whitespace-nowrap">Translator</th>
                                     <th class="whitespace-nowrap">Translation Due Date</th>
-                                    <th class="whitespace-nowrap">Translation Type</th>
-                                    <th class="whitespace-nowrap">Total Translation Payment</th>
-                                    <th class="whitespace-nowrap">Translation Adjust Note</th>
+                                    <th class="whitespace-nowrap">Translated Document</th>
+                                    <th class="whitespace-nowrap">Translator Message</th>
+                                    <th class="whitespace-nowrap">T.Type</th>
+                                    <th class="whitespace-nowrap">T.Unit</th>
+                                    <th class="whitespace-nowrap">T. Rate ($/W or $/P)</th>
+                                    <th class="whitespace-nowrap">T. Adjust ($)</th>
+                                    <th class="whitespace-nowrap">T. Fee ($)</th>
+                                    <th class="whitespace-nowrap">T. Adjust Note</th>
+                                    <th class="whitespace-nowrap">T. Paid</th>
+                                    <th class="whitespace-nowrap">ProofReader</th>
                                     <th class="whitespace-nowrap">Proofread Due Date</th>
-                                    <th class="whitespace-nowrap">Proofread Adjusted Rate ($/W or $/P)</th>
-                                    <th class="whitespace-nowrap">Proofread Total Payment</th>
-                                    <th class="whitespace-nowrap">Proofread Adjust Note</th>
-                                    <th class="whitespace-nowrap">Proofread Type</th>
+                                    <th class="whitespace-nowrap">ProofRead Document</th>
+                                    <th class="whitespace-nowrap">ProofReader Message</th>
+                                    <th class="whitespace-nowrap">P. Type</th>
+                                    <th class="whitespace-nowrap">P. Unit</th>
+                                    <th class="whitespace-nowrap">P. Rate ($/W or $/P)</th>
+                                    <th class="whitespace-nowrap">P. Adjust ($)</th>
+                                    <th class="whitespace-nowrap">P. Fee ($)</th>
+                                    <th class="whitespace-nowrap">P. Adjust Note</th>
+                                    <th class="whitespace-nowrap">P. Paid</th>
+                                    <th class="whitespace-nowrap">Final Doc</th>
                                     <th class="whitespace-nowrap">Invoice</th>
-                                    {{-- <th class="whitespace-nowrap">Translation Status</th> --}}
-                                    {{-- <th class="whitespace-nowrap">Proofread Status</th> --}}
-
                                     <th class="whitespace-nowrap">Date Received</th>
 
                                 </tr>
@@ -747,18 +749,205 @@
                                         <td class="whitespace-nowrap">{{ $order->c_fee }}</td>
                                         <td class="whitespace-nowrap">{{ $order->c_adjust_note }}</td>
                                         <td class="whitespace-nowrap">{{ $order->c_paid ? 'Yes' : 'No' }}</td>
-                                        <td class="whitespace-nowrap"><a href="{{ route('downloadFiles', $order->id) }}"
-                                                class="btn btn-warning mr-1">
 
-                                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="w-6 h-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                                                </svg>
 
-                                            </a>
+                                        {{-- @isset($order->contractorOrder) --}}
+                                        <td class="whitespace-nowrap">
+                                            @if (isset($order->contractorOrder) &&
+                                                    $order->contractorOrder->contractor != null &&
+                                                    $order->contractorOrder->contractor->name != '' &&
+                                                    $order->contractorOrder->is_accepted == 1)
+                                                {{ $order->contractorOrder->contractor->name }}
+                                            @else
+                                                -
+                                            @endif
                                         </td>
+                                        @if ($order->contractorOrder && $order->contractorOrder->is_accepted == 1 && $order->contractorOrder->contractor != null)
+                                            <td>{{ $order->contractorOrder->translation_due_date ?? '-' }}</td>
+                                            @if (isset($order->contractorOrder) && $order->contractorOrder->file_name != '')
+                                                <td>
+                                                    <a class="btn" title="Download Translation"
+                                                        href="{{ route('download-translation-file', $order->id) }}">
+                                                        Download
+                                                    </a>
+                                                </td>
+                                            @else
+                                                <td> </td>
+                                            @endif
+                                            <td class="whitespace-nowrap">
+                                                <a href="javascript:;" data-tw-toggle="modal"
+                                                    data-tw-target="#translator-message-modal-preview{{ $order->id }}">
+                                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                                </a>
+                                            </td>
+                                            <div id="translator-message-modal-preview{{ $order->id }}" class="modal"
+                                                tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body p-0">
+                                                            <div class="p-5 text-center"> <i data-lucide="bookmark"
+                                                                    class="w-16 h-16 text-info mx-auto mt-3"></i>
+                                                                <div class="text-3xl mt-5 mb-2">Translator Message</div>
+                                                                <div class="w-full text-left">
+                                                                    <label for="order-form-21" class="form-label">Client
+                                                                        Message:</label>
+                                                                    <textarea id="order-form-21" type="text" class="form-control" disabled>{{ $order->contractorOrder->message }}</textarea>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- END: Modal Content -->
+                                            <td>{{ $order->contractorOrder->translation_type ?? '-' }}</td>
+                                            <td>{{ $order->contractorOrder->translator_unit ?? '-' }} </td>
+                                            <td>${{ $order->contractorOrder->contractor->translation_rate ?? '-' }}</td>
+                                            <td>${{ $order->contractorOrder->translator_adjust ?? '-' }}</td>
+                                            <td>${{ $order->contractorOrder->total_payment ?? '-' }}</td>
+                                            <td class="whitespace-nowrap">
+                                                <a href="javascript:;" data-tw-toggle="modal"
+                                                    data-tw-target="#t-adjust-note-modal-preview{{ $order->id }}">
+                                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                                </a>
+                                            </td>
+                                            <div id="t-adjust-note-modal-preview{{ $order->id }}" class="modal"
+                                                tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body p-0">
+                                                            <div class="p-5 text-center"> <i data-lucide="bookmark"
+                                                                    class="w-16 h-16 text-info mx-auto mt-3"></i>
+                                                                <div class="text-3xl mt-5 mb-2">Translator Adjust Note
+                                                                </div>
+                                                                <div class="w-full text-left">
+                                                                    <textarea id="order-form-21" type="text" class="form-control" disabled>{{ $order->contractorOrder->translator_adjust_note }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- END: Modal Content -->
+                                            <td class="whitespace-nowrap">{{ $order->contractorOrder->translator_paid }}
+                                            </td>
+                                        @else
+                                            <td class="whitespace-nowrap">-</td>
+                                            <td class="whitespace-nowrap">-</td>
+                                            <td class="whitespace-nowrap">-</td>
+                                            <td class="whitespace-nowrap">-</td>
+                                            <td class="whitespace-nowrap">-</td>
+                                            <td class="whitespace-nowrap">-</td>
+                                            <td class="whitespace-nowrap">-</td>
+                                            <td class="whitespace-nowrap">-</td>
+                                            <td class="whitespace-nowrap">-</td>
+                                            <td class="whitespace-nowrap">-</td>
+                                        @endif
+                                        <td class="whitespace-nowrap">
+                                            @if (isset($order->proofReaderOrder))
+                                                @if (isset($order->proofReaderOrder->contractor))
+                                                    {{ $order->proofReaderOrder->contractor->name }}
+                                                @else
+                                                    -
+                                                @endif
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+                                        @if ($order->proofReaderOrder)
+                                            <td>{{ $order->proofReaderOrder->proof_read_due_date }}</td>
+                                            @if (
+                                                ($order->invoiceSent == 1 &&
+                                                    $order->paymentStatus == 2 &&
+                                                    $order->translation_status == 1 &&
+                                                    $order->proofread_status == 1) ||
+                                                    (isset($order->proofReaderOrder) &&
+                                                        $order->proofReaderOrder->added_by_admin == 1 &&
+                                                        $order->proofReaderOrder->file_name != ''))
+                                                <td>
+                                                    <a class="btn" title="Download ProofRead File"
+                                                        href="{{ route('download-proof-read-file', $order->id) }}">
+                                                        Download
+                                                    </a>
+                                                </td>
+                                            @elseif(
+                                                $order->invoiceSent == 1 &&
+                                                    $order->paymentStatus == 1 &&
+                                                    $order->translation_status == 1 &&
+                                                    $order->proofread_status == 1)
+                                                <td>
+                                                    <a class="btn" title="Download ProofRead File"
+                                                        href="{{ route('download-proof-read-file', $order->id) }}">
+                                                        Download
+                                                    </a>
+                                                </td>
+                                            @else
+                                                <td> </td>
+                                            @endif
+                                            <td class="whitespace-nowrap">
+                                                <a href="javascript:;" data-tw-toggle="modal"
+                                                    data-tw-target="#proofread-message-modal-preview{{ $order->id }}">
+                                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                                </a>
+                                            </td>
+                                            <div id="proofread-message-modal-preview{{ $order->id }}" class="modal"
+                                                tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body p-0">
+                                                            <div class="p-5 text-center"> <i data-lucide="bookmark"
+                                                                    class="w-16 h-16 text-info mx-auto mt-3"></i>
+                                                                <div class="text-3xl mt-5 mb-2">ProofReader Message</div>
+                                                                <div class="w-full text-left">
+                                                                    <textarea id="order-form-21" type="text" class="form-control" disabled>{{ $order->proofReaderOrder->message }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- END: Modal Content -->
+                                            <td class="whitespace-nowrap">{{ $order->proofReaderOrder->proofread_type }}
+                                            </td>
+                                            <td class="whitespace-nowrap">{{ $order->proofReaderOrder->p_unit }}</td>
+                                            <td class="whitespace-nowrap">
+                                                {{ $order->proofReaderOrder->contractor->proofreader_rate ?? '' }}</td>
+                                            <td class="whitespace-nowrap">{{ $order->proofReaderOrder->p_adjust }}</td>
+                                            <td class="whitespace-nowrap">{{ $order->proofReaderOrder->total_payment }}
+                                            </td>
+                                            <td class="whitespace-nowrap">
+                                                <a href="javascript:;" data-tw-toggle="modal"
+                                                    data-tw-target="#proofread-adj-modal-preview{{ $order->id }}">
+                                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                                </a>
+                                            </td>
+                                            <div id="proofread-adj-modal-preview{{ $order->id }}" class="modal"
+                                                tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body p-0">
+                                                            <div class="p-5 text-center"> <i data-lucide="bookmark"
+                                                                    class="w-16 h-16 text-info mx-auto mt-3"></i>
+                                                                <div class="text-3xl mt-5 mb-2">ProofReader Adjust Note
+                                                                </div>
+                                                                <div class="w-full text-left">
+                                                                    <textarea id="order-form-21" type="text" class="form-control" disabled>{{ $order->proofReaderOrder->proof_read_adjust_note }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- END: Modal Content -->
+                                            <td>{{ $order->proofReaderOrder->proof_read_paid == 1 ? 'Yes' : 'No' }}</td>
+                                        @else
+                                            <td class="whitespace-nowrap">-</td>
+                                            <td class="whitespace-nowrap">-</td>
+                                            <td class="whitespace-nowrap">-</td>
+                                            <td class="whitespace-nowrap">-</td>
+                                            <td class="whitespace-nowrap">-</td>
+                                            <td class="whitespace-nowrap">-</td>
+                                            <td class="whitespace-nowrap">-</td>
+                                            <td class="whitespace-nowrap">-</td>
+                                            <td class="whitespace-nowrap">-</td>
+                                            <td class="whitespace-nowrap">-</td>
+                                        @endif
                                         <td class="whitespace-nowrap">
                                             @if ($order->completed == 1 && isset($order->completedRequest))
                                                 <a href="{{ route('downloadTranslatedFiles', $order->id) }}"
@@ -776,115 +965,15 @@
                                                 <span>N/A</span>
                                             @endif
                                         </td>
-
-                                        {{-- @isset($order->contractorOrder) --}}
-                                        @if (isset($order->contractorOrder) &&
-                                                $order->contractorOrder->contractor != null &&
-                                                $order->contractorOrder->contractor->name != '' &&
-                                                $order->contractorOrder->is_accepted == 1)
-                                            <td>{{ $order->contractorOrder->contractor->name }}</td>
-                                        @else
-                                            <td> - </td>
-                                        @endif
-                                        @if (isset($order->contractorOrder) && $order->contractorOrder->file_name != '')
-                                            <td>
-                                                <a class="btn" title="Download Translation"
-                                                    href="{{ route('download-translation-file', $order->id) }}">
-                                                    Download
-                                                </a>
-                                            </td>
-                                        @else
-                                            <td> </td>
-                                        @endif
-                                        @if (isset($order->proofReaderOrder) &&
-                                                $order->proofReaderOrder->contractor != null &&
-                                                $order->proofReaderOrder->contractor->name != '' &&
-                                                $order->proofReaderOrder->is_accepted == 1)
-                                            <td>{{ $order->proofReaderOrder->contractor->name }}</td>
-                                        @else
-                                            <td> </td>
-                                        @endif
-                                        @if (
-                                            ($order->invoiceSent == 1 &&
-                                                $order->paymentStatus == 2 &&
-                                                $order->translation_status == 1 &&
-                                                $order->proofread_status == 1) ||
-                                                (isset($order->proofReaderOrder) &&
-                                                    $order->proofReaderOrder->added_by_admin == 1 &&
-                                                    $order->proofReaderOrder->file_name != ''))
-                                            <td>
-                                                <a class="btn" title="Download ProofRead File"
-                                                    href="{{ route('download-proof-read-file', $order->id) }}">
-                                                    Download
-                                                </a>
-                                            </td>
-                                        @elseif(
-                                            $order->invoiceSent == 1 &&
-                                                $order->paymentStatus == 1 &&
-                                                $order->translation_status == 1 &&
-                                                $order->proofread_status == 1)
-                                            <td>
-                                                <a class="btn" title="Download ProofRead File"
-                                                    href="{{ route('download-proof-read-file', $order->id) }}">
-                                                    Download
-                                                </a>
-                                            </td>
-                                        @else
-                                            <td> </td>
-                                        @endif
-                                        @if ($order->contractorOrder && $order->contractorOrder->is_accepted == 1 && $order->contractorOrder->contractor != null)
-                                            <td>${{ $order->contractorOrder->contractor->translation_rate }}</td>
-                                            <td>${{ $order->contractorOrder->rate }}</td>
-                                            <td>{{ $order->contractorOrder->total_words }}</td>
-                                            <td>{{ $order->contractorOrder->translation_due_date }}</td>
-                                            <td>{{ $order->contractorOrder->translation_type }}</td>
-                                            <td>${{ $order->contractorOrder->total_payment }}</td>
-                                            <td title="{{ $order->contractorOrder->message }}">
-                                                <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                    stroke="currentColor" class="w-6 h-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 011.037-.443 48.282 48.282 0 005.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
-                                                </svg>
-
-                                            </td>
-                                        @else
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                        @endif
-                                        @if ($order->proofReaderOrder)
-                                            <td>{{ $order->proofReaderOrder->proof_read_due_date }}</td>
-                                            <td>{{ $order->proofReaderOrder->rate }}</td>
-                                            <td>{{ $order->proofReaderOrder->total_payment }}</td>
-
-                                            <td title="{{ $order->proofReaderOrder->feedback }}">
-                                                <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
-                                            </td>
-                                            <td>{{ $order->proofReaderOrder->proofread_type }}</td>
-                                        @else
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                        @endif
                                         @if (isset($order->invoice) && $order->user->role_id == 1 && $order->invoiceSent == 1)
-                                            <td><a href="
-                                        {{ route('view-invoice', ['id' => $order->invoice->id]) }}
-                                        "
+                                            <td><a href="  {{ route('view-invoice', ['id' => $order->invoice->id]) }} "
                                                     class="btn btn-secondary m-2">View Invoice</a></td>
                                         @else
-                                            <td> </td>
+                                            <td class="whitespace-nowrap"> </td>
                                         @endif
                                         <td class="whitespace-nowrap">
                                             {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($order->created_at, request()->ip()) }}
                                         </td>
-
                                     </tr>
                                 @endforeach
                             </tbody>

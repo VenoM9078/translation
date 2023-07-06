@@ -34,11 +34,21 @@
                                         <th class="whitespace-nowrap">Session Format</th>
                                         <th class="whitespace-nowrap">Session Location</th>
                                         <th class="whitespace-nowrap">Session Title</th>
+                                        @if(Auth::user()->role_id != 1)
                                         <th class="whitespace-nowrap">Quote</th>
+                                        @endif
                                         <th class="whitespace-nowrap">Interpreter</th>
                                         <th class="whitespace-nowrap">Message</th>
-                                        <th class="whitespace-nowrap">Created At</th>
+                                        <th class="whitespace-nowrap">Session Time</th>
+                                        @if(Auth::user()->role_id != 1)
+                                        <th class="whitespace-nowrap">C.Rate($/hr)</th>
+                                        <th class="whitespace-nowrap">C.Adjust ($)</th>
+                                        <th class="whitespace-nowrap">C.Fee($)</th>
+                                        <th class="whitespace-nowrap">C.Adjust Note</th>
+                                        <th class="whitespace-nowrap">C.Paid</th>
+                                        @endif
                                         <th class="whitespace-nowrap">Status</th>
+                                        <th class="whitespace-nowrap">Created At</th>
 
 
                                     </tr>
@@ -382,12 +392,14 @@
                                             {{-- Session Title --}}
                                             <td class="whitespace-nowrap">{{ $interpretation->session_topics }}</td>
                                             {{-- Quote --}}
+                                            @if(Auth::user()->role_id != 1)
                                             <td class="whitespace-nowrap">
                                                 <a href="javascript:;" data-tw-toggle="modal"
                                                     data-tw-target="#note-modal-preview{{ $interpretation->id }}">
                                                     <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
                                                 </a>
                                             </td>
+                                            @endif
                                             <!-- BEGIN: Modal Content -->
                                             <div id="note-modal-preview{{ $interpretation->id }}" class="modal"
                                                 tabindex="-1" aria-hidden="true">
@@ -435,14 +447,22 @@
                                                     </div>
                                                 </div>
                                             </div> <!-- END: Modal Content -->
-
-                                            <td class="whitespace-nowrap">
-                                                {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($interpretation->created_at, request()->ip()) }}
-                                            </td>
+                                            {{-- Session Time --}}
+                                            <td>{{$interpretation->contractorInterpretation->start_time_decided}} - {{$interpretation->contractorInterpretation->end_time_decided}}</td>
+                                            @if(Auth::user()->role_id != 1)
+                                            <td class="whitespace-nowrap">{{$interpretation->c_rate}}</td>
+                                            <td class="whitespace-nowrap">{{$interpretation->c_adjust}}</td>
+                                            <td class="whitespace-nowrap">{{$interpretation->c_fee}}</td>
+                                            <td class="whitespace-nowrap">{{$interpretation->c_adjust_note}}</td>
+                                            <td class="whitespace-nowrap">{{$interpretation->c_paid == 1 ? 'Yes' : 'No'}}</td>
+                                            @endif
                                             <td class="whitespace-nowrap">
                                                 @include('utils.interpretation-status-column', [
                                                     'interpretation' => $interpretation,
                                                 ])
+                                            </td>
+                                            <td class="whitespace-nowrap">
+                                                {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($interpretation->created_at, request()->ip()) }}
                                             </td>
 
 
