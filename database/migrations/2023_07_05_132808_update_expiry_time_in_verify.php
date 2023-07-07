@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        DB::statement("ALTER TABLE verify_contractors MODIFY expiry_time TIMESTAMP");
+        // DB::statement("ALTER TABLE verify_contractors MODIFY expiry_time TIMESTAMP");
     }
 
     /**
