@@ -169,11 +169,11 @@
                                         <th class="whitespace-nowrap text-center">Session Location</th>
                                         <th class="whitespace-nowrap text-center">Session Title</th>
                                         <th class="whitespace-nowrap text-center">Quote</th>
-                                        {{-- <th class="whitespace-nowrap">C. Rate</th>
-                                    <th class="whitespace-nowrap">C. Adjust</th>
-                                    <th class="whitespace-nowrap">C. Fee</th>
-                                    <th class="whitespace-nowrap">C. Adjust Note</th>
-                                    <th class="whitespace-nowrap">C. Paid</th> --}}
+                                        <th class="whitespace-nowrap">C. Rate</th>
+                                        <th class="whitespace-nowrap">C. Adjust</th>
+                                        <th class="whitespace-nowrap">C. Fee</th>
+                                        <th class="whitespace-nowrap">C. Adjust Note</th>
+                                        <th class="whitespace-nowrap">C. Paid</th>
                                         <th class="whitespace-nowrap text-center">Interpreter</th>
                                         <th class="whitespace-nowrap text-center">Interpreter Message</th>
                                         <th class="whitespace-nowrap text-center">I.Rate</th>
@@ -190,7 +190,7 @@
                                         <tr>
                                             <td class="whitespace-nowrap">
                                                 <div class="flex gap-1">
-                                                    <a href="{{ route('view-interpretation-details', $interpretation->id) }}"
+                                                    <a href="{{ route('admin-view-interpretation-details', $interpretation->id) }}"
                                                         class="btn bg-yellow-500"><svg class="w-5 h-5 text-white mx-auto"
                                                             xmlns="http://www.w3.org/2000/svg" fill="none"
                                                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -414,20 +414,20 @@
                                                                     class="w-16 h-16 text-info mx-auto mt-3"></i>
                                                                 <div class="text-3xl mt-5 mb-2">Interpretation Quote
                                                                 </div>
-                                                                <div class="w-full text-left">
+                                                                <div class="w-full text-center">
                                                                     @if ($interpretation->quote_description)
                                                                         <label for="order-form-21" class="form-label">
                                                                             Message:</label>
                                                                         <textarea id="order-form-21" type="text" class="form-control" disabled>{{ $interpretation->quote_description }}</textarea>
                                                                     @endif
                                                                     @if ($interpretation->quote_filename != null)
-                                                                        <div class="w-full">
+                                                                        <div class="w-full mx-auto">
                                                                             <div class="col-12">
                                                                                 <a href="{{ route('downloadInterpretationQuote', $interpretation->id) }}"
                                                                                     title="Download Final Document"
                                                                                     class="btn btn-success mr-1 mt-2">
 
-                                                                                 Download Quote File
+                                                                                    Download Quote File
                                                                                 </a>
                                                                             </div>
                                                                         </div>
@@ -438,6 +438,13 @@
                                                     </div>
                                                 </div>
                                             </div> <!-- END: Modal Content -->
+                                            {{-- C Fields Start --}}
+                                            <td class="whitespace-nowrap">${{ $interpretation->c_rate }}</td>
+                                            <td class="whitespace-nowrap">{{ $interpretation->c_adjust }}</td>
+                                            <td class="whitespace-nowrap">{{ $interpretation->c_fee }}</td>
+                                            <td class="whitespace-nowrap">{{ $interpretation->c_adjust_note }}</td>
+                                            <td class="whitespace-nowrap">{{ $interpretation->c_paid == 1 ? 'Yes' : 'No' }}</td>
+                                            {{-- C Fields End --}}
                                             <td class="whitespace-nowrap">{{ $interpretation->interpreter->name ?? '-' }}
                                             </td>
                                             <td class="whitespace-nowrap">
@@ -482,10 +489,34 @@
                                                     ${{ $interpretation->contractorInterpretation->estimated_payment }}
                                                 @endif
                                             </td>
-                                            <td title="{{ $interpretation->interpreter_adjust_note ?? '' }}"><i
-                                                    data-lucide="message-square" class="w-100 h-5"> </i>
+
+                                            <td class="whitespace-nowrap">
+                                                <a href="javascript:;" data-tw-toggle="modal"
+                                                    data-tw-target="#i-adjust-note-modal-preview{{ $interpretation->id }}">
+                                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                                </a>
                                             </td>
-                                            <td class="whitespace-nowrap">{{ $interpretation->interpreter_paid }}</td>
+                                            <!-- BEGIN: Modal Content -->
+                                            <div id="i-adjust-note-modal-preview{{ $interpretation->id }}" class="modal"
+                                                tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body p-0">
+                                                            <div class="p-5 text-center"> <i data-lucide="bookmark"
+                                                                    class="w-16 h-16 text-info mx-auto mt-3"></i>
+                                                                <div class="text-3xl mt-5 mb-2">Interpretation Adjust Note
+                                                                </div>
+                                                                <div class="w-full text-left">
+                                                                    <label for="order-form-21" class="form-label">
+                                                                        Message:</label>
+                                                                    <textarea id="order-form-21" type="text" class="form-control" disabled>{{ $interpretation->interpreter_adjust_note }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- END: Modal Content -->
+                                            <td class="whitespace-nowrap">{{ $interpretation->interpreter_paid == 1 ? 'Yes' : 'No' }}</td>
 
                                             <td class="whitespace-nowrap">
                                                 {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($interpretation->created_at, request()->ip()) }}

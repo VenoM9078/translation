@@ -304,7 +304,7 @@
                                         style="margin-bottom: 20px;"
                                         class="intro-x login__input form-control py-3 px-4 block mt-4"
                                         placeholder="Contractor Name"
-                                        value="{{ isset($order->contractorOrder->contractor->name) ? $order->contractorOrder->contractor->name : 'N/A' }}">
+                                        value="{{ isset($order->contractorOrder) && isset($order->contractorOrder->contractor) ? $order->contractorOrder->contractor->name : 'N/A' }}">
                                     {{-- <a href="{{ route('view-assign-proofreader', $order->id) }}" --}}
                                     {{-- class="mb-2 btn btn-primary">Re-Assign ProofReader</a> --}}
                                     <hr class="my-2 py-2">
@@ -496,36 +496,36 @@
                         <div class="w-full">
                             <label for="order-form-4" class="form-label">Contractor Name</label>
                             <input id="order-form-4" type="text" class="form-control w-full" disabled
-                                value="{{ $order->contractorOrder->contractor->name }}">
+                                value="{{ $order->contractorOrder->contractor->name ?? '-' }}">
                         </div>
                         <div class="w-full">
                             <label for="order-form-5" class="form-label">Contractor Email</label>
                             <input id="order-form-5" type="text" class="form-control w-full" disabled
-                                value="{{ $order->contractorOrder->contractor->email }}">
+                                value="{{ $order->contractorOrder->contractor->email ?? '-' }}">
                         </div>
                     </div>
                     <div class="flex mt-2 mb-2 gap-2">
                         <div class="w-full">
                             <label for="order-form-6" class="form-label">SSN</label>
                             <input id="order-form-6" type="text" class="form-control" disabled
-                                value="{{ $order->contractorOrder->contractor->SSN }}">
+                                value="{{ $order->contractorOrder->contractor->SSN ?? '-' }}">
                         </div>
                         <div class="w-full">
                             <label for="order-form-7" class="form-label">Interpretation Rate</label>
                             <input id="order-form-7" type="text" class="form-control" disabled
-                                value="${{ $order->contractorOrder->contractor->interpretation_rate }}">
+                                value="${{ $order->contractorOrder->contractor->interpretation_rate ?? '0' }}">
                         </div>
                     </div>
                     <div class="flex mt-2 mb-2 gap-2">
                         <div class="w-full">
                             <label for="order-form-8" class="form-label">Translation Rate</label>
                             <input id="order-form-8" type="text" class="form-control" disabled
-                                value="${{ $order->contractorOrder->contractor->translation_rate }}">
+                                value="${{ $order->contractorOrder->contractor->translation_rate ?? '0' }}">
                         </div>
                         <div class="w-full">
                             <label for="order-form-9" class="form-label">Proofreader Rate</label>
                             <input id="order-form-9" type="text" class="form-control" disabled
-                                value="${{ $order->contractorOrder->contractor->proofreader_rate }}">
+                                value="${{ $order->contractorOrder->contractor->proofreader_rate ?? '0' }}">
                         </div>
                     </div>
                 </div>

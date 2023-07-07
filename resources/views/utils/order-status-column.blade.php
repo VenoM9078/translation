@@ -117,10 +117,14 @@
             <div class="w-full btn btn-success">
                 Proof Reader Accepted
             </div>
-        @elseif(isset($order->proofReaderOrder) &&
-                $order->proofReaderOrder->is_accepted == 1 &&
+        @elseif(isset($order->proofReaderOrder) && (
+                ($order->proofReaderOrder->is_accepted == 1 &&
                 $order->proofread_status == \App\Enums\TranslationStatusEnum::COMPLETED &&
-                $order->proofReaderOrder->file_name != null)
+                $order->proofReaderOrder->file_name != null
+                )
+                ||
+                ($order->proofReaderOrder->added_by_admin == 1 && $order->proofReaderOrder->file_name != '' )
+                ))
             <div class="w-full btn btn-success">
                 ProofRead Completed
             </div>

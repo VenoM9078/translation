@@ -271,6 +271,73 @@
                                             value="{{ $interpretation->feedback }}">
                                     </div>
                                 </div>
+                                <br>
+                                <div class="flex gap-2 mt-2 w-full">
+
+                                    <!-- C. Type field -->
+                                    <div class="w-full">
+                                        <label for="c_type">C. Type</label>
+                                        <select name="c_type" class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4">
+                                            <option value="{{ $interpretation->c_type ?? 'Word' }}">Word</option>
+                                            <option value="{{ $interpretation->c_type ?? 'Page' }}">Page</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- C. Unit field -->
+                                    <div class="w-full">
+                                        <label for="c_unit">C. Unit</label>
+                                        <input type="number" id="c_unit" name="c_unit"
+                                            class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4"
+                                            placeholder="C. Unit" value="{{ $interpretation->c_unit }}">
+                                    </div>
+
+                                </div>
+                                <div class="flex gap-2 w-full">
+
+                                    <!-- C. Rate field -->
+                                    <div class="w-full">
+
+                                        <label for="c_rate">C. Rate ($/W or $/P)</label>
+                                        <input type="number" step="0.01" id="c_rate" name="c_rate"
+                                            class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4"
+                                            placeholder="C. Rate ($/W or $/P)" value="{{ $interpretation->c_rate }}">
+                                    </div>
+                                    <!-- C. Adjust field -->
+                                    <div class="w-full">
+
+                                        <label for="c_adjust">C. Adjust ($)</label>
+                                        <input type="number" step="0.01" id="c_adjust" name="c_adjust"
+                                            class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4"
+                                            placeholder="C. Adjust ($)" value="{{ $interpretation->c_adjust }}">
+                                    </div>
+                                </div>
+
+                                <div class="flex gap-2 w-full">
+
+                                    <!-- C. Paid field -->
+                                    <div class="w-full">
+                                        <label for="c_paid">C. Paid</label>
+                                        <select id="c_paid" name="c_paid"
+                                            class="form-control py-3 px-4 block mt-4 mb-4">
+                                            <option value="0" {{ $interpretation->c_paid == 0 ? 'selected' : '' }}>No
+                                            </option>
+                                            <option value="1" {{ $interpretation->c_paid == 1 ? 'selected' : '' }}>Yes
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <!-- C. Fee field -->
+                                    <div class="w-full">
+
+                                        <label for="c_fee">C. Fee ($)</label>
+                                        <input type="number" step="0.01" id="c_fee" name="c_fee"
+                                            class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4"
+                                            placeholder="C. Fee ($)" value="{{ $interpretation->c_fee }}">
+                                    </div>
+                                </div>
+                                <!-- C. Adjust Note field -->
+                                <label for="c_adjust_note">C. Adjust Note</label>
+                                <textarea id="c_adjust_note" name="c_adjust_note" class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4"
+                                    placeholder="C. Adjust Note">{{ $interpretation->c_adjust_note }}</textarea>
                                 <button type="submit" class="btn btn-primary mt-5">Update Interpretation</button>
                         </form>
                     </div>

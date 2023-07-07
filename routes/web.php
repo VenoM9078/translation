@@ -323,7 +323,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
 
     Route::post('/admin/upload-proof', [AdminController::class, 'uploadProofFile'])->name('admin-upload-proof-read-file');
 
-    Route::get('/view-interpretation/{id}', [AdminController::class, 'viewInterpretationDetails'])->name('view-interpretation-details');
+    Route::get('/admin/view-interpretation/{id}', [AdminController::class, 'viewInterpretationDetails'])->name('admin-view-interpretation-details');
     // Route::get('/copy-interpretation/{id}', [AdminController::class, 'copyInterpretationDetails'])->name('copy-interpretation-details');
 
 
@@ -356,7 +356,7 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
     Route::get('/view-interpretation/{id}', [UserController::class, 'viewInterpretationDetails'])->name('view-interpretation-details');
     Route::get('/copy-interpretation/{id}', [UserController::class, 'copyInterpretationDetails'])->name('copy-interpretation-details');
     Route::get('/user/interpretation/{id}/edit', [UserController::class, 'editInterpretation'])->name('user.interpretation.edit');
-    Route::put('/user/interpretation/{id}', [UserController::class, 'updateInterpretation'])->name('admin.interpretation.update');
+    Route::put('/user/interpretation/{id}', [UserController::class, 'updateInterpretation'])->name('user.interpretation.update');
     Route::post('cancel-order', [UserController::class, 'cancelOrder'])->name('cancelOrder');
     Route::post('cancel-interpretation', [UserController::class, 'cancelInterpretation'])->name('cancelInterpretation');
 

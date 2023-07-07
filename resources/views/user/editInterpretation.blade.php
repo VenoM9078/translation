@@ -59,7 +59,7 @@
                                     value="{{ $interpretation->language }}">
                             </div>
                         </div>
-                        <form action="{{ route('admin.interpretation.update', $interpretation->id) }}" method="post"
+                        <form action="{{ route('user.interpretation.update', $interpretation->id) }}" method="post"
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')

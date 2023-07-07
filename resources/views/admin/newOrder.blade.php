@@ -74,7 +74,7 @@
                                     </div>
                                 </div>
                                 <select name="language1" required aria-placeholder="Source Language"
-                                    data-placeholder="Source Language" class="tom-select w-full">
+                                    data-placeholder="Source Language" required class="tom-select w-full">
                                     <option value="Source Language" disabled selected>Source Language
                                     </option>
                                     <option value="Afrikaans">Afrikaans</option>

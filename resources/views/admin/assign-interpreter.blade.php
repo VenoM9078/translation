@@ -1,101 +1,118 @@
 @extends('admin.layout')
 
 @section('content')
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"
-    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-<div class="intro-y col-span-12 mt-4">
-    <!-- BEGIN: Vertical Form -->
-    <div class="intro-y box">
-        <div class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
-            <h2 class="font-medium text-base mr-auto">
-                Assigning Interpreter for {{ $interpretation->user->name }}'s Interpretation Order
-            </h2>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <div class="intro-y col-span-12 mt-4">
+        <!-- BEGIN: Vertical Form -->
+        <div class="intro-y box">
+            <div class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
+                <h2 class="font-medium text-base mr-auto">
+                    Assigning Interpreter for {{ $interpretation->user->name }}'s Interpretation Order
+                </h2>
 
-        </div>
-        <div id="vertical-form" class="p-5">
-            <form action="{{ route('assign-interpreter') }}" method="post">
-                @csrf
-                @method('POST')
-                <div class="preview spaxy-y-4">
-                    <div>
-                        <div class="intro-x mt-4">
-                            <input type="hidden" name="interpretation_id" value="{{ $interpretation->id }}">
-                            <div class="mb-3">
-                                <label>Enter Description of Interpretation</label>
-                                <textarea type="text" name="description" required
-                                    class="intro-x login__input form-control py-3 px-4 block mt-1"
-                                    placeholder="Enter Interpretation Description" value=""></textarea>
-                            </div>
+            </div>
+            <div id="vertical-form" class="p-5">
+                <form action="{{ route('assign-interpreter') }}" method="post">
+                    @csrf
+                    @method('POST')
+                    <div class="preview spaxy-y-4">
+                        <div>
+                            <div class="intro-x mt-4">
+                                <input type="hidden" name="interpretation_id" value="{{ $interpretation->id }}">
+                                <div class="mb-3">
+                                    <label>Enter Description of Interpretation</label>
+                                    <textarea type="text" name="description" required class="intro-x login__input form-control py-3 px-4 block mt-1"
+                                        placeholder="Enter Interpretation Description" value=""></textarea>
+                                </div>
 
-                            <div class="mt-3">
-                                <label>Select Contractor</label>
-                                <select id="contractor_select" data-placeholder="Select a language" name="contractor_id"
-                                    required class="tom-select w-full mt-2">
+                                <div class="mt-3">
+                                    <label>Select Contractor</label>
+                                    <select id="contractor_select" data-placeholder="Select a language" name="contractor_id"
+                                        required class="tom-select w-full mt-2">
 
-                                    @foreach ($contractors as $contractor)
-                                    <option value="{{ $contractor->id }}">{{ $contractor->name }}
-                                        ({{ $contractor->email }}) - ${{ $contractor->interpretation_rate }}/hr
-                                    </option>
-                                    @endforeach
+                                        @foreach ($contractors as $contractor)
+                                            <option value="{{ $contractor->id }}">{{ $contractor->name }}
+                                                ({{ $contractor->email }})
+                                                - ${{ $contractor->interpretation_rate }}/hr
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="mt-5 mb-5">
+                                    <label>Enter Estimated Payment</label><br>
+                                    <small>Session Duration:
+                                        {{ (int) $interpretation->end_time - (int) $interpretation->start_time }}
+                                        hour(s)</small>
+                                    <input id="estimated_payment" step="0.0001" type="number" required
+                                        name="estimated_payment"
+                                        class="intro-x login__input form-control py-3 px-4 block mt-1"
+                                        placeholder="Enter Estimated Payment (in dollars)" value="0">
+                                </div>
+
+                                <div class="mt-3 mb-3">
+                                    <label>Change Per Hour Rate</label>
+                                    <input id="per_hour_rate" step="0.0001" type="number" required name="per_hour_rate"
+                                        class="intro-x login__input form-control py-3 px-4 block mt-1"
+                                        placeholder="(Optional)" value="">
+                                </div>
+                                <label for="c_adjust_note">I. Adjust Note</label>
+                                <textarea id="p_adjust_note" name="interpreter_adjust_note" class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4"
+                                    placeholder="I. Adjust Note">{{ $interpretation->interprer_adjust_note }}</textarea>
+                                <br>
+                                <label for="amount" class="mt-2 mb-2">Paid</label>
+                                <select data-placeholder="Enter Paid" name="interpreter_paid"
+                                    class="tom-select w-full">
+                                    @if ($interpretation->interpreter_paid != '')
+                                        <option value="{{ $interpretation->interpreter_paid }}" selected>
+                                            {{ $interpretation->interpreter_paid == 1 ? 'Yes' : 'No' }} </option>
+                                    @else
+                                        <option value="1">Yes</option>
+                                        <option value="0">No</option>
+                                    @endif
                                 </select>
                             </div>
-
-                            <div class="mt-5 mb-5">
-                                <label>Enter Estimated Payment</label><br>
-                                <small>Session Duration: {{((int)$interpretation->end_time -
-                                    (int)$interpretation->start_time)}} hour(s)</small>
-                                <input id="estimated_payment" step="0.0001" type="number" required name="estimated_payment"
-                                    class="intro-x login__input form-control py-3 px-4 block mt-1"
-                                    placeholder="Enter Estimated Payment (in dollars)" value="0">
-                            </div>
-
-                            <div class="mt-3 mb-3">
-                                <label>Change Per Hour Rate</label>
-                                <input id="per_hour_rate" step="0.0001" type="number" required name="per_hour_rate"
-                                    class="intro-x login__input form-control py-3 px-4 block mt-1"
-                                    placeholder="(Optional)" value="">
-                            </div>
                         </div>
+                        <input type="submit" class="btn btn-primary mt-5" value="Assign Interpretation">
                     </div>
-                    <input type="submit" class="btn btn-primary mt-5" value="Assign Interpretation">
-                </div>
-            </form>
+                </form>
 
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    $(document).ready(function() {
-        var hours = {{ (int)$interpretation->end_time - (int)$interpretation->start_time }};
-        // console.log("hours",hours);
-        function calculateEstimatedPayment(rate) {
-            return Math.abs(hours * rate);
-        }
-        
-        $('#contractor_select').change(function() {
-            var contractor_id = $(this).val();
-            $.ajax({
-                url: "{{ route('get.contractor.rate') }}",
-                method: "POST",
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    "id": contractor_id
-                },
-                success: function(data) {
-                    var rate = data.interpretation_rate;
-                    var estimated_payment = calculateEstimatedPayment(rate);
-                    $('#estimated_payment').val(estimated_payment);
-                    $('#per_hour_rate').val(rate);
-                }
+    <script>
+        $(document).ready(function() {
+            var hours = {{ (int) $interpretation->end_time - (int) $interpretation->start_time }};
+            // console.log("hours",hours);
+            function calculateEstimatedPayment(rate) {
+                return Math.abs(hours * rate);
+            }
+
+            $('#contractor_select').change(function() {
+                var contractor_id = $(this).val();
+                $.ajax({
+                    url: "{{ route('get.contractor.rate') }}",
+                    method: "POST",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "id": contractor_id
+                    },
+                    success: function(data) {
+                        var rate = data.interpretation_rate;
+                        var estimated_payment = calculateEstimatedPayment(rate);
+                        $('#estimated_payment').val(estimated_payment);
+                        $('#per_hour_rate').val(rate);
+                    }
+                });
+            }).change(); // Trigger the change event manually to set the initial values
+
+            $('#per_hour_rate').change(function() {
+                var rate = $(this).val();
+                var estimated_payment = calculateEstimatedPayment(rate);
+                $('#estimated_payment').val(estimated_payment);
             });
-        }).change(); // Trigger the change event manually to set the initial values
-        
-        $('#per_hour_rate').change(function() {
-            var rate = $(this).val();
-            var estimated_payment = calculateEstimatedPayment(rate);
-            $('#estimated_payment').val(estimated_payment);
         });
-    });
-</script>
+    </script>
 @endsection

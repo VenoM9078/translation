@@ -29,7 +29,16 @@ class Interpretation extends Model
         'added_by_institute_user',
         'message',
         'quote_filename',
-        'is_quote_pending'
+        'is_quote_pending',
+        'c_type',
+        'c_unit',
+        'c_rate',
+        'c_adjust',
+        'c_fee',
+        'c_adjust_note',
+        'c_paid',
+        'interpreter_adjust_note',
+        'interpreter_paid'
     ];
 
     public function user()

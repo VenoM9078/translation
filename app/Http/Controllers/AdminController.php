@@ -431,6 +431,7 @@ class AdminController extends Controller
 
         // dd($request->all());
         if ($request->contractor_id) {
+            $previousContractorOrder = ContractorOrder::where('order_id',$request->order_id)->select('contractor_id')->first();
             $contractorOrder = ContractorOrder::updateOrCreate(
                 ['order_id' => $request->order_id],
                 [
@@ -454,7 +455,7 @@ class AdminController extends Controller
             $order->translation_sent = 1;
             $order->save();
 
-            if ($contractorOrder->contractor_id != $request->contractor_id) {
+            if ( !isset($previousContractorOrder) || $previousContractorOrder->contractor_id != $request->contractor_id) {
 
                 HelperClass::storeContractorLog(
                     Auth::user()->id,
@@ -482,6 +483,7 @@ class AdminController extends Controller
             } else {
                 $proof_read_file = $request->proofReadFile;
             }
+            $previousProofReaderOrder = ProofReaderOrders::where('order_id', $request->order_id)->select('contractor_id')->first();
             $proofReaderOrder = ProofReaderOrders::updateOrCreate(
                 ['order_id' => $request->order_id],
                 // Search array
@@ -508,7 +510,7 @@ class AdminController extends Controller
 
             $order->proofread_sent = 1; //change status to 1 *asigned
             $order->save();
-            if ($proofReaderOrder->contractor_id != $request->p_contractor_id) {
+            if (!isset($previousProofReaderOrder) || $previousProofReaderOrder->contractor_id != $request->p_contractor_id) {
 
                 HelperClass::storeContractorLog(
                     Auth::user()->id,
@@ -895,7 +897,9 @@ class AdminController extends Controller
     public function submitNewTranslationOrder(Request $request)
     {
         date_default_timezone_set('America/Los_Angeles'); // Set timezone to PST
-
+        if(!$request->language1 || !$request->language2){
+            return redirect()->back()->with('status', 'Select language');
+        }
         // Get the latest worknumber from the Order model
         $latestWorkNumber = Order::latest('worknumber')->first();
         $due_date = Carbon::now()->addDays(7);
@@ -1190,7 +1194,12 @@ class AdminController extends Controller
         // First check if a record already exists for the given interpretation and contractor
         $existingAssignment = ContractorInterpretation::where('interpretation_id', $request->interpretation_id)
             ->first();
+        
+        $interpretation = Interpretation::where('id',$request->interpretation_id)->first();
+        $interpretation->interpreter_adjust_note = $request->interpreter_adjust_note;
+        $interpretation->interpreter_paid = $request->interpreter_paid;
 
+        $interpretation->save();
         // If it exists, delete it
         if ($existingAssignment) {
             $existingAssignment->delete();
