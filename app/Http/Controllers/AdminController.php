@@ -2065,7 +2065,7 @@ class AdminController extends Controller
         $filePath = '/proofread_by_proofreader/' . ProofReaderOrders::where(['order_id' => $id])->firstOrFail()->file_name;
         $file = "";
 
-        if (public_path() . file_exists($filePath)) {
+        if (file_exists(public_path($filePath))) {
             $file = public_path($filePath);
         }
         $zip = new ZipArchive;
