@@ -448,7 +448,7 @@
                                                 </div>
                                             </div> <!-- END: Modal Content -->
                                             {{-- Session Time --}}
-                                            <td>{{$interpretation->contractorInterpretation->start_time_decided}} - {{$interpretation->contractorInterpretation->end_time_decided}}</td>
+                                            <td>{{$interpretation->contractorInterpretation->start_time_decided ?? 'N/A'}} - {{$interpretation->contractorInterpretation->end_time_decided ?? 'N/A'}}</td>
                                             @if(Auth::user()->role_id != 1)
                                             <td class="whitespace-nowrap">{{$interpretation->c_rate}}</td>
                                             <td class="whitespace-nowrap">{{$interpretation->c_adjust}}</td>
