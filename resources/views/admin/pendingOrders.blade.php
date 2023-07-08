@@ -765,21 +765,26 @@
                                                 -
                                             @endif
                                         </td>
-                                        @if ($order->contractorOrder && $order->contractorOrder->is_accepted == 1 && $order->contractorOrder->contractor != null)
-                                            <td>{{ $order->contractorOrder->translation_due_date ?? '-' }}</td>
-                                        @endif
-                                        @if (isset($order->contractorOrder) && $order->contractorOrder->file_name != '' ||
-                                        (isset($order->contractorOrder) && $order->contractorOrder->added_by_admin == 1)
-                                        )
-                                            <td>
+                                        <td>
+                                            @if ($order->contractorOrder && $order->contractorOrder->is_accepted == 1 && $order->contractorOrder->contractor != null)
+                                                {{ $order->contractorOrder->translation_due_date ?? '-' }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+
+                                        <td>
+                                            @if (
+                                                (isset($order->contractorOrder) && $order->contractorOrder->file_name != '') ||
+                                                    (isset($order->contractorOrder) && $order->contractorOrder->added_by_admin == 1))
                                                 <a class="btn" title="Download Translation"
                                                     href="{{ route('download-translation-file', $order->id) }}">
                                                     Download
                                                 </a>
-                                            </td>
-                                        @else
-                                            <td> No File </td>
-                                        @endif
+                                            @else
+                                                No File
+                                            @endif
+                                        </td>
                                         @if ($order->contractorOrder && $order->contractorOrder->is_accepted == 1 && $order->contractorOrder->contractor != null)
                                             <td class="whitespace-nowrap">
                                                 <a href="javascript:;" data-tw-toggle="modal"
@@ -837,8 +842,6 @@
                                             <td class="whitespace-nowrap">{{ $order->contractorOrder->translator_paid }}
                                             </td>
                                         @else
-                                            <td class="whitespace-nowrap">-</td>
-                                            <td class="whitespace-nowrap">-</td>
                                             <td class="whitespace-nowrap">-</td>
                                             <td class="whitespace-nowrap">-</td>
                                             <td class="whitespace-nowrap">-</td>
