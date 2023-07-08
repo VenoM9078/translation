@@ -424,7 +424,10 @@ class UserController extends Controller
         // Retrieve the order_id and amount from the request
         $order_id = $request->input('order_id');
         $amount = $request->input('amount');
-
+        // dd($amount);
+        if($amount == null){
+            return redirect()->back()->with('error','Enter amount');
+        }
         // Find the order with the given order_id
         $order = Order::find($order_id);
 
@@ -435,12 +438,10 @@ class UserController extends Controller
 
         // Update the order's invoice with the given amount
         // Assuming the order has a related invoice and the relationship is named 'invoice'
-        $invoice = $order->invoice;
-        $invoice->amount = $amount;
-        $invoice->save();
+
 
         // Redirect to a new page with the order passed to it
-        return view('user.paymentInvoice', compact('order'));
+        return view('user.paymentInvoice', compact('order','amount'));
     }
 
 

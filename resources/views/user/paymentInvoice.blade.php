@@ -55,7 +55,7 @@
             <div class="mt-10 lg:mt-0 lg:ml-auto lg:text-right">
                 {{-- <div class="text-base text-slate-500">WO#</div> --}}
                 {{-- <div class="text-lg text-primary font-medium mt-2">{{ $orderWork = $order->worknumber }}</div> --}}
-                <?php $amount = $order->invoice->amount; ?>
+                <?php $amount = isset($order->invoice->amount) ? $order->invoice->amount : $amount ; ?>
                 <div class="text-lg text-pending font-medium mt-2">Created At:
                     {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($order->created_at, request()->ip()) }}
                 </div>
@@ -81,7 +81,7 @@
                             </td>
                             {{-- <td class="text-right border-b dark:border-darkmode-400 w-32">10
                             </td> --}}
-                            <td class="text-right border-b dark:border-darkmode-400 w-32">{{$order->invoice->amount}}
+                            <td class="text-right border-b dark:border-darkmode-400 w-32">{{$amount}}
                             </td>
                         </tr>
                         {{-- <tr>
@@ -212,7 +212,7 @@
             </div>
             <div class="text-center sm:text-right sm:ml-auto">
                 <div class="text-base text-slate-500">Total Amount</div>
-                <div class="text-xl text-primary font-medium mt-2">{{$order->invoice->amount}}</div>
+                <div class="text-xl text-primary font-medium mt-2">{{$amount}}</div>
                 <div class="mt-1">All Internal Charges Included</div>
             </div>
         </div>
