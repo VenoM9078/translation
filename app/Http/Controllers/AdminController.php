@@ -431,7 +431,7 @@ class AdminController extends Controller
 
         // dd($request->all());
         if ($request->contractor_id) {
-            $previousContractorOrder = ContractorOrder::where('order_id',$request->order_id)->select('contractor_id')->first();
+            $previousContractorOrder = ContractorOrder::where('order_id', $request->order_id)->select('contractor_id')->first();
             $contractorOrder = ContractorOrder::updateOrCreate(
                 ['order_id' => $request->order_id],
                 [
@@ -455,7 +455,7 @@ class AdminController extends Controller
             $order->translation_sent = 1;
             $order->save();
 
-            if ( !isset($previousContractorOrder) || $previousContractorOrder->contractor_id != $request->contractor_id) {
+            if (!isset($previousContractorOrder) || $previousContractorOrder->contractor_id != $request->contractor_id) {
 
                 HelperClass::storeContractorLog(
                     Auth::user()->id,
@@ -555,7 +555,14 @@ class AdminController extends Controller
         $oldInt = $interpretation;
         if ($interpretation) {
             // Validation can be added as per your requirements.
-            $interpretation->update($request->all());
+
+            $int = $interpretation->update($request->all());
+            $contractorInterpretation = $interpretation->contractorInterpretation;
+            if(isset($contractorInterpretation)){
+                $contractorInterpretation->estimated_payment = $request->estimated_interpretation_rate;
+                $contractorInterpretation->estimated_payment = $request->interpretation_rate;
+                $contractorInterpretation->save();
+            }
             // dd($oldInt,$interpretation);
             return redirect()->route('admin.ongoingInterpretations')->with('success', 'Interpretation updated successfully.');
         }
@@ -897,7 +904,7 @@ class AdminController extends Controller
     public function submitNewTranslationOrder(Request $request)
     {
         date_default_timezone_set('America/Los_Angeles'); // Set timezone to PST
-        if(!$request->language1 || !$request->language2){
+        if (!$request->language1 || !$request->language2) {
             return redirect()->back()->with('status', 'Select language');
         }
         // Get the latest worknumber from the Order model
@@ -1194,8 +1201,8 @@ class AdminController extends Controller
         // First check if a record already exists for the given interpretation and contractor
         $existingAssignment = ContractorInterpretation::where('interpretation_id', $request->interpretation_id)
             ->first();
-        
-        $interpretation = Interpretation::where('id',$request->interpretation_id)->first();
+
+        $interpretation = Interpretation::where('id', $request->interpretation_id)->first();
         $interpretation->interpreter_adjust_note = $request->interpreter_adjust_note;
         $interpretation->interpreter_paid = $request->interpreter_paid;
 

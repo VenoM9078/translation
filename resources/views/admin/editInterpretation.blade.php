@@ -277,7 +277,8 @@
                                     <!-- C. Type field -->
                                     <div class="w-full">
                                         <label for="c_type">C. Type</label>
-                                        <select name="c_type" class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4">
+                                        <select name="c_type"
+                                            class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4">
                                             <option value="{{ $interpretation->c_type ?? 'Word' }}">Word</option>
                                             <option value="{{ $interpretation->c_type ?? 'Page' }}">Page</option>
                                         </select>
@@ -321,7 +322,8 @@
                                             class="form-control py-3 px-4 block mt-4 mb-4">
                                             <option value="0" {{ $interpretation->c_paid == 0 ? 'selected' : '' }}>No
                                             </option>
-                                            <option value="1" {{ $interpretation->c_paid == 1 ? 'selected' : '' }}>Yes
+                                            <option value="1" {{ $interpretation->c_paid == 1 ? 'selected' : '' }}>
+                                                Yes
                                             </option>
                                         </select>
                                     </div>
@@ -335,9 +337,51 @@
                                     </div>
                                 </div>
                                 <!-- C. Adjust Note field -->
+                                <div class="flex gap-2 w-full">
+
+                                    <!-- C. Paid field -->
+                                    <div class="w-full">
+                                        <label for="c_paid">I. Paid</label>
+                                        <select id="c_paid" name="interpreter_paid"
+                                            class="form-control py-3 px-4 block mt-4 mb-4">
+                                            <option value="0"
+                                                {{ $interpretation->interpreter_paid == 0 ? 'selected' : '' }}>No
+                                            </option>
+                                            <option value="1"
+                                                {{ $interpretation->interpreter_paid == 1 ? 'selected' : '' }}>
+                                                Yes
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <!-- C. Fee field -->
+                                    <div class="w-full">
+                                        <label for="c_fee">Interpretation Rate ($)</label>
+                                        <input type="number" step="0.01" id="c_fee" name="interpretation_rate"
+                                            class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4"
+                                            @if ($interpretation->contractorInterpretation) placeholder="Interpretation Rate ($)"
+                                            @else
+                                                placeholder="Interpreter not assigned" disabled @endif
+                                            value="{{ $interpretation->contractorInterpretation->per_hour_rate ?? '' }}">
+                                    </div>
+                                    <div class="w-full">
+                                        <label for="c_fee">Estimated Interpretation Fee ($)</label>
+                                        <input type="number" step="0.01" id="c_fee"
+                                            name="estimated_interpretation_rate"
+                                            class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4"
+                                            @if ($interpretation->contractorInterpretation) placeholder="Estimated Interpretation Fee ($)" 
+                                            @else
+                                                placeholder="Interpreter not assigned" disabled @endif
+                                            value="{{ $interpretation->contractorInterpretation->estimated_payment ?? '' }}">
+                                    </div>
+                                </div>
                                 <label for="c_adjust_note">C. Adjust Note</label>
                                 <textarea id="c_adjust_note" name="c_adjust_note" class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4"
                                     placeholder="C. Adjust Note">{{ $interpretation->c_adjust_note }}</textarea>
+                                <br>
+                                <label for="c_adjust_note">I. Adjust Note</label>
+                                <textarea id="c_adjust_note" name="interpreter_adjust_note"
+                                    class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4" placeholder="I. Adjust Note">{{ $interpretation->interpreter_adjust_note }}</textarea>
+                                <br>
                                 <button type="submit" class="btn btn-primary mt-5">Update Interpretation</button>
                         </form>
                     </div>
