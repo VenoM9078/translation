@@ -275,7 +275,7 @@
                                                             $interpretation->invoiceSent == 1 &&
                                                             $interpretation->paymentStatus == 1 &&
                                                             $interpretation->interpreter_id !== null &&
-                                                            $interpretation->interpreter_completed == 1)
+                                                            $interpretation->interpreter_completed == 1 && 1==2)
                                                         <button class="btn btn-warning mr-1  ">View Feedback</button>
                                                     @elseif ($interpretation->wantQuote == 1)
                                                         <a href="{{ route('admin.showSubmitQuote', $interpretation->id) }}"
@@ -322,7 +322,7 @@
                                                         $interpretation->wantQuote == 3 &&
                                                             $interpretation->paymentStatus == 1 &&
                                                             $interpretation->interpreter_id !== null &&
-                                                            $interpretation->interpreter_completed == 1)
+                                                            $interpretation->interpreter_completed == 1 && 1==2)
                                                         <button class="btn btn-warning mr-1  ">View Feedback</button>
                                                     @endif
 
