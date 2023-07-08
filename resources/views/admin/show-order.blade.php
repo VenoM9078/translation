@@ -190,36 +190,36 @@
                     <div class="w-full">
                         <label for="order-form-4" class="form-label">Contractor Name</label>
                         <input id="order-form-4" type="text" class="form-control w-full" disabled
-                            value="{{ $order->contractorOrder->contractor->name }}">
+                            value="{{ $order->contractorOrder->contractor->name ?? '' }}">
                     </div>
                     <div class="w-full">
                         <label for="order-form-5" class="form-label">Contractor Email</label>
                         <input id="order-form-5" type="text" class="form-control w-full" disabled
-                            value="{{ $order->contractorOrder->contractor->email }}">
+                            value="{{ $order->contractorOrder->contractor->email ?? '' }}">
                     </div>
                 </div>
                 <div class="flex mt-2 mb-2 gap-2">
                     <div class="w-full">
                         <label for="order-form-6" class="form-label">SSN</label>
                         <input id="order-form-6" type="text" class="form-control" disabled
-                            value="{{ $order->contractorOrder->contractor->SSN }}">
+                            value="{{ $order->contractorOrder->contractor->SSN ?? '' }}">
                     </div>
                     <div class="w-full">
                         <label for="order-form-7" class="form-label">Interpretation Rate</label>
                         <input id="order-form-7" type="text" class="form-control" disabled
-                            value="${{ $order->contractorOrder->contractor->interpretation_rate }}">
+                            value="${{ $order->contractorOrder->contractor->interpretation_rate ?? '' }}">
                     </div>
                 </div>
                 <div class="flex mt-2 mb-2 gap-2">
                     <div class="w-full">
                         <label for="order-form-8" class="form-label">Translation Rate</label>
                         <input id="order-form-8" type="text" class="form-control" disabled
-                            value="${{ $order->contractorOrder->contractor->translation_rate }}">
+                            value="${{ $order->contractorOrder->contractor->translation_rate ?? '' }}">
                     </div>
                     <div class="w-full">
                         <label for="order-form-9" class="form-label">Proofreader Rate</label>
                         <input id="order-form-9" type="text" class="form-control" disabled
-                            value="${{ $order->contractorOrder->contractor->proofreader_rate }}">
+                            value="${{ $order->contractorOrder->contractor->proofreader_rate ?? '' }}">
                     </div>
                 </div>
             </div>

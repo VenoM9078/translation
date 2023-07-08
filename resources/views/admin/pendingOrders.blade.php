@@ -767,16 +767,20 @@
                                         </td>
                                         @if ($order->contractorOrder && $order->contractorOrder->is_accepted == 1 && $order->contractorOrder->contractor != null)
                                             <td>{{ $order->contractorOrder->translation_due_date ?? '-' }}</td>
-                                            @if (isset($order->contractorOrder) && $order->contractorOrder->file_name != '')
-                                                <td>
-                                                    <a class="btn" title="Download Translation"
-                                                        href="{{ route('download-translation-file', $order->id) }}">
-                                                        Download
-                                                    </a>
-                                                </td>
-                                            @else
-                                                <td> </td>
-                                            @endif
+                                        @endif
+                                        @if (isset($order->contractorOrder) && $order->contractorOrder->file_name != '' ||
+                                        (isset($order->contractorOrder) && $order->contractorOrder->added_by_admin == 1)
+                                        )
+                                            <td>
+                                                <a class="btn" title="Download Translation"
+                                                    href="{{ route('download-translation-file', $order->id) }}">
+                                                    Download
+                                                </a>
+                                            </td>
+                                        @else
+                                            <td> No File </td>
+                                        @endif
+                                        @if ($order->contractorOrder && $order->contractorOrder->is_accepted == 1 && $order->contractorOrder->contractor != null)
                                             <td class="whitespace-nowrap">
                                                 <a href="javascript:;" data-tw-toggle="modal"
                                                     data-tw-target="#translator-message-modal-preview{{ $order->id }}">
