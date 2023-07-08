@@ -175,13 +175,14 @@
                                 <tr>
                                     <th class="whitespace-nowrap sticky-column-1">Actions</th>
                                     <th class="whitespace-nowrap sticky-column-2 " style="display: none">Next Step</th>
-                                    <th class="whitespace-nowrap">Name</th>
+                                    <th class="whitespace-nowrap">WO#</th>
+                                    <th class="whitespace-nowrap">Institute</th>
+                                    <th class="whitespace-nowrap">Requester</th>
+                                    <th class="whitespace-nowrap">Due Date</th>
                                     <th class="whitespace-nowrap" style="display: none">Email</th>
                                     <th class="whitespace-nowrap">Order Status</th>
                                     <th class="whitespace-nowrap">Quote</th>
                                     <th class="whitespace-nowrap">Order Note</th>
-                                    <th class="whitespace-nowrap">Institute</th>
-                                    <th class="whitespace-nowrap">WO#</th>
                                     <th class="whitespace-nowrap">Source Language</th>
                                     <th class="whitespace-nowrap">Translated Language</th>
                                     <th class="whitespace-nowrap">C. Type</th>
@@ -680,34 +681,7 @@
                                                     Send Translation to User </a>
                                             @endif
                                         </td>
-                                        <td class="whitespace-nowrap">{{ $order->user->name }}</td>
-                                        <td class="whitespace-nowrap" style="display: none">{{ $order->user->email }}
-                                        </td>
-                                        <td class="whitespace-nowrap badge badge-success">
-                                            @include('utils.order-status-column', ['order' => $order])
-                                        </td>
-                                        <td class="whitespace-nowrap badge badge-success">
-                                            @if ($order->quote_filename != null)
-                                                <div class="w-full text-center">
-                                                    <a class="btn btn-success border-indigo-600"
-                                                        title="Download Quote submitted by Admin"
-                                                        href="{{ route('downloadQuote', $order->id) }}">Download Quote
-                                                        File</a>
-                                                </div>
-                                            @else
-                                                <span class="bg-info p-2">N/A</span>
-                                            @endif
-                                        </td>
-                                        @if ($order->message)
-                                            <td class="whitespace-nowrap">
-                                                <a href="javascript:;" data-tw-toggle="modal"
-                                                    data-tw-target="#note-modal-preview{{ $order->id }}">
-                                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
-                                                </a>
-                                            </td>
-                                        @else
-                                            <td class="whitespace-nowrap">-</td>
-                                        @endif
+                                        <td class="whitespace-nowrap">{{ $order->worknumber }}</td>
                                         <td class="whitespace-nowrap">
                                             @if ($order->added_by_institute_user)
                                                 @if ($order->user->role_id == 1 && count($order->user->institute) > 0)
@@ -738,7 +712,36 @@
                                                 {{-- </td> --}}
                                             @endif
                                         </td>
-                                        <td class="whitespace-nowrap">{{ $order->worknumber }}</td>
+                                        <td class="whitespace-nowrap">{{ $order->user->name }}</td>
+                                        <td class="whitespace-nowrap">{{ $order->due_date }}</td>
+                                        <td class="whitespace-nowrap" style="display: none">{{ $order->user->email }}
+                                        </td>
+                                        <td class="whitespace-nowrap badge badge-success">
+                                            @include('utils.order-status-column', ['order' => $order])
+                                        </td>
+                                        <td class="whitespace-nowrap badge badge-success">
+                                            @if ($order->quote_filename != null)
+                                                <div class="w-full text-center">
+                                                    <a class="btn btn-success border-indigo-600"
+                                                        title="Download Quote submitted by Admin"
+                                                        href="{{ route('downloadQuote', $order->id) }}">Download Quote
+                                                        File</a>
+                                                </div>
+                                            @else
+                                                <span class="bg-info p-2">N/A</span>
+                                            @endif
+                                        </td>
+                                        @if ($order->message)
+                                            <td class="whitespace-nowrap">
+                                                <a href="javascript:;" data-tw-toggle="modal"
+                                                    data-tw-target="#note-modal-preview{{ $order->id }}">
+                                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                                </a>
+                                            </td>
+                                        @else
+                                            <td class="whitespace-nowrap">-</td>
+                                        @endif
+
                                         <td class="whitespace-nowrap">{{ $order->language1 }}</td>
                                         <td class="whitespace-nowrap">{{ $order->language2 }}</td>
                                         <td class="whitespace-nowrap">{{ $order->c_type }}</td>
