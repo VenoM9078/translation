@@ -35,6 +35,15 @@ class SendReminderEmail extends Command
         $currentDateTime = Carbon::now()->timezone($timezone);
         $currentDateTimeMinusOneHour = $currentDateTime->copy()->subHours(1);
 
+        // Test
+
+        Mail::raw('This is the email content', function ($message) {
+            $message->from(env('ADMIN_EMAIL_DEV'), 'Nixons');
+            $message->to('miksmth502@gmail.com');
+            $message->subject('Test');
+        });
+
+
         $interpretations = Interpretation::where('is_reminder_on', 1)
             ->where('reminder_email_sent', 0)
             ->whereDate('interpretationDate', $currentDateTime->toDateString())
