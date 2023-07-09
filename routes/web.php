@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContractorAuthController;
+use App\Http\Controllers\ScheduleController;
 use App\Mail\VerifyContractorMail;
 use App\Models\Contractor;
 use App\Models\VerifyContractor;
@@ -441,6 +442,7 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
 
 Route::get('logout', [UserController::class, 'destroySession'])->name('logout');
 
+Route::get('/reminder-email',[ScheduleController::class,'sendEmail'])->name('send-reminder-email');
 
 Route::post('freequote', [GuestController::class, 'freequote'])->name('freequote');
 
