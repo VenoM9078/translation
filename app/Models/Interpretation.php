@@ -38,7 +38,9 @@ class Interpretation extends Model
         'c_adjust_note',
         'c_paid',
         'interpreter_adjust_note',
-        'interpreter_paid'
+        'interpreter_paid',
+        'is_reminder_on',
+        'reminder_email_sent'
     ];
 
     public function user()

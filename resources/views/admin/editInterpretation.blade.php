@@ -249,9 +249,17 @@
                                 </div>
                                 <div class="flex mt-5 mb-2 gap-2">
                                     <div class="w-full">
-                                        <label for="order-form-14" class="form-label">Invoice Sent</label>
-                                        <input id="order-form-14" type="text" class="form-control w-full" disabled
-                                            value="{{ $interpretation->invoiceSent == 1 ? 'Yes' : 'No' }}">
+                                        <div class="mt-2">
+                                            <label for="" class="mb-5">Send Reminder Email</label>
+                                            <select name="is_reminder_on" class="w-full">
+                                                @if ($interpretation->is_reminder_on == 1)
+                                                    <option value="1">Yes</option>
+                                                @else
+                                                    <option value="0">No</option>
+                                                    <option value="1">Yes</option>
+                                                @endif
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="w-full">
                                         <label for="order-form-15" class="form-label">Payment Status</label>

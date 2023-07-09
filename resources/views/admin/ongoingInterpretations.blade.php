@@ -445,7 +445,7 @@
                                             <td class="whitespace-nowrap">{{ $interpretation->c_adjust_note }}</td>
                                             <td class="whitespace-nowrap">{{ $interpretation->c_paid == 1 ? 'Yes' : 'No' }}</td>
                                             {{-- C Fields End --}}
-                                            <td class="whitespace-nowrap">{{ $interpretation->interpreter->name ?? '-' }}
+                                            <td class="whitespace-nowrap">{{ $interpretation->contractorInterpretation->contractor->name ?? '-' }}
                                             </td>
                                             <td class="whitespace-nowrap">
                                                 <a href="javascript:;" data-tw-toggle="modal"

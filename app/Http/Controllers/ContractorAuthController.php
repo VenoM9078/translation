@@ -271,7 +271,7 @@ class ContractorAuthController extends Controller
 
         $contractorInterpretation = ContractorInterpretation::findOrFail($id);
         $contractorInterpretation->is_accepted = 1;
-
+        $contractorInterpretation->contractor_id = Auth::user()->id;
         $interpretation_id = $contractorInterpretation->interpretation_id;
 
         $contractorInterpretation->save();

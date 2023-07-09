@@ -556,7 +556,11 @@ class AdminController extends Controller
         $oldInt = $interpretation;
         if ($interpretation) {
             // Validation can be added as per your requirements.
-
+            if($request->input('is_reminder_on') == "1"){
+                $request['is_reminder_on'] = 1;
+            } elseif($request->input('is_reminder_on') == "0") {
+                $request['is_reminder_on'] = 0;
+            }
             $int = $interpretation->update($request->all());
             $contractorInterpretation = $interpretation->contractorInterpretation;
             if(isset($contractorInterpretation)){
