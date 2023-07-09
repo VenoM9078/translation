@@ -279,6 +279,7 @@ class AdminController extends Controller
         // $order->amount = $request->input('amount');
         // $order->orderStatus = $request->input('orderStatus');
 
+        $order->due_date = $request->input('due_date');
         // new fields
         $order->c_type = $request->input('c_type');
         $order->c_unit = $request->input('c_unit');

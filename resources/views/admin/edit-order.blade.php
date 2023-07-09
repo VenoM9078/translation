@@ -393,10 +393,17 @@
                                     <textarea id="order-form-21" type="text" class="form-control" disabled
                                         value="{{ $order->message }}">{{ $order->message }}</textarea>
                                 </div>
+                                <div class="flex gap-2 w-full">
                                 <div class="w-full mb-3 mt-3">
                                     <label for="order-form-22" class="form-label">Want Quote</label>
                                     <input id="order-form-22" type="text" class="form-control" disabled
                                         value="{{ $order->want_quote == 1 ? 'Yes' : 'No' }}">
+                                </div>
+                                 <div class="w-full mb-3 mt-3">
+                                    <label for="order-form-22" class="form-label">Due Date</label>
+                                    <input id="order-form-22" type="date" name="due_date" class="form-control" 
+                                        value="{{ $order->due_date  }}">
+                                </div>
                                 </div>
                                 <div class="flex gap-2 w-full">
                                     <div class="w-full">

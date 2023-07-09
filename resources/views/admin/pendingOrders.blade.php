@@ -192,6 +192,7 @@
                                     <th class="whitespace-nowrap">C. Fee</th>
                                     <th class="whitespace-nowrap">C. Adjust Note</th>
                                     <th class="whitespace-nowrap">C. Paid</th>
+                                    <th class="whitespace-nowrap">Original Doc</th>
                                     <th class="whitespace-nowrap">Translator</th>
                                     <th class="whitespace-nowrap">Translation Due Date</th>
                                     <th class="whitespace-nowrap">Translated Document</th>
@@ -747,12 +748,48 @@
                                         <td class="whitespace-nowrap">{{ $order->c_type }}</td>
                                         {{-- @dd($order->c_type) --}}
                                         <td class="whitespace-nowrap">{{ $order->c_unit }}</td>
-                                        <td class="whitespace-nowrap">{{ $order->c_rate }}</td>
+                                        <td class="whitespace-nowrap">${{ $order->c_rate }}</td>
                                         <td class="whitespace-nowrap">{{ $order->c_adjust }}</td>
                                         <td class="whitespace-nowrap">{{ $order->c_fee }}</td>
-                                        <td class="whitespace-nowrap">{{ $order->c_adjust_note }}</td>
+                                        <td class="whitespace-nowrap">
+                                            @if ($order->c_adjust_note)
+                                                <a href="javascript:;" data-tw-toggle="modal"
+                                                    data-tw-target="#c-adj-message-modal-preview{{ $order->id }}">
+                                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                                </a>
+                                            @else
+                                                <span></span>
+                                            @endif
+                                        </td>
+                                        <div id="c-adj-message-modal-preview{{ $order->id }}" class="modal"
+                                            tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-body p-0">
+                                                        <div class="p-5 text-center"> <i data-lucide="bookmark"
+                                                                class="w-16 h-16 text-info mx-auto mt-3"></i>
+                                                            <div class="text-3xl mt-5 mb-2">C. Adjust Message</div>
+                                                            <div class="w-full text-left">
+                                                                <textarea id="order-form-21" type="text" class="form-control" disabled>{{ $order->c_adjust_note }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> <!-- END: Modal Content -->
                                         <td class="whitespace-nowrap">{{ $order->c_paid ? 'Yes' : 'No' }}</td>
+                                        <td class="whitespace-nowrap"><a href="{{ route('downloadFiles', $order->id) }}"
+                                                class="btn btn-warning mr-1">
 
+                                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                    class="w-6 h-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                                                </svg>
+
+                                            </a>
+                                        </td>
 
                                         {{-- @isset($order->contractorOrder) --}}
                                         <td class="whitespace-nowrap">
@@ -761,15 +798,19 @@
                                                     $order->contractorOrder->contractor->name != '' &&
                                                     $order->contractorOrder->is_accepted == 1)
                                                 {{ $order->contractorOrder->contractor->name }}
-                                            @else
-                                                -
+                                            @elseif(isset($order->contractorOrder) &&
+                                                    $order->contractorOrder->contractor != null &&
+                                                    $order->contractorOrder->is_accepted == 0)
+                                                {{ $order->contractorOrder->contractor->name }}
+                                               
                                             @endif
                                         </td>
                                         <td>
                                             @if ($order->contractorOrder && $order->contractorOrder->is_accepted == 1 && $order->contractorOrder->contractor != null)
                                                 {{ $order->contractorOrder->translation_due_date ?? '-' }}
-                                            @else
-                                                -
+                                            @elseif($order->contractorOrder && $order->contractorOrder->is_accepted == 0 && $order->contractorOrder->contractor != null)
+                                                {{ $order->contractorOrder->translation_due_date ?? '-' }}
+                                                
                                             @endif
                                         </td>
 
@@ -785,7 +826,7 @@
                                                 No File
                                             @endif
                                         </td>
-                                        @if ($order->contractorOrder && $order->contractorOrder->is_accepted == 1 && $order->contractorOrder->contractor != null)
+                                        @if ($order->contractorOrder && $order->contractorOrder->contractor != null)
                                             <td class="whitespace-nowrap">
                                                 <a href="javascript:;" data-tw-toggle="modal"
                                                     data-tw-target="#translator-message-modal-preview{{ $order->id }}">
@@ -811,7 +852,9 @@
                                                     </div>
                                                 </div>
                                             </div> <!-- END: Modal Content -->
-                                            <td>{{ $order->contractorOrder->translation_type ?? '-' }}</td>
+                                            <td>
+                                                {{ $order->contractorOrder->translation_type ?? '-' }}
+                                            </td>
                                             <td>{{ $order->contractorOrder->translator_unit ?? '-' }} </td>
                                             <td>${{ $order->contractorOrder->contractor->translation_rate ?? '-' }}</td>
                                             <td>${{ $order->contractorOrder->translator_adjust ?? '-' }}</td>
