@@ -556,14 +556,14 @@ class AdminController extends Controller
         $oldInt = $interpretation;
         if ($interpretation) {
             // Validation can be added as per your requirements.
-            if($request->input('is_reminder_on') == "1"){
+            if ($request->input('is_reminder_on') == "1") {
                 $request['is_reminder_on'] = 1;
-            } elseif($request->input('is_reminder_on') == "0") {
+            } elseif ($request->input('is_reminder_on') == "0") {
                 $request['is_reminder_on'] = 0;
             }
             $int = $interpretation->update($request->all());
             $contractorInterpretation = $interpretation->contractorInterpretation;
-            if(isset($contractorInterpretation)){
+            if (isset($contractorInterpretation)) {
                 $contractorInterpretation->estimated_payment = $request->estimated_interpretation_rate;
                 $contractorInterpretation->estimated_payment = $request->interpretation_rate;
                 $contractorInterpretation->save();
@@ -1180,11 +1180,10 @@ class AdminController extends Controller
 
     public function viewCustomers()
     {
-        $users = User::all();
-        // dd($users[10]->institute_managed->is_active);
-        // dd($users[3]->institute[0]->name);
+        $users = User::paginate(10); // This will show 10 users per page.
         return view('admin.viewCustomers', compact('users'));
     }
+
 
     public function viewAssignInterpreter($interpreterID)
     {

@@ -434,8 +434,13 @@
                                     @endif
                                 </tr>
                                 @endforeach
+
                             </tbody>
+
                         </table>
+                        <div>
+                            {{ $users->links() }}
+                        </div>
 
                         <!-- Your other HTML code here -->
                     </div>
