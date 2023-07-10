@@ -66,7 +66,12 @@
     crossorigin="anonymous"></script>
 <!-- add before </body> -->
 {{-- TODO:CHANGE Client id --}}
+{{-- prod --}}
 <script
-    src="https://www.paypal.com/sdk/js?client-id=AapYCwr7IL6pstdnEZ8a8Ugv_WMX3qBJflHAfrlFwye5D-7oB22i8Nrky2_AwRLLLTayYkhWS21uKygn&disable-funding=credit&components=buttons">
+    src="https://www.paypal.com/sdk/js?client-id=Aa2jPGWCMLpswVVeE7IuImi64-45_hAD-gmbh7UY5KhmIUA2CAkaScbXWYjoTPNJiAzQWj_ya7wZNC6s&disable-funding=credit&components=buttons">
 </script>
+
+{{-- <script
+    src="https://www.paypal.com/sdk/js?client-id=AapYCwr7IL6pstdnEZ8a8Ugv_WMX3qBJflHAfrlFwye5D-7oB22i8Nrky2_AwRLLLTayYkhWS21uKygn&disable-funding=credit&components=buttons"> --}}
+{{-- </script> --}}
 @endsection
