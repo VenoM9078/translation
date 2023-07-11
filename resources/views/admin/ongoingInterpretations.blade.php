@@ -700,8 +700,10 @@
             });
 
             var groups = {
-                'User Info': [3, 5, 6],
-                'Interpretation Info': [7, 8, 9, 10, 11, 12, 13, 14],
+                'User Info': [4, 5],
+                'C. Info': [13,14, 15, 16,17],
+                'Interpretation Info': [7, 8, 9, 10, 11, 12,
+                18,19,20,21,22,23],
             }
 
             for (var groupName in groups) {

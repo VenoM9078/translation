@@ -118,7 +118,8 @@
                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
                                 data-status="pending">
                             <label for="checkbox-status-pending"
-                                class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Pending</label>
+                                class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Translation
+                                Requested</label>
                         </div>
                     </li>
                     {{-- hiding cancelled status --}}
@@ -137,8 +138,8 @@
                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
                                 data-status="pending">
                             <label for="checkbox-status-invoice-pending"
-                                class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Invoice
-                                Pending</label>
+                                class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Quote
+                                Requested</label>
                         </div>
                     </li>
                     <li>
@@ -147,8 +148,8 @@
                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
                                 data-status="pending">
                             <label for="checkbox-status-invoice-pending"
-                                class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Invoice
-                                Sent</label>
+                                class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Quote
+                                Ready</label>
                         </div>
                     </li>
                     <li>
@@ -158,6 +159,26 @@
                                 data-status="completed">
                             <label for="checkbox-status-completed"
                                 class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Completed</label>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <input checked id="checkbox-translation-in-progress" type="checkbox"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
+                                data-status="completed">
+                            <label for="checkbox-status-completed"
+                                class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Translation
+                                In Progress</label>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <input checked id="checkbox-status-translation-completed" type="checkbox"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
+                                data-status="completed">
+                            <label for="checkbox-status-completed"
+                                class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Translation
+                                Completed</label>
                         </div>
                     </li>
                 </ul>
@@ -802,7 +823,6 @@
                                                     $order->contractorOrder->contractor != null &&
                                                     $order->contractorOrder->is_accepted == 0)
                                                 {{ $order->contractorOrder->contractor->name }}
-                                               
                                             @endif
                                         </td>
                                         <td>
@@ -810,7 +830,6 @@
                                                 {{ $order->contractorOrder->translation_due_date ?? '-' }}
                                             @elseif($order->contractorOrder && $order->contractorOrder->is_accepted == 0 && $order->contractorOrder->contractor != null)
                                                 {{ $order->contractorOrder->translation_due_date ?? '-' }}
-                                                
                                             @endif
                                         </td>
 
@@ -1095,17 +1114,20 @@
                 var isCompletedChecked = $('#checkbox-status-completed').is(':checked');
                 var isCancelledChecked = $('#checkbox-status-cancelled').is(':checked');
                 var isInvoicePendingChecked = $('#checkbox-status-invoice-pending').is(':checked');
-                var isInvoiceCompletedChecked = $('#checkbox-status-invoice-completed').is(':checked');
+                var isTranslationprogressChecked = $('#checkbox-translation-in-completed').is(':checked');
+                var isTranslationCompletedChecked = $('#checkbox-status-translation-completed').is(':checked');
 
-                if (isPendingChecked && data[4] == 'Translation Pending') {
+                if (isPendingChecked && data[7] == 'Translation Pending') {
                     return true;
-                } else if (isCompletedChecked && data[4] == 'Completed') {
+                } else if (isCompletedChecked && data[7] == 'Completed') {
                     return true;
-                } else if (isCancelledChecked && data[4] == 'Cancelled') {
+                } else if (isCancelledChecked && data[7] == 'Cancelled') {
                     return true;
-                } else if (isInvoicePendingChecked && data[4] == 'Invoice Pending') {
+                } else if (isInvoicePendingChecked && data[7] == 'Invoice Pending') {
                     return true;
-                } else if (isInvoiceCompletedChecked && data[4] == 'Invoice Sent') {
+                } else if (isTranslationprogressChecked && data[7] == 'Translation In Progress') {
+                    return true;
+                } else if (isTranslationCompletedChecked && data[7] == 'Translation Completed'){
                     return true;
                 } else {
                     return true;
@@ -1179,10 +1201,15 @@
         });
 
         var groups = {
-            'User Info': [2, 3],
-            'Order Info': [4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-            'Translator Info': [14, 15, 18, 19, 20, 21, 22, 23, 24],
-            'ProofRead Info': [16, 17, 25, 26, 27, 28, 29]
+            'User Info': [3, 4], //# WO#, Institute, Requester
+            'Order Info': [2, 5, 6, 7, 8, 9, 10, 11,
+            19], //# Due Date, Order Status, Quote, Order Note, Source Language, Translated Language
+            'Translator Info': [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+            // #Original Doc, Translator, Translation Due Date, Translated Document, Translator Message, T.Type, T.Unit, T. Rate, T. Adjust, T. Fee, T. Adjust Note, T. Paid
+            'ProofRead Info': [31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41], //# No columns in this category
+            'C. Info': [12, 13, 14, 15,
+                16, 17, 18
+            ] //# C. Type, C. Unit, C. Rate, C. Adjust, C. Fee, C. Adjust Note, C. Paid
         }
 
         for (var groupName in groups) {
