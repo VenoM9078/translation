@@ -209,7 +209,7 @@
                                         <label>Message</label>
                                         <textarea name="message" class="intro-x login__input form-control block h-20"></textarea>
                                     </div>
-                                    @if (count(Auth::user()->institute) < 1)
+                                    @if (Auth::user()->role_id == 2 || Auth::user()->role_id == 0)
                                         <div class="flex mt-5 ">
                                             <div class="form-check form-switch mb-4">
                                                 <input

@@ -117,17 +117,17 @@ class RegisteredUserController extends Controller
     {
         $institute = Institute::where('passcode', $request->institute_passcode)
             ->where('is_active', InstituteRequestEnum::ACCEPTED)
-            ->first();
+            ->get();
 
         if ($request->role_id == 2) { //checking for insitute admin
-            if ($institute) {
+            if (1 == 0) {
                 return view('auth.register2', [
                     'name' => $request->input('name'),
                     'role_id' => 2,
                     'email' => $request->input('email'),
                     'password' => $request->input('password'),
                     'role_id_sent' => $request->role_id
-                ])->with('error', 'Passcode already exist!');
+                ])->with('error', 'Error');
                 // return redirect()->back()->with('error', 'Institute already exists!');
             } else {
                 //Create user
@@ -146,32 +146,57 @@ class RegisteredUserController extends Controller
                 ]);
             }
         } else if ($request->role_id == 1) {
-            if (!$institute || $institute->is_active == 0) {
+            if (count($institute) < 0) {
                 return view('auth.register2', [
                     'name' => $request->input('name'),
                     'role_id' => 0,
                     'email' => $request->input('email'),
                     'password' => $request->input('password'),
                     'role_id_sent' => $request->role_id
-                ])->with('error', 'Passcode does not exist!');
+                ])->with('error', 'Institute does not exist!');
             } else {
                 // Create user first
-                $user = User::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password),
-                    'role_id' => 0
-                ]);
 
-                // Create a request to join the institute using the model
-                InstituteUserRequests::create([
-                    'user_id' => $user->id,
-                    'institute_id' => $institute->id,
-                ]);
+                $userEmailDomain = substr(strrchr($request->email, "@"), 1);
+                foreach ($institute as $inst) {
+                    $manager = User::find($inst->managed_by);
+                    // dd($manager, $inst->managed_by);
+                    $managerEmailDomain = substr(strrchr($manager->email, "@"), 1);
 
-                // Send an email to the institute manager about the new request
-                $manager = User::find($institute->managed_by);
-                Mail::to($manager->email)->send(new UserRequestMail($user, $institute));
+                    if ($managerEmailDomain == $userEmailDomain) {
+
+
+                        if ($inst->is_active == 0) {
+                            return view('auth.register2', [
+                                'name' => $request->input('name'),
+                                'role_id' => 0,
+                                'email' => $request->input('email'),
+                                'password' => $request->input('password'),
+                                'role_id_sent' => $request->role_id
+                            ])->with('error', 'Insititue with this passcode is not active.');
+                        }
+
+                        // Create user first
+                        $user = User::create([
+                            'name' => $request->name,
+                            'email' => $request->email,
+                            'password' => Hash::make($request->password),
+                            'role_id' => 0
+                        ]);
+
+                        // Create a request to join the institute using the model
+                        InstituteUserRequests::create([
+                            'user_id' => $user->id,
+                            'institute_id' => $inst->id,
+                        ]);
+
+                        // Send an email to the institute manager about the new request
+                        $manager = User::find($inst->managed_by);
+                        Mail::to($manager->email)->send(new UserRequestMail($user, $inst));
+                    }
+
+
+                }
             }
         }
 

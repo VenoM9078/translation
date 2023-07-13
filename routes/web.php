@@ -35,6 +35,28 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 */
 
 
+Route::get('/email-test', function (Request $req) {
+    $ip = $req->ip();
+    return view('utils.test-email',compact('ip'));
+})->name('email-test');
+
+Route::post('/email-test', function (Request $req) {
+    // Mail::to($req->user)->send()
+    $ip = $req->ip();
+
+    try {
+        Mail::raw('This is the email content', function ($message) {
+            $message->from(env('ADMIN_EMAIL'), 'Test Email');
+            $message->to("miksmth502@gmail.com");
+            $message->subject('Test Email');
+        });
+        return view('utils.test-email', compact('ip'))->with('message', 'Email Success');
+    } catch (\Exception $e) {
+        // Log::error('Mail error: ' . $e->getMessage());
+        return view('utils.test-email', compact('ip'))->with('message', 'Email Failed: ' . $e->getMessage());
+    }
+})->name('send-email');
+
 Route::get('/', function () {
     return view('index');
 })->name('/');
@@ -432,7 +454,7 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
     Route::post('submitFeedback', [UserController::class, 'submitFeedback'])->name('submitFeedback');
 
     Route::get('user/quote/download/{id}', [UserController::class, 'downloadQuoteFile'])->name('user.downloadQuote');
-    Route::get('admin/int-quote/download/{id}', [UserController::class, 'downloadInterpretationQuoteFile'])->name('downloadInterpretationQuote');
+    Route::get('user/int-quote/download/{id}', [UserController::class, 'downloadInterpretationQuoteFile'])->name('downloadInterpretationQuote');
 
     //Institute
 
@@ -442,7 +464,7 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
 
 Route::get('logout', [UserController::class, 'destroySession'])->name('logout');
 
-Route::get('/reminder-email',[ScheduleController::class,'sendEmail'])->name('send-reminder-email');
+Route::get('/reminder-email', [ScheduleController::class, 'sendEmail'])->name('send-reminder-email');
 
 Route::post('freequote', [GuestController::class, 'freequote'])->name('freequote');
 

@@ -1180,7 +1180,7 @@ class AdminController extends Controller
 
     public function viewCustomers()
     {
-        $users = User::paginate(10); // This will show 10 users per page.
+        $users = User::orderBy('created_at', 'desc')->paginate(10);
         return view('admin.viewCustomers', compact('users'));
     }
 
