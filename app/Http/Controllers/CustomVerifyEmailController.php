@@ -17,6 +17,7 @@ class CustomVerifyEmailController extends Controller
     public function __invoke(EmailVerificationRequest $request): RedirectResponse
     {
         if ($request->user()->role_id == 0) {
+            dd($request->user());
             if ($request->user()->hasVerifiedEmail()) {
                 return redirect()->intended(RouteServiceProvider::HOME . '?verified=1');
             }
