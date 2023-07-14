@@ -19,7 +19,7 @@ class RedirectBasedOnRole
     public function handle(Request $request, Closure $next)
     {
         if (Auth::check() && Auth::user()->role_id == 0) {
-            return app()->call('App\Http\Controllers\VerifyEmailController@__invoke');
+            return app()->call('App\Http\Controllers\Auth\VerifyEmailController@__invoke');
         }
         return $next($request);
     }
