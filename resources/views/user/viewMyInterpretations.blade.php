@@ -228,7 +228,7 @@
                                                                                 <div class="w-full text-center mt-2">
                                                                                     <a class="btn btn-success border-indigo-600"
                                                                                         title="Download Quote submitted by Admin"
-                                                                                        href="{{ route('downloadInterpretationQuote', $interpretation->id) }}">Download
+                                                                                        href="{{ route('user.downloadInterpretationQuote', $interpretation->id) }}">Download
                                                                                         Quote File</a>
                                                                                 </div>
                                                                             @endif

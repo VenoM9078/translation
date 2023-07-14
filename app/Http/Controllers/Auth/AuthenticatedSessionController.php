@@ -28,9 +28,13 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
-        if($request->authenticate()) {
+        if ($request->authenticate()) {
             $request->session()->regenerate();
-
+            $user = Auth::user();
+            if (!$user->hasVerifiedEmail()) {
+                if ($user->role_id != 0)
+                    return redirect()->route('register-step2', ['e' => $user->email, 'r' => $user->role_id]);
+            }
             return redirect()->route('user.index');
         } else {
             return back()->withErrors([
@@ -38,7 +42,7 @@ class AuthenticatedSessionController extends Controller
             ]);
         }
 
-       
+
     }
 
     /**

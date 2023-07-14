@@ -713,7 +713,7 @@ class AdminController extends Controller
                 $user = User::find($member->user_id);
                 if ($user) {
                     $user->role_id = 0;
-                    $user->save();
+            $user->save();
                 }
             }
 

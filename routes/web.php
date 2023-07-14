@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContractorAuthController;
+use App\Http\Controllers\CustomVerifyEmailController;
 use App\Http\Controllers\ScheduleController;
 use App\Mail\VerifyContractorMail;
 use App\Models\Contractor;
@@ -65,9 +66,16 @@ Route::get('contact', function () {
     return view('contact');
 })->name('contact');
 
-Route::get('/email/verify', function () {
+Route::get('/email/verify',[CustomVerifyEmailController::class,'__invoke'])->middleware(['auth'])->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', [CustomVerifyEmailController::class, '__invoke'])
+    ->middleware(['auth','signed', 'throttle:6,1'])
+    ->name('verification.verify');
+// NEW
+
+Route::get('email-verification-notice', function () {
     return view('auth.verify-email');
-})->middleware(['auth'])->name('verification.notice');
+})->name('email-verification-notice');
+
 
 Route::get('/email/verify-contractor', function () {
     // dd("comes");
@@ -80,11 +88,11 @@ Route::get('/email/verify-contractor', function () {
 // })->middleware(['auth:contractor'])->name('cont.verification.notice');
 
 
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-
-    return redirect('/home');
-})->middleware(['auth', 'signed'])->name('verification.verify');
+// Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+//     $request->fulfill();
+//     dd("??");
+//     return redirect('/home');
+// })->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::post('/email/verification-notification', function (Request $request) {
     if ($request->user()) {
@@ -454,7 +462,7 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
     Route::post('submitFeedback', [UserController::class, 'submitFeedback'])->name('submitFeedback');
 
     Route::get('user/quote/download/{id}', [UserController::class, 'downloadQuoteFile'])->name('user.downloadQuote');
-    Route::get('user/int-quote/download/{id}', [UserController::class, 'downloadInterpretationQuoteFile'])->name('downloadInterpretationQuote');
+    Route::get('user/int-quote/download/{id}', [UserController::class, 'downloadInterpretationQuoteFile'])->name('user.downloadInterpretationQuote');
 
     //Institute
 

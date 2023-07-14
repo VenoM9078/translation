@@ -77,6 +77,7 @@
                             <input type="hidden" name="name" class="" value="{{ $name }}">
                             <input type="hidden" name="email" class="" value="{{ $email }}">
                             <input type="hidden" name="password" class="" value="{{ $password }}">
+                            <input type="hidden" name="user_id" value={{$user_id}}>
                         </div>
 
                         <div class="mt-2 xl:mt-8 text-center xl:text-left">

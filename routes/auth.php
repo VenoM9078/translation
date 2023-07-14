@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
+use App\Http\Controllers\CustomVerifyEmailController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
@@ -16,8 +17,7 @@ Route::middleware('guest')->group(function () {
         ->name('register');
 
     Route::post('register2', [RegisteredUserController::class, 'register2'])->name('register2');
-    Route::post('register2/submit', [RegisteredUserController::class, 'register2Complete'])->name('register2-complete');
-    Route::get('/register-step2', [RegisteredUserController::class, 'showRegistrationForm'])->name('register-step2');
+
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
@@ -77,10 +77,13 @@ Route::middleware('auth:contractor')->group(function () {
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])
+    Route::get('verify-email', [CustomVerifyEmailController::class, '__invoke'])
         ->name('verification.notice');
 
-    Route::get('verify-email/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
+    Route::post('register2/submit', [RegisteredUserController::class, 'register2Complete'])->name('register2-complete');
+    Route::get('/register-step2', [RegisteredUserController::class, 'showRegistrationForm'])->name('register-step2');
+
+    Route::get('verify-email/{id}/{hash}', [CustomVerifyEmailController::class, '__invoke'])
         ->middleware(['signed', 'throttle:6,1'])
         ->name('verification.verify');
 
