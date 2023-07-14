@@ -188,7 +188,8 @@ class RegisteredUserController extends Controller
                     'role_id' => 0,
                     'email' => $request->input('email'),
                     'password' => $request->input('password'),
-                    'role_id_sent' => $request->role_id
+                    'role_id_sent' => $request->role_id,
+                    'user_id' => $request->user_id
                 ])->with('error', 'Institute does not exist!');
             } else {
                 // Create user first
@@ -207,6 +208,7 @@ class RegisteredUserController extends Controller
                                 'name' => $request->input('name'),
                                 'role_id' => 0,
                                 'email' => $request->input('email'),
+                                'user_id' => $request->user_id,
                                 'password' => $request->input('password'),
                                 'role_id_sent' => $request->role_id
                             ])->with('error', 'Insititue with this passcode is not active.');
