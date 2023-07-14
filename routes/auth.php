@@ -77,6 +77,7 @@ Route::middleware('auth:contractor')->group(function () {
 
 
 Route::get('verify-email', [CustomVerifyEmailController::class, '__invoke'])
+    ->middleware('redirectBasedOnRole')
     ->name('verification.notice');
 Route::middleware('auth')->group(function () {
 
