@@ -53,7 +53,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $user->sendEmailVerificationNotification(); // add this line
+        // $user->sendEmailVerificationNotification(); // add this line
 
 
         event(new Registered($user));
@@ -138,7 +138,7 @@ class RegisteredUserController extends Controller
                     'role_id' => $role_id
                 ]);
 
-                $user->sendEmailVerificationNotification();
+                // $user->sendEmailVerificationNotification();
                 event(new Registered($user));
                 Auth::login($user);
 
