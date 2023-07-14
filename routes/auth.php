@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -75,8 +76,10 @@ Route::middleware('auth:contractor')->group(function () {
     //             ->name('logout');
 });
 
-
-Route::get('verify-email', [CustomVerifyEmailController::class, '__invoke'])
+// Route::get('verify-email',function(){
+// dd(Auth::user());
+// });
+Route::get('verify-email', [VerifyEmailController::class, 'customVerifyEmail'])
     ->middleware('redirectBasedOnRole')
     ->name('verification.notice');
 Route::middleware('auth')->group(function () {

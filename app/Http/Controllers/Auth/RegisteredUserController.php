@@ -120,8 +120,9 @@ class RegisteredUserController extends Controller
                 event(new Registered($user));
 
                 Auth::login($user);
+                return redirect()->route('email-verification-notice');
 
-                return redirect(RouteServiceProvider::HOME);
+                // return redirect(RouteServiceProvider::HOME);
             } else {
                 // dd($request->role_id);
                 // if role is 1 => 3 | role is 2 => 4
