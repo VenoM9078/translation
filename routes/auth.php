@@ -76,9 +76,9 @@ Route::middleware('auth:contractor')->group(function () {
 });
 
 
+Route::get('verify-email', [CustomVerifyEmailController::class, '__invoke'])
+    ->name('verification.notice');
 Route::middleware('auth')->group(function () {
-    Route::get('verify-email', [CustomVerifyEmailController::class, '__invoke'])
-        ->name('verification.notice');
 
     Route::post('register2/submit', [RegisteredUserController::class, 'register2Complete'])->name('register2-complete');
     Route::get('/register-step2', [RegisteredUserController::class, 'showRegistrationForm'])->name('register-step2');
