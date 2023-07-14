@@ -16,26 +16,33 @@ class CustomVerifyEmailController extends Controller
      */
     public function __invoke(EmailVerificationRequest $request): RedirectResponse
     {
-        // dd($request->user()->hasVerifiedEmail(), $request->user()->role_id, $request->user()->markEmailAsVerified());
-        if ($request->user()->hasVerifiedEmail()) {
+        if ($request->user()->role_id == 0) {
+            if ($request->user()->hasVerifiedEmail()) {
+                return redirect()->intended(RouteServiceProvider::HOME . '?verified=1');
+            }
+
+            if ($request->user()->markEmailAsVerified()) {
+                event(new Verified($request->user()));
+            }
             if ($request->user()->role_id != 0) {
-                // return view('auth.register2', [
-                //     'name' => $request->input('name'),
-                //     'role_id' => 0,
-                //     'role_id_sent' => $request->role_id,
-                //     'email' => $request->input('email'),
-                //     'password' => $request->input('password'),
-                // ]);
                 return redirect()->route('register-step2', ['e' => $request->user()->email, 'r' => $request->user()->role_id]); // Modify this line to your desired redirection
             }
-        }
-        if ($request->user()->role_id != 0) {
-            return redirect()->route('register-step2', ['e' => $request->user()->email, 'r' => $request->user()->role_id]); // Modify this line to your desired redirection
-        }
-        if ($request->user()->markEmailAsVerified()) {
+            return redirect()->intended(RouteServiceProvider::HOME . '?verified=1');
+        } else {
 
-            event(new Verified($request->user()));
+            if ($request->user()->hasVerifiedEmail()) {
+                if ($request->user()->role_id != 0) {
+                    return redirect()->route('register-step2', ['e' => $request->user()->email, 'r' => $request->user()->role_id]); // Modify this line to your desired redirection
+                }
+            }
+            if ($request->user()->role_id != 0) {
+                return redirect()->route('register-step2', ['e' => $request->user()->email, 'r' => $request->user()->role_id]); // Modify this line to your desired redirection
+            }
+            if ($request->user()->markEmailAsVerified()) {
+
+                event(new Verified($request->user()));
+            }
+            return redirect()->intended(RouteServiceProvider::HOME . '?verified=1');
         }
-        return redirect()->intended(RouteServiceProvider::HOME . '?verified=1');
     }
 }
