@@ -18,7 +18,7 @@ class CustomVerifyEmailController extends Controller
     {
         // dd($request->user()->hasVerifiedEmail(), $request->user()->role_id, $request->user()->markEmailAsVerified());
         if ($request->user()->hasVerifiedEmail()) {
-            if ($request->user()->role != 0) {
+            if ($request->user()->role_id != 0) {
                 // return view('auth.register2', [
                 //     'name' => $request->input('name'),
                 //     'role_id' => 0,
