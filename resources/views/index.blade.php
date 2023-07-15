@@ -125,7 +125,7 @@
         <div class="header__bottom header__bottom--2">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-xl-8 col-lg-12">
+                    <div class="col-xl-9 col-lg-9">
                         <div class="navarea navarea__2">
                             <a href="{{ route('/') }}" class="site-logo">
                                 <img style="height: 67px;width: auto;/* position:  relative; *//* top: 14px; */"
@@ -136,7 +136,9 @@
                             height: 90px !Important;
                         ">
                                 <nav id="mobile-menu">
-                                    <ul>
+                                    <ul style="
+    width: auto;
+">
                                         <li>
                                             <a href="{{ route('/') }}">Home</a>
                                         </li>
@@ -165,7 +167,7 @@
                             <div class="mobile-menu"></div>
                         </div>
                     </div>
-                    <div class="col-xl-4 col-lg-4 my-auto">
+                    <div class="col-xl-3 col-lg-3 my-auto">
                         <div class="lang-quote lang-quote__2">
                             <div class="call-info">
                                 <div class="call-info__icon">
@@ -263,7 +265,8 @@
                                 </div>
                                 <p>To be the channel through which information can "flow" seamlessly and smoothly
                                     between different cultures and languages so that the true meaning of messages are
-                                    transmitted and understood.</p>
+                                    transmitted and understood.
+                                </p>
                             </div>
                         </div>
                         <div class="col-xl-6 mt-40">
@@ -272,10 +275,14 @@
                                     <div class="icon icon__2">
                                         <img src="assets/images/icons/ab-2.png" alt="">
                                     </div>
-                                    <h4 class="title">Who We Are</h4>
+                                    <h4 class="title">Who We Are / Why Flow Translations?</h4>
                                 </div>
-                                <p>FLOW Translations is founded by two professionals who understand first hand the
-                                    challenge of cross-cultural communication and interaction.</p>
+                                <p>We are linguists by profession who understand first hand the challenge of
+                                    cross-cultural communication and interaction. Supported by a team of professional
+                                    translators and interpreters with native language proficiency, we guarantee quality,
+                                    reliable and accurate translation and interpretation services. We take pride in our
+                                    ability to provide personalized service to each and every client.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -315,7 +322,7 @@
                 </div>
             </div>
             <div class="row mt-none-30">
-                <div class="col-xl-4 col-lg-6 col-md-6 mt-30">
+                <div class="col-xl-3 col-lg-6 col-md-6 mt-30">
                     <div class="feature-item feature-item__2">
                         <div class="feature-item__icon feature-item__icon--round bg_img"
                             data-background="assets/images/shape/round-shape.png">
@@ -323,15 +330,18 @@
                         </div>
                         <div class="feature-item__content feature-item__content--2">
                             <h4 class="feature-item__title feature-item__title--2">Document Translation</h4>
-                            <p>We understand the importance of cross-cultural communication and deliver professional
-                                translation services in many languages. The main ones are Spanish, Chinese, Vietnamese,
-                                Korean, Japanese, Tagalog, Russian, Dutch, French, German Farsi, Dari, Tigrinya, and
-                                other languages of lesser diffusion. Each translated document goes through a
-                                proofreading and editing process before considered final.</p>
+                            <p>
+                                At Flow Translations we know the crucial role that information and communication plays
+                                in society, business, health legal matters and leisure, being the basis for making
+                                everyday life decisions. Our commitment to customer is to deliver documents
+                                professionally translated that reflect the original meaning and energy of the message,
+                                on time, and at a reasonable price. Each translated document goes through a proofreading
+                                and editing process before considered final.
+                            </p>
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4 col-lg-6 col-md-6 mt-30">
+                <div class="col-xl-3 col-lg-6 col-md-6 mt-30">
                     <div class="feature-item feature-item__2">
                         <div class="feature-item__icon feature-item__icon--round bg_img"
                             data-background="assets/images/shape/round-shape.png">
@@ -339,13 +349,16 @@
                         </div>
                         <div class="feature-item__content feature-item__content--2">
                             <h4 class="feature-item__title feature-item__title--2">Remote Video Interpreting</h4>
-                            <p> To achieve a common understanding across cultures, translation is not enough but local
-                                customs and habits need to be considered. </p>
+                            <p> Flow Translations uses audio and video technologies to provide real time, accurate
+                                convenient and affordable interpreter services. Our interpreters are professional
+                                linguists with different specialties and credentials. RVI is a great option when
+                                distance and travel time are an issue, or when the service is needed at a short notice.
+                            </p>
 
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4 col-lg-6 col-md-6 mt-30">
+                <div class="col-xl-3 col-lg-6 col-md-6 mt-30">
                     <div class="feature-item feature-item__2">
                         <div class="feature-item__icon feature-item__icon--round bg_img"
                             data-background="assets/images/shape/round-shape.png">
@@ -353,8 +366,28 @@
                         </div>
                         <div class="feature-item__content feature-item__content--2">
                             <h4 class="feature-item__title feature-item__title--2">In-Person Interpretation</h4>
-                            <p>We can support in-person interpretation services
-                                for Medical, Education, Business and Legal meetings in the Bay Area, California.</p>
+                            <p>Also known as face-to-face- or on-site is the perfect format for situations that require
+                                the physical presence of the parties, or when there is no access to remote technology by
+                                any of the participants.
+                                We can support in-person interpretation services for Medical, Education, Business and
+                                Legal meetings in the Bay Area, California.</p>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6 col-md-6 mt-30">
+                    <div class="feature-item feature-item__2">
+                        <div class="feature-item__icon feature-item__icon--round bg_img"
+                            data-background="assets/images/shape/round-shape.png">
+                            <img src="assets/images/icons/f-7.png" alt="">
+                        </div>
+                        <div class="feature-item__content feature-item__content--2">
+                            <h4 class="feature-item__title feature-item__title--2">Simultaneous Interpreting</h4>
+                            <p>We can offer simultaneous interpretation for group meetings and conferences with
+                                participants with different levels of English proficiency. It can be done in-person with
+                                the utilization of specialized equipment, or by RVI, with the creation of virtual
+                                channels where people can listen to the interpreter in their own language.
+                            </p>
 
                         </div>
                     </div>
@@ -436,7 +469,9 @@
                                 <h4 class="wp-box__title">
                                     Registration
                                 </h4>
-                                <p>First step for you is to Sign Up! This gives you a look at our Translation Center.
+                                <p>Sign up to create an account with us. You will be able to create orders, view your
+                                    history and communicate with us.
+
                                 </p>
                             </div>
                         </div>
@@ -447,10 +482,10 @@
                         <a href="{{ url('/user') }}">
 
                             <div class="wp-box__content">
-                                <h4 class="wp-box__title">Request Translation</h4>
-                                <p>Have a document you need translated? Fill in the details, attach the document and
-                                    wait
-                                    for the magic to happen!</p>
+                                <h4 class="wp-box__title">Request a Translation or interpretation service
+                                </h4>
+                                <p>Do you have a document to be translated? Need an interpreter for a meeting? Fill in
+                                    the details, attach the document and wait for the magic to happen!</p>
                             </div>
                             <div class="wp-box__icon wp-box__icon--2 mt-35">
                                 <img src="assets/images/icons/w-p-2.png" alt="">
@@ -466,7 +501,10 @@
                         <div class="wp-box__content">
                             <h4 class="wp-box__title">Payment</h4>
                             <p>Our team will get in contact with you and send you an appropriate invoice for your order
-                                - once you pay a reasonable fees, your order will be processed!</p>
+                                - once you pay the agreed fee your order will be processed!
+                                If you belong to an institution that is registered with us, you don’t need to worry
+                                about the payment, it will be paid by your institution at a later time.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -476,7 +514,8 @@
                             <div class="wp-box__content">
                                 <h4 class="wp-box__title">Deliverance</h4>
                                 <p>You will be able to track the entire process of your translation and once it is
-                                    translated and proofread - you can download the translation.</p>
+                                    finished and proofread - you can download it.
+                                </p>
                             </div>
                             <div class="wp-box__icon mt-35">
                                 <img src="assets/images/icons/w-p-4.png" alt="">
@@ -532,6 +571,15 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfpGBFn5yRPvJrvAKoGIdj1O1aO9QisgQ"></script>
     <script src="assets/js/main.js"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+        window.onload = function() {
+            var googleLogo = document.querySelector('.VIpgJd-ZVi9od-l4eHX-hSRGPd');
+            if (googleLogo) {
+                googleLogo.style.display = 'none';
+            }
+        }
+    </script>
+
 
     <script type="text/javascript">
         function googleTranslateElementInit2() {
