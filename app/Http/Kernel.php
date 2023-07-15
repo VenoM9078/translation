@@ -65,5 +65,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'contractor.verified' => \App\Http\Middleware\ContractorMiddleware::class,
         'redirectBasedOnRole' => \App\Http\Middleware\RedirectBasedOnRole::class,
+        'checkInstituteMembership' => \App\Http\Middleware\CheckInstituteMembership::class,
     ];
 }

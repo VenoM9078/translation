@@ -373,7 +373,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::post('/admin/upload-proof/submit', [AdminController::class, 'submitProofRead'])->name('admin.submit-proof-read');
 });
 
-Route::middleware(['web', 'auth', 'verified'])->group(function () {
+Route::middleware(['web', 'auth','checkInstituteMembership', 'verified'])->group(function () {
 
 
     // Track Order

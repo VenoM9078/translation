@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,12 +29,14 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
-        if ($request->authenticate()) {
+
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $request->session()->regenerate();
             $user = Auth::user();
             if (!$user->hasVerifiedEmail()) {
-                if ($user->role_id != 0)
-                    return redirect()->route('register-step2', ['e' => $user->email, 'r' => $user->role_id]);
+                $user->sendEmailVerificationNotification();
+
+                return redirect()->route('verification.notice');
             }
             return redirect()->route('user.index');
         } else {

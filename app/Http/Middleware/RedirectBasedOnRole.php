@@ -18,9 +18,21 @@ class RedirectBasedOnRole
      */
     public function handle(Request $request, Closure $next)
     {
+        // If the user is logged in and has a role_id of 0
         if (Auth::check() && Auth::user()->role_id == 0) {
-            return app()->call('App\Http\Controllers\Auth\VerifyEmailController@__invoke');
+            // If the user has not verified their email yet
+            if (!Auth::user()->hasVerifiedEmail()) {
+                // Send the verification notification
+                Auth::user()->sendEmailVerificationNotification();
+
+                // Then redirect to the verification notice page
+                return redirect()->route('verification.notice');
+            }
+        } else if (Auth::check() && Auth::user()->role_id != 0) {
+            return app()->call('App\Http\Controllers\Auth\CustomVerifyEmailController@__invoke');
         }
+
+        // If the user is not logged in or has a role_id other than 0, just proceed with the request
         return $next($request);
     }
 }

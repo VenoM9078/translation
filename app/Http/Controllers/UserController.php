@@ -1232,6 +1232,7 @@ class UserController extends Controller
             $institute = $user->institute_managed;
             $institute->name = $request->input('name');
             $institute->passcode = $request->input('passcode');
+            $institute->member_approval_needed = $request->input('member_approval_needed') == 'on' ? 1 : 0;
             $institute->save();
         }
 

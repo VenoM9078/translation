@@ -79,8 +79,8 @@ Route::middleware('auth:contractor')->group(function () {
 // Route::get('verify-email',function(){
 // dd(Auth::user());
 // });
-Route::get('verify-email', [VerifyEmailController::class, 'customVerifyEmail'])
-    ->middleware('redirectBasedOnRole')
+Route::get('verify-email', [CustomVerifyEmailController::class, 'customVerification'])
+    // ->middleware('redirectBasedOnRole')
     ->name('verification.notice');
 Route::middleware('auth')->group(function () {
 
@@ -100,6 +100,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
+    Route::get('/institute-user/setup/{id}',[RegisteredUserController::class,'redirectToPassCode'])->name('redirect-to-passcode');
     // Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
     //             ->name('logout');
 });

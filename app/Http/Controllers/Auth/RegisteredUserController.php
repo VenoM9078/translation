@@ -53,8 +53,6 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // $user->sendEmailVerificationNotification(); // add this line
-
 
         event(new Registered($user));
 
@@ -101,7 +99,7 @@ class RegisteredUserController extends Controller
                 'password.min' => 'The password must be at least 6 characters.'
             ]
         );
-        // dd($request->all());
+
         // Pass input data from the previous form to the view
         $verifyUser = User::where('email', $request->email)->first();
         if (!isset($verifyUser)) {
@@ -114,17 +112,14 @@ class RegisteredUserController extends Controller
                 ]);
 
 
-                // $user->sendEmailVerificationNotification();  // add this line
-
-
                 event(new Registered($user));
 
                 Auth::login($user);
                 return redirect()->route('email-verification-notice');
 
-                // return redirect(RouteServiceProvider::HOME);
+
             } else {
-                // dd($request->role_id);
+
                 // if role is 1 => 3 | role is 2 => 4
                 $role_id = 0;
                 if ($request->role_id == 1) {
@@ -139,12 +134,12 @@ class RegisteredUserController extends Controller
                     'role_id' => $role_id
                 ]);
 
-                // $user->sendEmailVerificationNotification();
+
                 event(new Registered($user));
                 Auth::login($user);
 
                 return redirect()->route('email-verification-notice');
- 
+
             }
         } else if (isset($verifyUser)) {
             return back()->with('error', 'This email already exists');
@@ -165,16 +160,9 @@ class RegisteredUserController extends Controller
                     'password' => $request->input('password'),
                     'role_id_sent' => $request->role_id
                 ])->with('error', 'Error');
-                // return redirect()->back()->with('error', 'Institute already exists!');
+
             } else {
-                //Create user
-                // $user = User::create([
-                //     'name' => $request->name,
-                //     'email' => $request->email,
-                //     'password' => Hash::make($request->password),
-                //     'role_id' => 0
-                // ]);
-                // Institute does not exist, so create it
+
                 $institute = Institute::create([
                     'name' => $request->institute_name,
                     'passcode' => $request->institute_passcode,
@@ -193,12 +181,10 @@ class RegisteredUserController extends Controller
                     'user_id' => $request->user_id
                 ])->with('error', 'Institute does not exist!');
             } else {
-                // Create user first
-
                 $userEmailDomain = substr(strrchr($request->email, "@"), 1);
                 foreach ($institute as $inst) {
                     $manager = User::find($inst->managed_by);
-                    // dd($manager, $inst->managed_by);
+
                     $managerEmailDomain = substr(strrchr($manager->email, "@"), 1);
 
                     if ($managerEmailDomain == $userEmailDomain) {
@@ -215,24 +201,17 @@ class RegisteredUserController extends Controller
                             ])->with('error', 'Insititue with this passcode is not active.');
                         }
 
-                        // // Create user first
-                        // $user = User::create([
-                        //     'name' => $request->name,
-                        //     'email' => $request->email,
-                        //     'password' => Hash::make($request->password),
-                        //     'role_id' => 1
-                        // ]);
-                        $user = User::where('id',$request->input('user_id'))->first();
 
-                        // $inst->members()->attach($user->id);
-                        $inst->members()->syncWithoutDetaching([$user->id]);
+                        $user = User::where('id', $request->input('user_id'))->first();
+                        if ($inst->member_approval_needed == 1) { //need to approve user first
+                            $this->addInstituteUserToRequest($user, $inst);
+                        } else {
+                            $inst->members()->syncWithoutDetaching([$user->id]);
 
-                        // Send an email to the institute manager about the new request
-                        $manager = User::find($inst->managed_by);
-                        // Mail::to($manager->email)->send(new UserRequestMail($user, $inst));
-                        Mail::to($user->email)->send(new InstituteRequestAccepted($user));
-
-                        // return redirect()->route('user.index');
+                            // Send an email to the institute manager about the new request
+                            $manager = User::find($inst->managed_by);
+                            Mail::to($user->email)->send(new InstituteRequestAccepted($user));
+                        }
 
                     }
 
@@ -241,13 +220,39 @@ class RegisteredUserController extends Controller
             }
         }
 
-        // $user->sendEmailVerificationNotification(); // add this line
-
-
-        // event(new Registered($user));
-
-        // Auth::login($user);
-
         return redirect()->route('user.index');
+    }
+
+    public function addInstituteUserToRequest($user, $institute)
+    {
+        InstituteUserRequests::create([
+            'user_id' => $user->id,
+            'institute_id' => $institute->id,
+        ]);
+
+        // Send an email to the institute manager about the new request
+        $manager = User::find($institute->managed_by);
+        Mail::to($manager->email)->send(new UserRequestMail($user, $institute));
+    }
+
+    public function redirectToPassCode($id)
+    {
+
+        $user = User::where('id', $id)->first();
+        if ($user->role_id == 1 && ((count($user->institute) < 1) && count($user->user_requests) < 1)) {
+            return view('auth.register2', [
+                'name' => $user->name,
+                'role_id' => 1,
+                'email' => $user->email,
+                'user_id' => $user->id,
+                'password' => $user->password,
+                'role_id_sent' => $user->role_id
+            ])
+                ->with('error', 'You do not belong to any Institute.');
+        } else {
+            Auth::logout();
+
+            return redirect()->route('login');
+        }
     }
 }

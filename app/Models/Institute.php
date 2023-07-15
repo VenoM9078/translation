@@ -12,7 +12,8 @@ class Institute extends Model
         'name',
         'managed_by',
         'passcode',
-        'is_active'
+        'is_active',
+        'member_approval_needed'
     ];
 
     public function admin()

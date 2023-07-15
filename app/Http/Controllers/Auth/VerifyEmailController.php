@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use Auth;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -37,19 +38,20 @@ class VerifyEmailController extends Controller
         
         // dd($request->user)
         $user = User::where('id',$request->user()->id)->first();
-
-        if (!hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) {
-            throw new AuthorizationException();
-        }
-
+ 
         if ($user->hasVerifiedEmail()) {
             //return redirect()->route('verification.email-verified');
             return redirect()->intended(RouteServiceProvider::HOME.'?verified=1');
+        } else {
+            // dd("here");
+            $user->sendEmailVerificationNotification();
+            Auth::login($user);
+            return redirect()->route('verification.notice');
         }
 
         if ($user->markEmailAsVerified()) {
             event(new Verified($user));
-            return redirect()->route('verification.email-verified');
+            return redirect()->intended(RouteServiceProvider::HOME . '?verified=1');
         }
 
         return redirect()->intended(RouteServiceProvider::HOME.'?verified=1');
