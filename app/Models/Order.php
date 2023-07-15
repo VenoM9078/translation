@@ -110,6 +110,37 @@ class Order extends Model
         return $this->hasMany('App\Models\ContractorLog', 'order_id', 'id');
     }
 
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function($order) {
+            // Define relationships
+            $relationships = [
+                'files',
+                'invoice',
+                'translationRequest',
+                'proofReadRequest',
+                'completedRequest',
+                'feedback',
+                'contractorOrder',
+                'proofReaderOrder',
+                'orderLogs',
+                'contractorLogs',
+                'invoiceLogs',
+            ];
+            
+            // Iterate over relationships and delete
+            foreach ($relationships as $relationship) {
+                // It's good practice to check if the relationship exists before trying to delete it
+                if ($order->$relationship()) {
+                    $order->$relationship()->delete();
+                }
+            }
+        });
+    }
+
     public function invoiceLogs()
     {
         return $this->hasMany('App\Models\InvoiceLogs', 'order_id', 'id');

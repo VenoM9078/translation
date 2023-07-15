@@ -844,8 +844,7 @@ class ContractorAuthController extends Controller
             ->whereHas('contractorOrder', function ($query) {
                 $query->where('is_accepted', ContractorOrderEnum::ACCEPTED);
             })
-            ->orderBy('created_at', 'desc')
-            ->get();
+            ->orderByDesc('id')->paginate(10);
         // dd($proofReadData);
         return view('contractor.proof-read-pending', compact('proofReadData'));
     }
@@ -860,10 +859,31 @@ class ContractorAuthController extends Controller
             // ->where('is_accepted', 1) // assuming 0 represents "accepted"
             // ->where('translation_status', TranslationStatusEnum::PENDING)
 
-            ->orderBy('created_at', 'desc')
-            ->get();
+            ->orderByDesc('id')->paginate(10);
         // dd($proofReadData);
         return view('contractor.proof-read', compact('proofReadData'));
+    }
+
+    public function downloadProofreadFileByAdmin($id)
+    {
+        //select only file_name;
+        $filePath = '/proofread_by_proofreader/' . ProofReaderOrders::where(['order_id' => $id])->firstOrFail()->file_uploaded_by_admin;
+        $file = "";
+
+        if (file_exists(public_path($filePath))) {
+            $file = public_path($filePath);
+        }
+        $zip = new ZipArchive;
+        $zipName = date('YmdHi') . $id . '.zip';
+
+        if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
+            $relativeNameInZipFile = basename($file);
+            // dd($file, $relativeNameInZipFile);
+            $zip->addFile($file, $relativeNameInZipFile);
+
+            $zip->close();
+        }
+        return response()->download($file);
     }
 
     public function completedProofReads()

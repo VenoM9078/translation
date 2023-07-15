@@ -496,7 +496,7 @@ class AdminController extends Controller
                     'rate' => $request->p_rate ?? 0,
                     'total_payment' => $request->p_total_payment ?? 0,
                     'translation_status' => TranslationStatusEnum::PENDING,
-                    'file_name' => null,
+                    'file_name' => $request->translationFile,
                     'file_uploaded_by_admin' => $request->translationFile,
                     'proof_read_due_date' => $request->proof_read_due_date,
                     'proofread_type' => $request->p_type,
@@ -1779,30 +1779,7 @@ class AdminController extends Controller
         if (!empty($order->files)) {
             OrderFiles::where('order_id', $order->id)->delete();
         }
-
-        if (!empty($order->invoice)) {
-            Invoice::where('order_id', $order->id)->delete();
-        }
-
-        if ($order->translation_status == 1 || $order->translation_sent == 1) {
-            TranslationRequest::where('order_id', $order->id)->delete();
-        }
-
-        if ($order->proofread_status == 1 || $order->proofread_sent == 1) {
-            ProofRequest::where('order_id', $order->id)->delete();
-        }
-
-        if ($order->completed == 1) {
-            CompletedRequest::where('order_id', $order->id)->delete();
-        }
-
-        if (!empty($order->feedback)) {
-            Feedback::where('order_id', $order->id)->delete();
-        }
-
-        // $order->orderStatus = 'Cancelled';
-        // $order->save();
-        // $order->delete();
+        $order->delete();
 
         return redirect()->back();
     }

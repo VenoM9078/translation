@@ -10,5 +10,11 @@ abstract class OrderStatusEnum
     const QUOTEREJECTED = 2;
     const QUOTEPENDING = 0;
 
+    const OrderStatuses = [
+        0 => 'Completed',
+        1 => 'ProofRead Order Not Accepted Yet',
+        2 => 'On-Going'
+    ];
+
 }
 ?>

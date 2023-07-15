@@ -218,6 +218,10 @@ Route::group(['middleware' => ['auth:contractor', 'contractor.verified']], funct
 
     Route::get('/contractor/profile', [ContractorAuthController::class, 'viewProfile'])->name('contractor.edit-profile');
     Route::post('/contractor/profile/update', [ContractorAuthController::class, 'updateProfile'])->name('contractor.edit-profile-submit');
+    Route::get('/contractor/download-proof-read-file/{orderID}', [ContractorAuthController::class, 'downloadProofReadFile'])->name('contractor.download-proof-read-file');
+    Route::get('/contractor/download-proof-read-file-admin/{orderID}', [ContractorAuthController::class, 'downloadProofReadFileByAdmin'])->name('download-proof-read-file-admin');
+
+
 });
 
 Route::group(['middleware' => ['auth:admin']], function () {
