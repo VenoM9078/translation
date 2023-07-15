@@ -45,24 +45,13 @@ return [
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
 
-        'dev' => [
-            'transport' => 'smtp',
-            'host' => 'smtp.gmail.com',
-            'port' => 587,
-            'encryption' => 'tls',
-            'username' => 'noiznixon98@gmail.com',
-            'password' => 'ugejekyiqwomtnqg',
-            'timeout' => null,
-            'local_domain' => env('MAIL_EHLO_DOMAIN'),
-        ],
-
         'clients' => [
             'transport' => 'smtp',
             'host' => env('MAIL_HOST', 'smtp.ionos.com'),
             'port' => env('MAIL_PORT', 587),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => "info@flowtranslate.com",
-            'password' => "NewInfoFlowtranslate2023",
+            'username' => "webpage@flowtranslate.com",
+            'password' => "Flowtranslate2022!",
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
