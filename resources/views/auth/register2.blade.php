@@ -43,48 +43,56 @@
                     class="my-auto mx-auto xl:ml-20 bg-white dark:bg-darkmode-600 xl:bg-transparent px-5 sm:px-8 py-8 xl:p-0 rounded-md shadow-md xl:shadow-none w-full sm:w-3/4 lg:w-2/4 xl:w-auto">
                     <h2 class="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-left">
                         @if ($role_id_sent == 1)
-                        Institute User Sign Up
+                            Institute User Sign Up
                         @elseif($role_id_sent == 2)
-                        Institute Admin Sign Up
+                            Institute Admin Sign Up
                         @endif
                     </h2>
                     <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">A few more clicks to sign in to your
                         account. Manage all your e-commerce accounts in one place</div>
                     @if (isset($error))
-                    <div class="alert alert-danger mt-3 mb-1">
-                        <ul>
-                            <li>{{ $error }}</li>
-                        </ul>
-                    </div>
+                        <div class="alert alert-danger mt-3 mb-1">
+                            <ul>
+                                <li>{{ $error }}</li>
+                            </ul>
+                        </div>
                     @endif
                     <form action="{{ route('register2-complete') }}" method="POST">
                         @csrf
                         @method('POST')
                         <div class="intro-x mt-8">
-                            <input type="hidden" name="role_id" value="{{$role_id_sent}}">
+                            <input type="hidden" name="role_id" value="{{ $role_id_sent }}">
                             @if ($role_id_sent == 1)
-                            <input required type="text" name="institute_passcode"
-                                class="intro-x login__input form-control py-3 px-4 block"
-                                placeholder="Enter Institute's Passcode Here">
+                                <input required type="text" name="institute_passcode"
+                                    class="intro-x login__input form-control py-3 px-4 block"
+                                    placeholder="Enter Institute's Passcode Here">
                             @elseif($role_id_sent == 2)
-                            <input required type="text" name="institute_name"
-                                class="intro-x login__input form-control py-3 px-4 block"
-                                placeholder="Enter Institute's Name Here">
-                            <input required type="text" name="institute_passcode"
-                                class="intro-x mt-2 login__input form-control py-3 px-4 block"
-                                placeholder="Enter Institute's Passcode Here">
+                                <input required type="text" name="institute_name"
+                                    class="intro-x login__input form-control py-3 px-4 block"
+                                    placeholder="Enter Institute's Name Here">
+                                <input required type="text" name="institute_passcode"
+                                    class="intro-x mt-2 login__input form-control py-3 px-4 block"
+                                    placeholder="Enter Institute's Passcode Here">
                             @endif
                             <input type="hidden" name="name" class="" value="{{ $name }}">
                             <input type="hidden" name="email" class="" value="{{ $email }}">
                             <input type="hidden" name="password" class="" value="{{ $password }}">
-                            <input type="hidden" name="user_id" value={{$user_id}}>
+                            <input type="hidden" name="user_id" value={{ $user_id }}>
                         </div>
 
-                        <div class="mt-2 xl:mt-8 text-center xl:text-left">
+                        <div class="flex mt-2 xl:mt-8 text-center xl:text-left">
                             <button type="submit"
-                                class="btn btn-primary py-3 px-4 w-full xl:mr-3 align-top">Register</button>
+                                class="btn btn-primary px-4 w-full xl:mr-3 align-top">Register</button>
                         </div>
+                        <a href="{{ route('logout') }}"
+                            class="mt-4 py-3 px-4 w-40 align-top flex items-center justify-center bg-red-500 text-white rounded-lg hover:bg-red-700 transition duration-200 ease-in-out">
+                            <div class="side-menu__icon mr-2">
+                                <i data-lucide="log-out"></i>
+                            </div>
+                            Log Out
+                        </a>
                     </form>
+
                     <hr class="mt-3 mb-3">
                 </div>
             </div>
