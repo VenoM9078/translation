@@ -14,13 +14,15 @@ class HelperClass
     public static function convertDateToCurrentTimeZone($date, $ip)
     {
         try {
-            if (!$date instanceof Carbon) {
-                $date = Carbon::parse($date);
-            }
-            $json = file_get_contents("http://ip-api.com/json/{$ip}");
-            $data = json_decode($json);
-            $timezone = $data->timezone;
-            return $date->timezone($timezone);
+            // if (!$date instanceof Carbon) {
+                // $date = Carbon::parse($date);
+            // }
+            // $json = file_get_contents("http://ip-api.com/json/{$ip}");
+            // $data = json_decode($json);
+            // $timezone = $data->timezone;
+            return $date->format('Y-m-d h:i:s');
+
+            // return $date->timezone($timezone);
         } catch (Exception $e) {
             return $date->format('Y-m-d h:i:s');
             // If an error occurs, return the date in its original timezone
