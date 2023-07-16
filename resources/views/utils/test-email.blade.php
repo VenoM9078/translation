@@ -13,7 +13,7 @@
 <body class="bg-blue-50 flex items-center justify-center min-h-screen">
 
      <div class="bg-white rounded shadow-lg p-6 md:p-8 w-full md:w-96">
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">FlowTranslate - Test Email | Your IP: {{$ip ?? '-'}}</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">FlowTranslate - Test Email | Your IP: {{$ip ?? '-'}} | Time: {{$date ?? '-'}} ({{$isLocal ?? 1}})</h2>
         <p class="text-gray-600 mb-4">Enter User Email:</p>
         <form class="form-group" action="{{ route('send-email') }}" method="post">
             @csrf

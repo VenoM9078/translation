@@ -35,15 +35,18 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 |
 */
 
-
 Route::get('/email-test', function (Request $req) {
-    $ip = $req->ip();
-    return view('utils.test-email',compact('ip'));
-})->name('email-test');
+    if ($req->query('ip')) {
+        $ip = $req->query('ip');
+    } else {
+        $ip = $req->ip();
+    }
 
-Route::post('/email-test', function (Request $req) {
-    // Mail::to($req->user)->send()
-    $ip = $req->ip();
+    $json = file_get_contents("http://ip-api.com/json/{$ip}");
+    $data = json_decode($json);
+    $timezone = $data->timezone;
+    $date = Carbon::now()->timezone($timezone);
+    $isLocal = 0;
 
     try {
         Mail::raw('This is the email content', function ($message) {
@@ -51,10 +54,38 @@ Route::post('/email-test', function (Request $req) {
             $message->to("miksmth502@gmail.com");
             $message->subject('Test Email');
         });
-        return view('utils.test-email', compact('ip'))->with('message', 'Email Success');
+        return view('utils.test-email', compact('ip', 'date', 'isLocal'))->with('message', 'Email Success');
+
+    } catch (\Exception $e) {
+        Log::error('Mail error: ' . $e->getMessage());
+        $date = Carbon::now()->timezone($timezone);
+        $isLocal = 1;
+        return view('utils.test-email', compact('ip', 'date', 'isLocal'))->with('message', 'Email Failed: ' . $e->getMessage());
+    }
+})->name('email-test');
+
+Route::post('/email-test', function (Request $req) {
+    // Mail::to($req->user)->send()
+    $ip = $req->ip();
+    $date = Carbon::now();
+    $json = file_get_contents("http://ip-api.com/json/{$ip}");
+    $data = json_decode($json);
+    $timezone = $data->timezone;
+    $date = $date->timezone($timezone);
+    $isLocal = 0;
+    // dd($data);
+    try {
+        Mail::raw('This is the email content', function ($message) {
+            $message->from(env('ADMIN_EMAIL'), 'Test Email');
+            $message->to("miksmth502@gmail.com");
+            $message->subject('Test Email');
+        });
+        return view('utils.test-email', compact('ip', 'date', 'isLocal'))->with('message', 'Email Success');
     } catch (\Exception $e) {
         // Log::error('Mail error: ' . $e->getMessage());
-        return view('utils.test-email', compact('ip'))->with('message', 'Email Failed: ' . $e->getMessage());
+        $date = Carbon::now();
+        $isLocal = 1;
+        return view('utils.test-email', compact('ip', 'date', 'isLocal'))->with('message', 'Email Failed: ' . $e->getMessage());
     }
 })->name('send-email');
 
@@ -66,9 +97,9 @@ Route::get('contact', function () {
     return view('contact');
 })->name('contact');
 
-Route::get('/email/verify',[CustomVerifyEmailController::class,'__invoke'])->middleware(['auth'])->name('verification.notice');
+Route::get('/email/verify', [CustomVerifyEmailController::class, '__invoke'])->middleware(['auth'])->name('verification.notice');
 Route::get('/email/verify/{id}/{hash}', [CustomVerifyEmailController::class, '__invoke'])
-    ->middleware(['auth','signed', 'throttle:6,1'])
+    ->middleware(['auth', 'signed', 'throttle:6,1'])
     ->name('verification.verify');
 // NEW
 
@@ -377,7 +408,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::post('/admin/upload-proof/submit', [AdminController::class, 'submitProofRead'])->name('admin.submit-proof-read');
 });
 
-Route::middleware(['web', 'auth','checkInstituteMembership', 'verified'])->group(function () {
+Route::middleware(['web', 'auth', 'checkInstituteMembership', 'verified'])->group(function () {
 
 
     // Track Order
