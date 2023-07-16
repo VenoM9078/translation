@@ -1127,7 +1127,7 @@
                     return true;
                 } else if (isTranslationprogressChecked && data[7] == 'Translation In Progress') {
                     return true;
-                } else if (isTranslationCompletedChecked && data[7] == 'Translation Completed'){
+                } else if (isTranslationCompletedChecked && data[7] == 'Translation Completed') {
                     return true;
                 } else {
                     return true;
@@ -1203,7 +1203,8 @@
         var groups = {
             'User Info': [3, 4], //# WO#, Institute, Requester
             'Order Info': [2, 5, 6, 7, 8, 9, 10, 11,
-            19], //# Due Date, Order Status, Quote, Order Note, Source Language, Translated Language
+                19
+            ], //# Due Date, Order Status, Quote, Order Note, Source Language, Translated Language
             'Translator Info': [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
             // #Original Doc, Translator, Translation Due Date, Translated Document, Translator Message, T.Type, T.Unit, T. Rate, T. Adjust, T. Fee, T. Adjust Note, T. Paid
             'ProofRead Info': [31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41], //# No columns in this category
@@ -1246,13 +1247,17 @@
         //     });
         // });
         $(document).on('click', '.btn.btn-success', function() {
+            $('.intro-y.box.py-5.mt-2').html('');
             var orderId = $(this).data('tw-target').replace('#track-modal-preview', '');
             console.log("Clicked Track ", orderId);
             $('#order-loader-' + orderId).show();
-            $.get('/order/' + orderId + '/track', function(data) {
-                $('#order-loader-' + orderId).hide();
-                $('.intro-y.box.py-5.mt-2').html(data);
-            });
+            // introduce a slight delay to make sure loader is visible
+            setTimeout(function() {
+                $.get('/order/' + orderId + '/track', function(data) {
+                    $('#order-loader-' + orderId).hide();
+                    $('.intro-y.box.py-5.mt-2').html(data);
+                });
+            }, 500); // delay of 500ms
         });
     </script>
 @endsection

@@ -77,7 +77,7 @@
                                                         class="btn btn-danger">Reject</a>
                                                 </div>
                                             </div>
-                                            @elseif($user->institute[0]->is_active == 1)
+                                            @elseif($user->role_id == 2 && $user->institute[0]->is_active == 1)
                                             <div>
                                                 <div class="text-center"> <a href="javascript:;" data-tw-toggle="modal"
                                                         data-tw-target="#institute-modal-delete-{{ $key }}"
