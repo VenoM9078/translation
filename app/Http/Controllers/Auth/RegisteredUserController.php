@@ -63,14 +63,26 @@ class RegisteredUserController extends Controller
     public function showRegistrationForm(Request $request)
     {
         $user = User::where('email', $request->query('e'))->where('role_id', $request->query('r'))->firstOrFail();
+        $roleToSend = 0;
         if ($user) {
             if ($user->role_id == 3) {
                 $user->role_id = 1;
             } else if ($user->role_id == 4) {
-                $user->role_id = 2;
+                $user->role_id = 0;
+                $roleToSend = 2;
             }
             $user->email_verified_at = Carbon::now();
             $user->save();
+        }
+        if($roleToSend == 2){
+             return view('auth.register2', [
+            'name' => $user->name,
+            'role_id' => 0,
+            'user_id' => $user->id,
+            'role_id_sent' => $roleToSend,
+            'email' => $user->email,
+            'password' => $user->password,
+        ]);
         }
         return view('auth.register2', [
             'name' => $user->name,
