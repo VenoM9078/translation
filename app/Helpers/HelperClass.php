@@ -13,9 +13,9 @@ class HelperClass
 {
     public static function convertDateToCurrentTimeZone($date, $ip)
     {
-        try {
+        // try {
             // if (!$date instanceof Carbon) {
-                // $date = Carbon::parse($date);
+                $date = Carbon::parse($date);
             // }
             // $json = file_get_contents("http://ip-api.com/json/{$ip}");
             // $data = json_decode($json);
@@ -23,10 +23,11 @@ class HelperClass
             return $date->format('Y-m-d h:i:s');
 
             // return $date->timezone($timezone);
-        } catch (Exception $e) {
-            return $date->format('Y-m-d h:i:s');
+        // } catch (Exception $e) {
+            
+            // return $date->format('Y-m-d h:i:s');
             // If an error occurs, return the date in its original timezone
-        }
+        // }
     }
 
     public static function onlyShowHoursMinutes($time){
