@@ -32,7 +32,7 @@ class ContractorNotifyAdmin extends Mailable
      */
     public function build()
     {
-        return $this->from("flowtranslate@email.com")
+        return $this->from("webpage@flowtranslate.com")
             ->subject("Translation Order")->markdown('emails.contractorNotifyAdmin');
     }
 }
