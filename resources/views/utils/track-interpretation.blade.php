@@ -47,7 +47,9 @@
             $log->is_admin == 1 &&
                 $log->action != \App\Enums\LogActionsEnum::PAYMENTCOMPLETED &&
                 $log->is_admin == 1 &&
-                $log->action != \App\Enums\LogActionsEnum::INVOICESENT)
+                $log->action != \App\Enums\LogActionsEnum::INVOICESENT
+                 || $log->is_admin == 0
+                )
             <div class="intro-x flex items-center justify-center mt-5 bg-gray-100 p-5 rounded-lg">
                 <div class="flex items-center justify-center">
                     <span class="text-gray-900 font-semibold text-sm" style="font-size: 11px">
