@@ -20,7 +20,7 @@ class HelperClass
             // $json = file_get_contents("http://ip-api.com/json/{$ip}");
             // $data = json_decode($json);
             // $timezone = $data->timezone;
-            return $date->format('Y-m-d h:i:s');
+            return $date->format('Y-m-d h:i:s A');
 
             // return $date->timezone($timezone);
         // } catch (Exception $e) {
