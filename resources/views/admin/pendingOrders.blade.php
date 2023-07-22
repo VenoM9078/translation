@@ -67,24 +67,9 @@
         </div>
     @endif
     <div class="flex justify-end gap-4">
-        <form id="recordsForm" action="{{ route('admin.pending') }}" method="get">
-            <input type="hidden" name="page" id="currentPage" value="{{ request('page') }}">
-            <div class="inline-block relative w-48">
-                <select name="limit" id="recordsPerPage"
-                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                    <option value="5" {{ request('limit') == 5 ? 'selected' : '' }}>5</option>
-                    <option value="10" {{ request('limit') == 10 ? 'selected' : '' }}>10</option>
-                    <option value="20" {{ request('limit') == 20 ? 'selected' : '' }}>20</option>
-                    <option value="30" {{ request('limit') == 30 ? 'selected' : '' }}>30</option>
-                    <option value="40" {{ request('limit') == 40 ? 'selected' : '' }}>40</option>
-                    <option value="50" {{ request('limit') == 50 ? 'selected' : '' }}>50</option>
-                    <option value="100" {{ request('limit') == 100 ? 'selected' : '' }}>100</option>
-                </select>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-
-                </div>
-            </div>
-        </form>
+        <div class="dropdown-container  relative inline-block my-2">
+            @include('utils.limit-data-dropdown',['route'=>'admin.pending'])
+        </div>
         <div class="dropdown-container relative inline-block my-2">
             <button id="dropdownBgHoverButton" data-dropdown-toggle="dropdownBgHover"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -1072,7 +1057,7 @@
 
                     </div>
                     <div class="container m-2 flex justify-end">
-                        {{ $pendingOrders->links() }}
+                        {{ $pendingOrders->appends(['limit' => $recordsPerPage])->links() }}
                     </div>
                 </div>
             </div>

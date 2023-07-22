@@ -1494,12 +1494,12 @@ class AdminController extends Controller
     }
     public function pendingOrders(Request $request)
     {
-        $recordsPerPage = $request->input('limit', 10); // Default to 10 if not provided
+        $recordsPerPage = $request->query('limit', 10); // Default to 10 if not provided
         $page = $request->input('page', 1); // Default to 1 if not provided
         $skip = ($page - 1) * $recordsPerPage;
 
         $pendingOrders = Order::orderByDesc('id')->skip($skip)->paginate($recordsPerPage);
-        return view('admin.pendingOrders', compact('pendingOrders'));
+        return view('admin.pendingOrders', compact('pendingOrders', 'recordsPerPage'));
     }
 
     public function viewAssignProofReader($orderID)
