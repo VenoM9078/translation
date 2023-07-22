@@ -57,6 +57,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use File;
 use Illuminate\Support\Facades\Hash;
+use Nette\Utils\Paginator;
 use ZipArchive;
 
 class AdminController extends Controller
@@ -1491,13 +1492,13 @@ class AdminController extends Controller
         $invoice = Invoice::findOrFail($id);
         return view('admin.view-invoice', compact('invoice'));
     }
-    public function pendingOrders()
+    public function pendingOrders(Request $request)
     {
-        $pendingOrders = Order::orderByDesc('id')->paginate(10);
-        // ->where('id',34)
-        // ->get();
-        // dd($orders);
-        // dd($orders[0]->invoice);
+        $recordsPerPage = $request->input('limit', 10); // Default to 10 if not provided
+        $page = $request->input('page', 1); // Default to 1 if not provided
+        $skip = ($page - 1) * $recordsPerPage;
+
+        $pendingOrders = Order::orderByDesc('id')->skip($skip)->paginate($recordsPerPage);
         return view('admin.pendingOrders', compact('pendingOrders'));
     }
 
