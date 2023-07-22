@@ -74,6 +74,9 @@
             </div>
         @endif
         <div class="flex justify-end gap-4">
+            <div class="dropdown-container  relative inline-block my-2">
+                @include('utils.limit-data-dropdown', ['route' => 'admin.ongoingInterpretations'])
+            </div>
             <div class="dropdown-container relative inline-block my-2">
                 <button id="dropdownBgHoverButton" data-dropdown-toggle="dropdownBgHover"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -275,7 +278,8 @@
                                                             $interpretation->invoiceSent == 1 &&
                                                             $interpretation->paymentStatus == 1 &&
                                                             $interpretation->interpreter_id !== null &&
-                                                            $interpretation->interpreter_completed == 1 && 1==2)
+                                                            $interpretation->interpreter_completed == 1 &&
+                                                            1 == 2)
                                                         <button class="btn btn-warning mr-1  ">View Feedback</button>
                                                     @elseif ($interpretation->wantQuote == 1)
                                                         <a href="{{ route('admin.showSubmitQuote', $interpretation->id) }}"
@@ -322,7 +326,8 @@
                                                         $interpretation->wantQuote == 3 &&
                                                             $interpretation->paymentStatus == 1 &&
                                                             $interpretation->interpreter_id !== null &&
-                                                            $interpretation->interpreter_completed == 1 && 1==2)
+                                                            $interpretation->interpreter_completed == 1 &&
+                                                            1 == 2)
                                                         <button class="btn btn-warning mr-1  ">View Feedback</button>
                                                     @endif
 
@@ -443,9 +448,11 @@
                                             <td class="whitespace-nowrap">{{ $interpretation->c_adjust }}</td>
                                             <td class="whitespace-nowrap">{{ $interpretation->c_fee }}</td>
                                             <td class="whitespace-nowrap">{{ $interpretation->c_adjust_note }}</td>
-                                            <td class="whitespace-nowrap">{{ $interpretation->c_paid == 1 ? 'Yes' : 'No' }}</td>
+                                            <td class="whitespace-nowrap">
+                                                {{ $interpretation->c_paid == 1 ? 'Yes' : 'No' }}</td>
                                             {{-- C Fields End --}}
-                                            <td class="whitespace-nowrap">{{ $interpretation->contractorInterpretation->contractor->name ?? '-' }}
+                                            <td class="whitespace-nowrap">
+                                                {{ $interpretation->contractorInterpretation->contractor->name ?? '-' }}
                                             </td>
                                             <td class="whitespace-nowrap">
                                                 <a href="javascript:;" data-tw-toggle="modal"
@@ -516,7 +523,8 @@
                                                     </div>
                                                 </div>
                                             </div> <!-- END: Modal Content -->
-                                            <td class="whitespace-nowrap">{{ $interpretation->interpreter_paid == 1 ? 'Yes' : 'No' }}</td>
+                                            <td class="whitespace-nowrap">
+                                                {{ $interpretation->interpreter_paid == 1 ? 'Yes' : 'No' }}</td>
 
                                             <td class="whitespace-nowrap">
                                                 {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($interpretation->created_at, request()->ip()) }}
@@ -559,7 +567,7 @@
                         </div>
 
                         <div class="container m-2 flex justify-end">
-                            {{ $interpretations->links() }}
+                            {{ $interpretations->appends(['limit' => session('limit'), 'page' => session('page')])->links() }}
                         </div>
 
                     </div>
@@ -612,7 +620,7 @@
                     }
                 },
             ],
-            ordering: false,
+            ordering: true,
             info: false,
             paging: false,
         });
@@ -701,9 +709,10 @@
 
             var groups = {
                 'User Info': [4, 5],
-                'C. Info': [13,14, 15, 16,17],
+                'C. Info': [13, 14, 15, 16, 17],
                 'Interpretation Info': [7, 8, 9, 10, 11, 12,
-                18,19,20,21,22,23],
+                    18, 19, 20, 21, 22, 23
+                ],
             }
 
             for (var groupName in groups) {
@@ -742,4 +751,5 @@
             });
         });
     </script>
+    <script src="{{ asset('src/pagination-script.js') }}"></script>
 @endsection

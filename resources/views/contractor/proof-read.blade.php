@@ -50,6 +50,11 @@
             </div>
         @endif
         <div class="flex justify-end gap-4">
+            <div class="flex justify-end gap-4">
+                <div class="dropdown-container  relative inline-block my-2">
+                    @include('utils.limit-data-dropdown', ['route' => 'contractor.proof-read'])
+                </div>
+            </div>
             <div class="dropdown-container relative inline-block my-2">
                 <button id="dropdownBgHoverButton" data-dropdown-toggle="dropdownBgHover"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -353,7 +358,7 @@
                             </table>
                         </div>
                         <div class="container m-2 flex justify-end">
-                            {{ $proofReadData->links() }}
+                            {{ $proofReadData->appends(['limit' => session('limit'), 'page' => session('page')])->links() }}
                         </div>
                     </div>
                 </div>
@@ -376,10 +381,12 @@
         $(document).ready(function() {
             var OrderStatuses = @json(\App\Enums\OrderStatusEnum::OrderStatuses);
             var table = $('#proofReadTable').DataTable({
+                // dom: 'Brtip',
                 scrollX: true,
                 scrollCollapse: true,
-                // ordering: true,
+                ordering: true,
                 info: true,
+                paging:false,
                 // paging: true,
                 fixedColumns: {
                     leftColumn: 1
@@ -473,4 +480,5 @@
             });
         });
     </script>
+    <script src="{{ asset('src/pagination-script.js') }}"></script>
 @endsection

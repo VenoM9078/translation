@@ -29,6 +29,20 @@
         background-image: url(//gtranslate.net/flags/16.png);
     }
 
+    .mobile-menu-box {
+        display: none;
+        /* Hide by default */
+    }
+
+    /* Show the menu in mobile view */
+    @media screen and (max-width: 768px) {
+
+        /* Adjust 768px to your desired mobile view breakpoint */
+        .mobile-menu-box {
+            display: block;
+        }
+    }
+
     a.gflag img {
         border: 0;
     }
@@ -71,18 +85,20 @@
 
 <body class="py-5">
     <!-- BEGIN: Mobile Menu -->
+    <a href="javascript:;" id="mobile-menu-toggler">
+        <i data-lucide="bar-chart-2" class="w-8 h-8 text-white transform -rotate-90"></i>
+    </a>
     <div class="mobile-menu md:hidden">
         <div class="mobile-menu-bar">
             <a href="{{ route('admin.dashboard') }}" class="flex mr-auto">
                 <img alt="Logo" class="w-6" src="{{ url('dist/images/logo.svg') }}">
             </a>
-            <a href="javascript:;" id="mobile-menu-toggler">
-                <i data-lucide="bar-chart-2" class="w-8 h-8 text-white transform -rotate-90"></i>
-            </a>
+             <a href="javascript:;" class="mobile-menu-toggler"> <i data-lucide="bar-chart-2"
+                    class="w-8 h-8 text-white transform -rotate-90"></i> </a>
         </div>
-        <ul class="mobile-menu-box">
+        <ul class="scrollable__content py-2">
             <li>
-                <a href="{{ route('admin.dashboard') }}" class="menu">
+                <a href="{{ route('admin.dashboard') }}" class="menu menu--active">
                     <div class="menu__icon"> <i data-lucide="home"></i> </div>
                     <div class="menu__title"> Dashboard </div>
                 </a>
@@ -145,8 +161,8 @@
             </li>
             <li>
                 <a href="{{ route('admin.viewCustomers') }}" class="menu">
-                    <div class="menu__icon"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32"
-                            height="32" fill="white" id="person">
+                    <div class="menu__icon"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                            width="32" height="32" fill="white" id="person">
                             <g data-name="Layer 2">
                                 <path
                                     d="M12 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm6 10a1 1 0 0 0 1-1 7 7 0 0 0-14 0 1 1 0 0 0 1 1z"
@@ -430,6 +446,7 @@
                 paging: false
             });
         });
+ 
     </script>
 
     {{-- <script type="text/javascript">

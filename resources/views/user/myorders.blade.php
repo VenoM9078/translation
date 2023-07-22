@@ -1,5 +1,10 @@
 @extends('user.layout')
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
 @section('content')
     <div class="col-span-12 mt-8">
         <div class="intro-y flex items-center h-10">
@@ -13,7 +18,11 @@
                 <p>{{ $message }}</p>
             </div>
         @endif
-
+        <div class="flex justify-end gap-4">
+            <div class="dropdown-container  relative inline-block my-2">
+                @include('utils.limit-data-dropdown', ['route' => 'myorders'])
+            </div>
+        </div>
         <div class="intro-y box">
             <div id="vertical-form" class="p-5">
                 <div class="preview">
@@ -511,7 +520,9 @@
                                 </tbody>
                             </table>
                         </div>
-
+                        <div class="container m-2 flex justify-end">
+                            {{ $orders->appends(['limit' => session('limit'), 'page' => session('page')])->links() }}
+                        </div>
 
 
                     </div>
@@ -526,7 +537,27 @@
 
 
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.6.0.js"
+    integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script> --}}
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.4/b-2.3.6/b-html5-2.3.6/datatables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+    <!-- HTML5 and print buttons -->
+    <!-- Buttons -->
 
+    <script type="text/javascript" language="javascript"
+        src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
     <script>
         $(document).on('click', '.btn.btn-success', function() {
             var orderId = $(this).data('tw-target').replace('#track-modal-preview', '');
@@ -535,5 +566,25 @@
                 $('.intro-y.box.py-10.mt-5').html(data);
             });
         });
+        var table = $('#myTable').DataTable({
+            dom: 'Brtip',
+            buttons: [{
+                    extend: 'csv',
+                    exportOptions: {
+                        columns: ':gt(1)'
+                    }
+                },
+                {
+                    extend: 'excel',
+                    exportOptions: {
+                        columns: ':gt(1)'
+                    }
+                },
+            ],
+            ordering: true,
+            info: false,
+            paging: false,
+        });
     </script>
+    <script src="{{ asset('src/pagination-script.js') }}"></script>
 @endsection

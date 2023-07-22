@@ -107,7 +107,10 @@ Route::get('email-verification-notice', function () {
     return view('auth.verify-email');
 })->name('email-verification-notice');
 
-
+Route::get('/test-session', function (Illuminate\Http\Request $request) {
+    $request->session()->put('key', 'value');
+    dd($request->session()->all());
+});
 Route::get('/email/verify-contractor', function () {
     // dd("comes");
     return view('auth.verify-email');
@@ -124,6 +127,8 @@ Route::get('/email/verify-contractor', function () {
 //     dd("??");
 //     return redirect('/home');
 // })->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/update-limit', 'PaginationController@updateLimit');
 
 Route::post('/email/verification-notification', function (Request $request) {
     if ($request->user()) {
@@ -255,7 +260,7 @@ Route::group(['middleware' => ['auth:contractor', 'contractor.verified']], funct
 
 });
 
-Route::group(['middleware' => ['auth:admin']], function () {
+Route::group(['middleware' => ['auth:admin','web']], function () {
     Route::get('admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('admin/pending', [AdminController::class, 'pendingOrders'])->name('admin.pending');
     Route::get('admin/paidOrders', [AdminController::class, 'paidOrders'])->name('admin.paidOrders');

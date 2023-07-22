@@ -14,7 +14,11 @@
                 Interpretation Orders
             </h2>
         </div>
-
+        <div class="flex justify-end gap-4">
+            <div class="dropdown-container  relative inline-block my-2">
+                @include('utils.limit-data-dropdown', ['route' => 'myinterpretations'])
+            </div>
+        </div>
         <div class="intro-y box">
             <div id="vertical-form" class="p-5">
                 <div class="preview">
@@ -90,10 +94,10 @@
 
                                                     @if (Auth::user()->role_id == 2 || Auth::user()->role_id == 0)
                                                         <div class="text-center mb-2 mr-1">
-                                                            <a href="{{
-                                                                $interpretation->is_cancelled == 1
-                                                                ? 'javascript:void(0)' : route('admin.interpretation.edit', $interpretation->id) }}"
-                                                                class="{{$interpretation->is_cancelled == 1 ? 'btn btn-disabled disabled-link' : 'btn btn-warning'}}"><svg
+                                                            <a href="{{ $interpretation->is_cancelled == 1
+                                                                ? 'javascript:void(0)'
+                                                                : route('user.interpretation.edit', $interpretation->id) }}"
+                                                                class="{{ $interpretation->is_cancelled == 1 ? 'btn btn-disabled disabled-link' : 'btn btn-warning' }}"><svg
                                                                     class="w-5 h-5 text-black mx-auto"
                                                                     xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                     viewBox="0 0 24 24" stroke-width="1.5"
@@ -156,17 +160,14 @@
 
                                                     @if ($interpretation->interpreter_id == null)
                                                         <div class="text-center mb-2 mr-1">
-                                                            <form action="{{ 
-                                                                 $interpretation->is_cancelled == 1
-                                                                ? 'javascript:void(0)' :
-                                                                route('cancelInterpretation') }}"
+                                                            <form
+                                                                action="{{ $interpretation->is_cancelled == 1 ? 'javascript:void(0)' : route('cancelInterpretation') }}"
                                                                 method="POST">
                                                                 @csrf
                                                                 <input type="hidden" name="interpretation_id"
                                                                     value="{{ $interpretation->id }}">
-                                                                <button type="submit" class=" {{
-                                                                $interpretation->is_cancelled == 1 ? 'btn btn-disabled disabled-link' :
-                                                                'btn bg-red-500 btn-danger'}}">
+                                                                <button type="submit"
+                                                                    class=" {{ $interpretation->is_cancelled == 1 ? 'btn btn-disabled disabled-link' : 'btn bg-red-500 btn-danger' }}">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                         viewBox="0 0 24 24" stroke-width="2.5"
                                                                         stroke="currentColor" class="w-5 h-5">
@@ -452,7 +453,9 @@
                                 </tbody>
                             </table>
                         </div>
-
+                           <div class="container m-2 flex justify-end">
+                            {{ $interpretations->appends(['limit' => session('limit'), 'page' => session('page')])->links() }}
+                        </div>
 
 
                     </div>
@@ -496,9 +499,9 @@
                     }
                 },
             ],
-            ordering: false,
+            ordering: true,
             info: true,
-            paging: true,
+            paging: false,
             pageLength: 10,
         });
         $(document).on('click', '.btn.btn-success', function() {
@@ -509,4 +512,5 @@
             });
         });
     </script>
+        <script src="{{ asset('src/pagination-script.js') }}"></script>
 @endsection

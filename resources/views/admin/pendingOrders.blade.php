@@ -68,7 +68,7 @@
     @endif
     <div class="flex justify-end gap-4">
         <div class="dropdown-container  relative inline-block my-2">
-            @include('utils.limit-data-dropdown',['route'=>'admin.pending'])
+            @include('utils.limit-data-dropdown', ['route' => 'admin.pending'])
         </div>
         <div class="dropdown-container relative inline-block my-2">
             <button id="dropdownBgHoverButton" data-dropdown-toggle="dropdownBgHover"
@@ -1057,7 +1057,7 @@
 
                     </div>
                     <div class="container m-2 flex justify-end">
-                        {{ $pendingOrders->appends(['limit' => $recordsPerPage])->links() }}
+                        {{ $pendingOrders->appends(['limit' => session('limit'), 'page' => session('page')])->links() }}
                     </div>
                 </div>
             </div>
@@ -1105,7 +1105,7 @@
             ],
             scrollX: true,
             scrollCollapse: true,
-            ordering: false,
+            ordering: true,
             info: false,
             paging: false,
             lengthChange: false,
@@ -1263,9 +1263,5 @@
             }, 500); // delay of 500ms
         });
     </script>
-    <script>
-        document.getElementById('recordsPerPage').addEventListener('change', function() {
-            document.getElementById('recordsForm').submit();
-        });
-    </script>
+<script src="{{asset('src/pagination-script.js')}}"></script>
 @endsection

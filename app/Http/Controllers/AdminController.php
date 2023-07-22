@@ -119,7 +119,7 @@ class AdminController extends Controller
                 LogActionsEnum::ZEROTRANSLATIONSTATUS
             );
 
-            return redirect()->route('admin.pending');
+            return redirect()->route('admin.pending', ['page' => session('page'), 'limit' => session('limit')]);
         } else {
 
             $contractorOrder = new ContractorOrder();
@@ -163,7 +163,7 @@ class AdminController extends Controller
             // foreach ($admins as $admin) {
             // Mail::to($admin->email)->send(new NotifyAdminTranslationSubmissionContractor($contractorName, $contractorOrder, $order));
             // }
-            return redirect()->route('admin.pending');
+            return redirect()->route('admin.pending', ['page' => session('page'), 'limit' => session('limit')]);
         }
     }
 
@@ -247,7 +247,7 @@ class AdminController extends Controller
 
         // $contractor = $proofReaderOrders->contractor;
         // $contractorName = $contractor->name;
-        return redirect()->route('admin.pending');
+        return redirect()->route('admin.pending', ['page' => session('page'), 'limit' => session('limit')]);
 
         // $admin = User::where('role', 'admin')->first();
 
@@ -294,7 +294,7 @@ class AdminController extends Controller
         $order->save();
         // dd($order);
 
-        return redirect()->route('admin.pending');
+        return redirect()->route('admin.pending', ['page' => session('page'), 'limit' => session('limit')]);
     }
 
     public function viewContractor($id)
@@ -570,10 +570,10 @@ class AdminController extends Controller
                 $contractorInterpretation->save();
             }
             // dd($oldInt,$interpretation);
-            return redirect()->route('admin.ongoingInterpretations')->with('success', 'Interpretation updated successfully.');
+            return redirect()->route('admin.ongoingInterpretations', ['page' => session('page'), 'limit' => session('limit')])->with('success', 'Interpretation updated successfully.');
         }
 
-        return redirect()->route('admin.ongoingInterpretations')->with('error', 'Interpretation not found.');
+        return redirect()->route('admin.ongoingInterpretations',['page' => session('page'), 'limit' => session('limit')])->with('error', 'Interpretation not found.');
     }
 
     public function updateContractor(Request $request)
@@ -902,7 +902,7 @@ class AdminController extends Controller
             Mail::to('webpage@flowtranslate.com')->send(new AdminNewInterpretation($user, $interpretation, "Flow Translate - New Interpretation Request", env("ADMIN_EMAIL")));
             Mail::to($user->email)->send(new UserNewInterpretation($user, $interpretation, "Flow Translate - Your Interpretation Request", env("ADMIN_EMAIL")));
         }
-        return redirect()->route('admin.ongoingInterpretations')
+        return redirect()->route('admin.ongoingInterpretations', ['page' => session('page'), 'limit' => session('limit')])
             ->with('message', 'Interpretation request submitted successfully.');
     }
 
@@ -1032,7 +1032,7 @@ class AdminController extends Controller
                 Mail::mailer('clients')->to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order, "Flow Translate - New Order Created", env("ADMIN_EMAIL")));
             }
 
-            return redirect()->route('admin.pending')->with('message', 'Translation Order placed successfully!');
+            return redirect()->route('admin.pending', ['page' => session('page'), 'limit' => session('limit')])->with('message', 'Translation Order placed successfully!');
         }
 
         return redirect()->back()->with('status', 'Attach Files!');
@@ -1232,7 +1232,7 @@ class AdminController extends Controller
 
         Mail::to($contractor->email)->send(new InformContractorOfRequest($contractorInterpretation));
 
-        return redirect()->route('admin.ongoingInterpretations')->with('success', 'Interpretation assigned successfully!');
+        return redirect()->route('admin.ongoingInterpretations', ['page' => session('page'), 'limit' => session('limit')])->with('success', 'Interpretation assigned successfully!');
     }
 
     public function getContractorRate(Request $request)
@@ -1401,7 +1401,7 @@ class AdminController extends Controller
         );
         // Send the email to the user
         Mail::to($order->user->email)->send(new OrderQuoteSent($order));
-        return redirect()->route('admin.pending')->with('message', 'Quote has been sent successfully');
+        return redirect()->route('admin.pending', ['page' => session('page'), 'limit' => session('limit')])->with('message', 'Quote has been sent successfully');
     }
 
 
@@ -1442,7 +1442,7 @@ class AdminController extends Controller
         // Send the email to the user
         Mail::to($interpretation->user->email)->send(new QuoteSent($interpretation));
 
-        return redirect()->route('admin.ongoingInterpretations')->with('message', 'Quote has been sent successfully');
+        return redirect()->route('admin.ongoingInterpretations', ['page' => session('page'), 'limit' => session('limit')])->with('message', 'Quote has been sent successfully');
     }
 
 
@@ -1484,7 +1484,7 @@ class AdminController extends Controller
         // $data = $request->all();
         $contractor = Contractor::where('id', $contractorOrder['contractor_id'])->firstOrFail();
         Mail::to($contractor->email)->send(new EmailContractor($contractorOrder));
-        return redirect()->route('admin.pending');
+        return redirect()->route('admin.pending', ['page' => session('page'), 'limit' => session('limit')]);
     }
 
     public function viewInvoice($id)
@@ -1499,7 +1499,7 @@ class AdminController extends Controller
         $skip = ($page - 1) * $recordsPerPage;
 
         $pendingOrders = Order::orderByDesc('id')->skip($skip)->paginate($recordsPerPage);
-        return view('admin.pendingOrders', compact('pendingOrders', 'recordsPerPage'));
+        return view('admin.pendingOrders', compact('pendingOrders', 'recordsPerPage'))->with(['page' => session('page'), 'limit' => session('limit')]);
     }
 
     public function viewAssignProofReader($orderID)
@@ -1536,7 +1536,7 @@ class AdminController extends Controller
         $contractor = Contractor::where('id', $proofReaderOrder['contractor_id'])->firstOrFail();
 
         Mail::to($contractor->email)->send(new mailToProofReader($order, $proofReaderOrder, 'New Request! | Proof Read ', "webpage@flowtranslate.com"));
-        return redirect()->route('admin.pending');
+        return redirect()->route('admin.pending', ['page' => session('page'), 'limit' => session('limit')]);
     }
 
     public function paidOrders()
@@ -1753,7 +1753,7 @@ class AdminController extends Controller
             Mail::mailer('clients')->to($order->user->email)->send(new paymentApproved("Flow Translate - Payment Approved", env("ADMIN_EMAIL")));
         }
 
-        return redirect()->route('admin.pending');
+        return redirect()->route('admin.pending', ['page' => session('page'), 'limit' => session('limit')]);
     }
 
 
@@ -1770,7 +1770,7 @@ class AdminController extends Controller
         Mail::mailer('clients')->to($order->user->email)->send(new paymentRejected("Flow Translate - Payment Rejected", "info@flowtranslate.com"));
 
 
-        return redirect()->route('admin.pending');
+        return redirect()->route('admin.pending', ['page' => session('page'), 'limit' => session('limit')]);
     }
 
     public function destroy($id)
@@ -1851,7 +1851,7 @@ class AdminController extends Controller
 
         Mail::mailer('webpage')->to($translatorEmail)->send(new orderToTranslator($order, $zipName, $emailTitle, "webpage@flowtranslate.com"));
 
-        return redirect()->route('admin.pending');
+        return redirect()->route('admin.pending', ['page' => session('page'), 'limit' => session('limit')]);
 
 
         // $id = $request->input('user_id');
@@ -2226,7 +2226,7 @@ class AdminController extends Controller
             Mail::mailer('clients')->to($email)->send(new mailOfCompletion($order, $zipName2, $emailTitle, env("ADMIN_EMAIL")));
         }
         //Send Invoice
-        return redirect()->route('admin.pending');
+        return redirect()->route('admin.pending', ['page' => session('page'), 'limit' => session('limit')]);
     }
 
     // Mail to User for Completion 🙌
@@ -2366,7 +2366,7 @@ class AdminController extends Controller
 
         // Mail::mailer('clients')->to($userMail)->send(new invoiceSent($user, $order, $doesInvoiceExist[0], "Flow Translate - New Invoice", "noiznixon98@gmail.com"));
         // Mail::to($email)->send(new mailOfCompletion($order, $zipName2));
-        return redirect()->route('admin.pending');
+        return redirect()->route('admin.pending', ['page' => session('page'), 'limit' => session('limit')]);
     }
 
     public function show($id)
@@ -2410,10 +2410,13 @@ class AdminController extends Controller
         return view('admin.viewMessages', compact('messages'));
     }
 
-    public function ongoingInterpretations()
+    public function ongoingInterpretations(Request $request)
     {
-        $interpretations = Interpretation::orderByDesc('id')->paginate(10);
-        return view('admin.ongoingInterpretations', compact('interpretations'));
+        $recordsPerPage = $request->query('limit', 10); // Default to 10 if not provided
+        $page = $request->input('page', 1); // Default to 1 if not provided
+        $skip = ($page - 1) * $recordsPerPage;
+        $interpretations = Interpretation::orderByDesc('id')->skip($skip)->paginate($recordsPerPage);
+        return view('admin.ongoingInterpretations', compact('interpretations', 'recordsPerPage'))->with(['page' => session('page'), 'limit' => session('limit')]);
     }
 
     public function viewCompletedInterpretations()

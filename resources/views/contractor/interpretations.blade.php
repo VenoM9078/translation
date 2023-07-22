@@ -51,6 +51,11 @@
             </div>
         @endif
         <div class="flex justify-end gap-4">
+            <div class="flex justify-end gap-4">
+                <div class="dropdown-container  relative inline-block my-2">
+                    @include('utils.limit-data-dropdown', ['route' => 'contractor.interpretations'])
+                </div>
+            </div>
             <div class="dropdown-container relative inline-block my-2">
                 <button id="dropdownBgHoverButton" data-dropdown-toggle="dropdownBgHover"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -145,7 +150,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($interpretations as $key=> $interpretation)
+                                    @foreach ($interpretations as $key => $interpretation)
                                         <tr
                                             data-status="{{ $interpretation->interpretation->interpreter_completed == 1 ? 'completed' : 'pending' }}">
                                             <td class="whitespace-nowrap">{{ $interpretation->interpretation->worknumber }}
@@ -211,14 +216,15 @@
                                                 </div>
                                             </td>
 
-                                                    <!-- BEGIN: Modal Content -->
-                                            <div id="offer-modal-accept-{{ $key }}" class="modal" tabindex="-1"
-                                                aria-hidden="true">
+                                            <!-- BEGIN: Modal Content -->
+                                            <div id="offer-modal-accept-{{ $key }}" class="modal"
+                                                tabindex="-1" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-body p-0">
-                                                            <div class="p-5 text-center"><svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                            <div class="p-5 text-center"><svg
+                                                                    xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                    height="24" viewBox="0 0 24 24" fill="none"
                                                                     stroke="currentColor" stroke-width="2"
                                                                     stroke-linecap="round" stroke-linejoin="round"
                                                                     icon-name="check-circle" data-lucide="check-circle"
@@ -227,12 +233,13 @@
                                                                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                                                                 </svg>
                                                                 <div class="text-3xl mt-5">Are you sure?</div>
-                                                                <div class="text-slate-500 mt-2">Your action will advance this
+                                                                <div class="text-slate-500 mt-2">Your action will advance
+                                                                    this
                                                                     request and notify the Admin of your agreement!</div>
                                                             </div>
                                                             <div class="px-5 pb-8 text-center inline-flex items-stretch"
                                                                 style="text-align: center;margin: auto !important;width: 100%;position: relative;justify-content: center;">
-                                                                <a href="{{route('accept.request', $interpretation->id)}}"
+                                                                <a href="{{ route('accept.request', $interpretation->id) }}"
                                                                     class="btn btn-success text-white w-24 mr-1 self-center">
                                                                     I'm Sure</a>
                                                                 <button type="button" data-tw-dismiss="modal"
@@ -244,8 +251,8 @@
                                             </div> <!-- END: Modal Content -->
 
                                             <!-- BEGIN: Modal Content -->
-                                            <div id="offer-modal-reject-{{ $key }}" class="modal" tabindex="-1"
-                                                aria-hidden="true">
+                                            <div id="offer-modal-reject-{{ $key }}" class="modal"
+                                                tabindex="-1" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-body p-0">
@@ -258,7 +265,7 @@
                                                             </div>
                                                             <div class="px-5 pb-8 text-center inline-flex items-stretch"
                                                                 style="text-align: center;margin: auto !important;width: 100%;position: relative;justify-content: center;">
-                                                                <a href="{{route('deny.request', $interpretation->id)}}"
+                                                                <a href="{{ route('deny.request', $interpretation->id) }}"
                                                                     class="btn btn-danger w-24 mr-1 self-center">
                                                                     I'm Sure</a>
                                                                 <button type="button" data-tw-dismiss="modal"
@@ -272,6 +279,10 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                        </div>
+                        interpretations
+                        <div class="container m-2 flex justify-end">
+                            {{ $interpretations->appends(['limit' => session('limit'), 'page' => session('page')])->links() }}
                         </div>
                     </div>
                 </div>
@@ -295,9 +306,10 @@
         <script>
             $(document).ready(function() {
                 var table = $('#interpretationsTable').DataTable({
+                    dom: 'Brtip',
                     ordering: true,
                     info: true,
-                    paging: true
+                    paging: false
                 });
 
                 $.fn.dataTable.ext.search.push(
@@ -400,4 +412,5 @@
                 });
             });
     </script> --}}
+        <script src="{{ asset('src/pagination-script.js') }}"></script>
     @endsection

@@ -78,11 +78,14 @@ class UserController extends Controller
         $interpretation = Interpretation::where('id', $id)->firstOrFail();
         return view('user.copy-interpretation', compact('interpretation'));
     }
-    public function myinterpretations()
+    public function myinterpretations(Request $request)
     {
         $user = Auth::user();
+        $recordsPerPage = $request->query('limit', 10); // Default to 10 if not provided
+        $page = $request->input('page', 1); // Default to 1 if not provided
+        $skip = ($page - 1) * $recordsPerPage;
         if ($user->role_id == 0 || $user->role_id == 1) {
-            $interpretations = Interpretation::where('user_id', $user->id)->orderByDesc('created_at')->get();
+            $interpretations = Interpretation::where('user_id', $user->id)->orderByDesc('created_at')->skip($skip)->paginate($recordsPerPage);
         } else {
             $members = Auth::user()->institute_managed->members;
             $user_ids = [];
@@ -92,10 +95,10 @@ class UserController extends Controller
                 // }
             }
             $user_ids = array_unique($user_ids);
-            $interpretations = Interpretation::whereIn('user_id', $user_ids)->get();
+            $interpretations = Interpretation::whereIn('user_id', $user_ids)->skip($skip)->paginate($recordsPerPage);
         }
 
-        return view('user.viewMyInterpretations', compact('user', 'interpretations'));
+        return view('user.viewMyInterpretations', compact('user', 'interpretations','recordsPerPage'))->with(['page' => session('page'), 'limit' => session('limit')]);
     }
     /**
      * Show the form for creating a new resource.
@@ -363,7 +366,7 @@ class UserController extends Controller
             // Mail::to('webpage@flowtranslate.com')->send(new adminOrderCreated($user, $order));
 
 
-            return redirect()->route('myorders')->with('message', 'Translation Order placed successfully!');
+            return redirect()->route('myorders', ['page' => session('page'), 'limit' => session('limit')])->with('message', 'Translation Order placed successfully!');
         }
         return redirect()->back()->with('status', 'Attach Files!');
         // redirect()->back();
@@ -527,10 +530,10 @@ class UserController extends Controller
             // Validation can be added as per your requirements.
             $interpretation->update($request->all());
             // dd($oldInt,$interpretation);
-            return redirect()->route('myinterpretations')->with('success', 'Interpretation updated successfully.');
+            return redirect()->route('myinterpretations', ['page' => session('page'), 'limit' => session('limit')])->with('success', 'Interpretation updated successfully.');
         }
 
-        return redirect()->route('myinterpretations')->with('error', 'Interpretation not found.');
+        return redirect()->route('myinterpretations',['page' => session('page'), 'limit' => session('limit')])->with('error', 'Interpretation not found.');
     }
 
     public function editOrder(Request $request)
@@ -554,7 +557,7 @@ class UserController extends Controller
         $order->save();
         // dd($order);
 
-        return redirect()->route('myorders');
+        return redirect()->route('myorders', ['page' => session('page'), 'limit' => session('limit')]);
     }
 
     public function viewEditOrder($orderID)
@@ -614,7 +617,7 @@ class UserController extends Controller
             Mail::to($admin->email)->send(new NotifyAdminQuote($order, 1, $fromEmail));
         }
         Mail::to($order->user->email)->send(new OrderQuoteSent($order));
-        return redirect()->route('myorders');
+        return redirect()->route('myorders', ['page' => session('page'), 'limit' => session('limit')]);
     }
 
     public function approveIntQuote($id)
@@ -655,7 +658,7 @@ class UserController extends Controller
             Mail::to($admin->email)->send(new NotifyAdminQuote($interpretation, 1, $fromEmail));
         }
         // Mail::to($interpretation->user->email)->send(new OrderQuoteSent($interpretation));
-        return redirect()->route('myorders');
+        return redirect()->route('myorders', ['page' => session('page'), 'limit' => session('limit')]);
     }
 
     public function disapproveQuote($id)
@@ -697,7 +700,7 @@ class UserController extends Controller
             Mail::to($admin->email)->send(new NotifyAdminQuote($order, 0, $fromEmail));
         }
         Mail::to($order->user->email)->send(new OrderQuoteSent($order));
-        return redirect()->route('myorders');
+        return redirect()->route('myorders', ['page' => session('page'), 'limit' => session('limit')]);
     }
 
     public function disapproveIntQuote($id)
@@ -738,7 +741,7 @@ class UserController extends Controller
             Mail::to($admin->email)->send(new NotifyAdminQuote($interpretation, 1, $fromEmail));
         }
         // Mail::to($interpretation->user->email)->send(new OrderQuoteSent($interpretation));
-        return redirect()->route('myorders');
+        return redirect()->route('myorders', ['page' => session('page'), 'limit' => session('limit')]);
     }
 
     public function downloadInterpretationQuoteFile($id)
@@ -765,14 +768,17 @@ class UserController extends Controller
     }
 
 
-    public function myorders()
+    public function myorders(Request $request)
     {
         $user = Auth::user();
+        $recordsPerPage = $request->query('limit', 10); // Default to 10 if not provided
+        $page = $request->input('page', 1); // Default to 1 if not provided
+        $skip = ($page - 1) * $recordsPerPage;
         if ($user->role_id == 0 || $user->role_id == 1) {
 
-            $orders = Order::where('user_id', $user->id)->orderByDesc('created_at')->get();
+            $orders = Order::where('user_id', $user->id)->orderByDesc('created_at')->skip($skip)->paginate($recordsPerPage);
             $interpretations = Interpretation::where('user_id', $user->id)->orderByDesc('created_at')->get();
-            return view('user.myorders', compact('user', 'orders'));
+            return view('user.myorders', compact('user', 'orders'))->with(['page' => session('page'), 'limit' => session('limit')]);
         } else if ($user->role_id == 2) {
             // Get all the institutes managed by this user
             $institutes = Institute::where('managed_by', $user->id)->get();
@@ -787,9 +793,12 @@ class UserController extends Controller
             $user_ids = array_unique($user_ids); // Remove duplicates
             // dd($user_ids);
             // Get all orders made by these users
-            $orders = Order::whereIn('user_id', $user_ids)->orderByDesc('created_at')->get();
+        
+
+            $orders = Order::whereIn('user_id', $user_ids)->orderByDesc('created_at')->skip($skip)->paginate($recordsPerPage);
+            // $orders = Order::whereIn('user_id', $user_ids)->orderByDesc('created_at')->get();
             // dd($orders);
-            return view('user.myorders', compact('user', 'orders'));
+            return view('user.myorders', compact('user', 'orders'))->with(['page' => session('page'), 'limit' => session('limit')]);
         }
     }
 
@@ -1034,7 +1043,7 @@ class UserController extends Controller
 
         $orderUpdate = Order::where('id', $order_id)->update(['is_evidence' => 1, 'filename' => $zipName2]);
 
-        return redirect()->route('myorders');
+        return redirect()->route('myorders', ['page' => session('page'), 'limit' => session('limit')]);
     }
 
     public function downloadTranslatedForUser($id)
@@ -1264,7 +1273,7 @@ class UserController extends Controller
 
         Feedback::create($validate);
 
-        return redirect()->route('myorders')->with('message', 'Thank you for submitting your feedback!');
+        return redirect()->route('myorders', ['page' => session('page'), 'limit' => session('limit')])->with('message', 'Thank you for submitting your feedback!');
     }
 
 

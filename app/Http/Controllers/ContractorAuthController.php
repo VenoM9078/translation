@@ -117,7 +117,7 @@ class ContractorAuthController extends Controller
 
     public function reportSubmission(Request $request)
     {
-        $interpretationReport = ContractorInterpretation::where('id',$request->contractor_interpretation_id)->first();
+        $interpretationReport = ContractorInterpretation::where('id', $request->contractor_interpretation_id)->first();
         $interpretationReport->feedback = $request->feedback;
         $interpretationReport->start_time_decided = $request->start_time_decided;
         $interpretationReport->end_time_decided = $request->end_time_decided;
@@ -319,16 +319,16 @@ class ContractorAuthController extends Controller
             'password' => 'required|string|min:6',
             'password2' => 'required|string|min:6|same:password',
         ], [
-            'name.required' => 'The name field is required.',
-            'name.max' => 'The name may not be greater than 255 characters.',
-            'email.required' => 'The email field is required.',
-            'email.max' => 'The email may not be greater than 255 characters.',
-            'password.required' => 'The password field is required.',
-            'password.min' => 'The password must be at least 6 characters.',
-            'password2.required' => 'The confirmation password field is required.',
-            'password2.same' => 'The confirmation password does not match.',
-            'password2.min' => 'The confirmation password must be at least 6 characters.',
-        ]);
+                'name.required' => 'The name field is required.',
+                'name.max' => 'The name may not be greater than 255 characters.',
+                'email.required' => 'The email field is required.',
+                'email.max' => 'The email may not be greater than 255 characters.',
+                'password.required' => 'The password field is required.',
+                'password.min' => 'The password must be at least 6 characters.',
+                'password2.required' => 'The confirmation password field is required.',
+                'password2.same' => 'The confirmation password does not match.',
+                'password2.min' => 'The confirmation password must be at least 6 characters.',
+            ]);
 
 
         $validated['password'] = bcrypt($validated['password']);
@@ -529,12 +529,16 @@ class ContractorAuthController extends Controller
     }
 
     //completedTranslations create method
-    public function completedTranslations()
+    public function completedTranslations(Request $request)
     {
+        $recordsPerPage = $request->query('limit', 10); // Default to 10 if not provided
+        $page = $request->input('page', 1); // Default to 1 if not provided
+        $skip = ($page - 1) * $recordsPerPage;
+
         $translations = ContractorOrder::where('contractor_id', auth()->guard('contractor')->user()->id)
             ->orderBy('created_at', 'desc')
-            ->get();
-        return view('contractor.completed-translations', compact('translations'));
+            ->skip($skip)->paginate($recordsPerPage);
+        return view('contractor.completed-translations', compact('translations', 'recordsPerPage'))->with(['page' => session('page'), 'limit' => session('limit')]);
     }
 
     public function acceptTranslation($contractor_order_id)
@@ -565,7 +569,7 @@ class ContractorAuthController extends Controller
         foreach ($admins as $admin) {
             Mail::to($admin->email)->send(new ContractorNotifyAdmin($contractorName, $contractorOrder, true));
         }
-        return redirect()->route('contractor.translations.completed');
+        return redirect()->route('contractor.translations.completed', ['page' => session('page'), 'limit' => session('limit')]);
     }
 
     //create function for downloading proofread file
@@ -763,7 +767,7 @@ class ContractorAuthController extends Controller
         foreach ($admins as $admin) {
             Mail::to($admin->email)->send(new NotifyAdminTranslationSubmissionContractor($contractorName, $contractorOrder, $order));
         }
-        return redirect()->route('contractor.translations.completed');
+        return redirect()->route('contractor.translations.completed', ['page' => session('page'), 'limit' => session('limit')]);
     }
 
 
@@ -904,15 +908,17 @@ class ContractorAuthController extends Controller
         return view('contractor.proof-read-completed', compact('proofReadData'));
     }
 
-    public function pendingInterpretations()
+    public function pendingInterpretations(Request $request)
     {
         $contractorId = Auth::id();
-
+        $recordsPerPage = $request->query('limit', 10); // Default to 10 if not provided
+        $page = $request->input('page', 1); // Default to 1 if not provided
+        $skip = ($page - 1) * $recordsPerPage;
         $interpretations = ContractorInterpretation::where([
             ['contractor_id', '=', $contractorId],
-        ])->get();
+        ])->skip($skip)->paginate($recordsPerPage);
 
-        return view('contractor.interpretations', compact('interpretations'));
+        return view('contractor.interpretations', compact('interpretations'))->with(['page' => session('page'), 'limit' => session('limit')]);
     }
 
     public function deleteInterpretation($id)
@@ -1034,7 +1040,7 @@ class ContractorAuthController extends Controller
 
         // Mail::to($admin->email)->send(new NotifyAdminProofReadSubmissionContractor($contractorName, $contractorOrder));
 
-        return redirect()->route('contractor.completed-proof-read');
+        return redirect()->route('contractor.completed-proof-read', ['page' => session('page'), 'limit' => session('limit')]);
     }
 
     public function logout(Request $request)
