@@ -138,12 +138,12 @@
                                         <th class="whitespace-nowrap">ProofRead Type</th>
                                         <th class="whitespace-nowrap">P. Rate($/Wd or $/Pg)</th>
                                         <th class="whitespace-nowrap">P. Adjust($)</th>
+                                        <th class="whitespace-nowrap">P. Unit</th>
                                         <th class="whitespace-nowrap">P. Fee</th>
                                         <th class="whitespace-nowrap">P. Adjust Note</th>
                                         <th class="whitespace-nowrap">P. Paid</th>
                                         <th class="whitespace-nowrap">Order By</th>
                                         <th class="whitespace-nowrap">Order Status</th>
-                                        <th class="whitespace-nowrap">User Email</th>
                                         <th class="whitespace-nowrap">Total Payment</th>
                                         <th class="whitespace-nowrap">Created At</th>
                                         <th class="whitespace-nowrap">Possible Action</th>
@@ -206,6 +206,9 @@
                                                 ${{ $translation->contractor->proofreader_rate }}
                                             </td>
                                             <td class="whitespace-nowrap">${{ $translation->total_payment }}</td>
+                                            <td class="whitespace-nowrap">
+                                                {{ $translation->p_unit }}
+                                            </td>
                                             <td class="whitespace-nowrap">${{ $translation->rate }}</td>
                                             <td class="whitespace-nowrap">
                                                 <a href="javascript:;" data-tw-toggle="modal"
@@ -218,7 +221,6 @@
                                                 {{ $translation->proof_read_paid == 1 ? 'Yes' : 'No' }}</td>
                                             <td class="whitespace-nowrap">{{ $translation->order->user->name }}</td>
                                             <td class="whitespace-nowrap">{{ $translation->order->orderStatus }}</td>
-                                            <td class="whitespace-nowrap">{{ $translation->order->user->email }}</td>
                                             <td class="whitespace-nowrap">${{ $translation->total_payment }}</td>
                                             <td class="whitespace-nowrap">
                                                 {{ App\Helpers\HelperClass::convertDateToCurrentTimeZone($translation->created_at, request()->ip()) }}

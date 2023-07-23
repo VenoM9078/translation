@@ -453,6 +453,11 @@ class AdminController extends Controller
                 ]
             );
 
+            // Update translator default rate
+            $translator = Contractor::where('id', $request->contractor_id)->first();
+            $translator->translation_rate = $request->rate;
+            $translator->save();
+
             $order = Order::find($request->order_id);
             $order->translation_sent = 1;
             $order->save();
@@ -508,6 +513,10 @@ class AdminController extends Controller
                     'message' => $request->p_message
                 ]
             );
+            // Update proofreader default rate
+            $proofReader = Contractor::where('id',$request->p_contractor_id)->first();
+            $proofReader->proofreader_rate = $request->p_rate;
+            $proofReader->save();
             $order = Order::find($request->order_id);
 
             $order->proofread_sent = 1; //change status to 1 *asigned

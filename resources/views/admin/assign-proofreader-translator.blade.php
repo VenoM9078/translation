@@ -168,7 +168,7 @@
                                             @foreach ($contractors as $contractor)
                                                 <option value="{{ $contractor->id }}">{{ $contractor->name }} -
                                                     {{ $contractor->email }}
-                                                    (${{ $contractor->translation_rate }} / hour)
+                                                    (${{ $contractor->proofreader_rate }} / hour)
                                                 </option>
                                             @endforeach
                                         </select>
