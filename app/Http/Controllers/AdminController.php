@@ -58,6 +58,7 @@ use App\Models\User;
 use File;
 use Illuminate\Support\Facades\Hash;
 use Nette\Utils\Paginator;
+use Storage;
 use ZipArchive;
 
 class AdminController extends Controller
@@ -2169,6 +2170,14 @@ class AdminController extends Controller
 
 
                 $fileArr2[] = $path;
+            }
+
+            $zipName2 = 'completed_' . $order_id . '.zip';
+            $zipPath = public_path('translated/' . $zipName2);
+
+            // Delete the existing zip file if it exists
+            if (Storage::exists($zipPath)) {
+                Storage::delete($zipPath);
             }
 
             $zip2 = new ZipArchive;
