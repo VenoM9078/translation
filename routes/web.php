@@ -480,6 +480,12 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
     Route::post('user/proceed-to-pay-now', [UserController::class, 'proceedToPayNow'])->name('user.proceedToPayNow');
     Route::get('user/pay-anytime/{id}', [UserController::class, 'showPayAnyTimePage'])->name('user.showPayAnyTimePage');
 
+    Route::get('user/upgrade/institute-user/',[UserController::class,'viewUpgradeInstituteUser'])->name('user.show-inst-user-upgrade');
+    Route::post('user/upgrade/institute/user/submit',[UserController::class,'upgradeInstituteUser'])->name('user.upgrade-inst-user');
+
+    // Admin
+    Route::get('user/upgrade/institute-admin/', [UserController::class, 'viewUpgradeInstituteAdmin'])->name('user.show-inst-admin-upgrade');
+    Route::post('user/upgrade/institute/admin/submit', [UserController::class, 'upgradeInstituteAdmin'])->name('user.upgrade-inst-admin');
     // Pay Any Time for Interpretation
     Route::post('user/interpretation/proceed-to-pay-now', [UserController::class, 'proceedToPayNowInterpretation'])->name('user.proceedToPayNowInterpretation');
     Route::get('user/interpretation/pay-anytime/{id}', [UserController::class, 'showPayAnyTimePageInterpretation'])->name('user.showPayAnyTimePageInterpretation');

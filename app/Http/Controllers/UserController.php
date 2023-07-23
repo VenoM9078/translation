@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\InstituteRequestEnum;
 use App\Enums\LogActionsEnum;
 use App\Enums\OrderStatusEnum;
 use App\Helpers\HelperClass;
@@ -14,6 +15,7 @@ use App\Mail\InstituteRequestAccepted;
 use App\Mail\InstituteRequestDeclined;
 use App\Mail\NotifyAdminQuote;
 use App\Mail\OrderQuoteSent;
+use App\Mail\UserRequestMail;
 use App\Models\Admin;
 use App\Models\Contractor;
 use App\Models\ContractorOrder;
@@ -56,9 +58,83 @@ class UserController extends Controller
     {
         $email = Auth::user()->email;
         $domain = substr(strrchr($email, "@"), 1);
-        $instituteAdmin = User::where('email', 'like', '%' . $domain)->where('role_id',2)->first();
-        return view('user.dashboard',compact('instituteAdmin'));
+        $instituteAdmin = User::where('email', 'like', '%' . $domain)->where('role_id', 2)->first();
+        return view('user.dashboard', compact('instituteAdmin'));
     }
+    public function viewUpgradeInstituteUser()
+    {
+        return view('user.institute.upgrade-to-inst-user');
+    }
+
+    public function viewUpgradeInstituteAdmin()
+    {
+        return view('user.institute.upgrade-to-inst-admin');
+    }
+
+
+    public function upgradeInstituteAdmin(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'institute_name' => 'required|string|max:255',
+            'institute_passcode' => 'required|string|max:255',
+        ]);
+
+        // Get the domain of the currently logged in user
+        $userEmailDomain = substr(strrchr(Auth::user()->email, "@"), 1);
+
+        // Find institutes with the same passcode
+        $samePasscodeInstitutes = Institute::where('passcode', $request->institute_passcode)->get();
+
+        // Check if any of these institutes have a manager with the same email domain
+        foreach ($samePasscodeInstitutes as $institute) {
+            $manager = User::find($institute->managed_by);
+            $managerEmailDomain = substr(strrchr($manager->email, "@"), 1);
+
+            if ($managerEmailDomain === $userEmailDomain) {
+                return view('user.institute.upgrade-to-inst-admin')->with('error', 'This passcode is already in use by an institute with the same manager email domain.');
+            }
+        }
+
+        // Create the institute
+        $institute = Institute::create([
+            'name' => $request->institute_name,
+            'passcode' => $request->institute_passcode,
+            'managed_by' => Auth::user()->id,
+            'is_active' => InstituteRequestEnum::PENDING
+        ]);
+        return redirect()->route('user.index');
+        // return view('user.institute.upgrade-to-inst-admin')->withSuccess('Institute Request has been sent to FlowTranslate Admin');
+    }
+    public function upgradeInstituteUser(Request $request)
+    {
+        $passcode = $request->input('institute_passcode');
+
+        $institute = Institute::where('passcode', $passcode)->first();
+        if (!$institute) {
+            return view('user.institute.upgrade-to-inst-user')->with('error', 'Invalid passcode');
+        }
+
+        $manager = User::find($institute->managed_by);
+
+        $managerEmailDomain = substr(strrchr($manager->email, "@"), 1);
+        $userEmailDomain = substr(strrchr($request->user()->email, "@"), 1);
+
+        if ($managerEmailDomain !== $userEmailDomain) {
+            return view('user.institute.upgrade-to-inst-user')->with('error', 'Email domain does not match with the institute admin');
+        }
+
+        InstituteUserRequests::create([
+            'user_id' => $request->user()->id,
+            'institute_id' => $institute->id,
+        ]);
+
+        // Send an email to the institute manager about the new request
+        Mail::to($manager->email)->send(new UserRequestMail($request->user(), $institute));
+
+        return view('user.institute.upgrade-to-inst-user')->with('success', 'Request to upgrade has been submitted successfully');
+    }
+
 
     public function newOrder()
     {
@@ -101,7 +177,7 @@ class UserController extends Controller
             $interpretations = Interpretation::whereIn('user_id', $user_ids)->skip($skip)->paginate($recordsPerPage);
         }
 
-        return view('user.viewMyInterpretations', compact('user', 'interpretations','recordsPerPage'))->with(['page' => session('page'), 'limit' => session('limit')]);
+        return view('user.viewMyInterpretations', compact('user', 'interpretations', 'recordsPerPage'))->with(['page' => session('page'), 'limit' => session('limit')]);
     }
     /**
      * Show the form for creating a new resource.
@@ -431,8 +507,8 @@ class UserController extends Controller
         $order_id = $request->input('order_id');
         $amount = $request->input('amount');
         // dd($amount);
-        if($amount == null){
-            return redirect()->back()->with('error','Enter amount');
+        if ($amount == null) {
+            return redirect()->back()->with('error', 'Enter amount');
         }
         // Find the order with the given order_id
         $order = Order::find($order_id);
@@ -447,7 +523,7 @@ class UserController extends Controller
 
 
         // Redirect to a new page with the order passed to it
-        return view('user.paymentInvoice', compact('order','amount'));
+        return view('user.paymentInvoice', compact('order', 'amount'));
     }
 
 
@@ -536,7 +612,7 @@ class UserController extends Controller
             return redirect()->route('myinterpretations', ['page' => session('page'), 'limit' => session('limit')])->with('success', 'Interpretation updated successfully.');
         }
 
-        return redirect()->route('myinterpretations',['page' => session('page'), 'limit' => session('limit')])->with('error', 'Interpretation not found.');
+        return redirect()->route('myinterpretations', ['page' => session('page'), 'limit' => session('limit')])->with('error', 'Interpretation not found.');
     }
 
     public function editOrder(Request $request)
@@ -796,7 +872,7 @@ class UserController extends Controller
             $user_ids = array_unique($user_ids); // Remove duplicates
             // dd($user_ids);
             // Get all orders made by these users
-        
+
 
             $orders = Order::whereIn('user_id', $user_ids)->orderByDesc('created_at')->skip($skip)->paginate($recordsPerPage);
             // $orders = Order::whereIn('user_id', $user_ids)->orderByDesc('created_at')->get();
