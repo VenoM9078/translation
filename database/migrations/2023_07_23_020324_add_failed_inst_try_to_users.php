@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->integer('failed_inst_user')->default(0);
+            $table->integer('invalid_passcode_inst_user')->default(0);
         });
     }
 
@@ -27,6 +28,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('failed_inst_user');
+            // $table->dropColumn('invalid_passcode_inst_user');
         });
     }
 };

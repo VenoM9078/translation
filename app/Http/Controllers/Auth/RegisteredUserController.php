@@ -184,14 +184,22 @@ class RegisteredUserController extends Controller
             }
         } else if ($request->role_id == 1) {
             if (count($institute) < 1) {
-                return view('auth.register2', [
-                    'name' => $request->input('name'),
-                    'role_id' => 0,
-                    'email' => $request->input('email'),
-                    'password' => $request->input('password'),
-                    'role_id_sent' => $request->role_id,
-                    'user_id' => $request->user_id
-                ])->with('error', 'Institute does not exist!');
+                $userEmailDomain = substr(strrchr($request->email, "@"), 1);
+                $instituteAdmins = User::where('role_id',2)->get();
+                foreach($instituteAdmins as $instituteAdmin){
+                    $managerEmailDomain = substr(strrchr($instituteAdmin->email, "@"), 1);
+                    if($userEmailDomain == $managerEmailDomain){
+                        $user = User::where('id', $request->user_id)->first();
+                        $user->role_id = 0;
+                        $user->invalid_passcode_inst_user = 1;
+                        $user->save();
+                        // event(new Registered($user));
+
+                        Auth::login($user);
+                        return redirect()->route('user.index');
+                    }
+                }
+               
             } else {
                 $userBelongsToInstitute = false;
                 $userEmailDomain = substr(strrchr($request->email, "@"), 1);

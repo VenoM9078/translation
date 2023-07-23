@@ -30,6 +30,15 @@
                     administrator to set up one with Flow Translate. Now you are registered as individual user.</div>
             </div>
         @endif
+         @if (Auth::user()->role_id == 0 && Auth::user()->invalid_passcode_inst_user == 1)
+            <div class="alert alert-warning show mb-2" role="alert">
+                <div class="flex items-center">
+                    <div class="font-medium text-lg">Alert!</div>
+                    <div class="text-xs bg-white px-1 rounded-md text-slate-700 ml-auto">New</div>
+                </div>
+                <div class="mt-3">Your institute passcode is incorrect. To have access to your institute account, please contact  <b> {{$instituteAdmin->name}}  ({{$instituteAdmin->email}}) </b> to obtain your Institute Passcode. Now you are registered as individual user.</div>
+            </div>
+        @endif
         @if (count(Auth::user()->user_requests) > 0)
             <div class="alert alert-warning show mb-2" role="alert">
                 <div class="flex items-center">

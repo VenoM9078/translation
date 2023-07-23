@@ -54,7 +54,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('user.dashboard');
+        $email = Auth::user()->email;
+        $domain = substr(strrchr($email, "@"), 1);
+        $instituteAdmin = User::where('email', 'like', '%' . $domain)->where('role_id',2)->first();
+        return view('user.dashboard',compact('instituteAdmin'));
     }
 
     public function newOrder()
