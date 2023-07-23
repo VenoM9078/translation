@@ -193,12 +193,12 @@
                                             <td class="whitespace-nowrap">
                                                 @if ($translation->is_accepted == 1)
                                                     @if ($translation->file_name != null)
-                                                        Completed
+                                                        {{ \App\Enums\OrderStatusEnum::COMPLETEDORDERTEXT }}
                                                     @else
-                                                        On-Going
+                                                        {{ \App\Enums\OrderStatusEnum::ONGOINGORDERTEXT }}
                                                     @endif
                                                 @else
-                                                    ProofRead Order Not Accepted Yet
+                                                    {{ \App\Enums\OrderStatusEnum::NOTACCEPTEDORDERTEXT }}
                                                 @endif
                                             </td>
                                             <td class="whitespace-nowrap">{{ $translation->proofread_type }}</td>
@@ -386,7 +386,7 @@
                 scrollCollapse: true,
                 ordering: true,
                 info: true,
-                paging:false,
+                paging: false,
                 // paging: true,
                 fixedColumns: {
                     leftColumn: 1
@@ -396,9 +396,10 @@
             $.fn.dataTable.ext.search.push(
                 function(settings, data, dataIndex) {
                     var checkedStatuses = [];
-
+                    console.log("data[16]",data[8])
                     for (var key in OrderStatuses) {
                         var status = OrderStatuses[key];
+                        // console.log("order status", OrderStatuses);
                         var id = 'checkbox-status-' + status.toLowerCase().split(' ').join('-') + '-' + key;
                         var isChecked = $('#' + id).is(':checked');
 
@@ -407,7 +408,8 @@
                         }
                     }
 
-                    if (checkedStatuses.includes(data[16])) {
+                    if (checkedStatuses.includes(data[8])) {
+                        // console.log(checkedStatuses)
                         return true; // row should appear
                     } else {
                         return false; // row should not appear

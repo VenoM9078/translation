@@ -21,10 +21,10 @@
         <div class="block xl:grid grid-cols-2 gap-4">
             <!-- BEGIN: Login Info -->
             <div class="hidden xl:flex flex-col min-h-screen">
-               <a href="{{route('/')}}" class="-intro-x flex items-center pt-5">
+                <a href="{{ route('/') }}" class="-intro-x flex items-center pt-5">
                     <img class="w-6" src="{{ url('dist/images/logo.svg') }}">
                     <span class="text-white text-lg ml-3"> FlowTranslate Homepage </span>
-               </a>
+                </a>
                 <div class="my-auto">
                     <img class="-intro-x w-1/2 -mt-16" src="{{ url('dist/images/illustration.svg') }}">
                     <div class="-intro-x text-white font-medium text-4xl leading-tight mt-10">
@@ -47,15 +47,15 @@
                     <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">A few more clicks to sign in to your
                         account. Manage all your e-commerce accounts in one place</div>
                     @if ($errors->any())
-                    <div class="alert alert-danger mt-3 mb-3">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
+                        <div class="alert alert-danger mt-3 mb-3">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
                     @endif
-                    <form action="{{ route('register2') }}" method="POST">
+                    <form action="{{ route('register2') }}" id="registerForm" method="POST">
                         @csrf
                         @method('POST')
                         <div class="intro-x mt-8">
@@ -113,8 +113,8 @@
                                     </li>
                                 </ul>
                             </div>
-                            <input type="text" name="name" class="intro-x login__input form-control py-3 px-4 block"
-                                placeholder="Name">
+                            <input type="text" name="name"
+                                class="intro-x login__input form-control py-3 px-4 block" placeholder="Name">
                             <input type="email" name="email"
                                 class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="Email">
                             <input type="password" name="password"
@@ -129,8 +129,8 @@
                         </div>
 
                         <div class="flex mt-2 xl:mt-8 text-center xl:text-left">
-                            <button type="submit"
-                                class="btn btn-primary py-3 px-4 w-full xl:mr-3 align-top">Register</button>
+                            <button type="submit" class="btn btn-primary py-3 px-4 w-full xl:mr-3 align-top"
+                                id="registerButton">Register</button>
                             <a href="{{ route('login') }}"
                                 class="btn btn-outline-secondary py-3 px-4 w-fullmt-3 xl:mt-0 align-top">Login</a>
                         </div>
@@ -152,5 +152,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
     <!-- END: JS Assets-->
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $("#registerButton").click(function() {
+        console.log("he");
+        $(this).prop("disabled", true);
+        $("#registerForm").submit();
+    });
+</script>
 
 </html>

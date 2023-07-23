@@ -16,5 +16,9 @@ abstract class OrderStatusEnum
         2 => 'On-Going'
     ];
 
+    const COMPLETEDORDERTEXT = "Completed";
+    const ONGOINGORDERTEXT = "On-Going";
+    const NOTACCEPTEDORDERTEXT = "ProofRead Order Not Accepted Yet";
+
 }
 ?>
