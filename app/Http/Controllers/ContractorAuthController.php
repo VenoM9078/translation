@@ -168,7 +168,7 @@ class ContractorAuthController extends Controller
         // Sending email to user
         Mail::to($interpretation->user->email)->send(new InterpretationReportToUser($interpretation));
 
-        return redirect()->route('contractor.interpretations');
+        return redirect()->route('contractor.interpretations', ['page' => session('page'), 'limit' => session('limit')]);
     }
 
 

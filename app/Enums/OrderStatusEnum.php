@@ -16,6 +16,10 @@ abstract class OrderStatusEnum
         2 => 'On-Going'
     ];
 
+    const InterpretationStatuses = [
+        0 => 'Completed',
+        1 => 'Pending'
+    ];
     const COMPLETEDORDERTEXT = "Completed";
     const ONGOINGORDERTEXT = "On-Going";
     const NOTACCEPTEDORDERTEXT = "ProofRead Order Not Accepted Yet";

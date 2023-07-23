@@ -33,11 +33,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
         crossorigin="anonymous"></script>
-    {{--
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css" /> --}}
-    <link rel="stylesheet" type="text/css" {{--
-    href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" /> --}} <link rel="stylesheet" type="text/css"
-        href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
     <div class="col-span-12 mt-8">
         <div class="intro-y flex items-center h-10">
             <h2 class="text-lg font-medium truncate mr-5 mb-5">
@@ -101,24 +99,20 @@
                 <div id="dropdownListStatus" class="z-10 hidden bg-white rounded-lg shadow dark:bg-gray-700">
                     <ul class=" space-y-1 overflow-y-auto text-sm text-gray-700 dark:text-gray-200"
                         aria-labelledby="dropdownBgHoverButtonStatus">
-                        <li>
-                            <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                <input checked id="checkbox-status-pending" type="checkbox"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
-                                    data-status="pending">
-                                <label for="checkbox-status-pending"
-                                    class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Pending</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                <input checked id="checkbox-status-completed" type="checkbox"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
-                                    data-status="completed">
-                                <label for="checkbox-status-completed"
-                                    class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Completed</label>
-                            </div>
-                        </li>
+                        @foreach (\App\Enums\OrderStatusEnum::InterpretationStatuses as $key => $status)
+                            <li>
+                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    <input checked
+                                        id="checkbox-status-{{ strtolower(str_replace(' ', '-', $status)) }}-{{ $key }}"
+                                        type="checkbox"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
+                                        data-status="{{ strtolower($status) }}">
+                                    <label
+                                        for="checkbox-status-{{ strtolower(str_replace(' ', '-', $status)) }}-{{ $key }}"
+                                        class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">{{ $status }}</label>
+                                </div>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -136,16 +130,19 @@
                                 <thead>
                                     <tr>
                                         <th class="whitespace-nowrap">Worknumber</th>
-                                        <th class="whitespace-nowrap">Topic</th>
+                                        <th class="whitespace-nowrap">Session Title</th>
                                         <th class="whitespace-nowrap">Language</th>
                                         <th class="whitespace-nowrap">Interpretation Date</th>
-                                        <th>Start Time</th>
-                                        <th>End Time</th>
+                                        <th class="whitespace-nowrap">Scheduled Time (PDT)</th>
+                                        <th class="whitespace-nowrap">Actual Reported Time</th>
                                         <th class="whitespace-nowrap">Session Format</th>
                                         <th class="whitespace-nowrap">Address/Link</th>
-                                        <th class="whitespace-nowrap">Per Hour Rate</th>
-                                        <th class="whitespace-nowrap">Estimated Payment</th>
-                                        <th>Status</th>
+                                        <th class="whitespace-nowrap text-center">Message(FT to Interpreter)</th>
+                                        <th class="whitespace-nowrap">Interpreter Adjust ($)</th>
+                                        <th class="whitespace-nowrap">Interpreter Fee ($)</th>
+                                        <th class="whitespace-nowrap">I. Adjust Note</th>
+                                        <th class="whitespace-nowrap">Paid (Yes / No)</th>
+                                        <th class="whitespace-nowrap">Status</th>
                                         <th class="whitespace-nowrap">Possible Actions</th>
                                     </tr>
                                 </thead>
@@ -163,18 +160,86 @@
                                             <td class="whitespace-nowrap">
                                                 {{ $interpretation->interpretation->interpretationDate }}</td>
                                             <td class="whitespace-nowrap">
-                                                {{ \App\Helpers\HelperClass::onlyShowHoursMinutes($interpretation->start_time) }}
+                                                {{ \App\Helpers\HelperClass::onlyShowHoursMinutes($interpretation->interpretation->start_time) }}
+                                                -
+                                                {{ \App\Helpers\HelperClass::onlyShowHoursMinutes($interpretation->interpretation->end_time) }}
                                             </td>
                                             <td class="whitespace-nowrap">
-                                                {{ \App\Helpers\HelperClass::onlyShowHoursMinutes($interpretation->end_time) }}
+                                                @if ($interpretation->start_time_decided != null && $interpretation->end_time_decided != null)
+                                                    {{ \App\Helpers\HelperClass::onlyShowHoursMinutes($interpretation->start_time_decided) }}
+                                                    -
+                                                    {{ \App\Helpers\HelperClass::onlyShowHoursMinutes($interpretation->end_time_decided) }}
+                                                @else
+                                                    N/A
+                                                @endif
                                             </td>
                                             <td class="whitespace-nowrap">
                                                 {{ $interpretation->interpretation->session_format }}
                                             </td>
                                             <td class="whitespace-nowrap">{{ $interpretation->interpretation->location }}
                                             </td>
+                                            <td class="whitespace-nowrap">
+                                                <a href="javascript:;" data-tw-toggle="modal"
+                                                    data-tw-target="#message2-modal-preview{{ $interpretation->id }}">
+                                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                                </a>
+                                            </td>
+                                            <!-- BEGIN: Modal Content -->
+                                            <div id="message2-modal-preview{{ $interpretation->id }}" class="modal"
+                                                tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body p-0">
+                                                            <div class="p-5 text-center"> <i data-lucide="bookmark"
+                                                                    class="w-16 h-16 text-info mx-auto mt-3"></i>
+                                                                <div class="text-3xl mt-5 mb-2">Interpretation Message
+                                                                </div>
+                                                                <div class="w-full text-left">
+                                                                    <label for="order-form-21" class="form-label">
+                                                                        Message:</label>
+                                                                    <textarea id="order-form-21" type="text" class="form-control" disabled>{{ $interpretation->interpretation->message }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- END: Modal Content -->
+                                            <td class="whitespace-nowrap">
+                                                @if ($interpretation->contractor_id === null || $interpretation->estimated_payment == null)
+                                                    N/A
+                                                @else
+                                                    ${{ $interpretation->estimated_payment }}
+                                                @endif
+                                            </td>
                                             <td class="whitespace-nowrap">${{ $interpretation->per_hour_rate }}</td>
-                                            <td class="whitespace-nowrap">${{ $interpretation->estimated_payment }}</td>
+                                            <td class="whitespace-nowrap">
+                                                <a href="javascript:;" data-tw-toggle="modal"
+                                                    data-tw-target="#i-adjust-note-modal-preview{{ $interpretation->id }}">
+                                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                                </a>
+                                            </td>
+                                            <div id="i-adjust-note-modal-preview{{ $interpretation->id }}" class="modal"
+                                                tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body p-0">
+                                                            <div class="p-5 text-center"> <i data-lucide="bookmark"
+                                                                    class="w-16 h-16 text-info mx-auto mt-3"></i>
+                                                                <div class="text-3xl mt-5 mb-2">Interpretation Adjust Note
+                                                                </div>
+                                                                <div class="w-full text-left">
+                                                                    <label for="order-form-21" class="form-label">
+                                                                        Message:</label>
+                                                                    <textarea id="order-form-21" type="text" class="form-control" disabled>{{ $interpretation->interpretation->interpreter_adjust_note }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- END: Modal Content -->
+                                            <td class="whitespace-nowrap">
+                                                {{ $interpretation->interpretation->interpreter_paid == 1 ? 'Yes' : 'No' }}
+                                            </td>
                                             <td>{{ $interpretation->interpretation->interpreter_completed == 1 ? 'Completed' : 'Pending' }}
                                             </td>
                                             <td class="whitespace-nowrap">
@@ -280,7 +345,6 @@
                                 </tbody>
                             </table>
                         </div>
-                        interpretations
                         <div class="container m-2 flex justify-end">
                             {{ $interpretations->appends(['limit' => session('limit'), 'page' => session('page')])->links() }}
                         </div>
@@ -288,25 +352,35 @@
                 </div>
             </div>
         </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        {{-- </div> --}}
+        {{-- <script src="https://code.jquery.com/jquery-3.6.0.js"
+    integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script> --}}
+        <script src="https://cdn.datatables.net/v/bs5/dt-1.13.4/b-2.3.6/b-html5-2.3.6/datatables.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
-        <script type="text/javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-        <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+        <!-- HTML5 and print buttons -->
+        <!-- Buttons -->
 
-        <script>
-            let button = document.querySelector('#uniqueModal');
-
-            button.addEventListener('click', function() {
-                let value = button.value;
-
-                console.log(value);
-            })
-        </script>
-
+        <script type="text/javascript" language="javascript"
+            src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" language="javascript"
+            src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+        <script type="text/javascript" language="javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script type="text/javascript" language="javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+        <script type="text/javascript" language="javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+        <script type="text/javascript" language="javascript"
+            src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+        <script type="text/javascript" language="javascript"
+            src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
 
         <script>
             $(document).ready(function() {
+                var InterpretationStatuses = @json(\App\Enums\OrderStatusEnum::InterpretationStatuses);
                 var table = $('#interpretationsTable').DataTable({
-                    dom: 'Brtip',
+                    dom: 'Bfrtip',
                     ordering: true,
                     info: true,
                     paging: false
@@ -314,16 +388,27 @@
 
                 $.fn.dataTable.ext.search.push(
                     function(settings, data, dataIndex) {
-                        var isPendingChecked = $('#checkbox-status-pending').is(':checked');
-                        var isCompletedChecked = $('#checkbox-status-completed').is(':checked');
+                        var checkedStatuses = [];
 
-                        if (isPendingChecked && data[10] == 'Pending') {
-                            return true;
-                        } else if (isCompletedChecked && data[10] == 'Completed') {
-                            return true;
+                        for (var key in InterpretationStatuses) {
+                            var status = InterpretationStatuses[key];
+                            // console.log("order status", OrderStatuses);
+                            var id = 'checkbox-status-' + status.toLowerCase().split(' ').join('-') + '-' + key;
+                            var isChecked = $('#' + id).is(':checked');
+
+                            if (isChecked) {
+                                checkedStatuses.push(status);
+                            }
                         }
 
-                        return false;
+                        if (checkedStatuses.includes(data[13])) {
+                            // console.log(checkedStatuses)
+                            return true; // row should appear
+                        } else {
+                            return false; // row should not appear
+                        }
+
+
                     }
                 );
 
@@ -362,8 +447,8 @@
                 });
 
                 var groups = {
-                    'Date/Time Information': [3, 4, 5],
-                    'Payment Information': [8, 9]
+                    'Date/Time Information': [3, 4, 5, 6],
+                    'Payment Information': [12, 13]
                 }
 
                 for (var groupName in groups) {
