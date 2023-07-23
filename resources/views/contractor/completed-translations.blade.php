@@ -112,34 +112,20 @@
                 <div id="dropdownListStatus" class="z-10 hidden bg-white rounded-lg shadow dark:bg-gray-700">
                     <ul class=" space-y-1 overflow-y-auto text-sm text-gray-700 dark:text-gray-200"
                         aria-labelledby="dropdownBgHoverButtonStatus">
-                        <li>
-                            <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                <input checked id="checkbox-status-pending" type="checkbox"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
-                                    data-status="pending">
-                                <label for="checkbox-status-pending"
-                                    class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Pending
-                                    Approval</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                <input checked id="checkbox-status-on-going" type="checkbox"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
-                                    data-status="pending">
-                                <label for="checkbox-status-cancelled"
-                                    class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">On-Going</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                <input checked id="checkbox-status-completed" type="checkbox"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
-                                    data-status="pending">
-                                <label for="checkbox-status-invoice-pending"
-                                    class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Completed</label>
-                            </div>
-                        </li>
+                        @foreach (\App\Enums\OrderStatusEnum::TranslationStatuses as $key => $status)
+                            <li>
+                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    <input checked
+                                        id="checkbox-status-{{ strtolower(str_replace(' ', '-', $status)) }}-{{ $key }}"
+                                        type="checkbox"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 status-filter"
+                                        data-status="{{ strtolower($status) }}">
+                                    <label
+                                        for="checkbox-status-{{ strtolower(str_replace(' ', '-', $status)) }}-{{ $key }}"
+                                        class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">{{ $status }}</label>
+                                </div>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -153,10 +139,9 @@
                             <table id="ordersTable" class="table table-striped hover" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>Actions</th>
+                                        <th class="whitespace-nowrap text-center">Actions</th>
                                         <th class="whitespace-nowrap text-center">WO#</th>
                                         <th class="whitespace-nowrap text-center">Translation Due Date</th>
-                                        {{-- <th>Order By</th> --}}
                                         <th class="whitespace-nowrap text-center">Source Language</th>
                                         <th class="whitespace-nowrap text-center">Target Language</th>
                                         <th class="whitespace-nowrap text-center">Original Doc</th>
@@ -165,11 +150,10 @@
                                         <th class="whitespace-nowrap text-center">Type</th>
                                         <th class="whitespace-nowrap text-center">Unit<br>(Wd or Pg)</th>
                                         <th class="whitespace-nowrap text-center">T. Rate <br>($/Wd or $/Pg)</th>
-
                                         <th class="whitespace-nowrap">T. Adjust</th>
                                         <th class="whitespace-nowrap">T. Fee</th>
                                         <th class="whitespace-nowrap">T. Adjust Note</th>
-                                        <th>Status</th>
+                                        <th class="whitespace-nowrap">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -218,27 +202,64 @@
                                             @else
                                                 <td class="whitespace-nowrap">-</td>
                                             @endif
-                                            <td title="{{ $translation->message }}">
-                                                <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                            <td class="whitespace-nowrap">
+                                                <a href="javascript:;" data-tw-toggle="modal"
+                                                    data-tw-target="#translator-message-modal-preview{{ $translation->id }}">
+                                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                                </a>
                                             </td>
+                                            <div id="translator-message-modal-preview{{ $translation->id }}" class="modal"
+                                                tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body p-0">
+                                                            <div class="p-5 text-center"> <i data-lucide="bookmark"
+                                                                    class="w-16 h-16 text-info mx-auto mt-3"></i>
+                                                                <div class="text-3xl mt-5 mb-2">Translator Message</div>
+                                                                <div class="w-full text-left">
+                                                                    <label for="order-form-21" class="form-label">Client
+                                                                        Message:</label>
+                                                                    <textarea id="order-form-21" type="text" class="form-control" disabled>{{ $translation->message }}</textarea>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- END: Modal Content -->
                                             <td>{{ $translation->translation_type }}</td>
-                                            @if ($translation->order->unit != null)
-                                                <td class="whitespace-nowrap">{{ $translation->order->unit }}</td>
-                                            @else
-                                                <td class="whitespace-nowrap"> </td>
-                                            @endif
-                                            <td>${{ $translation->order->contractorOrder->rate }}</td>
-                                            <td>$0</td>
+                                            <td class="whitespace-nowrap">{{ $translation->translator_unit ?? '-' }}</td>
+                                            <td>${{ $translation->contractor->translation_rate }}</td>
+                                            <td>${{ $translation->translator_adjust ?? '-' }}</td>
                                             <td>${{ $translation->total_payment }}</td>
 
-                                            @if ($translation->translation_adjust_note)
-                                                <td class="whitespace-nowrap"
-                                                    title="{{ $translation->translation_adjust_note }}">
-                                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                            @if ($translation->translator_adjust_note)
+                                                <td class="whitespace-nowrap">
+                                                    <a href="javascript:;" data-tw-toggle="modal"
+                                                        data-tw-target="#t-adjust-note-modal-preview{{ $translation->id }}">
+                                                        <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                                    </a>
                                                 </td>
                                             @else
                                                 <td class="whitespace-nowrap">-</td>
                                             @endif
+                                            <div id="t-adjust-note-modal-preview{{ $translation->id }}" class="modal"
+                                                tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body p-0">
+                                                            <div class="p-5 text-center"> <i data-lucide="bookmark"
+                                                                    class="w-16 h-16 text-info mx-auto mt-3"></i>
+                                                                <div class="text-3xl mt-5 mb-2">Translator Adjust Note
+                                                                </div>
+                                                                <div class="w-full text-left">
+                                                                    <textarea id="order-form-21" type="text" class="form-control" disabled>{{ $translation->translator_adjust_note }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- END: Modal Content -->
                                             <td>{{ $translation->is_accepted == 1 ? 'Accepted' : 'Pending' }}</td>
 
                                             <!-- BEGIN: Modal Content -->
@@ -320,6 +341,7 @@
     </script>
     <script>
         $(document).ready(function() {
+            var TranslationStatuses = @json(\App\Enums\OrderStatusEnum::TranslationStatuses);
             FilePond.registerPlugin(
 
                 // encodes the file as base64 data
@@ -353,7 +375,7 @@
 
 
             var table = $('#ordersTable').DataTable({
-                dom: 'Brtip',
+                dom: 'Bfrtip',
                 scrollX: true,
                 scrollCollapse: true,
                 ordering: true,
@@ -366,22 +388,27 @@
 
             $.fn.dataTable.ext.search.push(
                 function(settings, data, dataIndex) {
-                    var isPendingChecked = $('#checkbox-status-pending').is(':checked');
-                    var isCompletedChecked = $('#checkbox-status-completed').is(':checked');
-                    var isOnGoingChecked = $('#checkbox-status-on-going').is(':checked');
+                    var checkedStatuses = [];
 
-                    console.log(data[12]);
-                    if (isPendingChecked && data[12] == 'Pending') {
-                        return true;
-                    } else if (isCompletedChecked && data[8] == 'Completed') {
-                        return true;
-                    } else if (isOnGoingChecked && data[8] == 'On-Going') {
-                        console.log("YEs")
-                        return true;
+                    for (var key in TranslationStatuses) {
+                        var status = TranslationStatuses[key];
+                        // console.log("order status", OrderStatuses);
+                        var id = 'checkbox-status-' + status.toLowerCase().split(' ').join('-') + '-' + key;
+                        var isChecked = $('#' + id).is(':checked');
+
+                        if (isChecked) {
+                            checkedStatuses.push(status);
+                        }
+                    }
+
+                    if (checkedStatuses.includes(data[14])) {
+                        // console.log(checkedStatuses)
+                        return true; // row should appear
+                    } else {
+                        return false; // row should not appear
                     }
 
 
-                    return false;
                 }
             );
 

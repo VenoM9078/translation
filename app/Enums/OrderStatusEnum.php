@@ -16,6 +16,11 @@ abstract class OrderStatusEnum
         2 => 'On-Going'
     ];
 
+    const TranslationStatuses = [
+        0 => 'Accepted',
+        1 => 'Pending'
+    ];
+
     const InterpretationStatuses = [
         0 => 'Completed',
         1 => 'Pending'
