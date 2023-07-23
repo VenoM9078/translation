@@ -74,15 +74,15 @@ class RegisteredUserController extends Controller
             $user->email_verified_at = Carbon::now();
             $user->save();
         }
-        if($roleToSend == 2){
-             return view('auth.register2', [
-            'name' => $user->name,
-            'role_id' => 0,
-            'user_id' => $user->id,
-            'role_id_sent' => $roleToSend,
-            'email' => $user->email,
-            'password' => $user->password,
-        ]);
+        if ($roleToSend == 2) {
+            return view('auth.register2', [
+                'name' => $user->name,
+                'role_id' => 0,
+                'user_id' => $user->id,
+                'role_id_sent' => $roleToSend,
+                'email' => $user->email,
+                'password' => $user->password,
+            ]);
         }
         return view('auth.register2', [
             'name' => $user->name,
@@ -193,6 +193,7 @@ class RegisteredUserController extends Controller
                     'user_id' => $request->user_id
                 ])->with('error', 'Institute does not exist!');
             } else {
+                $userBelongsToInstitute = false;
                 $userEmailDomain = substr(strrchr($request->email, "@"), 1);
                 foreach ($institute as $inst) {
                     $manager = User::find($inst->managed_by);
@@ -200,7 +201,7 @@ class RegisteredUserController extends Controller
                     $managerEmailDomain = substr(strrchr($manager->email, "@"), 1);
 
                     if ($managerEmailDomain == $userEmailDomain) {
-
+                        $userBelongsToInstitute = true;
 
                         if ($inst->is_active == 0) {
                             return view('auth.register2', [
@@ -224,11 +225,35 @@ class RegisteredUserController extends Controller
                             $manager = User::find($inst->managed_by);
                             Mail::to($user->email)->send(new InstituteRequestAccepted($user));
                         }
-
                     }
-
-
                 }
+                if (!$userBelongsToInstitute) {
+                    // Register the user as an individual user
+                    $user = User::where('id',$request->user_id)->first();
+                    $user->role_id = 0;
+                    $user->failed_inst_user = 1;
+                    $user->save();
+                        // 'name' => $request->input('name'),
+                        // 'role_id' => 0,
+                        // 'email' => $request->input('email'),
+                        // 'failed_inst_user' => 1,
+                        // 'password' => bcrypt($request->input('password')),
+                    // ]);
+
+                    event(new Registered($user));
+
+                    Auth::login($user);
+                    return redirect()->route('user.index');
+                    // return view('auth.register2', [
+                    //     'name' => $request->input('name'),
+                    //     'role_id' => 0,
+                    //     'email' => $request->input('email'),
+                    //     'password' => $request->input('password'),
+                    //     'role_id_sent' => $request->role_id,
+                    //     'user_id' => $request->user_id
+                    // ])->with('message', 'Your institute does not have an account with Flow Translate, please discuss with your administrator to set up one with Flow Translate. Now you are registered as individual user.');
+                }
+
             }
         }
 
