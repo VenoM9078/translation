@@ -181,7 +181,7 @@
                                         <th class="whitespace-nowrap text-center">Interpreter Message</th>
                                         <th class="whitespace-nowrap text-center">I.Rate</th>
                                         <th class="whitespace-nowrap text-center">I.Adjust ($)</th>
-                                        {{-- <th class="whitespace-nowrap text-center">I. Fee</th> --}}
+                                        <th class="whitespace-nowrap text-center">I. Fee</th>
                                         <th class="whitespace-nowrap text-center">I. Adjust Note</th>
                                         <th class="whitespace-nowrap text-center">I. Paid</th>
                                         <th class="whitespace-nowrap text-center">Created At</th>
@@ -343,8 +343,8 @@
                                                             </svg>
                                                         </a>
                                                     </div>
-                                                    <div id="delete-modal-preview{{ $interpretation->id }}" class="modal"
-                                                        tabindex="-1" aria-hidden="true">
+                                                    <div id="delete-modal-preview{{ $interpretation->id }}"
+                                                        class="modal" tabindex="-1" aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-body p-0">
@@ -529,10 +529,10 @@
 
 
                                             <td class="whitespace-nowrap">
-                                                @if ($interpretation->interpreter_id === null || $interpretation->contractorInterpretation->per_hour_rate == null)
+                                                @if ($interpretation->contractorInterpretation == null)
                                                     N/A
                                                 @else
-                                                    ${{ $interpretation->contractorInterpretation->per_hour_rate }}
+                                                    ${{ $interpretation->contractorInterpretation->contractor->interpretation_rate }}
                                                 @endif
                                             </td>
                                             <td class="whitespace-nowrap">
@@ -542,7 +542,13 @@
                                                     ${{ $interpretation->contractorInterpretation->estimated_payment }}
                                                 @endif
                                             </td>
-
+                                            <td class="whitespace-nowrap">
+                                                @if ($interpretation->interpreter_id === null || $interpretation->contractorInterpretation->per_hour_rate == null)
+                                                    N/A
+                                                @else
+                                                    ${{ $interpretation->contractorInterpretation->per_hour_rate }}
+                                                @endif
+                                            </td>
                                             <td class="whitespace-nowrap">
                                                 <a href="javascript:;" data-tw-toggle="modal"
                                                     data-tw-target="#i-adjust-note-modal-preview{{ $interpretation->id }}">
