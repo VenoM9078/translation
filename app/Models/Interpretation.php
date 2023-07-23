@@ -82,4 +82,27 @@ class Interpretation extends Model
     {
         return $this->hasMany('App\Models\OrderLog', 'interpretation_id', 'id');
     }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($interpretation) {
+            // Define relationships
+            $relationships = [
+                'interpretationLogs',
+                'contractorLogs',
+                'invoiceLogs',
+                'contractorInterpretation',                
+            ];
+
+            // Iterate over relationships and delete
+            foreach ($relationships as $relationship) {
+                // It's good practice to check if the relationship exists before trying to delete it
+                if ($interpretation->$relationship()) {
+                    $interpretation->$relationship()->delete();
+                }
+            }
+        });
+    }
 }

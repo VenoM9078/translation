@@ -330,8 +330,54 @@
                                                             1 == 2)
                                                         <button class="btn btn-warning mr-1  ">View Feedback</button>
                                                     @endif
-
-                                                    <button type="submit" class="btn btn-danger bg-red-600 text-black">
+                                                    <div class="text-center"> <a href="javascript:;"
+                                                            data-tw-toggle="modal"
+                                                            data-tw-target="#delete-modal-preview{{ $interpretation->id }}"
+                                                            class="btn btn-danger">
+                                                            <svg class="w-5 h-5 text-white mx-auto"
+                                                                xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor" class="w-6 h-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                                            </svg>
+                                                        </a>
+                                                    </div>
+                                                    <div id="delete-modal-preview{{ $interpretation->id }}" class="modal"
+                                                        tabindex="-1" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-body p-0">
+                                                                    <div class="p-5 text-center"> <i
+                                                                            data-lucide="x-circle"
+                                                                            class="w-16 h-16 text-danger mx-auto mt-3"></i>
+                                                                        <div class="text-3xl mt-5">Are you sure?</div>
+                                                                        <div class="text-slate-500 mt-2">Do you really want
+                                                                            to delete
+                                                                            this
+                                                                            order? <br>This process cannot
+                                                                            be undone.</div>
+                                                                    </div>
+                                                                    <div class="px-5 pb-8 text-center inline-flex items-stretch"
+                                                                        style="text-align: center;margin: auto !important;width: 100%;position: relative;justify-content: center;">
+                                                                        <button type=" button" data-tw-dismiss="modal"
+                                                                            class="btn btn-outline-secondary w-24 mr-1 self-center">
+                                                                            Cancel</button>
+                                                                        <form
+                                                                            action="{{ route('admin.interpretation.delete', $interpretation->id) }}"
+                                                                            method="POST">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                            <button type="submit"
+                                                                                class="btn btn-danger bg-red-500 w-24">Delete</button>
+                                                                            <!-- END: Modal Toggle -->
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div> <!-- END: Modal Content -->
+                                                    {{-- <button type="submit" class="btn btn-danger bg-red-600 text-black">
                                                         <div>
                                                             <form
                                                                 action="{{ route('admin.interpretation.delete', $interpretation->id) }}"
@@ -348,7 +394,7 @@
 
                                                             </form>
                                                         </div>
-                                                    </button>
+                                                    </button> --}}
                                                     @if ($interpretation->interpreter_id == null)
                                                         <div class="text-center">
                                                             <form action="{{ route('admin-cancelInterpretation') }}"
