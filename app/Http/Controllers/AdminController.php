@@ -351,6 +351,7 @@ class AdminController extends Controller
         if ($request->hasFile('proofReadFile')) {
             $file = $request->file('proofReadFile');
             $filePath = 'proofread_by_proofreader/';
+            $prefix = "_P_";
             $filename = date('YmdHi') . $file->getClientOriginalName();
 
             if (!file_exists(public_path($filePath))) {
@@ -403,6 +404,7 @@ class AdminController extends Controller
         if ($request->hasFile('translationFile')) {
             $file = $request->file('translationFile');
             $filePath = 'translations_by_contractors/';
+            $prefix = "_T_";
 
             // dd($file);
 
@@ -2098,10 +2100,11 @@ class AdminController extends Controller
             $files = $request->file('files');
 
             // dd($files);
+            $prefix = "_T_";
 
             foreach ($files as $file) {
 
-                $filename = date('YmdHi') . $file->getClientOriginalName();
+                $filename = date('YmdHi') . $prefix . $file->getClientOriginalName();
                 // $folder = uniqid() . '-' . now()->timestamp;
                 // $file->move(public_path('documents'), $filename);
                 $file->move('documents/', $filename);
@@ -2134,6 +2137,7 @@ class AdminController extends Controller
         if ($check->exists()) {
             $check->delete();
         }
+        $prefix = "_F_";
 
         $order = Order::where('id', $order_id)->first();
 
@@ -2172,7 +2176,7 @@ class AdminController extends Controller
                 $fileArr2[] = $path;
             }
 
-            $zipName2 = 'completed_' . $order_id . '.zip';
+            $zipName2 = $order->worknumber . $prefix . '.zip';
             $zipPath = public_path('translated/' . $zipName2);
 
             // Delete the existing zip file if it exists
@@ -2182,7 +2186,7 @@ class AdminController extends Controller
 
             $zip2 = new ZipArchive;
 
-            $zipName2 = 'completed_' . $order_id . '.zip';
+            $zipName2 = $order->worknumber . $prefix . '.zip';
 
             if ($zip2->open(public_path('translated/' . $zipName2), ZipArchive::CREATE) === TRUE) {
 

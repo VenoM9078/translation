@@ -680,10 +680,10 @@ class ContractorAuthController extends Controller
         if ($request->hasFile('translationFile')) {
             $file = $request->file('translationFile');
             $filePath = 'translations_by_contractors/';
-
+            $prefix = "_T_";
             // dd($file);
 
-            $filename = date('YmdHi') . $file->getClientOriginalName();
+            $filename = date('YmdHi') . $prefix . $file->getClientOriginalName();
             // $folder = uniqid() . '-' . now()->timestamp;
             // $file->move(public_path('documents'), $filename);
             //if the path does not exist, create it
@@ -982,7 +982,8 @@ class ContractorAuthController extends Controller
         if ($request->hasFile('proofReadFile')) {
             $file = $request->file('proofReadFile');
             $filePath = 'proofread_by_proofreader/';
-            $filename = date('YmdHi') . $file->getClientOriginalName();
+            $prefix = "_P_";
+            $filename = date('YmdHi') . $prefix . $file->getClientOriginalName();
 
             if (!file_exists(public_path($filePath))) {
                 mkdir(public_path($filePath), 0777, true);
