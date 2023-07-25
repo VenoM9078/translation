@@ -270,6 +270,7 @@
 
 <script>
     $(document).ready(function() {
+        var existingTotalPayment = @json($cOrder->total_payment);
 
         // Variables for translation
         var rate = 0;
@@ -280,6 +281,7 @@
         var p_rate = 0;
         var p_adjust = 0;
         var p_unit = 0;
+        $("#total_payment").val(existingTotalPayment);
 
         function calculateEstimatedPayment() {
             let unitFloat = parseFloat(unit);
@@ -318,8 +320,13 @@
                         total_words = 0;
                     }
                     var estimated_payment = calculateEstimatedPayment();
-                    $('#total_payment').val(estimated_payment);
+                    // Check if the total payment input is empty
+                    if ($('#total_payment').val() == "" || contractorChanged) {
+                        // If it is, then it's not an edit situation and you can set the estimated payment
+                        $('#total_payment').val(estimated_payment);
+                    }
                     $('#rate').val(rate); // set rate to rate field
+
                 }
             });
         }).change(); // Trigger the change event manually to set the initial values
@@ -327,12 +334,14 @@
         $("#rate").change(function() {
             rate = $(this).val(); // use newly entered rate for calculation
             var estimated_payment = calculateEstimatedPayment();
+            console.log("rate change");
             $('#total_payment').val(estimated_payment);
         });
 
         $("#t_adjust").change(function() {
             t_adjust = $(this).val(); // use newly entered rate for calculation
             console.log(t_adjust);
+            console.log("t adjust change");
             var estimated_payment = calculateEstimatedPayment();
             $('#total_payment').val(estimated_payment);
         });
@@ -340,6 +349,8 @@
         $("#unit").change(function() {
             unit = $(this).val();
             var estimated_payment = calculateEstimatedPayment();
+            console.log("unit change");
+
             $('#total_payment').val(estimated_payment);
         });
 

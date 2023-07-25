@@ -457,9 +457,9 @@ class AdminController extends Controller
             );
 
             // Update translator default rate
-            $translator = Contractor::where('id', $request->contractor_id)->first();
-            $translator->translation_rate = $request->rate;
-            $translator->save();
+            // $translator = Contractor::where('id', $request->contractor_id)->first();
+            // $translator->translation_rate = $request->rate;
+            // $translator->save();
 
             $order = Order::find($request->order_id);
             $order->translation_sent = 1;

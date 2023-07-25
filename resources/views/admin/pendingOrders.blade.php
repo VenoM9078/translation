@@ -878,7 +878,7 @@
                                                 {{ $order->contractorOrder->translation_type ?? '-' }}
                                             </td>
                                             <td>{{ $order->contractorOrder->translator_unit ?? '-' }} </td>
-                                            <td>${{ $order->contractorOrder->contractor->translation_rate ?? '-' }}</td>
+                                            <td>${{ $order->contractorOrder->rate ?? '-' }}</td>
                                             <td>${{ $order->contractorOrder->translator_adjust ?? '-' }}</td>
                                             <td>${{ $order->contractorOrder->total_payment ?? '-' }}</td>
                                             <td class="whitespace-nowrap">
