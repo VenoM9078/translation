@@ -16,7 +16,7 @@
     @php
         $prevStatus = '';
         $tempSteps = $steps;
-        
+        $showAction = false;
         $logsQuery1 = App\Models\OrderLog::query()
             ->with(['user', 'admin'])
             ->where('order_id', $order->id)
@@ -64,11 +64,13 @@
                                 @php
                                     $user = App\Models\User::find($log->user_id);
                                     $name = $user ? $user->name : '';
+                                    $showAction = true;
                                 @endphp
                             @elseif($log->is_admin == 1 && $log->action != \App\Enums\LogActionsEnum::PAYMENTCOMPLETED)
                                 @php
                                     $admin = App\Models\Admin::find($log->user_id);
                                     $name = $admin ? $admin->name : '';
+                                    $showAction = true;
                                 @endphp
                             @endif
                         @endif
@@ -77,11 +79,13 @@
                             @php
                                 $user = App\Models\User::find($log->user_id);
                                 $name = $user ? $user->name : '';
+                                $showAction = true;
                             @endphp
                         @elseif($log->is_admin == 1)
                             @php
                                 $admin = App\Models\Admin::find($log->user_id);
                                 $name = $admin ? $admin->name : '';
+                                $showAction = true;
                             @endphp
                         @endif
                     @elseif ($log->log_type === 'contractor')
@@ -89,18 +93,22 @@
                             @php
                                 $admin = App\Models\Admin::find($log->user_id);
                                 $name = $admin ? $admin->name : '';
+                                $showAction = true;
                             @endphp
                         @elseif ($log->is_admin == 0)
                             @php
                                 $contractor = App\Models\Contractor::find($log->contractor_id);
                                 $name = $contractor ? $contractor->name : '';
+                                $showAction = true;
                             @endphp
                         @endif
                     @endif
 
+                    @if($showAction == true)
                     <span class="ml-2 text-blue-500 font-semibold hover:bg-slate-300" style="font-size: 12px">
                         {{ $name }} {{ $log->action }}
                     </span>
+                    @endif
                     <br>
                 </div>
             </div>
