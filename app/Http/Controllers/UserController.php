@@ -164,7 +164,7 @@ class UserController extends Controller
         $page = $request->input('page', 1); // Default to 1 if not provided
         $skip = ($page - 1) * $recordsPerPage;
         if ($user->role_id == 0 || $user->role_id == 1) {
-            $interpretations = Interpretation::where('user_id', $user->id)->orderByDesc('created_at')->skip($skip)->paginate($recordsPerPage);
+            $interpretations = Interpretation::where('user_id', $user->id)->orderBy('id','desc')->skip($skip)->paginate($recordsPerPage);
         } else {
             $members = Auth::user()->institute_managed->members;
             $user_ids = [];

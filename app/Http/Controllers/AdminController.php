@@ -351,7 +351,7 @@ class AdminController extends Controller
         if ($request->hasFile('proofReadFile')) {
             $file = $request->file('proofReadFile');
             $filePath = 'proofread_by_proofreader/';
-            $prefix = "_P_";
+            $prefix = "F_";
             $filename = date('YmdHi') . $file->getClientOriginalName();
 
             if (!file_exists(public_path($filePath))) {
@@ -404,7 +404,7 @@ class AdminController extends Controller
         if ($request->hasFile('translationFile')) {
             $file = $request->file('translationFile');
             $filePath = 'translations_by_contractors/';
-            $prefix = "_T_";
+            $prefix = "F_";
 
             // dd($file);
 
@@ -2100,7 +2100,7 @@ class AdminController extends Controller
             $files = $request->file('files');
 
             // dd($files);
-            $prefix = "_T_";
+            $prefix = "F_";
 
             foreach ($files as $file) {
 
@@ -2137,7 +2137,7 @@ class AdminController extends Controller
         if ($check->exists()) {
             $check->delete();
         }
-        $prefix = "_F_";
+        $prefix = "F_";
 
         $order = Order::where('id', $order_id)->first();
 
@@ -2180,10 +2180,9 @@ class AdminController extends Controller
             $zipPath = public_path('translated/' . $zipName2);
 
             // Delete the existing zip file if it exists
-            if (Storage::exists($zipPath)) {
-                Storage::delete($zipPath);
+            if (file_exists($zipPath)) {
+                unlink($zipPath);
             }
-
             $zip2 = new ZipArchive;
 
             $zipName2 = $order->worknumber . $prefix . '.zip';
