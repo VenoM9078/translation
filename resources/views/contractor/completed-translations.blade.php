@@ -196,7 +196,7 @@
                                                     <i data-lucide="download" class="w-5 h-5"></i> </a></td>
                                             @if ($translation->file_name != null)
                                                 <td class="whitespace-nowrap"><a
-                                                        href="{{ route('contractor.downloadFiles', $translation->order->id) }}"
+                                                        href="{{ route('contractor.download-translation-file', $translation->order->id) }}"
                                                         class="btn btn-warning mr-1">
                                                         <i data-lucide="download" class="w-5 h-5"></i> </a></td>
                                             @else
