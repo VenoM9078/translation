@@ -178,7 +178,8 @@
                                         <th class="whitespace-nowrap">C. Adjust Note</th>
                                         <th class="whitespace-nowrap">C. Paid</th>
                                         <th class="whitespace-nowrap text-center">Interpreter</th>
-                                        <th class="whitespace-nowrap text-center">Interpreter Message</th>
+                                        <th class="whitespace-nowrap text-center">C. Message</th>
+                                        <th class="whitespace-nowrap text-center">I. Message</th>
                                         <th class="whitespace-nowrap text-center">I.Rate</th>
                                         <th class="whitespace-nowrap text-center">I.Adjust ($)</th>
                                         <th class="whitespace-nowrap text-center">I. Fee</th>
@@ -506,6 +507,32 @@
                                                     <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
                                                 </a>
                                             </td>
+                                            <td class="whitespace-nowrap">
+                                                <a href="javascript:;" data-tw-toggle="modal"
+                                                    data-tw-target="#message-by-admin-modal-preview{{ $interpretation->id }}">
+                                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                                </a>
+                                            </td>
+                                            <!-- BEGIN: Modal Content -->
+                                            <div id="message-by-admin-modal-preview{{ $interpretation->id }}" class="modal"
+                                                tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body p-0">
+                                                            <div class="p-5 text-center"> <i data-lucide="bookmark"
+                                                                    class="w-16 h-16 text-info mx-auto mt-3"></i>
+                                                                <div class="text-3xl mt-5 mb-2">Interpretation Message by Admin
+                                                                </div>
+                                                                <div class="w-full text-left">
+                                                                    <label for="order-form-21" class="form-label">
+                                                                        Message:</label>
+                                                                    <textarea id="order-form-21" type="text" class="form-control" disabled>{{ $interpretation->message_by_admin }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- END: Modal Content -->
                                             <!-- BEGIN: Modal Content -->
                                             <div id="message2-modal-preview{{ $interpretation->id }}" class="modal"
                                                 tabindex="-1" aria-hidden="true">
@@ -536,14 +563,14 @@
                                                 @endif
                                             </td>
                                             <td class="whitespace-nowrap">
-                                                @if ($interpretation->interpreter_id === null || $interpretation->contractorInterpretation->estimated_payment == null)
+                                                @if (!isset($interpretation->contractorInterpretation->contractor))
                                                     N/A
                                                 @else
                                                     ${{ $interpretation->contractorInterpretation->estimated_payment }}
                                                 @endif
                                             </td>
                                             <td class="whitespace-nowrap">
-                                                @if ($interpretation->interpreter_id === null || $interpretation->contractorInterpretation->per_hour_rate == null)
+                                                @if (!isset($interpretation->contractorInterpretation->contractor))
                                                     N/A
                                                 @else
                                                     ${{ $interpretation->contractorInterpretation->per_hour_rate }}

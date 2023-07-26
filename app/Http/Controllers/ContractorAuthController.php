@@ -583,7 +583,7 @@ class ContractorAuthController extends Controller
             $file = public_path($filePath);
         }
         $zip = new ZipArchive;
-        $zipName = date('YmdHi') . $id . '.zip';
+        $zipName = date('ymdHis') . $id . '.zip';
 
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
             $relativeNameInZipFile = basename($file);
@@ -605,7 +605,7 @@ class ContractorAuthController extends Controller
             $file = public_path($filePath);
         }
         $zip = new ZipArchive;
-        $zipName = date('YmdHi') . $id . '.zip';
+        $zipName = date('ymdHis') . $id . '.zip';
 
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
             $relativeNameInZipFile = basename($file);
@@ -628,7 +628,7 @@ class ContractorAuthController extends Controller
             $file = public_path($filePath);
         }
         $zip = new ZipArchive;
-        $zipName = date('YmdHi') . $id . '.zip';
+        $zipName = date('ymdHis') . $id . '.zip';
 
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
             $relativeNameInZipFile = basename($file);
@@ -683,7 +683,7 @@ class ContractorAuthController extends Controller
             $prefix = "_T_";
             // dd($file);
 
-            $filename = date('YmdHi') . $prefix . $file->getClientOriginalName();
+            $filename = date('ymdHis') . $prefix . $file->getClientOriginalName();
             // $folder = uniqid() . '-' . now()->timestamp;
             // $file->move(public_path('documents'), $filename);
             //if the path does not exist, create it
@@ -709,7 +709,7 @@ class ContractorAuthController extends Controller
         //     $filePath = 'translations_by_contractors/';
 
         //     foreach ($files as $file) {
-        //         $filename = date('YmdHi') . $file->getClientOriginalName();
+        //         $filename = date('ymdHis') . $file->getClientOriginalName();
 
         //         if (!file_exists(public_path($filePath))) {
         //             mkdir(public_path($filePath), 0777, true);
@@ -784,7 +784,7 @@ class ContractorAuthController extends Controller
 
         $zip = new ZipArchive;
 
-        $zipName = date('YmdHi') . $order->id . '.zip';
+        $zipName = date('ymdHis') . $order->id . '.zip';
         // dd($zip->open(public_path($zipName), ZipArchive::CREATE) === TRUE);
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
 
@@ -815,7 +815,7 @@ class ContractorAuthController extends Controller
 
         $zip = new ZipArchive;
 
-        $zipName = date('YmdHi') . $order->id . '.zip';
+        $zipName = date('ymdHis') . $order->id . '.zip';
         // dd($zip->open(public_path($zipName), ZipArchive::CREATE) === TRUE);
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
 
@@ -878,7 +878,7 @@ class ContractorAuthController extends Controller
             $file = public_path($filePath);
         }
         $zip = new ZipArchive;
-        $zipName = date('YmdHi') . $id . '.zip';
+        $zipName = date('ymdHis') . $id . '.zip';
 
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
             $relativeNameInZipFile = basename($file);
@@ -983,7 +983,7 @@ class ContractorAuthController extends Controller
             $file = $request->file('proofReadFile');
             $filePath = 'proofread_by_proofreader/';
             $prefix = "_P_";
-            $filename = date('YmdHi') . $prefix . $file->getClientOriginalName();
+            $filename = date('ymdHis') . $prefix . $file->getClientOriginalName();
 
             if (!file_exists(public_path($filePath))) {
                 mkdir(public_path($filePath), 0777, true);

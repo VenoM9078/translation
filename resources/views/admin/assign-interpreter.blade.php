@@ -8,7 +8,8 @@
         <div class="intro-y box">
             <div class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
                 <h2 class="font-medium text-base mr-auto">
-                    Assigning Interpreter for {{ $interpretation->user->name }}'s Interpretation Order
+                    Assigning Interpreter for {{ $interpretation->user->name }}'s Interpretation Order | WO:
+                    {{ $interpretation->worknumber }}
                 </h2>
 
             </div>
@@ -19,14 +20,7 @@
                     <div class="preview spaxy-y-4">
                         <div>
                             <div class="intro-x mt-4">
-                                <input type="hidden" name="interpretation_id" value="{{ $interpretation->id }}">
-                                <div class="mb-3">
-                                    <label>Enter Description of Interpretation</label>
-                                    <textarea type="text" name="description" required class="intro-x login__input form-control py-3 px-4 block mt-1"
-                                        placeholder="Enter Interpretation Description" value=""></textarea>
-                                </div>
-
-                                <div class="mt-3">
+                                <div class="mt-1">
                                     <label>Select Contractor</label>
                                     <select id="contractor_select" data-placeholder="Select a language" name="contractor_id"
                                         required class="tom-select w-full mt-2">
@@ -39,31 +33,59 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <input type="hidden" name="interpretation_id" value="{{ $interpretation->id }}">
+                                <div class="mt-4">
+                                    <label>Enter Description of Interpretation</label>
+                                    <textarea type="text" name="description" required class="intro-x login__input form-control py-3 px-4 block mt-1"
+                                        placeholder="Enter Interpretation Description" value=""></textarea>
+                                </div>
+
+                                <div class="mt-2 w-full">
+                                    <label for="c_fee">I. Rate ($)</label>
+                                    <input type="number" step="0.01" id="i_rate" name="interpretation_rate"
+                                        class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4"
+                                        @if ($interpretation->contractorInterpretation) placeholder="Interpretation Rate ($)"
+                                            @else
+                                                placeholder="Interpreter not assigned" @endif
+                                        value="{{ $interpretation->contractorInterpretation->per_hour_rate ?? '' }}">
+                                </div>
+
+
+                                <div class="mt-4">
+                                    <label>I. Fee</label>
+                                    <input type="number" name="i_fee" id="i_fee" step="0.01"  required
+                                        class="intro-x login__input form-control py-3 px-4 block mt-1"
+                                        placeholder="Enter Interpretation Adjust"
+                                        value="{{ $interpretation->contractorInterpretation->per_hour_rate ?? 0 }}">
+                                </div>
 
                                 <div class="mt-5 mb-5">
-                                    <label>Enter Estimated Payment</label><br>
+                                    <label>Enter I. Adjust</label><br>
                                     <small>Session Duration:
                                         {{ (int) $interpretation->end_time - (int) $interpretation->start_time }}
                                         hour(s)</small>
-                                    <input id="estimated_payment" step="0.0001" type="number" required
-                                        name="estimated_payment"
+                                    <input id="i_adjust" step="0.0001" type="number" required name="i_adjust"
                                         class="intro-x login__input form-control py-3 px-4 block mt-1"
-                                        placeholder="Enter Estimated Payment (in dollars)" value="0">
+                                        placeholder="Enter Estimated Payment (in dollars)"
+                                        value="{{ $interpretation->contractorInterpretation->estimated_payment ?? 0 }}">
                                 </div>
 
-                                <div class="mt-3 mb-3">
+                                {{-- <div class="mt-3 mb-3">
                                     <label>Change Per Hour Rate</label>
-                                    <input id="per_hour_rate" step="0.0001" type="number" required name="per_hour_rate"
+                                    <input id="per_hour_rate" step="0.0001" type="number" name="per_hour_rate"
                                         class="intro-x login__input form-control py-3 px-4 block mt-1"
                                         placeholder="(Optional)" value="">
-                                </div>
-                                <label for="c_adjust_note">I. Adjust Note</label>
-                                <textarea id="p_adjust_note" name="interpreter_adjust_note" class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4"
-                                    placeholder="I. Adjust Note">{{ $interpretation->interprer_adjust_note }}</textarea>
+                                </div> --}}
+                                <label for="c_adjust_note">Interpreter Message</label>
+                                <textarea id="p_adjust_note" name="message_by_admin"
+                                    class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4" placeholder="Type Message">{{ $interpretation->message_by_admin ?? '' }}</textarea>
                                 <br>
-                                <label for="amount" class="mt-2 mb-2">Paid</label>
-                                <select data-placeholder="Enter Paid" name="interpreter_paid"
-                                    class="tom-select w-full">
+                                <label for="c_adjust_note">I. Adjust Note</label>
+                                <textarea id="p_adjust_note" name="interpreter_adjust_note"
+                                    class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4" placeholder="I. Adjust Note">{{ $interpretation->interpreter_adjust_note }}</textarea>
+                                <br>
+                                <label for="amount" class="mt-2 mb-2">I Paid</label>
+                                <select data-placeholder="Enter Paid" name="interpreter_paid" class="tom-select w-full">
                                     @if ($interpretation->interpreter_paid != '')
                                         <option value="{{ $interpretation->interpreter_paid }}" selected>
                                             {{ $interpretation->interpreter_paid == 1 ? 'Yes' : 'No' }} </option>
@@ -85,9 +107,19 @@
     <script>
         $(document).ready(function() {
             var hours = {{ (int) $interpretation->end_time - (int) $interpretation->start_time }};
-            // console.log("hours",hours);
-            function calculateEstimatedPayment(rate) {
-                return Math.abs(hours * rate);
+
+            function calculateEstimatedPayment(rate, adjust, duration) {
+                var sessionHours = duration / 3600;
+
+                // If session hours are less than 1, set them to 1
+                if (sessionHours < 1) {
+                    sessionHours = 1;
+                } else {
+                    // Otherwise, round session hours up to the nearest 0.25
+                    sessionHours = Math.ceil(sessionHours * 4) / 4;
+                }
+
+                return Math.abs(sessionHours * rate) + parseFloat(adjust);
             }
 
             $('#contractor_select').change(function() {
@@ -101,17 +133,19 @@
                     },
                     success: function(data) {
                         var rate = data.interpretation_rate;
-                        var estimated_payment = calculateEstimatedPayment(rate);
-                        $('#estimated_payment').val(estimated_payment);
-                        $('#per_hour_rate').val(rate);
+                        var adjust = $("#i_adjust").val();
+                        var estimated_payment = calculateEstimatedPayment(rate, adjust, hours);
+                        $('#i_fee').val(estimated_payment);
+                        $('#i_rate').val(rate);
                     }
                 });
-            }).change(); // Trigger the change event manually to set the initial values
+            }).change();
 
-            $('#per_hour_rate').change(function() {
+            $('#i_rate, #i_adjust').change(function() {
                 var rate = $(this).val();
-                var estimated_payment = calculateEstimatedPayment(rate);
-                $('#estimated_payment').val(estimated_payment);
+                var adjust = $("#i_adjust").val();
+                var estimated_payment = calculateEstimatedPayment(rate, adjust, hours);
+                $('#i_fee').val(estimated_payment);
             });
         });
     </script>

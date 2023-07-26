@@ -164,7 +164,7 @@ class UserController extends Controller
         $page = $request->input('page', 1); // Default to 1 if not provided
         $skip = ($page - 1) * $recordsPerPage;
         if ($user->role_id == 0 || $user->role_id == 1) {
-            $interpretations = Interpretation::where('user_id', $user->id)->orderBy('id','desc')->skip($skip)->paginate($recordsPerPage);
+            $interpretations = Interpretation::where('user_id', $user->id)->orderBy('id', 'desc')->skip($skip)->paginate($recordsPerPage);
         } else {
             $members = Auth::user()->institute_managed->members;
             $user_ids = [];
@@ -200,7 +200,7 @@ class UserController extends Controller
             $file = public_path($filePath);
         }
         $zip = new ZipArchive;
-        $zipName = date('YmdHi') . $id . '.zip';
+        $zipName = date('ymdHis') . $id . '.zip';
 
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
             $relativeNameInZipFile = basename($file);
@@ -220,7 +220,7 @@ class UserController extends Controller
             $prefix = "_C_";
             foreach ($files as $file) {
 
-                $filename = date('YmdHi') . $prefix . $file->getClientOriginalName();
+                $filename = date('ymdHis') . $prefix . $file->getClientOriginalName();
                 // $folder = uniqid() . '-' . now()->timestamp;
                 // $file->move(public_path('documents'), $filename);
                 $file->move('documents/', $filename);
@@ -567,7 +567,7 @@ class UserController extends Controller
             $file = public_path($filePath);
         }
         $zip = new ZipArchive;
-        $zipName = date('YmdHi') . $id . '.zip';
+        $zipName = date('ymdHis') . $id . '.zip';
 
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
             $relativeNameInZipFile = basename($file);
@@ -834,7 +834,7 @@ class UserController extends Controller
             $file = public_path($filePath);
         }
         $zip = new ZipArchive;
-        $zipName = date('YmdHi') . $id . '.zip';
+        $zipName = date('ymdHis') . $id . '.zip';
 
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
             $relativeNameInZipFile = basename($file);
@@ -1064,7 +1064,7 @@ class UserController extends Controller
 
             foreach ($files as $file) {
 
-                $filename = date('YmdHi') . $file->getClientOriginalName();
+                $filename = date('ymdHis') . $file->getClientOriginalName();
                 // $folder = uniqid() . '-' . now()->timestamp;
                 // $file->move(public_path('documents'), $filename);
                 $file->move('evidence/', $filename);
@@ -1104,7 +1104,7 @@ class UserController extends Controller
 
             $zip2 = new ZipArchive;
 
-            $zipName2 = 'payevidence' . date('YmdHi') . $order_id . '.zip';
+            $zipName2 = 'payevidence' . date('ymdHis') . $order_id . '.zip';
 
             if ($zip2->open(public_path('compressed/' . $zipName2), ZipArchive::CREATE) === TRUE) {
 
@@ -1150,7 +1150,7 @@ class UserController extends Controller
 
         $zip = new ZipArchive;
 
-        $zipName = date('YmdHi') . $order->id . '.zip';
+        $zipName = date('ymdHis') . $order->id . '.zip';
         // dd($zip->open(public_path($zipName), ZipArchive::CREATE) === TRUE);
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
 

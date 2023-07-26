@@ -40,7 +40,8 @@ class Interpretation extends Model
         'interpreter_adjust_note',
         'interpreter_paid',
         'is_reminder_on',
-        'reminder_email_sent'
+        'reminder_email_sent',
+        'message_by_admin'
     ];
 
     public function user()

@@ -65,6 +65,7 @@ class AdminController extends Controller
 {
     public function index()
     {
+        dd(date('ymdHis'));
         $orders = Order::all();
         $users = User::all();
         $unsent = count(Order::where(['invoiceSent' => 0])->get());
@@ -352,7 +353,7 @@ class AdminController extends Controller
             $file = $request->file('proofReadFile');
             $filePath = 'proofread_by_proofreader/';
             $prefix = "F_";
-            $filename = date('YmdHi') . $file->getClientOriginalName();
+            $filename = date('ymdHis') . $file->getClientOriginalName();
 
             if (!file_exists(public_path($filePath))) {
                 mkdir(public_path($filePath), 0777, true);
@@ -379,7 +380,7 @@ class AdminController extends Controller
 
             // dd($file);
 
-            $filename = date('YmdHi') . $file->getClientOriginalName();
+            $filename = date('ymdHis') . $file->getClientOriginalName();
             // $folder = uniqid() . '-' . now()->timestamp;
             // $file->move(public_path('documents'), $filename);
             //if the path does not exist, create it
@@ -408,7 +409,7 @@ class AdminController extends Controller
 
             // dd($file);
 
-            $filename = date('YmdHi') . $file->getClientOriginalName();
+            $filename = date('ymdHis') . $file->getClientOriginalName();
             // $folder = uniqid() . '-' . now()->timestamp;
             // $file->move(public_path('documents'), $filename);
             //if the path does not exist, create it
@@ -517,7 +518,7 @@ class AdminController extends Controller
                 ]
             );
             // Update proofreader default rate
-            $proofReader = Contractor::where('id',$request->p_contractor_id)->first();
+            $proofReader = Contractor::where('id', $request->p_contractor_id)->first();
             $proofReader->proofreader_rate = $request->p_rate;
             $proofReader->save();
             $order = Order::find($request->order_id);
@@ -585,7 +586,7 @@ class AdminController extends Controller
             return redirect()->route('admin.ongoingInterpretations', ['page' => session('page'), 'limit' => session('limit')])->with('success', 'Interpretation updated successfully.');
         }
 
-        return redirect()->route('admin.ongoingInterpretations',['page' => session('page'), 'limit' => session('limit')])->with('error', 'Interpretation not found.');
+        return redirect()->route('admin.ongoingInterpretations', ['page' => session('page'), 'limit' => session('limit')])->with('error', 'Interpretation not found.');
     }
 
     public function updateContractor(Request $request)
@@ -1112,7 +1113,7 @@ class AdminController extends Controller
 
             foreach ($files as $file) {
 
-                $filename = date('YmdHi') . $file->getClientOriginalName();
+                $filename = date('ymdHis') . $file->getClientOriginalName();
                 // $folder = uniqid() . '-' . now()->timestamp;
                 // $file->move(public_path('documents'), $filename);
                 $file->move('documents/', $filename);
@@ -1219,10 +1220,13 @@ class AdminController extends Controller
         $existingAssignment = ContractorInterpretation::where('interpretation_id', $request->interpretation_id)
             ->first();
 
+        // Check if the contractor_id is changing
+        $isContractorChanging = $existingAssignment && $existingAssignment->contractor_id != $request->contractor_id;
+
         $interpretation = Interpretation::where('id', $request->interpretation_id)->first();
         $interpretation->interpreter_adjust_note = $request->interpreter_adjust_note;
         $interpretation->interpreter_paid = $request->interpreter_paid;
-
+        $interpretation->message_by_admin = $request->message_by_admin;
         $interpretation->save();
         // If it exists, delete it
         if ($existingAssignment) {
@@ -1234,15 +1238,18 @@ class AdminController extends Controller
         $contractorInterpretation->interpretation_id = $request->interpretation_id;
         $contractorInterpretation->is_accepted = 0;
         $contractorInterpretation->description = $request->description;
-        $contractorInterpretation->per_hour_rate = $request->per_hour_rate;
-        $contractorInterpretation->estimated_payment = $request->estimated_payment;
+        $contractorInterpretation->per_hour_rate = $request->i_fee;
+        $contractorInterpretation->estimated_payment = $request->i_adjust;
 
         $contractorInterpretation->save();
 
         HelperClass::storeContractorLog(Auth::user()->id, LogActionsEnum::ISADMIN, null, $request->contractor_id, "Interpretation", "Admin", "Interpreter", LogActionsEnum::ASSIGNEDINTERPRETER, 0, 0, 0, 0, 0, 0, 0, $request->interpretation_id);
         $contractor = $contractorInterpretation->contractor;
-
-        Mail::to($contractor->email)->send(new InformContractorOfRequest($contractorInterpretation));
+        // If the contractor is changing, send an email to the new interpreter
+        if ($isContractorChanging) {
+            $contractor = $contractorInterpretation->contractor;
+            Mail::to($contractor->email)->send(new InformContractorOfRequest($contractorInterpretation));
+        }
 
         return redirect()->route('admin.ongoingInterpretations', ['page' => session('page'), 'limit' => session('limit')])->with('success', 'Interpretation assigned successfully!');
     }
@@ -1639,7 +1646,7 @@ class AdminController extends Controller
             $file = public_path($filePath);
         }
         $zip = new ZipArchive;
-        $zipName = date('YmdHi') . $id . '.zip';
+        $zipName = date('ymdHis') . $id . '.zip';
 
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
             $relativeNameInZipFile = basename($file);
@@ -1662,7 +1669,7 @@ class AdminController extends Controller
             $file = public_path($filePath);
         }
         $zip = new ZipArchive;
-        $zipName = date('YmdHi') . $id . '.zip';
+        $zipName = date('ymdHis') . $id . '.zip';
 
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
             $relativeNameInZipFile = basename($file);
@@ -1685,7 +1692,7 @@ class AdminController extends Controller
             $file = public_path($filePath);
         }
         $zip = new ZipArchive;
-        $zipName = date('YmdHi') . $id . '.zip';
+        $zipName = date('ymdHis') . $id . '.zip';
 
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
             $relativeNameInZipFile = basename($file);
@@ -1710,7 +1717,7 @@ class AdminController extends Controller
 
         $zip = new ZipArchive;
 
-        $zipName = date('YmdHi') . $order->id . '.zip';
+        $zipName = date('ymdHis') . $order->id . '.zip';
         // dd($zip->open(public_path($zipName), ZipArchive::CREATE) === TRUE);
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
 
@@ -1844,7 +1851,7 @@ class AdminController extends Controller
 
         $zip = new ZipArchive;
 
-        $zipName = date('YmdHi') . $order->id . '.zip';
+        $zipName = date('ymdHis') . $order->id . '.zip';
         // dd($zip->open(public_path($zipName), ZipArchive::CREATE) === TRUE);
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
 
@@ -1984,7 +1991,7 @@ class AdminController extends Controller
 
             foreach ($files as $file) {
 
-                $filename = date('YmdHi') . $file->getClientOriginalName();
+                $filename = date('ymdHis') . $file->getClientOriginalName();
 
                 $file->move(public_path('documents'), $filename);
                 $fileArr2[] = public_path('documents/' . $filename);
@@ -2031,7 +2038,7 @@ class AdminController extends Controller
 
         $zip = new ZipArchive;
 
-        $zipName = date('YmdHi') . $order->id . '.zip';
+        $zipName = date('ymdHis') . $order->id . '.zip';
         // dd($zip->open(public_path($zipName), ZipArchive::CREATE) === TRUE);
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
 
@@ -2063,7 +2070,7 @@ class AdminController extends Controller
             $file = public_path($filePath);
         }
         $zip = new ZipArchive;
-        $zipName = date('YmdHi') . $id . '.zip';
+        $zipName = date('ymdHis') . $id . '.zip';
 
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
             $relativeNameInZipFile = basename($file);
@@ -2104,7 +2111,7 @@ class AdminController extends Controller
 
             foreach ($files as $file) {
 
-                $filename = date('YmdHi') . $prefix . $file->getClientOriginalName();
+                $filename = date('ymdHis') . $prefix . $file->getClientOriginalName();
                 // $folder = uniqid() . '-' . now()->timestamp;
                 // $file->move(public_path('documents'), $filename);
                 $file->move('documents/', $filename);
