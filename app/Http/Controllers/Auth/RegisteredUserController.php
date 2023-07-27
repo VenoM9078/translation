@@ -303,14 +303,7 @@ class RegisteredUserController extends Controller
 
                     Auth::login($user);
                     return redirect()->route('user.index');
-                    // return view('auth.register2', [
-                    //     'name' => $request->input('name'),
-                    //     'role_id' => 0,
-                    //     'email' => $request->input('email'),
-                    //     'password' => $request->input('password'),
-                    //     'role_id_sent' => $request->role_id,
-                    //     'user_id' => $request->user_id
-                    // ])->with('message', 'Your institute does not have an account with Flow Translate, please discuss with your administrator to set up one with Flow Translate. Now you are registered as individual user.');
+                
                 }
 
             }
