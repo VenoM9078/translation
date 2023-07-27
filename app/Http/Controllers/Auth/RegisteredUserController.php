@@ -114,6 +114,7 @@ class RegisteredUserController extends Controller
 
         // Pass input data from the previous form to the view
         $verifyUser = User::where('email', $request->email)->first();
+        $userBelongsToInstitute = false;
         if (!isset($verifyUser)) {
             if ($request->role_id == 0) {
                 $user = User::create([
@@ -134,17 +135,67 @@ class RegisteredUserController extends Controller
 
                 // if role is 1 => 3 | role is 2 => 4
                 $role_id = 0;
-                if ($request->role_id == 1) {
-                    $role_id = 3; //awaiting admin status
+                if ($request->role_id == 1) { //inst usr
+                    $role_id = 3; //awaiting inst user status
+                    $user = User::create([
+                        'name' => $request->name,
+                        'email' => $request->email,
+                        'password' => Hash::make($request->password),
+                        'role_id' => $role_id
+                    ]);
+
+                    // start
+                    $institute = Institute::
+                        where('is_active', InstituteRequestEnum::ACCEPTED)
+                        ->get();
+                    //fetch all instittutes and check if the owner's email domain matches with user's email domain. if not, redirect him to dashboard with error message.
+
+                    $userBelongsToInstitute = false;
+                    $userEmailDomain = substr(strrchr($request->email, "@"), 1);
+                    foreach ($institute as $inst) {
+                        $manager = User::find($inst->managed_by);
+                        $managerEmailDomain = substr(strrchr($manager->email, "@"), 1);
+                        if ($managerEmailDomain == $userEmailDomain) {
+                            $userBelongsToInstitute = true;
+
+                            // if ($inst->member_approval_needed == 1) { //need to approve user first
+                            //     $this->addInstituteUserToRequest($user, $inst);
+                            // } else {
+                            //     $inst->members()->syncWithoutDetaching([$user->id]);
+
+                            //     // Send an email to the institute manager about the new request
+                            //     $manager = User::find($inst->managed_by);
+                            //     Mail::to($user->email)->send(new InstituteRequestAccepted($user));
+                            // }
+                        }
+                    }
+                    if (!$userBelongsToInstitute) {
+                        // Register the user as an individual user
+                        //Your institute does not have an account with Flow Translate, please discuss with your administrator to set up one with Flow Translate. Now you are registered as individual user.
+                        $user->role_id = 0;
+                        $user->failed_inst_user = 1; 
+                        $user->save();
+
+                        event(new Registered($user));
+
+                        Auth::login($user);
+                        return redirect()->route('email-verification-notice');
+
+                    }
+
+                    // end
+
                 } else {
                     $role_id = 4; //awaiting admin status
                 }
-                $user = User::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password),
-                    'role_id' => $role_id
-                ]);
+                if($userBelongsToInstitute  == false && $request->role_id != 1){ //institute user does not create here
+                    $user = User::create([
+                        'name' => $request->name,
+                        'email' => $request->email,
+                        'password' => Hash::make($request->password),
+                        'role_id' => $role_id
+                    ]);
+                }
 
 
                 event(new Registered($user));
@@ -185,10 +236,10 @@ class RegisteredUserController extends Controller
         } else if ($request->role_id == 1) {
             if (count($institute) < 1) {
                 $userEmailDomain = substr(strrchr($request->email, "@"), 1);
-                $instituteAdmins = User::where('role_id',2)->get();
-                foreach($instituteAdmins as $instituteAdmin){
+                $instituteAdmins = User::where('role_id', 2)->get();
+                foreach ($instituteAdmins as $instituteAdmin) {
                     $managerEmailDomain = substr(strrchr($instituteAdmin->email, "@"), 1);
-                    if($userEmailDomain == $managerEmailDomain){
+                    if ($userEmailDomain == $managerEmailDomain) {
                         $user = User::where('id', $request->user_id)->first();
                         $user->role_id = 0;
                         $user->invalid_passcode_inst_user = 1;
@@ -199,7 +250,7 @@ class RegisteredUserController extends Controller
                         return redirect()->route('user.index');
                     }
                 }
-               
+
             } else {
                 $userBelongsToInstitute = false;
                 $userEmailDomain = substr(strrchr($request->email, "@"), 1);
@@ -237,15 +288,15 @@ class RegisteredUserController extends Controller
                 }
                 if (!$userBelongsToInstitute) {
                     // Register the user as an individual user
-                    $user = User::where('id',$request->user_id)->first();
+                    $user = User::where('id', $request->user_id)->first();
                     $user->role_id = 0;
                     $user->failed_inst_user = 1;
                     $user->save();
-                        // 'name' => $request->input('name'),
-                        // 'role_id' => 0,
-                        // 'email' => $request->input('email'),
-                        // 'failed_inst_user' => 1,
-                        // 'password' => bcrypt($request->input('password')),
+                    // 'name' => $request->input('name'),
+                    // 'role_id' => 0,
+                    // 'email' => $request->input('email'),
+                    // 'failed_inst_user' => 1,
+                    // 'password' => bcrypt($request->input('password')),
                     // ]);
 
                     event(new Registered($user));
