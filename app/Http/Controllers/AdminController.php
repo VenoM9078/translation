@@ -65,7 +65,6 @@ class AdminController extends Controller
 {
     public function index()
     {
-        dd(date('ymdHis'));
         $orders = Order::all();
         $users = User::all();
         $unsent = count(Order::where(['invoiceSent' => 0])->get());
