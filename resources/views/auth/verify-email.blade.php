@@ -21,10 +21,10 @@
         <div class="block xl:grid grid-cols-2 gap-4">
             <!-- BEGIN: Login Info -->
             <div class="hidden xl:flex flex-col min-h-screen">
-               <a href="{{route('/')}}" class="-intro-x flex items-center pt-5">
+                <a href="{{route('/')}}" class="-intro-x flex items-center pt-5">
                     <img class="w-6" src="{{ url('dist/images/logo.svg') }}">
                     <span class="text-white text-lg ml-3"> FlowTranslate Homepage </span>
-               </a>
+                </a>
                 <div class="my-auto">
                     <img class="-intro-x w-1/2 -mt-16" src="{{ url('dist/images/illustration.svg') }}">
                     <div class="-intro-x text-white font-medium text-4xl leading-tight mt-10">
@@ -47,47 +47,48 @@
                     <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">A few more clicks to sign in to your
                         account. Manage all your e-commerce accounts in one place</div>
                     @if ($errors->any())
-                    <div class="alert alert-danger mt-3 mb-3">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
+                        <div class="alert alert-danger mt-3 mb-3">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
                     @endif
                     <div class="mb-4 text-md max-w-lg mt-4 text-gray-600">
                         {{ __('Thanks for signing up! Before getting started, could you verify your email address by
-                        clicking on the
-                        link we just emailed to you? If you didn\'t receive the email, we will gladly send you
-                        another.') }}
+                                                                        clicking on the
+                                                                        link we just emailed to you? If you didn\'t receive the email, we will gladly send you
+                                                                        another.') }}
                     </div>
 
                     @if (session('status') == 'verification-link-sent')
-                    <div class="mb-4 font-medium mt-4 text-md max-w-lg text-gray-600">
-                        {{ __('A new verification link has been sent to the email address you provided during
-                        registration.') }}
-                    </div>
+                        <div class="mb-4 font-medium mt-4 text-md max-w-lg text-gray-600">
+                            {{ __('A new verification link has been sent to the email address you provided during
+                                                                                registration.') }}
+                        </div>
                     @endif
 
                     <div class="mt-4 flex items-center justify-between">
-                        @if(!auth()->guard('contractor')->user())
+                        @if (!auth()->guard('contractor')->user())
                             <form method="POST" action="{{ route('verification.send') }}">
-                        @else
-                            <form method="POST" action="{{ route('contractor.verification.send') }}">
+                            @else
+                                <form method="POST" action="{{ route('contractor.verification.send') }}">
                         @endif
-                            @csrf
+                        @csrf
 
-                            <div>
-                                <button type="submit" class="btn btn-primary py-3 px-4 w-full xl:mr-3 align-top">Resend
-                                    Verification Email</button>
-                            </div>
+                        <div>
+                            <button type="submit" id="resend-button" class="btn btn-primary py-3 px-4 w-full xl:mr-3 align-top"
+                                disabled>Resend
+                                Verification Email</button>
+                        </div>
                         </form>
-
+                      
                         <a href="{{ route('logout') }}" class="underline text-sm text-gray-600 hover:text-gray-900">
                             {{ __('Log Out') }}
                         </a>
                     </div>
-
+                    <p id="countdown-message" class="mt-2" style="display: none;"></p>
                     <hr class="mt-3 mb-3">
                     <div class="alert alert-secondary show flex items-center mb-2" role="alert"> <i
                             data-lucide="alert-circle" class="w-6 h-6 mr-2"></i> Already registered & verified? <a
@@ -107,40 +108,29 @@
 </body>
 
 </html>
+<script>
+    var countdown = 5;
 
-{{-- <x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
+    var countdownInterval = setInterval(function() {
+        if (countdown === 0) {
+            // Enable the button when the countdown is over
+            document.getElementById("resend-button").removeAttribute("disabled");
 
-        <div class="mb-4 text-sm text-gray-600">
-            {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the
-            link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
-        </div>
+            // Hide the countdown message
+            document.getElementById("countdown-message").style.display = "none";
 
-        @if (session('status') == 'verification-link-sent')
-        <div class="mb-4 font-medium text-sm text-green-600">
-            {{ __('A new verification link has been sent to the email address you provided during registration.') }}
-        </div>
-        @endif
+            // Clear the countdown interval
+            clearInterval(countdownInterval);
+        } else {
+            // Update the countdown message
+            document.getElementById("countdown-message").textContent = "Button will be enabled in " +
+                countdown + " seconds...";
 
-        <div class="mt-4 flex items-center justify-between">
-            <form method="POST" action="{{ route('verification.send') }}">
-                @csrf
+            // Show the countdown message
+            document.getElementById("countdown-message").style.display = "block";
 
-                <div>
-                    <x-button>
-                        {{ __('Resend Verification Email') }}
-                    </x-button>
-                </div>
-            </form>
-
-            <a href="{{ route('logout') }}" class="underline text-sm text-gray-600 hover:text-gray-900">
-                {{ __('Log Out') }}
-            </a>
-        </div>
-    </x-auth-card>
-</x-guest-layout> --}}
+            // Decrement the countdown
+            countdown--;
+        }
+    }, 1000);
+</script>
