@@ -26,7 +26,8 @@ implements MustVerifyEmail
         'password',
         'role_id',
         'failed_inst_user',
-        'invalid_passcode_inst_user'
+        'invalid_passcode_inst_user',
+        'is_inst_message_seen'
     ];
 
     /**

@@ -33,6 +33,9 @@ class AuthenticatedSessionController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $request->session()->regenerate();
             $user = Auth::user();
+            if ($user->is_inst_message_seen == 0) {
+                session()->flash('showInstMessage', true);
+            }
             if (!$user->hasVerifiedEmail()) {
                 $user->sendEmailVerificationNotification();
 

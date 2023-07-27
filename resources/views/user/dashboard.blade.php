@@ -7,14 +7,33 @@
                 User Dashboard - Overview
             </h2>
         </div>
-
+        {{-- @dd(Auth::user()) --}}
+        @if (Auth::user()->is_inst_message_seen == 0)
+            @if (count(Auth::user()->user_requests) < 1 && !isset(Auth::user()->institute[0]))
+                <div class="alert alert-danger show mb-2" role="alert">
+                    <div class="flex items-center">
+                        <div class="font-medium text-lg">Your institute administrator rejected your application. However you
+                            can still use our service as an Individual User.</div>
+                        <div class="text-xs bg-white px-1 rounded-md text-slate-700 ml-auto">New</div>
+                    </div>
+                </div>
+            @elseif(count(Auth::user()->user_requests) < 1 && isset(Auth::user()->institute[0]))
+                <div class="alert alert-success show mb-2" role="alert">
+                    <div class="flex items-center">
+                        <div class="font-medium text-lg">You have successfully registered as Institute User.</div>
+                        <div class="text-xs bg-white px-1 rounded-md text-slate-700 ml-auto">New</div>
+                    </div>
+                </div>
+            @endif
+        @endif
         @if (Auth::user()->institute_managed && Auth::user()->institute_managed->is_active == 0)
             <div class="alert alert-warning show mb-2" role="alert">
                 <div class="flex items-center">
                     <div class="font-medium text-lg">Your Institute Creation Request is Pending!</div>
                     <div class="text-xs bg-white px-1 rounded-md text-slate-700 ml-auto">New</div>
                 </div>
-                <div class="mt-3">Thank you for signing up with us! We see that you requested to create an Institute by the
+                <div class="mt-3">Thank you for signing up with us! We see that you requested to create an Institute by
+                    the
                     name
                     of {{ Auth::user()->institute_managed->name }}. Your request is pending and we'll let you know when its
                     status changes!</div>
@@ -30,13 +49,15 @@
                     administrator to set up one with Flow Translate. Now you are registered as individual user.</div>
             </div>
         @endif
-         @if (Auth::user()->role_id == 0 && Auth::user()->invalid_passcode_inst_user == 1)
+        @if (Auth::user()->role_id == 0 && Auth::user()->invalid_passcode_inst_user == 1)
             <div class="alert alert-warning show mb-2" role="alert">
                 <div class="flex items-center">
                     <div class="font-medium text-lg">Alert!</div>
                     <div class="text-xs bg-white px-1 rounded-md text-slate-700 ml-auto">New</div>
                 </div>
-                <div class="mt-3">Your institute passcode is incorrect. To have access to your institute account, please contact  <b> {{$instituteAdmin->name}}  ({{$instituteAdmin->email}}) </b> to obtain your Institute Passcode. Now you are registered as individual user.</div>
+                <div class="mt-3">Your institute passcode is incorrect. To have access to your institute account, please
+                    contact <b> {{ $instituteAdmin->name }} ({{ $instituteAdmin->email }}) </b> to obtain your Institute
+                    Passcode. Now you are registered as individual user.</div>
             </div>
         @endif
         @if (count(Auth::user()->user_requests) > 0)

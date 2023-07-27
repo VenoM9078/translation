@@ -57,6 +57,12 @@ class UserController extends Controller
     public function index()
     {
         $email = Auth::user()->email;
+
+        // If it's the user's first login session after their institute request has been accepted or declined,
+        // show the message and mark it as seen
+        if (session()->has('showInstMessage')) {
+            $this->markMessageAsSeen(Auth::id());
+        }
         $domain = substr(strrchr($email, "@"), 1);
         $instituteAdmin = User::where('email', 'like', '%' . $domain)->where('role_id', 2)->first();
         return view('user.dashboard', compact('instituteAdmin'));
@@ -1232,6 +1238,7 @@ class UserController extends Controller
         // Update the user's role
         $user = User::findOrFail($request->user_id);
         $user->role_id = 1; // You may need to adjust this according to your role_id for member
+        $user->is_inst_message_seen = 0;
         $user->save();
 
         // Add the user to the Institute Members
@@ -1246,13 +1253,24 @@ class UserController extends Controller
         return redirect()->back()->with('message', 'User request accepted!');
     }
 
+    public function markMessageAsSeen($userId)
+    {
+        $user = User::findOrFail($userId);
+
+        // Mark the messages as seen
+        $user->is_inst_message_seen = 1;
+        $user->save();
+    }
+
     public function instituteUserRequestDecline($id)
     {
         // Get the request
         $request = InstituteUserRequests::findOrFail($id);
 
         $user = User::findOrFail($request->user_id);
-
+        $user->is_inst_message_seen = 0;
+        $user->role_id = 0;
+        $user->save();
         // Delete the request
         $request->delete();
 
