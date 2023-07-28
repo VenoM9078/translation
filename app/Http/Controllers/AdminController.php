@@ -351,8 +351,11 @@ class AdminController extends Controller
         if ($request->hasFile('proofReadFile')) {
             $file = $request->file('proofReadFile');
             $filePath = 'proofread_by_proofreader/';
+            $order = $request->input('order_id');
+            $order = Order::find($order);
+            // dd($order);
             $prefix = "F_";
-            $filename = date('ymdHis') . $file->getClientOriginalName();
+            $filename = $order->worknumber . $prefix . '_' . $file->getClientOriginalName();
 
             if (!file_exists(public_path($filePath))) {
                 mkdir(public_path($filePath), 0777, true);
@@ -403,12 +406,14 @@ class AdminController extends Controller
         $filename = '';
         if ($request->hasFile('translationFile')) {
             $file = $request->file('translationFile');
+            $order = $request->input('order_id');
+            $order = Order::find($order);
             $filePath = 'translations_by_contractors/';
             $prefix = "F_";
 
             // dd($file);
 
-            $filename = date('ymdHis') . $file->getClientOriginalName();
+            $filename = $order->worknumber . $prefix . '_' . $file->getClientOriginalName();
             // $folder = uniqid() . '-' . now()->timestamp;
             // $file->move(public_path('documents'), $filename);
             //if the path does not exist, create it

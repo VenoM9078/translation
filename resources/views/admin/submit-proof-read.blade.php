@@ -2,9 +2,12 @@
 
 @section('content')
     <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
-
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
     <script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js"></script>
     <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js">
+    </script>
     <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
 
     <div class="col-span-12 mt-8">
@@ -53,7 +56,11 @@
     <script>
         FilePond.registerPlugin(
             FilePondPluginFileEncode,
-            FilePondPluginFileValidateSize
+            FilePondPluginFileValidateSize, // corrects mobile image orientation
+            FilePondPluginImageExifOrientation,
+
+            // previews dropped images
+            FilePondPluginImagePreview
         );
 
         FilePond.create(
@@ -65,6 +72,12 @@
                 url: '/admin/upload-proof',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                process: {
+                    ondata: (formData) => {
+                        formData.append('order_id', document.querySelector('input[name="order_id"]').value);
+                        return formData;
+                    }
                 }
             }
         });

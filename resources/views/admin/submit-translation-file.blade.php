@@ -13,7 +13,7 @@
     <div class="col-span-12 mt-8">
         <div class="intro-y flex items-center h-10">
             <h2 class="text-lg font-medium truncate mr-5 mb-4">
-                Upload Translation File | WO#: {{$order->worknumber}}
+                Upload Translation File | WO#: {{ $order->worknumber }}
             </h2>
         </div>
 
@@ -34,7 +34,7 @@
                                 @method('POST')
                                 <textarea name="message" id="" class="form-control" placeholder="Type message (optional)"></textarea>
                                 <input type="hidden" name="contractor_order_id" value="-1">
-                                <input type="hidden" name="order_id" value="{{$order->id}}">
+                                <input type="hidden" name="order_id" value="{{ $order->id }}">
                                 {{-- <div class="col-span-8 p-2 sm:col-span-12"> --}}
                                 <input type="file" id="fp-translationFile" class="filepond mt-2 fp-translationFile"
                                     name="translationFile" multiple data-max-files="1" data-max-file-size="10MB" />
@@ -80,6 +80,10 @@
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
+                    ondata: (formData) => {
+                        formData.append('order_id', document.querySelector('input[name="order_id"]').value);
+                        return formData;
+                    }
                 }
             }
         });
