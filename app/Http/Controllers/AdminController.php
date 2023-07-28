@@ -726,7 +726,9 @@ class AdminController extends Controller
         if ($institute) {
             // Fetch the institute members
             $instituteMembers = $institute->members;
-
+            $manager = $institute->manager;
+            $manager->role_id = 0;
+            $manager->save();
             // Set all member's role_id to 0
             foreach ($instituteMembers as $member) {
                 $user = User::find($member->user_id);
