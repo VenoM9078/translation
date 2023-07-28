@@ -126,8 +126,8 @@ class ContractorAuthController extends Controller
         $interpretationReport->save();
 
         $interpretation = Interpretation::find($interpretationReport->interpretation->id);
-        $interpretation->start_time = $request->start_time_decided;
-        $interpretation->end_time = $request->end_time_decided;
+        // $interpretation->start_time = $request->start_time_decided;
+        // $interpretation->end_time = $request->end_time_decided;
         $interpretation->feedback = $request->feedback;
         $interpretation->interpretationDate = $request->interpretationDate;
 

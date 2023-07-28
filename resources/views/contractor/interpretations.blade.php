@@ -138,10 +138,10 @@
                                         <th class="whitespace-nowrap">Session Format</th>
                                         <th class="whitespace-nowrap">Address/Link</th>
                                         <th class="whitespace-nowrap text-center">Message(FT to Interpreter)</th>
-                                        <th class="whitespace-nowrap">Interpreter Adjust ($)</th>
-                                        <th class="whitespace-nowrap">Interpreter Fee ($)</th>
+                                        <th class="whitespace-nowrap">I. Adjust ($)</th>
+                                        <th class="whitespace-nowrap">I. Fee ($)</th>
                                         <th class="whitespace-nowrap">I. Adjust Note</th>
-                                        <th class="whitespace-nowrap">Paid (Yes / No)</th>
+                                        <th class="whitespace-nowrap">I. Paid (Yes / No)</th>
                                         <th class="whitespace-nowrap">Status</th>
                                         <th class="whitespace-nowrap">Possible Actions</th>
                                     </tr>
@@ -179,10 +179,14 @@
                                             <td class="whitespace-nowrap">{{ $interpretation->interpretation->location }}
                                             </td>
                                             <td class="whitespace-nowrap">
+                                                @if(isset($interpretation->interpretation->message_by_admin))
                                                 <a href="javascript:;" data-tw-toggle="modal"
                                                     data-tw-target="#message2-modal-preview{{ $interpretation->id }}">
                                                     <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
                                                 </a>
+                                                @else
+                                                - 
+                                                @endif
                                             </td>
                                             <!-- BEGIN: Modal Content -->
                                             <div id="message2-modal-preview{{ $interpretation->id }}" class="modal"
@@ -197,7 +201,7 @@
                                                                 <div class="w-full text-left">
                                                                     <label for="order-form-21" class="form-label">
                                                                         Message:</label>
-                                                                    <textarea id="order-form-21" type="text" class="form-control" disabled>{{ $interpretation->interpretation->message }}</textarea>
+                                                                    <textarea id="order-form-21" type="text" class="form-control" disabled>{{ $interpretation->interpretation->message_by_admin }}</textarea>
                                                                 </div>
                                                             </div>
                                                         </div>
