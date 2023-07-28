@@ -406,9 +406,16 @@
 
         FilePond.setOptions({
             server: {
-                url: '/upload-translation',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                process: {
+                    url: '/upload-translation',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    ondata: (formData) => {
+                        formData.append('order_id', document.querySelector('input[name="order_id"]')
+                            .value);
+                        return formData;
+                    }
                 }
             }
         });

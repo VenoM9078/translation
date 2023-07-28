@@ -43,6 +43,15 @@ class ContractorOrder extends Model
         return $this->hasOne('App\Models\ProofReaderOrders', 'id');
     }
 
+    protected static function booted()
+    {
+        static::deleting(function ($contractorOrder) {
+            if ($contractorOrder->proofReadOrder) {
+                $contractorOrder->proofReadOrder()->delete();
+            }
+        });
+    }
+
     public static function emptyModel()
     {
         $emptyModel = new self();

@@ -17,7 +17,11 @@
             <div class="w-full btn btn-warning">
                 Translation In Progress
             </div>
-        @elseif ($order->translation_status == \App\Enums\TranslationStatusEnum::COMPLETED || (isset($order->contractorOrder) && $order->contractorOrder->added_by_admin == 1 && $order->contractorOrder->file_name != ''))
+        @elseif (
+            $order->translation_status == \App\Enums\TranslationStatusEnum::COMPLETED ||
+                (isset($order->contractorOrder) &&
+                    $order->contractorOrder->added_by_admin == 1 &&
+                    $order->contractorOrder->file_name != ''))
             <div class="w-full btn btn-success">
                 Translation Completed
             </div>
@@ -28,7 +32,7 @@
                 Cancelled
             </div>
         @elseif($order->completed == 1)
-              <div class="w-full btn btn-success">
+            <div class="w-full btn btn-success">
                 Translation Completed
             </div>
         @endif
@@ -54,7 +58,7 @@
             <div class="w-full btn btn-warning">
                 Translation Requested
             </div>
-        @elseif ($order->want_quote == 1 && !isset($order->contractorOrder))
+        @elseif ($order->want_quote == 1 && !isset($order->contractorOrder) && $order->paymentStatus == 0)
             {{--   
          "Quote Requested" is set, if a new order is submitted with requesting a quote.
      --}}
@@ -64,14 +68,15 @@
         @elseif(
             $order->want_quote == 2 &&
                 $order->is_order_quote_accepted == \App\Enums\OrderStatusEnum::QUOTEACCEPTED &&
-                !isset($order->contractorOrder))
+                !isset($order->contractorOrder) &&
+                $order->paymentStatus == 0)
             {{-- 
                 " Approved" is set, when client approve the quote. 
             --}}
             <div class="w-full btn btn-success">
                 Quote Approved
             </div>
-        @elseif($order->want_quote == 1)
+        @elseif($order->want_quote == 1 && $order->paymentStatus == 0)
             {{-- 
             "Quote Ready" is set, if FT admin uploads a quote  (or generates quotes with a template form - TBD) to website. 
             --}}
@@ -117,14 +122,11 @@
             <div class="w-full btn btn-success">
                 Proof Reader Accepted
             </div>
-        @elseif(isset($order->proofReaderOrder) && (
-                ($order->proofReaderOrder->is_accepted == 1 &&
-                $order->proofread_status == \App\Enums\TranslationStatusEnum::COMPLETED &&
-                $order->proofReaderOrder->file_name != null
-                )
-                ||
-                ($order->proofReaderOrder->added_by_admin == 1 && $order->proofReaderOrder->file_name != '' )
-                ))
+        @elseif(isset($order->proofReaderOrder) &&
+                (($order->proofReaderOrder->is_accepted == 1 &&
+                    $order->proofread_status == \App\Enums\TranslationStatusEnum::COMPLETED &&
+                    $order->proofReaderOrder->file_name != null) ||
+                    ($order->proofReaderOrder->added_by_admin == 1 && $order->proofReaderOrder->file_name != '')))
             <div class="w-full btn btn-success">
                 ProofRead Completed
             </div>
@@ -132,11 +134,17 @@
     @else
         {{-- Translation completed --}}
         @if ($order->translation_status == \App\Enums\TranslationStatusEnum::COMPLETED)
-            @if (($order->orderStatus == 'Completed' && isset($order->proofReaderOrder) && $order->proofread_sent == 1)
-            || ($order->orderStatus == 'Completed' && $order->completed == 1)
-            )
+            @if (
+                ($order->orderStatus == 'Completed' && isset($order->proofReaderOrder) && $order->proofread_sent == 1) ||
+                    ($order->orderStatus == 'Completed' && $order->completed == 1))
                 <div class="w-full btn btn-success">
                     WO Completed
+                </div>
+            @elseif (
+                $order->translation_status == \App\Enums\TranslationStatusEnum::COMPLETED ||
+                    (isset($order->contractorOrder) && $order->contractorOrder->file_name != ''))
+                <div class="w-full btn btn-success">
+                    Translation Completed
                 </div>
             @elseif(isset($order->proofReaderOrder) &&
                     $order->proofread_sent == 1 &&

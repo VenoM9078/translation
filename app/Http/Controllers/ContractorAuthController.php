@@ -576,14 +576,22 @@ class ContractorAuthController extends Controller
     public function downloadProofreadFile($id)
     {
         //select only file_name;
-        $filePath = '/proofread_by_proofreader/' . ProofReaderOrders::where(['order_id' => $id])->firstOrFail()->file_name;
+        $proofReadFile = null;
+        $proofRead =  ProofReaderOrders::where(['order_id' => $id])->firstOrFail();
+        if($proofRead->file_name){
+            $proofReadFile = $proofRead->file_name;
+        } else {
+            $proofReadFile = $proofRead->file_uploaded_by_admin;
+        }
+        $filePath = '/proofread_by_proofreader/' .$proofReadFile;
         $file = "";
-
+        // dd($filePath);
+        $order = Order::where('id',$id)->first();
         if (public_path() . file_exists($filePath)) {
             $file = public_path($filePath);
         }
         $zip = new ZipArchive;
-        $zipName = date('ymdHis') . $id . '.zip';
+        $zipName = $order->worknumber.'T_' . $id . '.zip';
 
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
             $relativeNameInZipFile = basename($file);
@@ -1041,7 +1049,7 @@ class ContractorAuthController extends Controller
 
         // Mail::to($admin->email)->send(new NotifyAdminProofReadSubmissionContractor($contractorName, $contractorOrder));
 
-        return redirect()->route('contractor.completed-proof-read', ['page' => session('page'), 'limit' => session('limit')]);
+        return redirect()->route('contractor.proof-read', ['page' => session('page'), 'limit' => session('limit')]);
     }
 
     public function logout(Request $request)
