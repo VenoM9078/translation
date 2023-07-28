@@ -2191,7 +2191,6 @@ class AdminController extends Controller
             }
             $zip2 = new ZipArchive;
 
-            $zipName2 = $order->worknumber . $prefix . '.zip';
 
             if ($zip2->open(public_path('translated/' . $zipName2), ZipArchive::CREATE) === TRUE) {
 
