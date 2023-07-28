@@ -77,4 +77,36 @@ class Contractor extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new CustomResetPasswordNotification($token));
     }
+
+    protected static function booted()
+    {
+        static::deleting(function ($contractor) {
+            \DB::transaction(function () use ($contractor) {
+                $relationships = [
+                    'contractorOrders',
+                    'proofReadOrders',
+                    'languages',
+                    'proofReadRequest',
+                    'verifyContractor',
+                ];
+
+                foreach ($relationships as $relationship) {
+                    if ($contractor->$relationship()) {
+                        $contractor->$relationship()->delete();
+                    }
+                }
+
+                // Relationships to detach
+                $relationshipsToDetach = [
+                    'languages',
+                ];
+
+                foreach ($relationshipsToDetach as $relationship) {
+                    if ($contractor->$relationship()) {
+                        $contractor->$relationship()->detach();
+                    }
+                }
+            });
+        });
+    }
 }

@@ -8,9 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
-
-implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -86,6 +84,14 @@ implements MustVerifyEmail
             \DB::transaction(function () use ($user) {
                 $user->orders()->delete();
                 $user->interpretations()->delete();
+                $user->user_requests()->delete();
+                $user->invoices()->delete();
+                // Detach the many-to-many relationships
+                $user->institute()->detach();
+                // If user manages an institute, delete it
+                if ($user->institute_managed) {
+                    $user->institute_managed()->delete();
+                }
             });
         });
     }

@@ -1242,7 +1242,7 @@ class UserController extends Controller
         $user->save();
 
         // Add the user to the Institute Members
-        $request->institute->members()->attach($user->id);
+        $request->institute->members()->attach($user->id, ['created_at' => now(), 'updated_at' => now()]);
 
         // Delete the request
         $request->delete();
