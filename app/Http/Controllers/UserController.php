@@ -174,6 +174,7 @@ class UserController extends Controller
         } else {
             $members = Auth::user()->institute_managed->members;
             $user_ids = [];
+            $user_ids[] = Auth::user()->id;
             foreach ($members as $member) {
                 // if($member->id != Auth::user()->id){
                 $user_ids[] = $member->id;
