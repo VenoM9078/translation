@@ -176,10 +176,14 @@
                                             </td>
                                             <td class="whitespace-nowrap">
                                                 {{-- @if ($translation->file_name != null) --}}
+                                                @if(isset($translation->file_name))
                                                 <a class="btn btn-primary" title="Download ProofRead File"
                                                     href="{{ route('contractor.download-proof-read-file', $translation->order->id) }}">
                                                     <i data-lucide="download" class="w-5 h-5"></i>
                                                 </a>
+                                                @else
+                                                N/A
+                                                @endif
 
                                             </td>
 

@@ -54,7 +54,8 @@ class Interpretation extends Model
         return $this->belongsTo('App\Models\Contractor', 'interpreter_id');
     }
 
-    public function quote(){
+    public function quote()
+    {
         return $this->quote_description;
     }
 
@@ -94,13 +95,13 @@ class Interpretation extends Model
                 'interpretationLogs',
                 'contractorLogs',
                 'invoiceLogs',
-                'contractorInterpretation',                
+                'contractorInterpretation',
             ];
 
             // Iterate over relationships and delete
             foreach ($relationships as $relationship) {
                 // It's good practice to check if the relationship exists before trying to delete it
-                if ($interpretation->$relationship()) {
+                if ($interpretation->$relationship()->exists()) {
                     $interpretation->$relationship()->delete();
                 }
             }

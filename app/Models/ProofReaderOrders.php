@@ -35,7 +35,7 @@ class ProofReaderOrders extends Model
     }
     public function order()
     {
-        return $this->belongsTo('App\Models\Order', 'order_id');
+        return $this->belongsTo('App\Models\Order', 'order_id')->withDefault();
     }
     public function contractorOrder()
     {

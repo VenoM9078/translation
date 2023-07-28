@@ -82,8 +82,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         static::deleting(function ($user) {
             \DB::transaction(function () use ($user) {
-                $user->orders()->delete();
-                $user->interpretations()->delete();
+                // Iterate over each order and delete it, this will also delete the order's relationships
+                foreach ($user->orders as $order) {
+                    $order->delete();
+                }
+                // Iterate over each interpretation and delete it
+                foreach ($user->interpretations as $interpretation) {
+                    $interpretation->delete();
+                }
                 $user->user_requests()->delete();
                 $user->invoices()->delete();
                 // Detach the many-to-many relationships

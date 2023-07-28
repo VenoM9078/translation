@@ -94,11 +94,11 @@ class Order extends Model
 
     public function contractorOrder()
     {
-        return $this->hasOne('App\Models\ContractorOrder', 'order_id', 'id');
+        return $this->hasOne('App\Models\ContractorOrder', 'order_id', 'id')->withDefault();
     }
     public function proofReaderOrder()
     {
-        return $this->hasOne('App\Models\ProofReaderOrders', 'order_id', 'id');
+        return $this->hasOne('App\Models\ProofReaderOrders', 'order_id', 'id')->withDefault();
     }
 
     public function orderLogs(){
@@ -133,8 +133,8 @@ class Order extends Model
             
             // Iterate over relationships and delete
             foreach ($relationships as $relationship) {
-                // It's good practice to check if the relationship exists before trying to delete it
-                if ($order->$relationship()) {
+                // Check if the relationship has any related models before trying to delete it
+                if ($order->$relationship()->exists()) {
                     $order->$relationship()->delete();
                 }
             }
