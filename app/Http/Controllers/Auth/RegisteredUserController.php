@@ -154,9 +154,10 @@ class RegisteredUserController extends Controller
                     $userEmailDomain = substr(strrchr($request->email, "@"), 1);
                     foreach ($institute as $inst) {
                         $manager = User::find($inst->managed_by);
-                        if(!isset($manager)){
-                            return back()->with('error', 'No Institute Admin exists with this domain');
-                        }
+                        // if(!isset($manager)){
+                            // dd($manager);
+                            // return back()->with('error', 'No Institute Admin exists with this domain');
+                        // }
                         $managerEmailDomain = substr(strrchr($manager->email, "@"), 1);
                         if ($managerEmailDomain == $userEmailDomain) {
                             $userBelongsToInstitute = true;
