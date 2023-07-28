@@ -253,7 +253,8 @@
                                             <label for="" class="mb-5">Send Reminder Email</label>
                                             <select name="is_reminder_on" class="w-full">
                                                 @if ($interpretation->is_reminder_on == 1)
-                                                    <option value="1">Yes</option>
+                                                    <option value="1" selected>Yes</option>
+                                                    <option value="0">No</option>
                                                 @else
                                                     <option value="0">No</option>
                                                     <option value="1">Yes</option>
@@ -269,7 +270,7 @@
                                 </div>
                                 <div class="flex mt-5 mb-2 gap-2">
                                     <div class="w-full">
-                                        <label for="order-form-17" class="form-label">Interpreter Completed</label>
+                                        <label for="order-form-17" class="form-label">Interpretation Completed</label>
                                         <input id="order-form-17" type="text" class="form-control w-full" disabled
                                             value="{{ $interpretation->interpreter_completed == 1 ? 'Yes' : 'No' }}">
                                     </div>
@@ -280,7 +281,7 @@
                                     </div>
                                 </div>
                                 <br>
-                                <div class="flex gap-2 mt-2 w-full">
+                                {{-- <div class="flex gap-2 mt-2 w-full">
 
                                     <!-- C. Type field -->
                                     <div class="w-full">
@@ -300,13 +301,13 @@
                                             placeholder="C. Unit" value="{{ $interpretation->c_unit }}">
                                     </div>
 
-                                </div>
+                                </div> --}}
                                 <div class="flex gap-2 w-full">
 
                                     <!-- C. Rate field -->
                                     <div class="w-full">
 
-                                        <label for="c_rate">C. Rate ($/W or $/P)</label>
+                                        <label for="c_rate">C. Rate ($/HR)</label>
                                         <input type="number" step="0.01" id="c_rate" name="c_rate"
                                             class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4"
                                             placeholder="C. Rate ($/W or $/P)" value="{{ $interpretation->c_rate }}">
@@ -348,7 +349,7 @@
                                 <div class="flex gap-2 w-full">
 
                                     <!-- C. Paid field -->
-                                    <div class="w-full">
+                                    {{-- <div class="w-full">
                                         <label for="c_paid">I. Paid</label>
                                         <select id="c_paid" name="interpreter_paid"
                                             class="form-control py-3 px-4 block mt-4 mb-4">
@@ -360,7 +361,7 @@
                                                 Yes
                                             </option>
                                         </select>
-                                    </div>
+                                    </div> --}}
                                     <!-- C. Fee field -->
                                     <div class="w-full">
                                         <label for="c_fee">Interpretation Rate ($)</label>
@@ -386,10 +387,10 @@
                                 <textarea id="c_adjust_note" name="c_adjust_note" class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4"
                                     placeholder="C. Adjust Note">{{ $interpretation->c_adjust_note }}</textarea>
                                 <br>
-                                <label for="c_adjust_note">I. Adjust Note</label>
+                                {{-- <label for="c_adjust_note">I. Adjust Note</label>
                                 <textarea id="c_adjust_note" name="interpreter_adjust_note"
                                     class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4" placeholder="I. Adjust Note">{{ $interpretation->interpreter_adjust_note }}</textarea>
-                                <br>
+                                <br> --}}
                                 <button type="submit" class="btn btn-primary mt-5">Update Interpretation</button>
                         </form>
                     </div>
