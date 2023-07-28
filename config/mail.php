@@ -56,6 +56,16 @@ return [
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
 
+        'dev' => [
+            'transport' => 'smtp',
+            'host' => 'smtp.gmail.com',
+            'port' => 587,
+            'encryption' => 'tls',
+            'username' => 'noiznixon98@gmail.com',
+            'password' => 'ugejekyiqwomtnqg',
+            'timeout' => null,
+            'local_domain' => env('MAIL_EHLO_DOMAIN'),
+        ],
         'webpage' => [
             'transport' => 'smtp',
             'host' => env('MAIL_HOST', 'smtp.ionos.com'),
