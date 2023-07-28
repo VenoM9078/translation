@@ -135,14 +135,13 @@
                                         <th class="whitespace-nowrap">ProofRead Doc</th>
                                         <th class="whitespace-nowrap">Message</th>
                                         <th class="whitespace-nowrap">Proof Read Status</th>
-                                        <th class="whitespace-nowrap">ProofRead Type</th>
+                                        <th class="whitespace-nowrap">P. Type</th>
+                                        <th class="whitespace-nowrap">P. Unit</th>
                                         <th class="whitespace-nowrap">P. Rate($/Wd or $/Pg)</th>
                                         <th class="whitespace-nowrap">P. Adjust($)</th>
-                                        <th class="whitespace-nowrap">P. Unit</th>
                                         <th class="whitespace-nowrap">P. Fee</th>
                                         <th class="whitespace-nowrap">P. Adjust Note</th>
                                         <th class="whitespace-nowrap">P. Paid</th>
-                                        <th class="whitespace-nowrap">Order By</th>
                                         <th class="whitespace-nowrap">Order Status</th>
                                         <th class="whitespace-nowrap">Total Payment</th>
                                         <th class="whitespace-nowrap">Created At</th>
@@ -203,13 +202,13 @@
                                             </td>
                                             <td class="whitespace-nowrap">{{ $translation->proofread_type }}</td>
                                             <td class="whitespace-nowrap">
-                                                ${{ $translation->contractor->proofreader_rate }}
-                                            </td>
-                                            <td class="whitespace-nowrap">${{ $translation->total_payment }}</td>
-                                            <td class="whitespace-nowrap">
                                                 {{ $translation->p_unit }}
                                             </td>
-                                            <td class="whitespace-nowrap">${{ $translation->rate }}</td>
+                                            <td class="whitespace-nowrap">
+                                                ${{ $translation->contractor->proofreader_rate }}
+                                            </td>
+                                            <td class="whitespace-nowrap">${{ $translation->p_adjust }}</td>
+                                            <td class="whitespace-nowrap">${{ $translation->total_payment }}</td>
                                             <td class="whitespace-nowrap">
                                                 <a href="javascript:;" data-tw-toggle="modal"
                                                     data-tw-target="#proofread-adj-note-modal-preview{{ $translation->id }}">
@@ -219,7 +218,6 @@
 
                                             <td class="whitespace-nowrap">
                                                 {{ $translation->proof_read_paid == 1 ? 'Yes' : 'No' }}</td>
-                                            <td class="whitespace-nowrap">{{ $translation->order->user->name }}</td>
                                             <td class="whitespace-nowrap">{{ $translation->order->orderStatus }}</td>
                                             <td class="whitespace-nowrap">${{ $translation->total_payment }}</td>
                                             <td class="whitespace-nowrap">
