@@ -34,11 +34,11 @@
                                     </select>
                                 </div>
                                 <input type="hidden" name="interpretation_id" value="{{ $interpretation->id }}">
-                                <div class="mt-4">
+                                {{-- <div class="mt-4">
                                     <label>Enter Description of Interpretation</label>
                                     <textarea type="text" name="description" required class="intro-x login__input form-control py-3 px-4 block mt-1"
                                         placeholder="Enter Interpretation Description" value=""></textarea>
-                                </div>
+                                </div> --}}
 
                                 <div class="mt-2 w-full">
                                     <label for="c_fee">I. Rate ($)</label>
@@ -53,7 +53,7 @@
 
                                 <div class="mt-4">
                                     <label>I. Fee</label>
-                                    <input type="number" name="i_fee" id="i_fee" step="0.01"  required
+                                    <input type="number" name="i_fee" id="i_fee" step="0.01" required
                                         class="intro-x login__input form-control py-3 px-4 block mt-1"
                                         placeholder="Enter Interpretation Adjust"
                                         value="{{ $interpretation->contractorInterpretation->per_hour_rate ?? 0 }}">
@@ -77,8 +77,8 @@
                                         placeholder="(Optional)" value="">
                                 </div> --}}
                                 <label for="c_adjust_note">Interpreter Message</label>
-                                <textarea id="p_adjust_note" name="message_by_admin"
-                                    class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4" placeholder="Type Message">{{ $interpretation->message_by_admin ?? '' }}</textarea>
+                                <textarea id="p_adjust_note" name="message_by_admin" class="intro-x login__input form-control py-3 px-4 block mt-4 mb-4"
+                                    placeholder="Type Message">{{ $interpretation->message_by_admin ?? '' }}</textarea>
                                 <br>
                                 <label for="c_adjust_note">I. Adjust Note</label>
                                 <textarea id="p_adjust_note" name="interpreter_adjust_note"
@@ -86,12 +86,18 @@
                                 <br>
                                 <label for="amount" class="mt-2 mb-2">I Paid</label>
                                 <select data-placeholder="Enter Paid" name="interpreter_paid" class="tom-select w-full">
-                                    @if ($interpretation->interpreter_paid != '')
-                                        <option value="{{ $interpretation->interpreter_paid }}" selected>
-                                            {{ $interpretation->interpreter_paid == 1 ? 'Yes' : 'No' }} </option>
+                                    @if ($interpretation->interpreter_paid)
+                                        <option value="0"
+                                            {{ $interpretation->interpreter_paid == 0 ? 'selected' : '' }}>
+                                            No</option>
+                                        <option value="1"
+                                            {{ $interpretation->interpreter_paid == 1 ? 'selected' : '' }}>
+                                            Yes</option>
                                     @else
-                                        <option value="1">Yes</option>
-                                        <option value="0">No</option>
+                                        <option value="0" selected>
+                                            No</option>
+                                        <option value="1">
+                                            Yes</option>
                                     @endif
                                 </select>
                             </div>

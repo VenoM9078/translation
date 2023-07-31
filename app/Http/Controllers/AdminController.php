@@ -1201,7 +1201,7 @@ class AdminController extends Controller
 
     public function viewCustomers()
     {
-        $users = User::orderBy('created_at', 'desc')->paginate(10);
+        $users = User::orderBy('id', 'desc')->paginate(10);
         return view('admin.viewCustomers', compact('users'));
     }
 
@@ -1229,10 +1229,15 @@ class AdminController extends Controller
 
         // Check if the contractor_id is changing
         $isContractorChanging = $existingAssignment && $existingAssignment->contractor_id != $request->contractor_id;
-
+        $interpreter_paid = 0;
+        if(!isset($request->interpreter_paid)){
+            $interpreter_paid = 0;
+        } else {
+            $interpreter_paid = $request->interpreter_paid;
+        }
         $interpretation = Interpretation::where('id', $request->interpretation_id)->first();
         $interpretation->interpreter_adjust_note = $request->interpreter_adjust_note;
-        $interpretation->interpreter_paid = $request->interpreter_paid;
+        $interpretation->interpreter_paid = $interpreter_paid;
         $interpretation->message_by_admin = $request->message_by_admin;
         $interpretation->save();
         // If it exists, delete it
@@ -1244,7 +1249,7 @@ class AdminController extends Controller
         $contractorInterpretation->contractor_id = $request->contractor_id;
         $contractorInterpretation->interpretation_id = $request->interpretation_id;
         $contractorInterpretation->is_accepted = 0;
-        $contractorInterpretation->description = $request->description;
+        // $contractorInterpretation->description = $request->description;
         $contractorInterpretation->per_hour_rate = $request->i_fee;
         $contractorInterpretation->estimated_payment = $request->i_adjust;
 

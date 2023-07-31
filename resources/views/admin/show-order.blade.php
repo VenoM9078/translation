@@ -207,19 +207,19 @@
                     <div class="w-full">
                         <label for="order-form-7" class="form-label">Interpretation Rate</label>
                         <input id="order-form-7" type="text" class="form-control" disabled
-                            value="${{ $order->contractorOrder->contractor->interpretation_rate ?? '' }}">
+                            value="{{ $order->contractorOrder->contractor->interpretation_rate != null ? '$'.$order->contractorOrder->contractor->interpretation_rate : 'N/A' }}">
                     </div>
                 </div>
                 <div class="flex mt-2 mb-2 gap-2">
                     <div class="w-full">
                         <label for="order-form-8" class="form-label">Translation Rate</label>
                         <input id="order-form-8" type="text" class="form-control" disabled
-                            value="${{ $order->contractorOrder->contractor->translation_rate ?? '' }}">
+                            value="{{ $order->contractorOrder->contractor->translation_rate != null ? '$' .$order->contractorOrder->contractor->translation_rate : 'N/A' }}">
                     </div>
                     <div class="w-full">
                         <label for="order-form-9" class="form-label">Proofreader Rate</label>
                         <input id="order-form-9" type="text" class="form-control" disabled
-                            value="${{ $order->contractorOrder->contractor->proofreader_rate ?? '' }}">
+                            value="{{ $order->contractorOrder->contractor->proofreader_rate != null ? '$'.$order->contractorOrder->contractor->proofreader_rate : 'N/A' }}">
                     </div>
                 </div>
             </div>

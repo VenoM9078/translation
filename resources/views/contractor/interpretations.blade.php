@@ -141,6 +141,7 @@
                                         <th class="whitespace-nowrap">I. Adjust ($)</th>
                                         <th class="whitespace-nowrap">I. Fee ($)</th>
                                         <th class="whitespace-nowrap">I. Adjust Note</th>
+                                        <th class="whitespace-nowrap">I. Rate($)</th>
                                         <th class="whitespace-nowrap">I. Paid (Yes / No)</th>
                                         <th class="whitespace-nowrap">Status</th>
                                         <th class="whitespace-nowrap">Possible Actions</th>
@@ -179,13 +180,13 @@
                                             <td class="whitespace-nowrap">{{ $interpretation->interpretation->location }}
                                             </td>
                                             <td class="whitespace-nowrap">
-                                                @if(isset($interpretation->interpretation->message_by_admin))
-                                                <a href="javascript:;" data-tw-toggle="modal"
-                                                    data-tw-target="#message2-modal-preview{{ $interpretation->id }}">
-                                                    <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
-                                                </a>
+                                                @if (isset($interpretation->interpretation->message_by_admin))
+                                                    <a href="javascript:;" data-tw-toggle="modal"
+                                                        data-tw-target="#message2-modal-preview{{ $interpretation->id }}">
+                                                        <i data-lucide="message-square" class="w-5 h-5 mr-2"> </i>
+                                                    </a>
                                                 @else
-                                                - 
+                                                    -
                                                 @endif
                                             </td>
                                             <!-- BEGIN: Modal Content -->
@@ -241,6 +242,16 @@
                                                     </div>
                                                 </div>
                                             </div> <!-- END: Modal Content -->
+                                            <td class="whitespace-nowrap">
+                                                {{-- @dd($interpretation->interpretation) --}}
+                                                @if (isset($interpretation->contractor->interpretation_rate))
+                                                    {{ $interpretation->contractor->interpretation_rate != null
+                                                        ? '$' . $interpretation->contractor->interpretation_rate
+                                                        : 'N/A' }}
+                                                @else
+                                                    <span>N/A</span>
+                                                @endif
+                                            </td>
                                             <td class="whitespace-nowrap">
                                                 {{ $interpretation->interpretation->interpreter_paid == 1 ? 'Yes' : 'No' }}
                                             </td>

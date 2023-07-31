@@ -862,7 +862,7 @@ class UserController extends Controller
         $skip = ($page - 1) * $recordsPerPage;
         if ($user->role_id == 0 || $user->role_id == 1) {
 
-            $orders = Order::where('user_id', $user->id)->orderByDesc('created_at')->skip($skip)->paginate($recordsPerPage);
+            $orders = Order::where('user_id', $user->id)->orderBy('id','desc')->skip($skip)->paginate($recordsPerPage);
             $interpretations = Interpretation::where('user_id', $user->id)->orderByDesc('created_at')->get();
             return view('user.myorders', compact('user', 'orders'))->with(['page' => session('page'), 'limit' => session('limit')]);
         } else if ($user->role_id == 2) {
@@ -881,7 +881,7 @@ class UserController extends Controller
             // Get all orders made by these users
 
 
-            $orders = Order::whereIn('user_id', $user_ids)->orderByDesc('created_at')->skip($skip)->paginate($recordsPerPage);
+            $orders = Order::whereIn('user_id', $user_ids)->orderByDesc('id')->skip($skip)->paginate($recordsPerPage);
             // $orders = Order::whereIn('user_id', $user_ids)->orderByDesc('created_at')->get();
             // dd($orders);
             return view('user.myorders', compact('user', 'orders'))->with(['page' => session('page'), 'limit' => session('limit')]);
