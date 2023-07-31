@@ -1230,7 +1230,7 @@ class AdminController extends Controller
         // Check if the contractor_id is changing
         $isContractorChanging = $existingAssignment && $existingAssignment->contractor_id != $request->contractor_id;
         $interpreter_paid = 0;
-        if(!isset($request->interpreter_paid)){
+        if (!isset($request->interpreter_paid)) {
             $interpreter_paid = 0;
         } else {
             $interpreter_paid = $request->interpreter_paid;
@@ -1269,6 +1269,9 @@ class AdminController extends Controller
     public function getContractorRate(Request $request)
     {
         $contractor = Contractor::find($request->id);
+        if (!isset($contractor)) {
+            return response()->json(['interpretation_rate' => 0]);
+        }
         return response()->json(['interpretation_rate' => $contractor->interpretation_rate]);
     }
 
@@ -1276,6 +1279,9 @@ class AdminController extends Controller
     {
         if (isset($request->id) && $request->id != null) {
             $contractor = Contractor::find($request->id);
+            if (!isset($contractor)) {
+                return response()->json(['translation_rate' => 0]);
+            }
             return response()->json(['translation_rate' => $contractor->translation_rate]);
         } else {
             return response()->json(['translation_rate' => 0]);
@@ -1286,6 +1292,9 @@ class AdminController extends Controller
     {
         if (isset($request->id) && $request->id != null) {
             $contractor = Contractor::find($request->id);
+            if (!isset($contractor)) {
+                return response()->json(['proofreader_rate' => 0]);
+            }
             return response()->json(['proofreader_rate' => $contractor->proofreader_rate]);
         } else {
             return response()->json(['proofreader_rate' => 0]);

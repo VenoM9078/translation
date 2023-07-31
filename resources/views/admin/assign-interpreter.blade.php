@@ -112,17 +112,16 @@
 
     <script>
         $(document).ready(function() {
-            var hours = {{ (int) $interpretation->end_time - (int) $interpretation->start_time }};
+            var hours = {{ (float) $interpretation->end_time - (float) $interpretation->start_time }};
 
             function calculateEstimatedPayment(rate, adjust, duration) {
-                var sessionHours = duration / 3600;
+                // Round up the session hours to the nearest 0.25
+                console.log(duration);
+                var sessionHours = Math.ceil(duration * 4) / 4;
 
-                // If session hours are less than 1, set them to 1
+                // If the session hours are less than 1, set them to 1
                 if (sessionHours < 1) {
                     sessionHours = 1;
-                } else {
-                    // Otherwise, round session hours up to the nearest 0.25
-                    sessionHours = Math.ceil(sessionHours * 4) / 4;
                 }
 
                 return Math.abs(sessionHours * rate) + parseFloat(adjust);

@@ -286,6 +286,7 @@
         var p_rate = 0;
         var p_adjust = 0;
         var p_unit = 0;
+        console.log("set total payment",existingTotalPayment)
         $("#total_payment").val(existingTotalPayment);
 
         function calculateEstimatedPayment() {
@@ -326,7 +327,7 @@
                     }
                     var estimated_payment = calculateEstimatedPayment();
                     // Check if the total payment input is empty
-                    if ($('#total_payment').val() == "" || contractorChanged) {
+                    if ($('#total_payment').val() == "") {
                         // If it is, then it's not an edit situation and you can set the estimated payment
                         $('#total_payment').val(estimated_payment);
                     }
