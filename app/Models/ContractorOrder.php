@@ -30,7 +30,7 @@ class ContractorOrder extends Model
 
     public function contractor()
     {
-        return $this->belongsTo('App\Models\Contractor', 'contractor_id');
+        return $this->belongsTo('App\Models\Contractor', 'contractor_id')->withDefault();
     }
 
     public function order()
@@ -40,7 +40,7 @@ class ContractorOrder extends Model
 
     public function proofReadOrder()
     {
-        return $this->hasOne('App\Models\ProofReaderOrders', 'id');
+        return $this->hasOne('App\Models\ProofReaderOrders', 'id')->withDefault();
     }
 
     protected static function booted()

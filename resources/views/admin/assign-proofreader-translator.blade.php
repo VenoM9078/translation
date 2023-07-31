@@ -93,7 +93,7 @@
                                             <label for="amount" class="mt-2">Enter T.Rate ($)</label>
                                             <input type="number" name="rate" step="0.001"
                                                 class="mb-3 intro-x login__input form-control px-4 block mt-1 d-none"
-                                                id="rate" value="" placeholder="Enter Rate"
+                                                id="rate" placeholder="Enter Rate"
                                                 value="{{ $cOrder->rate }}">
                                         </div>
                                     </div>
@@ -133,12 +133,17 @@
                                     <select data-placeholder="Enter Translation Type" name="translator_paid"
                                         class="tom-select w-full">
                                         @if ($cOrder->translator_paid)
-                                            <option value="{{ $cOrder->translator_paid }}" selected>
+                                            <option value="{{ $cOrder->translator_paid }}"
+                                                {{ $cOrder->translator_paid == 1 ? 'selected' : '' }}>
                                                 {{ $cOrder->translator_paid == 1 ? 'Yes' : 'No' }}
+                                            </option>
+                                            <option value="{{ $cOrder->translator_paid }}"
+                                                {{ $cOrder->translator_paid == 0 ? 'selected' : '' }}>
+                                                {{ $cOrder->translator_paid == 0 ? 'No' : 'Yes' }}
+                                            </option>
                                         @endif
-                                        </option>
+                                        <option value="0" selected>No</option>
                                         <option value="1">Yes</option>
-                                        <option value="0">No</option>
                                     </select>
                                     <br>
                                     <label for="amount" class="mt-2 mb-4">Enter Message</label>
