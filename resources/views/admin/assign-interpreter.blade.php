@@ -58,18 +58,14 @@
                                         placeholder="Enter Interpretation Adjust"
                                         value="{{ $interpretation->contractorInterpretation->per_hour_rate ?? 0 }}">
                                 </div>
-
                                 <div class="mt-5 mb-5">
                                     <label>Enter I. Adjust</label><br>
-                                    <small>Session Duration:
-                                        {{ (int) $interpretation->end_time - (int) $interpretation->start_time }}
-                                        hour(s)</small>
+                                    <small class="session-duration">Session Duration: </small>
                                     <input id="i_adjust" step="0.0001" type="number" required name="i_adjust"
                                         class="intro-x login__input form-control py-3 px-4 block mt-1"
                                         placeholder="Enter Estimated Payment (in dollars)"
                                         value="{{ $interpretation->contractorInterpretation->estimated_payment ?? 0 }}">
                                 </div>
-
                                 {{-- <div class="mt-3 mb-3">
                                     <label>Change Per Hour Rate</label>
                                     <input id="per_hour_rate" step="0.0001" type="number" name="per_hour_rate"
@@ -112,7 +108,27 @@
 
     <script>
         $(document).ready(function() {
-            var hours = {{ (float) $interpretation->end_time - (float) $interpretation->start_time }};
+            var sT = "{{ $interpretation->start_time }}";
+            var eT = "{{ $interpretation->end_time }}";
+
+            var startTime = new Date("1970-01-01 " + sT);
+            var endTime = new Date("1970-01-01 " + eT);
+
+            var differenceInMilliseconds = endTime.getTime() - startTime.getTime();
+            var hours = differenceInMilliseconds / (1000 * 60 * 60);
+
+            var differenceInMinutes = differenceInMilliseconds / (1000 * 60);
+            var hours2 = Math.floor(differenceInMinutes / 60);
+            var minutes = Math.floor(differenceInMinutes % 60);
+
+            var durationDisplay;
+            if (hours2 < 1) {
+                durationDisplay = differenceInMinutes.toFixed(0) + ' minute(s)';
+            } else {
+                durationDisplay = hours2 + ' hr ' + minutes + ' min';
+            }
+
+            document.querySelector('.session-duration').textContent = 'Session Duration: ' + durationDisplay;
 
             function calculateEstimatedPayment(rate, adjust, duration) {
                 // Round up the session hours to the nearest 0.25
@@ -123,7 +139,7 @@
                 if (sessionHours < 1) {
                     sessionHours = 1;
                 }
-
+                console.log("session hour", sessionHours)
                 return Math.abs(sessionHours * rate) + parseFloat(adjust);
             }
 
