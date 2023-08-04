@@ -50,12 +50,13 @@ class ScheduleController extends Controller
         if (!empty($interpretationIds)) {
             Interpretation::whereIn('id', $interpretationIds)->update(['reminder_email_sent' => 1]);
         }
-
+        //fetch all interpretations with is_reminder_on = 1
+        $interpretations = Interpretation::where('is_reminder_on', 1)->get();
 
 // Get interpretations with reminder_email_sent = 1
         $interpretationsSent = Interpretation::where('reminder_email_sent', 1)->get();
 
 
-        return view('utils.remind-email-status', compact('interpretationIds', 'lastQuery', 'interpretationsSent','currentDateTime','currentDateTimeMinusOneHour','timezone'));
+        return view('utils.remind-email-status', compact('interpretationIds', 'lastQuery', 'interpretationsSent','currentDateTime','currentDateTimeMinusOneHour','timezone','interpretations'));
     }
 }

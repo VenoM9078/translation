@@ -76,6 +76,24 @@
                     @endforelse
                 </div>
             </div>
+            {{-- now display those interpretations --}}
+            <div class="mb-4">
+                <p class="text-gray-600">Interpretations with Reminder Email Enabled:</p>
+                <div class="mt-4 flex flex-wrap justify-center">
+                    @forelse ($interpretations as $interpretation)
+                        <span
+                            class="inline-block bg-yellow-200 rounded-full px-3 py-1 text-sm font-semibold text-yellow-700 m-1">ID:
+                            {{ $interpretation->id }}</span>
+                        {{-- display interpretation session topic, start date and end date --}}
+                        <span
+                            class="inline-block bg-yellow-200 rounded-sm px-6 py-3 text-sm font-semibold text-yellow-700 m-1">
+                            Topic:
+                            {{ $interpretation->session_topics }} <br>
+                            Start Time: {{ $interpretation->start_time }} <br>
+                            End Time: {{ $interpretation->end_time }} <br>
+                        </span>
+                     @endforeach
+                </div>
         </div>
     </div>
 </body>
