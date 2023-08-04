@@ -121,6 +121,8 @@
             var hours2 = Math.floor(differenceInMinutes / 60);
             var minutes = Math.floor(differenceInMinutes % 60);
 
+            // modify the display of the session duration based on the length of the session
+            
             var durationDisplay;
             if (hours2 < 1) {
                 durationDisplay = differenceInMinutes.toFixed(0) + ' minute(s)';
