@@ -2126,13 +2126,14 @@ class AdminController extends Controller
     {
         if ($request->hasFile('files')) {
             $files = $request->file('files');
-
+            $order = $request->input('order_id');
+            $order = Order::find($order);
             // dd($files);
             $prefix = "F_";
 
             foreach ($files as $file) {
 
-                $filename = date('ymdHis') . $prefix . $file->getClientOriginalName();
+                $filename = $order->worknumber . $prefix . $file->getClientOriginalName();
                 // $folder = uniqid() . '-' . now()->timestamp;
                 // $file->move(public_path('documents'), $filename);
                 $file->move('documents/', $filename);

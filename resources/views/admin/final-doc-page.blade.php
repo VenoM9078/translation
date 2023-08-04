@@ -164,8 +164,7 @@
                                     class="intro-x login__input form-control py-3 px-4 block mt-4" required
                                     placeholder="Email Title" value="Order Completed">
                                 <input type="text" name="email_body"
-                                    class="intro-x login__input form-control py-3 px-4 block mt-4" 
-                                    placeholder="Message...">
+                                    class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="Message...">
                                 <br>
                                 <input type="file" id="multipleFiles" class="filepond mt-5" name="files[]" multiple
                                     data-max-file-size="10MB" data-max-files="15" />
@@ -217,9 +216,15 @@
 
         FilePond.setOptions({
             server: {
-                url: '/adminUpload',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                process: {
+                    url: '/adminUpload',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    ondata: (formData) => {
+                        formData.append('order_id', document.querySelector('input[name="order_id"]').value);
+                        return formData;
+                    }
                 }
             }
         });

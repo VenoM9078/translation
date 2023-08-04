@@ -27,6 +27,55 @@
                     @endforelse
                 </div>
             </div>
+
+            <div class="mb-4">
+                <p class="text-gray-600">Current Date and MinusOneHour | Timezone:</p>
+                <div class="mt-4 flex flex-wrap justify-center">
+                    <span
+                        class="inline-block bg-green-200 rounded-lg px-3 py-1 text-sm font-semibold text-green-400 m-1">{{ $currentDateTime }}
+                        / {{ $currentDateTimeMinusOneHour }}</span>
+                    <span
+                        class="inline-block bg-green-200 rounded-lg px-3 py-1 text-sm font-semibold text-green-200 m-1">{{ $timezone }}
+                    </span>
+
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <p class="text-gray-600">Last Executed Query:</p>
+                <div class="mt-4 flex flex-wrap justify-center">
+                    <span
+                        class="inline-block bg-green-200 rounded-lg px-3 py-1 text-sm font-semibold text-green-700 m-1">{{ $lastQuery['query'] }}
+                        </span>
+                        Values:
+                    @foreach ($lastQuery['bindings'] as $binding)
+                        <span
+                            class="inline-block bg-green-200 rounded-lg px-3 py-1 text-sm font-semibold text-green-700 m-1">{{ $binding }}</span>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <p class="text-gray-600">Interpretations with Reminder Email Sent:</p>
+                <div class="mt-4 flex flex-wrap justify-center">
+                    @forelse ($interpretationsSent as $interpretation)
+                        <span
+                            class="inline-block bg-purple-200 rounded-full px-3 py-1 text-sm font-semibold text-purple-700 m-1">ID:
+                            {{ $interpretation->id }}</span>
+                        {{-- display interpretation session topic, start date and end date --}}
+                        <span
+                            class="inline-block bg-purple-200 rounded-sm px-6 py-3 text-sm font-semibold text-purple-700 m-1">Topic:
+                            {{ $interpretation->session_topics }} <br>
+                            Start Time: {{ $interpretation->start_time }} <br>
+                            End Time: {{ $interpretation->end_time }} <br>
+                        </span>
+                    @empty
+                        <span
+                            class="inline-block bg-red-200 rounded-full px-3 py-1 text-sm font-semibold text-red-700 m-1">No
+                            Interpretations with Sent Email</span>
+                    @endforelse
+                </div>
+            </div>
         </div>
     </div>
 </body>
