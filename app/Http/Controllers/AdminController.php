@@ -2232,13 +2232,24 @@ class AdminController extends Controller
         }
 
         $validated['completed_file'] = $zipName2;
-        if (isset($order->contractorOrder) && $order->contractorOrder->contractor_id != -1) {
-            $validated['translation_id'] = $order->contractorOrder->contractor_id;
-        } else {
+        if (isset($order->contractorOrder)){
+            if($order->contractorOrder->contractor_id != -1) {
+                $validated['translation_id'] = $order->contractorOrder->contractor_id;
+            } else {
+                $validated['translation_id'] = -1;
+            }
+        }
+         else {
             $validated['translation_id'] = -1;
         }
-        if (isset($order->proofReaderOrder) && $order->proofReaderOrder->contractor_id != -1) {
-            $validated['proofreader_id'] = $order->proofReaderOrder->contractor_id;
+        if (isset($order->proofReaderOrder))
+        {
+            if( $order->proofReaderOrder->contractor_id != -1) 
+            {
+                $validated['proofreader_id'] = $order->proofReaderOrder->contractor_id;
+            } else {
+             $validated['proofreader_id'] = -1;
+            }
         } else {
             $validated['proofreader_id'] = -1;
         }
