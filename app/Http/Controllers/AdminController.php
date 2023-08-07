@@ -2253,7 +2253,10 @@ class AdminController extends Controller
         } else {
             $validated['proofreader_id'] = -1;
         }
-        dd($validated, isset($order->proofReaderOrder));
+        $validated['proofreader_id'] = $order->proofReaderOrder->contractor_id == null ? -1 : $order->proofReaderOrder->contractor_id;
+        $validated['translation_id'] = $order->contractorOrder->contractor_id == null ? -1 : $order->contractorOrder->contractor_id;
+
+        // dd($validated, isset($order->proofReaderOrder));
         $completedRequest = CompletedRequest::create($validated);
 
         Order::where('id', $order_id)->update([
