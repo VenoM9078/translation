@@ -2253,7 +2253,7 @@ class AdminController extends Controller
         } else {
             $validated['proofreader_id'] = -1;
         }
-        dd($validated);
+        dd($validated, isset($order->proofReaderOrder));
         $completedRequest = CompletedRequest::create($validated);
 
         Order::where('id', $order_id)->update([
