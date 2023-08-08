@@ -202,21 +202,25 @@ class UserController extends Controller
         //select only file_name;
         $filePath = '/translations_by_contractors/' . ContractorOrder::where(['order_id' => $id])->firstOrFail()->file_name;
         $file = "";
-        $order = Order::where('id',$id)->first();
-        if (public_path() . file_exists($filePath)) {
-            $file = public_path($filePath);
-        }
-        $zip = new ZipArchive;
-        $zipName = $order->worknumber . $id . '.zip';
+        $order = Order::where('id', $id)->first();
+        if (isset($order) && $this->authenticateUserForDownload($order->user_id)) {
+            if (public_path() . file_exists($filePath)) {
+                $file = public_path($filePath);
+            }
+            $zip = new ZipArchive;
+            $zipName = $order->worknumber . $id . '.zip';
 
-        if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
-            $relativeNameInZipFile = basename($file);
-            // dd($file, $relativeNameInZipFile);
-            $zip->addFile($file, $relativeNameInZipFile);
+            if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
+                $relativeNameInZipFile = basename($file);
+                // dd($file, $relativeNameInZipFile);
+                $zip->addFile($file, $relativeNameInZipFile);
 
-            $zip->close();
+                $zip->close();
+            }
+            return response()->download($file);
+        } else {
+            return redirect()->back()->with('error', 'You are not authorized to download this file');
         }
-        return response()->download($file);
     }
     public function uploadImage(Request $request)
     {
@@ -265,7 +269,7 @@ class UserController extends Controller
         $due_date = Carbon::now()->addDays(7);
         //get worknumber from session
         $worknumber = session()->get('workNumber');
-        $currentTime =$worknumber; //date('ymdHis'); // YYMMDDHHMMSS format
+        $currentTime = $worknumber; //date('ymdHis'); // YYMMDDHHMMSS format
         session()->forget('workNumber');
         if (isset($latestWorkNumber->worknumber)) {
             $latestWorkNumber = $latestWorkNumber->worknumber;
@@ -580,16 +584,21 @@ class UserController extends Controller
             $file = public_path($filePath);
         }
         $zip = new ZipArchive;
-        $zipName = date('ymdHis') . $id . '.zip';
+        $order = Order::where('id', $id)->firstOrFail();
+        if ($this->authenticateUserForDownload($order->user_id)) {
+            $zipName = $order->worknumber . $id . '.zip';
 
-        if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
-            $relativeNameInZipFile = basename($file);
-            // dd($file, $relativeNameInZipFile);
-            $zip->addFile($file, $relativeNameInZipFile);
+            if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
+                $relativeNameInZipFile = basename($file);
+                // dd($file, $relativeNameInZipFile);
+                $zip->addFile($file, $relativeNameInZipFile);
 
-            $zip->close();
+                $zip->close();
+            }
+            return response()->download($file);
+        } else {
+            return redirect()->back()->with('error', 'You are not authorized to download this file');
         }
-        return response()->download($file);
     }
 
 
@@ -1138,47 +1147,63 @@ class UserController extends Controller
         return redirect()->route('myorders', ['page' => session('page'), 'limit' => session('limit')]);
     }
 
+    public function authenticateUserForDownload($userId)
+    {
+        if (Auth::user()->id == $userId) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function downloadTranslatedForUser($id)
     {
         $order = Order::where('id', $id)->first();
         $order_id = $order->id;
+        if (isset($order) && $this->authenticateUserForDownload($order->user_id)) {
+            $completedRequest = CompletedRequest::where('order_id', $order_id)->first();
 
-        $completedRequest = CompletedRequest::where('order_id', $order_id)->first();
+            $orderFiles = $completedRequest->completed_file;
 
-        $orderFiles = $completedRequest->completed_file;
-
-        return response()->download(public_path('translated/' . $orderFiles));
+            return response()->download(public_path('translated/' . $orderFiles));
+        } else {
+            return redirect()->back();
+        }
     }
 
     public function downloadFiles(Order $order)
     {
         $orderFiles = $order->files;
         $fileArr = [];
-
-        foreach ($orderFiles as $orderFile) {
-            if (file_exists(public_path('documents/' . $orderFile->filename))) {
-                $fileArr[] = public_path('documents/' . $orderFile->filename);
-            }
-        }
-
-        $zip = new ZipArchive;
-
-        $zipName = $order->worknumber . 'C' . '.zip';
-        // dd($zip->open(public_path($zipName), ZipArchive::CREATE) === TRUE);
-        if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
-
-            $files = $fileArr; //passing the above array
-
-            foreach ($files as $key => $value) {
-                $relativeNameInZipFile = basename($value);
-                // dd($relativeNameInZipFile);
-                $zip->addFile($value, $relativeNameInZipFile);
+        if (isset($order) && $this->authenticateUserForDownload($order->user_id)) {
+            foreach ($orderFiles as $orderFile) {
+                if (file_exists(public_path('documents/' . $orderFile->filename))) {
+                    $fileArr[] = public_path('documents/' . $orderFile->filename);
+                }
             }
 
-            $zip->close();
-        }
+            $zip = new ZipArchive;
 
-        return response()->download(public_path('compressed/' . $zipName));
+            $zipName = $order->worknumber . 'C' . '.zip';
+            // dd($zip->open(public_path($zipName), ZipArchive::CREATE) === TRUE);
+            if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
+
+                $files = $fileArr; //passing the above array
+
+                foreach ($files as $key => $value) {
+                    $relativeNameInZipFile = basename($value);
+                    // dd($relativeNameInZipFile);
+                    $zip->addFile($value, $relativeNameInZipFile);
+                }
+
+                $zip->close();
+            }
+
+
+            return response()->download(public_path('compressed/' . $zipName));
+        } else {
+            return redirect()->back();
+        }
     }
 
 
