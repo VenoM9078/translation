@@ -937,7 +937,8 @@ class AdminController extends Controller
         $latestWorkNumber = Order::latest('worknumber')->first();
         $due_date = Carbon::now()->addDays(7);
 
-        $currentTime = date('ymdHis'); // YYMMDDHHMMSS format
+        $currentTime = session()->get('workNumberAdmin');//date('ymdHis'); // YYMMDDHHMMSS format
+        session()->forget('workNumberAdmin');
         if (isset($latestWorkNumber->worknumber)) {
             $latestWorkNumber = $latestWorkNumber->worknumber;
             while ($latestWorkNumber == $currentTime) {
@@ -1115,12 +1116,13 @@ class AdminController extends Controller
     {
         if ($request->hasFile('transFiles')) {
             $files = $request->file('transFiles');
-
+            $workNumber = date('ymdHis');
+            session()->put(['workNumberAdmin' => $workNumber]);
             // dd($files);
 
             foreach ($files as $file) {
 
-                $filename = date('ymdHis') . $file->getClientOriginalName();
+                $filename = $workNumber . $file->getClientOriginalName();
                 // $folder = uniqid() . '-' . now()->timestamp;
                 // $file->move(public_path('documents'), $filename);
                 $file->move('documents/', $filename);
@@ -1738,7 +1740,7 @@ class AdminController extends Controller
 
         $zip = new ZipArchive;
 
-        $zipName = date('ymdHis') . $order->id . '.zip';
+        $zipName = $order->worknumber  . '.zip';
         // dd($zip->open(public_path($zipName), ZipArchive::CREATE) === TRUE);
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
 

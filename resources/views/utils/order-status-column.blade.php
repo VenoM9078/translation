@@ -93,11 +93,13 @@
         @elseif(
             ($order->paymentStatus == 1 || $order->paymentStatus == 2) &&
                 $order->translation_status == 0 &&
-                !isset($order->contractorOrder))
+                (!isset($order->contractorOrder)
+                || ($order->contractorOrder->contractor_id == null)
+                ))
             <div class="w-full btn btn-success">
                 Paid
             </div>
-        @elseif (isset($order->contractorOrder) && $order->contractorOrder->is_accepted == 0 && $order->translation_status == 0)
+        @elseif (isset($order->contractorOrder) && $order->contractorOrder->contractor_id != null  && $order->contractorOrder->is_accepted == 0 && $order->translation_status == 0)
             {{-- 
         "Translater Assigned" is set, when FT admin assigns translator (and proofreader) by using "Assign" button
     --}}
@@ -112,7 +114,7 @@
             <div class="w-full btn btn-warning">
                 Translation Declined
             </div>
-        @elseif(isset($order->proofReaderOrder) && $order->proofReaderOrder->is_accepted == 2)
+        @elseif(isset($order->proofReaderOrder) &&  $order->proofReaderOrder->contractor_id != null && $order->proofReaderOrder->is_accepted == 2)
             <div class="w-full btn btn-warning">
                 Proof Reader Declined
             </div>

@@ -202,12 +202,12 @@ class UserController extends Controller
         //select only file_name;
         $filePath = '/translations_by_contractors/' . ContractorOrder::where(['order_id' => $id])->firstOrFail()->file_name;
         $file = "";
-
+        $order = Order::where('id',$id)->first();
         if (public_path() . file_exists($filePath)) {
             $file = public_path($filePath);
         }
         $zip = new ZipArchive;
-        $zipName = date('ymdHis') . $id . '.zip';
+        $zipName = $order->worknumber . $id . '.zip';
 
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
             $relativeNameInZipFile = basename($file);
@@ -222,12 +222,15 @@ class UserController extends Controller
     {
         if ($request->hasFile('transFiles')) {
             $files = $request->file('transFiles');
-
+            // $order = $request->input('order_id');
+            // $order = Order::find($order);
+            $workNumber = date('ymdHis');
+            session()->put(['workNumber' => $workNumber]);
             // dd($files);
             $prefix = "_C_";
             foreach ($files as $file) {
 
-                $filename = date('ymdHis') . $prefix . $file->getClientOriginalName();
+                $filename = $workNumber . $prefix . $file->getClientOriginalName();
                 // $folder = uniqid() . '-' . now()->timestamp;
                 // $file->move(public_path('documents'), $filename);
                 $file->move('documents/', $filename);
@@ -260,7 +263,10 @@ class UserController extends Controller
         // Get the latest worknumber from the Interpretation model
         $latestWorkNumber = Order::latest('worknumber')->first();
         $due_date = Carbon::now()->addDays(7);
-        $currentTime = date('ymdHis'); // YYMMDDHHMMSS format
+        //get worknumber from session
+        $worknumber = session()->get('workNumber');
+        $currentTime =$worknumber; //date('ymdHis'); // YYMMDDHHMMSS format
+        session()->forget('workNumber');
         if (isset($latestWorkNumber->worknumber)) {
             $latestWorkNumber = $latestWorkNumber->worknumber;
             while ($latestWorkNumber == $currentTime) {
@@ -1157,7 +1163,7 @@ class UserController extends Controller
 
         $zip = new ZipArchive;
 
-        $zipName = date('ymdHis') . $order->id . '.zip';
+        $zipName = $order->worknumber . 'C' . '.zip';
         // dd($zip->open(public_path($zipName), ZipArchive::CREATE) === TRUE);
         if ($zip->open(public_path('compressed/' . $zipName), ZipArchive::CREATE) === TRUE) {
 
