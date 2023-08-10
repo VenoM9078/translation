@@ -9,13 +9,12 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-blue-50">
-
-    <div class=" flex items-center justify-center">
-        <div class="container bg-white shadow-md rounded px-8 pt-6 mb-4 max-w-md">
+<body class="bg-blue-50 flex justify-center items-center min-h-screen">
+    <div class="container mx-auto">
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-lg mx-auto">
+            <h2 class="text-2xl font-bold mb-2 text-gray-800 text-center">FlowTranslate - Email Reminder Status</h2>
             <div class="mb-4">
-                <h2 class="text-2xl font-bold mb-2 text-gray-800">FlowTranslate - Email Reminder Status</h2>
-                <p class="text-gray-600">Sent Email to Interpretation IDs:</p>
+                <p class="text-gray-600 text-center">Sent Email to Interpretation IDs:</p>
                 <div class="mt-4 flex flex-wrap justify-center">
                     @forelse ($interpretationIds as $id)
                         <span
@@ -33,7 +32,7 @@
                 <div class="mt-4 flex flex-wrap justify-center">
                     <span
                         class="inline-block bg-green-200 rounded-lg px-3 py-1 text-sm font-semibold text-green-400 m-1">{{ $currentDateTime }}
-                        / {{ $currentDateTimeMinusOneHour }}</span>
+                        / {{ $currentDateTime->copy()->addHour() }}</span>
                     <span
                         class="inline-block bg-green-200 rounded-lg px-3 py-1 text-sm font-semibold text-green-200 m-1">{{ $timezone }}
                     </span>
@@ -56,7 +55,7 @@
             </div>
 
             <div class="mb-4">
-                <p class="text-gray-600">Interpretations with Reminder Email Sent:</p>
+                <p class="text-gray-600 text-center">Interpretations with Reminder Email Enabled:</p>
                 <div class="mt-4 flex flex-wrap justify-center">
                     @forelse ($interpretationsSent as $interpretation)
                         <span
@@ -66,7 +65,9 @@
                         <span
                             class="inline-block bg-purple-200 rounded-sm px-6 py-3 text-sm font-semibold text-purple-700 m-1">Topic:
                             {{ $interpretation->session_topics }} <br>
+                            W# : {{ $interpretation->worknumber }} <br>
                             Date: {{ $interpretation->interpretationDate }} <br>
+                            Interpreter: {{ $interpretation->interpreter->email ?? 'N/A' }} <br>
                             Start Time: {{ $interpretation->start_time }} <br>
                             End Time: {{ $interpretation->end_time }} <br>
                         </span>
@@ -82,14 +83,20 @@
                 <p class="text-gray-600">Interpretations with Reminder Email Enabled:</p>
                 <div class="mt-4 flex flex-wrap justify-center">
                     @forelse ($interpretations as $interpretation)
-                        <div class="inline-block bg-yellow-200 px-3 py-1 text-sm font-semibold text-yellow-700 m-1">ID:
-                            {{ $interpretation->id }}</div>
-                    
-                        {{-- display interpretation session topic, start date and end date --}}
-                        <div
-                            class="inline-block bg-yellow-200 rounded-sm px-6 py-3 text-sm font-semibold text-yellow-700 m-1">
+                        <div class="inline-block bg-yellow-200 px-3 py-1 text-sm font-semibold text-yellow-700 m-1">
+
+
+
+                            <div
+                                class="inline-block bg-yellow-200 rounded-sm px-6 py-3 text-sm font-semibold text-yellow-700 m-1">
+                            </div>
+                            ID:
+                            {{ $interpretation->id }}
+                            <hr> <br>
+                            W# : {{ $interpretation->worknumber }} <br>
                             Topic:
                             {{ $interpretation->session_topics }} <br>
+                            Interpreter: {{ $interpretation->interpreter->email ?? 'N/A' }} <br>
                             Date: {{ $interpretation->interpretationDate }} <br>
                             Start Time: {{ $interpretation->start_time }} <br>
                             End Time: {{ $interpretation->end_time }} <br>
@@ -98,6 +105,11 @@
                 </div>
             </div>
         </div>
+    </div>
+    </div>
+    </div>
+    {{-- <div class=" flex items-center justify-center"> --}}
+
 </body>
 
 </html>

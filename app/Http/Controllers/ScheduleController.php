@@ -29,12 +29,14 @@ class ScheduleController extends Controller
         \DB::enableQueryLog(); // Enable query log
 
         $interpretationIds = [];
-
+        $nextHour = $currentDateTime->copy()->addHour();
         $interpretations = Interpretation::where('is_reminder_on', 1)
             ->where('reminder_email_sent', 0)
             ->whereDate('interpretationDate', $currentDateTime->toDateString())
-            ->where(\DB::raw("HOUR(start_time)"), '>', $currentDateTimeMinusOneHour->format('H'))
-            ->where(\DB::raw("HOUR(start_time)"), '<=', $currentDateTime->copy()->addHour()->format('H'))
+            ->whereTime('start_time', '>', $currentDateTime->toTimeString())
+            ->whereTime('start_time', '<', $nextHour->toTimeString())
+            // ->where(\DB::raw("HOUR(start_time)"), '>', $currentDateTime->format('H'))
+            // ->where(\DB::raw("HOUR(start_time)"), '<', $currentDateTime->copy()->addHour()->format('H'))
             ->whereHas('interpreter')
             ->get();
         $log = \DB::getQueryLog(); // Get the query log
@@ -53,10 +55,10 @@ class ScheduleController extends Controller
         //fetch all interpretations with is_reminder_on = 1
         $interpretations = Interpretation::where('is_reminder_on', 1)->get();
 
-// Get interpretations with reminder_email_sent = 1
+        // Get interpretations with reminder_email_sent = 1
         $interpretationsSent = Interpretation::where('reminder_email_sent', 1)->get();
 
 
-        return view('utils.remind-email-status', compact('interpretationIds', 'lastQuery', 'interpretationsSent','currentDateTime','currentDateTimeMinusOneHour','timezone','interpretations'));
+        return view('utils.remind-email-status', compact('interpretationIds', 'lastQuery', 'interpretationsSent', 'currentDateTime', 'currentDateTimeMinusOneHour', 'timezone', 'interpretations'));
     }
 }
