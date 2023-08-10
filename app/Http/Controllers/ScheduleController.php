@@ -30,15 +30,33 @@ class ScheduleController extends Controller
 
         $interpretationIds = [];
         $nextHour = $currentDateTime->copy()->addHour();
+        // $interpretations = Interpretation::where('is_reminder_on', 1)
+        //     ->where('reminder_email_sent', 0)
+        //     ->whereDate('interpretationDate', $currentDateTime->toDateString())
+        //     ->whereTime('start_time', '>', $currentDateTime->toTimeString())
+        //     ->whereTime('start_time', '<', $nextHour->toTimeString())
+        //     // ->where(\DB::raw("HOUR(start_time)"), '>', $currentDateTime->format('H'))
+        //     // ->where(\DB::raw("HOUR(start_time)"), '<', $currentDateTime->copy()->addHour()->format('H'))
+        //     ->whereHas('interpreter')
+        //     ->get();
+
+        $currentDate = $currentDateTime->toDateString();
+        $startTimeLowerBound1 = $currentDateTimeMinusOneHour->format('H:i:s');
+        $startTimeUpperBound1 = '23:59:59';
+        $startTimeLowerBound2 = '00:00:00';
+        $startTimeUpperBound2 = $currentDateTime->copy()->addHour()->format('H:i:s');
+
         $interpretations = Interpretation::where('is_reminder_on', 1)
             ->where('reminder_email_sent', 0)
-            ->whereDate('interpretationDate', $currentDateTime->toDateString())
-            ->whereTime('start_time', '>', $currentDateTime->toTimeString())
-            ->whereTime('start_time', '<', $nextHour->toTimeString())
-            // ->where(\DB::raw("HOUR(start_time)"), '>', $currentDateTime->format('H'))
-            // ->where(\DB::raw("HOUR(start_time)"), '<', $currentDateTime->copy()->addHour()->format('H'))
+            ->whereDate('interpretationDate', $currentDate)
+            ->where(function ($query) use ($startTimeLowerBound1, $startTimeUpperBound1, $startTimeLowerBound2, $startTimeUpperBound2) {
+                $query->whereBetween(\DB::raw('time(start_time)'), [$startTimeLowerBound1, $startTimeUpperBound1])
+                    ->orWhereBetween(\DB::raw('time(start_time)'), [$startTimeLowerBound2, $startTimeUpperBound2]);
+            })
             ->whereHas('interpreter')
             ->get();
+
+
         $log = \DB::getQueryLog(); // Get the query log
         $lastQuery = end($log); // Get the last executed query
         foreach ($interpretations as $interpretation) {
