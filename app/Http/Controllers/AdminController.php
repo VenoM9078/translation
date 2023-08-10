@@ -514,7 +514,7 @@ class AdminController extends Controller
                     'file_uploaded_by_admin' => $request->translationFile,
                     'proof_read_due_date' => $request->proof_read_due_date,
                     'proofread_type' => $request->p_type,
-                    'proof_read_paid' => $request->proof_read_paid,
+                'proof_read_paid' => $request->proof_read_paid,
                     'added_by_admin' => 1,
                     'p_adjust' => $request->p_adjust,
                     'proof_read_adjust_note' => $request->p_adjust_note,

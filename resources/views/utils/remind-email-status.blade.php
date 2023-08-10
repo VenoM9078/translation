@@ -11,7 +11,7 @@
 
 <body class="bg-blue-50">
 
-    <div class="h-screen flex items-center justify-center">
+    <div class=" flex items-center justify-center">
         <div class="container bg-white shadow-md rounded px-8 pt-6 mb-4 max-w-md">
             <div class="mb-4">
                 <h2 class="text-2xl font-bold mb-2 text-gray-800">FlowTranslate - Email Reminder Status</h2>
@@ -46,8 +46,8 @@
                 <div class="mt-4 flex flex-wrap justify-center">
                     <span
                         class="inline-block bg-green-200 rounded-lg px-3 py-1 text-sm font-semibold text-green-700 m-1">{{ $lastQuery['query'] }}
-                        </span>
-                        Values:
+                    </span>
+                    Values:
                     @foreach ($lastQuery['bindings'] as $binding)
                         <span
                             class="inline-block bg-green-200 rounded-lg px-3 py-1 text-sm font-semibold text-green-700 m-1">{{ $binding }}</span>
@@ -66,6 +66,7 @@
                         <span
                             class="inline-block bg-purple-200 rounded-sm px-6 py-3 text-sm font-semibold text-purple-700 m-1">Topic:
                             {{ $interpretation->session_topics }} <br>
+                            Date: {{ $interpretation->interpretationDate }} <br>
                             Start Time: {{ $interpretation->start_time }} <br>
                             End Time: {{ $interpretation->end_time }} <br>
                         </span>
@@ -81,21 +82,22 @@
                 <p class="text-gray-600">Interpretations with Reminder Email Enabled:</p>
                 <div class="mt-4 flex flex-wrap justify-center">
                     @forelse ($interpretations as $interpretation)
-                        <span
-                            class="inline-block bg-yellow-200 rounded-full px-3 py-1 text-sm font-semibold text-yellow-700 m-1">ID:
-                            {{ $interpretation->id }}</span>
+                        <div class="inline-block bg-yellow-200 px-3 py-1 text-sm font-semibold text-yellow-700 m-1">ID:
+                            {{ $interpretation->id }}</div>
+                    
                         {{-- display interpretation session topic, start date and end date --}}
-                        <span
+                        <div
                             class="inline-block bg-yellow-200 rounded-sm px-6 py-3 text-sm font-semibold text-yellow-700 m-1">
                             Topic:
                             {{ $interpretation->session_topics }} <br>
+                            Date: {{ $interpretation->interpretationDate }} <br>
                             Start Time: {{ $interpretation->start_time }} <br>
                             End Time: {{ $interpretation->end_time }} <br>
-                        </span>
-                     @endforeach
+                        </div>
+                    @endforeach
                 </div>
+            </div>
         </div>
-    </div>
 </body>
 
 </html>
